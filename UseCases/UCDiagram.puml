@@ -1,0 +1,22 @@
+@startuml UCDiagram
+"Klient" as Client
+"Serwisant" as Repairman
+"Użytkownik" as User
+
+User <|-- Client
+User <|-- Repairman
+
+"UC001: Zgłoszenie sprzętu do naprawy" as (UC001)
+"UC002: Wydrukowanie potwierdzenia zgłoszenia naprawy" as (UC002)
+"UC003: Przyjęcie osobistego zgłoszenia naprawy" as (UC003)
+"UC004: Wyświetlenie listy zgłoszonych napraw" as (UC004)
+"UC005: Wydrukowanie etykiety na sprzęt" as (UC005)
+
+
+Client --> UC001
+UC001 ..> UC002 : <<invoke>>
+Repairman --> UC003
+Repairman --> UC004
+UC003 ..> UC005 : <<invoke>>
+
+@enduml
