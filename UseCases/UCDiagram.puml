@@ -1,16 +1,59 @@
 @startuml UCDiagram
 "Klient" as Client
 "Serwisant" as Repairman
+"Kierownik" as Manager
 "Użytkownik" as User
 
 User <|-- Client
 User <|-- Repairman
+Repairman <|-- Manager
 
 "UC001: Zgłoszenie sprzętu do naprawy" as (UC001)
 "UC002: Wydrukowanie potwierdzenia zgłoszenia naprawy" as (UC002)
 "UC003: Przyjęcie osobistego zgłoszenia naprawy" as (UC003)
-"UC004: Wyświetlenie listy zgłoszonych napraw" as (UC004)
+"UC004: Wyświetlenie listy zgłoszonych napraw przez serwisanta" as (UC004)
 "UC005: Wydrukowanie etykiety na sprzęt" as (UC005)
+"UC006: Wprowadzenie sprzętu dostarczonego przez kuriera" as (UC006)
+"UC007: Wyświetlenie informacji szczegółowych o zgłoszeniu przez serwisanta" as (UC007)
+"UC008: Ustawienie zgłoszenia jako obecnie obsługiwanego" as (UC008)
+"UC009: Wyświetlenie obecnie obsługiwanego zgłoszenia" as (UC009)
+"UC010: Odłożenie obecnie obsługiwanego zgłoszenia" as (UC010)
+"UC011: Postawienie początkowej diagnozy" as (UC011)
+"UC012: Zatwierdzenie decyzji o naprawie" as (UC012)
+"UC013: Wyświetlenie listy zgłoszeń przez klienta" as (UC013)
+"UC014: Wyświetlenie informacji szczegółowych o zgłoszeniu przez klienta" as (UC014)
+"UC015: Wysłanie wiadomości do serwisu" as (UC015)
+"UC016: Wysłanie wiadomości do klienta" as (UC016)
+"UC017: Oznaczenie zgłoszenia jako naprawione" as (UC017)
+"UC018: Opłacenie naprawy" as (UC018)
+"UC019: Oznaczenie zgłoszenia jako opłacone" as (UC019)
+"UC020: Oznaczenie zgłoszenia jako wysłane" as (UC020)
+"UC021: Oznaczenie zgłoszenia jako odebrane osobiście" as (UC021)
+"UC022: Zgłoszenie reklamacji do zamówienia" as (UC022)
+"UC023: Wyświetlenie listy reklamacji" as (UC023)
+"UC024: Rozpatrzenie reklamacji" as (UC024)
+"UC025: Wyświetlenie listy potrzebnych części" as (UC025)
+"UC026: Dodanie potrzebnych części" as (UC026)
+"UC027: Usuniecie potrzebnych części" as (UC027)
+"UC028: Wyświetlenie listy zamówień części" as (UC028)
+"UC029: Zarejestrowanie zamówienia na części" as (UC029)
+"UC030: Usuniecie zamówienia na części" as (UC030)
+"UC031: Wyświetlenie szczegółów zamówienia na części" as (UC031)
+"UC032: Zarejestrowanie odebrania części" as (UC032)
+"UC033: Wyświetlenie listy posiadanych części" as (UC033)
+"UC034: Usunięcie posiadanej części" as (UC034)
+"UC035: Dodanie posiadanej części" as (UC035)
+"UC036: Dodanie notatki do zgłoszenia" as (UC036)
+"UC037: Wyświetlenie listy pracowników" as (UC037)
+"UC038: Dodanie pracownika" as (UC038)
+"UC039: Usunięcie pracownika" as (UC039)
+"UC040: Wyświetlenie grafiku pracownika" as (UC040)
+"UC041: Wyświetlenie swojego grafiku" as (UC041)
+"UC042: Wyświetlenie wszystkich grafików" as (UC042)
+"UC043: Wyświetlenie listy znanych problemów" as (UC043)
+"UC044: Wyświetlenie szczegółów znanego problemu" as (UC044)
+"UC045: Dodanie znanego problemu" as (UC045)
+"UC046: Usunięcie znanego problemu" as (UC046)
 
 
 Client --> UC001
@@ -18,5 +61,53 @@ UC001 ..> UC002 : <<invoke>>
 Repairman --> UC003
 Repairman --> UC004
 UC003 ..> UC005 : <<invoke>>
+Repairman --> UC006
+UC006 ..> UC005 : <<invoke>>
+UC004 ..> UC007 : <<invoke>>
+UC007 ..> UC008 : <<invoke>>
+Repairman --> UC009
+UC009 ..> UC010 : <<invoke>>
+UC009 ..> UC011 : <<invoke>>
+Client --> UC013
+Client --> UC014
+UC013 ..> UC014 : <<invoke>>
+UC009 ..> UC012 : <<invoke>>
+UC014 ..> UC012 : <<invoke>>
+UC014 ..> UC015 : <<invoke>>
+UC009 ..> UC016 : <<invoke>>
+UC007 ..> UC016 : <<invoke>>
+UC009 ..> UC017 : <<invoke>>
+UC014 ..> UC018 : <<invoke>>
+UC009 ..> UC019 : <<invoke>>
+UC009 ..> UC020 : <<invoke>>
+UC009 ..> UC021 : <<invoke>>
+UC009 ..> UC024 : <<invoke>>
+UC014 ..> UC022 : <<invoke>>
+Repairman --> UC023
+UC023 ..> UC024 : <<invoke>>
+UC009 ..> UC026 : <<invoke>>
+Repairman --> UC025
+UC025 ..> UC026 : <<invoke>>
+UC009 ..> UC027 : <<invoke>>
+UC025 ..> UC027 : <<invoke>>
+Repairman --> UC028
+UC028 ..> UC029 : <<invoke>>
+UC028 ..> UC031 : <<invoke>>
+UC031 ..> UC030 : <<invoke>>
+UC031 ..> UC032 : <<invoke>>
+Repairman --> UC033
+UC033 ..> UC034 : <<invoke>>
+UC033 ..> UC035 : <<invoke>>
+UC009 ..> UC036 : <<invoke>>
+Manager --> UC037
+UC037 ..> UC038 : <<invoke>>
+UC037 ..> UC039 : <<invoke>>
+UC037 ..> UC040 : <<invoke>>
+Repairman --> UC041
+Manager --> UC042
+Repairman --> UC043
+UC043 ..> UC044 : <<invoke>>
+UC043 ..> UC045 : <<invoke>>
+UC043 ..> UC046 : <<invoke>>
 
 @enduml
