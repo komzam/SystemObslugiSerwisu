@@ -1,0 +1,97 @@
+{
+  "Navbar":{
+    "repairs": "Naprawy",
+    "messages": "Wiadomości",
+    "signIn": "Zaloguj się",
+    "myAccount": "Moje konto",
+    "editAccount": "Edytuj konto",
+    "logOut": "Wyloguj się"
+  },
+  "SignIn": {
+    "email": "E-mail",
+    "password": "Hasło",
+    "signInTitle": "Zaloguj się do swojego konta",
+    "signInButton": "Zaloguj się",
+    "registerButton1": "Nie masz jeszcze konta?",
+    "registerButton2": "Zarejestruj się teraz"
+  },
+  "Register": {
+    "registerTitle": "Utwórz swoje konto",
+    "email": "E-mail",
+    "password": "Hasło",
+    "repeatPassword": "Powtórz hasło",
+    "businessAccount": "Konto firmowe",
+    "tin": "NIP",
+    "registerButton": "Zarejestruj się"
+  },
+
+  "RepairForm": {
+    "navbar": {
+      "deviceInfo": "Informacje o urządzeniu",
+      "faultInfo": "Informacje o usterce",
+      "additionalInfo": "Dodatkowe informacje",
+      "confirmation": "Potwierdzenie"
+    },
+    "deviceInfo": {
+      "title": "Informacje o urządzeniu",
+      "deviceType": "Rodzaj urządzenia",
+      "manufacturer": "Producent",
+      "modelName": "Nazwa modelu",
+      "serialNumber": "Numer seryjny"
+    },
+    "faultInfo": {
+      "title": "Informacje o usterce",
+      "whenFaultOccured": "Kiedy wystąpiła usterka",
+      "wasRepairedBefore": "Czy urządzenie było wcześniej naprawiane ?",
+      "howToReplicateFault": "Jak odtworzyć usterkę",
+      "describeFault": "Opisz usterkę"
+    },
+    "additionalInfo": {
+      "title": "Dodatkowe informacje",
+      "contactInformation": "Informacje kontaktowe",
+      "email": "E-mail",
+      "phoneNumber": "Numer telefonu",
+      "preferredContactMethod": "Preferowana forma kontaktu",
+      "contactMethods": {
+        "thisApp": "Ta aplikacja",
+        "phoneCall": "Rozmowa telefoniczna",
+        "sms": "SMS"
+      },
+      "returnInformation": "Informacje dotyczące zwrotu",
+      "returnMethod": "Sposób zwrotu",
+      "returnMethods": {
+        "selfPickup": "Odbiór osobisty",
+        "courierDelivery": "Dostawa kurierem"
+      },
+      "otherInformation": "Inne informacje",
+      "deviceLoginInfo": "Dane logowania do urządzenia",
+      "deviceLoginInfoDesc": "Ta informacja jest poufna i jest używana tylko do testowania urządzenia",
+      "additionalComments": "Dodatkowe uwagi"
+    },
+    "confirmation": {
+      "title": "Twoje zlecenie naprawy zostało utworzone",
+      "ticketDetails": "Szczegóły zlecenia",
+      "repairTicketNumber": "Numer zlecenia naprawy",
+      "created": "Utworzone",
+      "repairShopAddress": "Adres serwisu",
+      "step1": "Starannie zapakuj urządzenie",
+      "step2": "Wydrukuj zlecenie naprawy i włóż do pudełka",
+      "step2Desc": "Jeżeli nie masz drukarki, napisz numer zlecenia na kartce. Następnie włóż kartkę do przesyłki",
+      "step3": "Wyślij przesyłkę na adres serwisu",
+      "printRepairTicket": "Wydrukuj zlecenie naprawy",
+      "finish": "Zakończ"
+    },
+    "navigationButtons": {
+      "previous": "Wstecz",
+      "next": "Dalej"
+    }
+  },
+  "Address": {
+    "fullName": "Imię i nazwisko",
+    "streetName": "Ulica",
+    "buildingNumber": "Nr. budynku",
+    "aptNumber": "Nr. mieszkania",
+    "postCode": "Kod pocztowy",
+    "city": "Miasto"
+  }
+}

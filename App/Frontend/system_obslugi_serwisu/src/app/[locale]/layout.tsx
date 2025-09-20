@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import { NextIntlClientProvider } from 'next-intl';
+import "../globals.css";
+import {Navbar} from "@/app/Organisms/Navbar";
+
+const roboto = Roboto({
+  variable: "--font-roboto",
+});
+
+export const metadata: Metadata = {
+  title: "System Obsługi Serwisu",
+  description: "System ułatwiający naprawy sprzętu.",
+};
+
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+  return (
+    <html lang="en">
+      <body className={`${roboto.variable}`}>
+        <NextIntlClientProvider>
+            <Navbar>
+                {children}
+            </Navbar>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

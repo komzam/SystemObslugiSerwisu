@@ -1,0 +1,96 @@
+{
+  "Navbar":{
+    "repairs": "Repairs",
+    "messages": "Messages",
+    "signIn": "Sign In",
+    "myAccount": "My account",
+    "editAccount": "Edit account",
+    "logOut": "Log out"
+  },
+  "SignIn": {
+    "signInTitle": "Sign in to your account",
+    "email": "E-mail",
+    "password": "Password",
+    "signInButton": "Sign in",
+    "registerButton1": "Don't have an account yet?",
+    "registerButton2": "Register now"
+  },
+  "Register": {
+    "registerTitle": "Create your account",
+    "email": "E-mail",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "businessAccount": "Business account",
+    "tin": "TIN",
+    "registerButton": "Register"
+  },
+  "RepairForm": {
+    "navbar": {
+      "deviceInfo": "Device info",
+      "faultInfo": "Fault info",
+      "additionalInfo": "Additional info",
+      "confirmation": "Confirmation"
+    },
+    "deviceInfo": {
+      "title": "Device information",
+      "deviceType": "Device type",
+      "manufacturer": "Manufacturer",
+      "modelName": "Model name",
+      "serialNumber": "Serial number"
+    },
+    "faultInfo": {
+      "title": "Fault information",
+      "whenFaultOccured": "When the fault occured",
+      "wasRepairedBefore": "Has the device been repaired before ?",
+      "howToReplicateFault": "How to replicate the fault",
+      "describeFault": "Describe the fault"
+    },
+    "additionalInfo": {
+      "title": "Additional information",
+      "contactInformation": "Contact information",
+      "email": "E-mail",
+      "phoneNumber": "Phone number",
+      "preferredContactMethod": "Preferred contact method",
+      "contactMethods": {
+        "thisApp": "This app",
+        "phoneCall": "Phone call",
+        "sms": "SMS"
+      },
+      "returnInformation": "Return information",
+      "returnMethod": "Return method",
+      "returnMethods": {
+        "selfPickup": "Self-pickup",
+        "courierDelivery": "Courier delivery"
+      },
+      "otherInformation": "Other information",
+      "deviceLoginInfo": "Device login info",
+      "deviceLoginInfoDesc": "This information is confidential and is used only to test the device",
+      "additionalComments": "Additional Comments"
+    },
+    "confirmation": {
+      "title": "Your repair ticket was created",
+      "ticketDetails": "Ticket details",
+      "repairTicketNumber": "Repair Ticket Number",
+      "created": "Created",
+      "repairShopAddress": "Repair shop address",
+      "step1": "Carefully package the device",
+      "step2": "Print the Repair Ticket and put it inside the box",
+      "step2Desc": "If you don't have a printer write the repair ticket number on a piece of paper and include it in the package",
+      "step3": "Send this package on shop's address",
+      "printRepairTicket": "Print Repair Ticket",
+      "finish": "Finish"
+    },
+    "navigationButtons": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "Address": {
+    "fullName": "Full name",
+    "streetName": "Street name",
+    "buildingNumber": "Building number",
+    "aptNumber": "Apt. number",
+    "postCode": "Post code",
+    "city": "City"
+  }
+}

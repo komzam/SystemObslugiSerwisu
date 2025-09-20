@@ -1,0 +1,24 @@
+import { NavbarButton } from "@/app/Atoms/NavbarButton";
+import { NavbarActions } from "@/app/Molecules/NavbarActions"
+import * as React from "react";
+
+type NavbarProps = {
+    className?: string;
+    children?: React.ReactNode;
+};
+
+export function Navbar({className, children}: NavbarProps) {
+    return (
+        <div className="flex flex-col min-h-screen">
+            <nav className={`fixed top-0 left-0 right-0 bg-primary px-10 py-5 flex items-center justify-between drop-shadow-xl z-50 ${className}`}>
+                <div className={"flex items-center"}>
+                    <NavbarButton href={"/"}>LOGO</NavbarButton>
+                </div>
+                <NavbarActions/>
+            </nav>
+            <main className="pt-16 flex-1">
+                {children}
+            </main>
+        </div>
+    );
+}
