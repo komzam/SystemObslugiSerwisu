@@ -24,7 +24,6 @@
     "tin": "NIP",
     "registerButton": "Zarejestruj się"
   },
-
   "RepairForm": {
     "navbar": {
       "deviceInfo": "Informacje o urządzeniu",
@@ -93,5 +92,34 @@
     "aptNumber": "Nr. mieszkania",
     "postCode": "Kod pocztowy",
     "city": "Miasto"
+  },
+  "Status": {
+    "booked": "Zarejestrowane",
+    "toBeDiagnosed": "Oczekuje Na Diagozę",
+    "awaitingConfirmation": "Oczekuje Na Potwierdzenie",
+    "canceled": "Anulowane",
+    "readyToRepair": "Gotowe Do Naprawy",
+    "inRepair": "W Naprawie",
+    "awaitingParts": "Oczekuje Na Części",
+    "paymentRequired": "Wymagana Płatność",
+    "toBeSentOut": "Do Wysłania",
+    "readyForPickup": "Gotowe Do Odbioru",
+    "sentOut": "Wysłane",
+    "completed": "Zakończone",
+    "complaint": "Reklamacja"
+  },
+  "RepairDetails": {
+    "deviceInfo": "Informacje o urządzeniu",
+    "faultInfo": "Informacje o usterce",
+    "images": "Zdjęcia",
+    "repairHistory": "Historia naprawy",
+    "messageUs": "Napisz Do Nas",
+    "deviceType": "Rodzaj urządzenia",
+    "manufacturer": "Producent",
+    "modelName": "Nazwa modelu",
+    "serialNumber": "Numer seryjny",
+    "whenFaultOccured": "Kiedy wystąpiła usterka",
+    "howToReplicateFault": "Jak odtworzyć usterkę",
+    "faultDescription": "Opis usterki"
   }
 }

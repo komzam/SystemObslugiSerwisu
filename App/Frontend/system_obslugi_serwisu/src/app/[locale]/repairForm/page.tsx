@@ -13,8 +13,8 @@ export default function RepairForm() {
     const router = useRouter();
     const maxPages = 4;
 
-    const nextPage= () => {setPage(page => page!=maxPages ? page + 1 : maxPages);};
-    const prevPage= () => {setPage(page => page!=1 ? page - 1 : 1);};
+    const nextPage= () => {setPage(page => page!=(maxPages-1) ? page + 1 : (maxPages-1));};
+    const prevPage= () => {setPage(page => page!=0 ? page - 1 : 0);};
     const finish = () => {router.push("/")};
 
     return(

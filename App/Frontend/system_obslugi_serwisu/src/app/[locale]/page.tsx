@@ -1,5 +1,4 @@
 import * as React from "react";
-import {RepairFormProgressBar} from "@/app/Organisms/RepairFormProgressBar";
 
 export default function Home() {
   return (

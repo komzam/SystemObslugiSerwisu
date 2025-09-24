@@ -92,5 +92,34 @@
     "aptNumber": "Apt. number",
     "postCode": "Post code",
     "city": "City"
+  },
+  "Status": {
+    "booked": "Booked",
+    "toBeDiagnosed": "To Be Diagnosed",
+    "awaitingConfirmation": "Awaiting Confirmation",
+    "canceled": "Canceled",
+    "readyToRepair": "Ready To Repair",
+    "inRepair": "In Repair",
+    "awaitingParts": "Awaiting Parts",
+    "paymentRequired": "Payment Required",
+    "toBeSentOut": "To Be Sent Out",
+    "readyForPickup": "Ready For Pickup",
+    "sentOut": "Sent Out",
+    "completed": "Completed",
+    "complaint": "Complaint"
+  },
+  "RepairDetails": {
+    "deviceInfo": "Device information",
+    "faultInfo": "Fault information",
+    "images": "Images",
+    "repairHistory": "Repair history",
+    "messageUs": "Message Us",
+    "deviceType": "Device type",
+    "manufacturer": "Manufacturer",
+    "modelName": "Model name",
+    "serialNumber": "Serial number",
+    "whenFaultOccured": "When the fault occured",
+    "howToReplicateFault": "How to replicate the fault",
+    "faultDescription": "Fault description"
   }
 }

@@ -7,18 +7,17 @@ export type ProgressBarStepProps = {
 }
 
 export function ProgressBarStep({name, isActive=false, isNextActive=false, type="normal", className=""}: ProgressBarStepProps) {
-    const thisNodeColor: string = isActive ? "primary" : "secondary";
-    const nextNodeColor: string = isNextActive ? "primary" : "secondary";
+    const thisNodeColor: string = isActive ? "bg-primary" : "bg-secondary";
+    const nextNodeColor: string = isNextActive ? "bg-primary" : "bg-secondary";
 
     return (
-        <div className={`grid grid-cols-[${type=="first"?"auto":"1fr_auto"}] items-center ${type=="first"?"w-fit":"w-full"} ${className}`}>
-            {type != "first" && <div className={`bg-${thisNodeColor} h-1`}/>}
-            <div className="flex flex-row items-center">
-                <div className={`flex-1 bg-${type=="first"? "transparent": thisNodeColor} h-1`}/>
-                <div className={`bg-${thisNodeColor} rounded-full h-5 w-5`}/>
-                <div className={`flex-1 bg-${type=="last"? "transparent": nextNodeColor} h-1`}/>
+        <div className={`flex flex-col items-center w-full ${className}`}>
+            <div className="flex flex-row items-center w-full">
+                <div className={`flex-1 ${type=="first"? "bg-transparent": thisNodeColor} h-1`}/>
+                <div className={`${thisNodeColor} rounded-full h-5 w-5`}/>
+                <div className={`flex-1 ${type=="last"? "bg-transparent": nextNodeColor} h-1`}/>
             </div>
-            <p className={`${type=="first"? "" : "col-start-2"} text-center text-smaller1 whitespace-nowrap`}>{name}</p>
+            <p className={`${type=="first"? "" : "col-start-2"} text-center text-smaller2 sm:text-smaller1 overflow-hidden text-ellipsis min-w-0`}>{name}</p>
         </div>
     )
 }

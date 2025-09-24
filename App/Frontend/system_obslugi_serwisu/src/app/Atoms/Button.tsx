@@ -25,7 +25,7 @@ export function Button({ className, variant="primary", inverse=false, active=tru
     const variableClasses: string = variantMap[variant][inverse ? "inverse" : "normal"];
 
     if(icon !== undefined){
-        return (<button className={`${commonClasses} ${variableClasses} ${className} flex flex-row items-center gap-1`} {...props}>{icon} {props?.children}</button>);
+        return (<button className={`${commonClasses} ${variableClasses} ${className} flex flex-row items-center justify-center gap-1`} {...props}>{icon} {props?.children}</button>);
     }else{
         return (<button className={`${commonClasses} ${variableClasses} ${className}`} {...props} />);
     }

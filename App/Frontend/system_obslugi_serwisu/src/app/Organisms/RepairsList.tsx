@@ -5,5 +5,11 @@ export type RepairListProps ={
 }
 
 export function RepairsList({repairs}: RepairListProps){
-    return
+    return (
+        <div className="flex flex-col gap-5 w-full">
+            {repairs.map((repair: RepairItemProps, repairNumber:number) => (
+                <RepairItem key={repairNumber} {...repair}/>
+            ))}
+        </div>
+    )
 }

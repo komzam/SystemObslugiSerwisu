@@ -36,7 +36,7 @@ export function NavbarActions() {
                 {isLoggedIn && <LuBell className="text-white" size="20px"/>}
 
                 {isLoggedIn ?
-                    <Dropdown2 items={myAccountButtons} classNamePortal={"w-full"} triggerText={t("myAccount")}
+                    <Dropdown2 items={myAccountButtons} classNamePortal={"w-full z-51"} triggerText={t("myAccount")}
                                classNameTrigger="text-white flex flex-row items-center gap-0.5" triggerIcon={<LuChevronDown size="24px" />}/>
                     :
                     <NavbarButton href={"/signIn"}>{t("signIn")}</NavbarButton>}
@@ -44,7 +44,7 @@ export function NavbarActions() {
             <div className="flex flex-row gap-5 items-center md:hidden">
                 {isLoggedIn && <LuBell className="text-white" size="20px"/>}
 
-                <Dropdown2 items={isLoggedIn ? [...shrinkedMenu, ...myAccountButtons]: shrinkedMenu} classNamePortal={"w-full"}
+                <Dropdown2 items={isLoggedIn ? [...shrinkedMenu, ...myAccountButtons]: shrinkedMenu} classNamePortal={"w-full z-51"}
                            triggerIcon={<LuAlignJustify size="24px" className={"text-white"} />}/>
             </div>
         </div>

@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
 :root {
-    --page-margin: 30px;
+    --page-margin: 10px;
+}
+
+@media (min-width: 40rem) {
+    :root {
+        --page-margin: 30px;
+    }
 }
 
 @theme inline {
