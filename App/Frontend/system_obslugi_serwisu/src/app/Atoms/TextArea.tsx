@@ -6,7 +6,7 @@ type TextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
     rows?: number;
 };
 
-export function TextArea({placeholder, className, rows=4, ...props}: TextAreaProps) {
+export function TextArea({placeholder, className="", rows=4, ...props}: TextAreaProps) {
 
     const states = {
         normal: "bg-inherit border-2 border-secondary rounded-md text-regular p-2 placeholder-accent4 resize-none drop-shadow-sm",

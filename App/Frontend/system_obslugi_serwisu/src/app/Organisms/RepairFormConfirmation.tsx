@@ -26,8 +26,22 @@ export function RepairFormConfirmation({...props} : FormProps) {
     return (
         <RepairFormCard title={t("title")} icon={<LuCircleCheckBig className="text-larger1" />} rightBtnName={t("finish")} {...props}>
             <div className="flex flex-col md:flex-row w-full gap-10">
-                <CardWithHeader className="flex-1" headerChildren={<span className="text-larger2 text-white">{t("ticketDetails")}</span>} cardChildren={<KeyValueList items={ticketDetails}/>}/>
-                <CardWithHeader className="flex-1" headerChildren={<span className="text-larger2 text-white">{t("repairShopAddress")}</span>} cardChildren={<span>ADDRESS</span>}/>
+                <CardWithHeader className="flex-1">
+                    <CardWithHeader.Header>
+                        <span className="text-larger2 text-white">{t("ticketDetails")}</span>
+                    </CardWithHeader.Header>
+                    <CardWithHeader.Card>
+                        <KeyValueList items={ticketDetails}/>
+                    </CardWithHeader.Card>
+                </CardWithHeader>
+                <CardWithHeader className="flex-1">
+                    <CardWithHeader.Header>
+                        <span className="text-larger2 text-white">{t("repairShopAddress")}</span>
+                    </CardWithHeader.Header>
+                    <CardWithHeader.Card>
+                        <span>ADDRESS</span>
+                    </CardWithHeader.Card>
+                </CardWithHeader>
             </div>
             <StepList steps={steps}/>
             <Button className="w-full" variant="secondary">{t("printRepairTicket")}</Button>

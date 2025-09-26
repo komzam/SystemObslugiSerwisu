@@ -120,6 +120,24 @@
     "serialNumber": "Serial number",
     "whenFaultOccured": "When the fault occured",
     "howToReplicateFault": "How to replicate the fault",
-    "faultDescription": "Fault description"
+    "faultDescription": "Fault description",
+    "costEstimate": "Cost estimate",
+    "totalEstimate": "Total estimate",
+    "parts": "Parts",
+    "labor": "Labor",
+    "continueRepairMessage": "Do you want to continue with the repair?",
+    "approvedMessage": "You have approved the repair",
+    "canceledMessage": "You have canceled the repair",
+    "approve": "Approve",
+    "cancel": "Cancel",
+    "finalAmount": "Final amount",
+    "payNow": "Pay now"
+  },
+  "Messages": {
+    "conversations": "Conversations",
+    "viewRepairDetails": "View Repair Details",
+    "details": "Details",
+    "messagePlaceholder": "Type a message...",
+    "send": "Send"
   }
 }

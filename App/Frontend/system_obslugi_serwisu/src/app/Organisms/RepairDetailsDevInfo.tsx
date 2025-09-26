@@ -1,7 +1,6 @@
 import {useTranslations} from "next-intl";
-import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
 import {KeyValueLine} from "@/app/Molecules/KeyValueLine";
-import {LabeledCard} from "@/app/Molecules/LabeledCard";
+import {Card} from "@/app/Atoms/Card";
 
 export type RepairDetailsDevInfoProps = {
     deviceType: string;
@@ -14,7 +13,8 @@ export function RepairDetailsDevInfo({ deviceType, manufacturer, modelName, seri
     const t = useTranslations("RepairDetails");
 
     return (
-        <LabeledCard label={t("deviceInfo")}>
+        <Card>
+            <Card.Label>{t("deviceInfo")}</Card.Label>
             <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col sm:flex-row w-full gap-2 sm:gap-5">
                     <KeyValueLine wrapperClassName="flex-1" label={t("deviceType")} valueBold={true} value={deviceType} />
@@ -25,6 +25,6 @@ export function RepairDetailsDevInfo({ deviceType, manufacturer, modelName, seri
                     <KeyValueLine wrapperClassName="flex-1" label={t("serialNumber")} valueBold={true} valueHightlighted={true} value={serialNumber} />
                 </div>
             </div>
-        </LabeledCard>
+        </Card>
     )
 }

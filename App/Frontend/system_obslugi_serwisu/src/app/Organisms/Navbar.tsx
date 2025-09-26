@@ -7,7 +7,7 @@ type NavbarProps = {
     children?: React.ReactNode;
 };
 
-export function Navbar({className, children}: NavbarProps) {
+export function Navbar({className="", children}: NavbarProps) {
     return (
         <div className="flex flex-col min-h-screen">
             <nav className={`fixed top-0 left-0 right-0 bg-primary px-10 py-5 flex items-center justify-between drop-shadow-xl z-50 ${className}`}>
@@ -16,7 +16,7 @@ export function Navbar({className, children}: NavbarProps) {
                 </div>
                 <NavbarActions/>
             </nav>
-            <main className="pt-16 flex-1">
+            <main className="pt-16 h-screen">
                 {children}
             </main>
         </div>

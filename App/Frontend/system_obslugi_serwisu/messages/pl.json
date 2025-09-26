@@ -120,6 +120,24 @@
     "serialNumber": "Numer seryjny",
     "whenFaultOccured": "Kiedy wystąpiła usterka",
     "howToReplicateFault": "Jak odtworzyć usterkę",
-    "faultDescription": "Opis usterki"
+    "faultDescription": "Opis usterki",
+    "costEstimate": "Kosztorys",
+    "totalEstimate": "Razem",
+    "parts": "Części",
+    "labor": "Robocizna",
+    "continueRepairMessage": "Czy chcesz kontynuować naprawę?",
+    "approvedMessage": "Zatwierdziłeś tą naprawę",
+    "canceledMessage": "Anulowałeś tą naprawę",
+    "approve": "Zatwierdź",
+    "cancel": "Anuluj",
+    "finalAmount": "Kwota końcowa",
+    "payNow": "Zapłać teraz"
+  },
+  "Messages": {
+    "conversations": "Konwersacje",
+    "viewRepairDetails": "Wyświetl szczegóły naprawy",
+    "details": "Szczegóły",
+    "messagePlaceholder": "Napisz wiadomość...",
+    "send": "Wyślij"
   }
 }

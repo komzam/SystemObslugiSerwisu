@@ -18,7 +18,7 @@ type Value = {
 }
 
 
-export function Dropdown2( {classNameTrigger, classNamePortal, triggerText="", triggerIcon, items, ...props} : Dropdown2Props ) : React.ReactNode {
+export function Dropdown2( {classNameTrigger="", classNamePortal="", triggerText="", triggerIcon, items, ...props} : Dropdown2Props ) : React.ReactNode {
 
 
     return (

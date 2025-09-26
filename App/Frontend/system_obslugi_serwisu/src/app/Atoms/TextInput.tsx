@@ -5,7 +5,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
     className?: string;
 };
 
-export function TextInput({placeholder, className, ...props}: InputProps) {
+export function TextInput({placeholder, className="", ...props}: InputProps) {
 
     const states = {
         normal: "bg-inherit border-2 border-secondary rounded-md text-regular p-2 placeholder-accent4 -min-w-fit drop-shadow-sm",

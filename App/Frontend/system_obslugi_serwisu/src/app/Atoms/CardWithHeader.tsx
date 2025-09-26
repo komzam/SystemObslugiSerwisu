@@ -1,16 +1,20 @@
-export type CardWithHeaderProps = {
-    headerChildren?: React.ReactNode;
-    cardChildren?: React.ReactNode;
-    headerClassName?: string;
-    cardClassName?: string;
+type CardWithHeaderProps = React.ComponentPropsWithRef<"div"> & {
     className?: string;
+    children?: React.ReactNode;
 }
 
-export function CardWithHeader({headerChildren, cardChildren, headerClassName="", cardClassName="", className=""}: CardWithHeaderProps) {
+export function CardWithHeader({className="", children, ...props}: CardWithHeaderProps) {
     return(
-    <div className={`${className}`}>
-        <div className={`bg-primary shadow-md px-4 py-3 rounded-t-xl ${headerClassName}`} >{headerChildren}</div>
-        <div className={`bg-accent shadow-md p-4 rounded-b-xl ${cardClassName}`} >{cardChildren}</div>
+    <div className={`shadow-md rounded-b-xl ${className}`} {...props}>
+        {children}
     </div>
     )
+}
+
+CardWithHeader.Header = function Header({className="", children, ...props}: CardWithHeaderProps){
+    return <div className={`bg-primary  px-4 py-3 rounded-t-xl ${className}`} {...props}>{children}</div>
+}
+
+CardWithHeader.Card = function Card({className="", children, ...props}: CardWithHeaderProps){
+    return <div className={`bg-accent p-4 rounded-b-xl ${className}`} {...props}>{children}</div>
 }

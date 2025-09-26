@@ -8,7 +8,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     icon?: ReactElement;
 };
 
-export function Button({ className, variant="primary", inverse=false, active=true, icon, ...props } : ButtonProps) {
+export function Button({ className="", variant="primary", inverse=false, active=true, icon, ...props } : ButtonProps) {
 
     const variantMap = {
         primary: {

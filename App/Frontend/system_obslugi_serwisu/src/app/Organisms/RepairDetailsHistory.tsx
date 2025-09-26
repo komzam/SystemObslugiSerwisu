@@ -10,8 +10,8 @@ export function RepairDetailsHistory(){
         {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description"},
         {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description"},
         {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description"},
-        {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description"},
-        {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description"}
+        {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description", costEstimate: {partsCost:120, laborCost:110, totalCost:230, state:"pending"}},
+        {stepName:"Repair step name here", date:"21.05.2023", description:"Example step description", payment: {finalAmount:230}}
     ]
 
     return(

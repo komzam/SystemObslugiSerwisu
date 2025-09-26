@@ -11,7 +11,7 @@ export function KeyValueList({items, useSeparator=true}: KeyValueListProps) {
         <div className="flex flex-col w-full gap-2">
             {items.map((line:KeyValueLineProps, lineNumber:number) => (
                 <React.Fragment key={lineNumber}>
-                    <KeyValueLine label={line.label} value={line.value} />
+                    <KeyValueLine {...line} />
                     {useSeparator && lineNumber < items.length-1 && <hr className="text-accent4 mt-1 mb-1" />}
                 </React.Fragment>
             ))}

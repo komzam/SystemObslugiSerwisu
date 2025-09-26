@@ -23,7 +23,7 @@ type Value = {
 }
 
 
-export function Dropdown( { placeholder, items, classNameTrigger, classNamePortal, ...props } : DropdownProps ) : React.ReactNode {
+export function Dropdown( { placeholder, items, classNameTrigger="", classNamePortal="", ...props } : DropdownProps ) : React.ReactNode {
 
 
     return (

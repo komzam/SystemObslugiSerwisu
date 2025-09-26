@@ -8,7 +8,7 @@ export type NavbarButtonProps = {
     children?: React.ReactNode;
 };
 
-export function NavbarButton({className, isHighlighted=false, href, children}: NavbarButtonProps) {
+export function NavbarButton({className="", isHighlighted=false, href, children}: NavbarButtonProps) {
     const variableClasses = {
         normal: "text-white hover:text-accent2 select-none",
         highlighted: "text-secondary border-b-1 select-none"
