@@ -6,6 +6,6 @@ public record CustomerErrors
 {
     private static string _prefix = "Customers";
 
-    public static OperationError UserNotFound(string message = "Customer not found") =>
+    public static OperationError CustomerNotFound(string message = "Customer not found") =>
         new ($"{_prefix}.CustomerNotFound", message);
 }

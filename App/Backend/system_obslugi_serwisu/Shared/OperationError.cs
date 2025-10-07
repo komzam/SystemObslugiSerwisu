@@ -1,6 +1,6 @@
 ﻿namespace system_obslugi_serwisu.Shared;
 
-public sealed record OperationError(string Code, string? Message = null)
+public sealed record OperationError(string Code, string Message = "")
 {
     public static OperationError None()
     {
