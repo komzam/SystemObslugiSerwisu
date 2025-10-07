@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using system_obslugi_serwisu.Database;
-using system_obslugi_serwisu.Extensions;
-using system_obslugi_serwisu.Identity;
-using system_obslugi_serwisu.Types;
+using system_obslugi_serwisu.Infrastructure.Identity;
+using system_obslugi_serwisu.Infrastructure.Database;
+using system_obslugi_serwisu.Infrastructure.Migrations;
+using system_obslugi_serwisu.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +27,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    MigrationExtension.ApplyMigrations(app);
+    MigrationRunner.ApplyMigrations(app);
     app.UseSwagger();
     app.UseSwaggerUI();
 }

@@ -1,8 +1,0 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace system_obslugi_serwisu.Identity;
-
-public class ApplicationRole : IdentityRole
-{
-    
-}
