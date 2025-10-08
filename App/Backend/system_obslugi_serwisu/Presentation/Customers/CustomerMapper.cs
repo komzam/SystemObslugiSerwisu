@@ -1,29 +1,22 @@
 ﻿using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Presentation.Shared;
+using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Customers;
 
-public class CustomerMapper
+public static class CustomerMapper
 {
     public static CustomerDto ToDto(Customer customer)
     {
         var customerDto = new CustomerDto
         {
-            Email = customer.Email,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
+            Email = customer.Email.Value,
+            Name = customer.Name.DisplayName,
+            IsBusiness = customer.IsBusiness,
+            PreferredContactMethod = customer.PreferredContactMethod?.ToString(),
+            PreferredReturnMethod = customer.PreferredReturnMethod?.ToString(),
+            Address = customer.Address==null ? null : SharedMapper.ToDto(customer.Address)
         };
-
         return customerDto;
-    }
-
-    public static Customer FromDto(CustomerDto customerDto)
-    {
-        var customer = new Customer
-        {
-            Email = customerDto.Email,
-            FirstName = customerDto.FirstName,
-            LastName = customerDto.LastName,
-        };
-        return customer;
     }
 }

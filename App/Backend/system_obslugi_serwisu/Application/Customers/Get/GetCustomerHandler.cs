@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Customers.Get;
 
-public class GetCustomerHandler(ICustomerRepository repository) : IRequestHandler<GetCustomerCommand, OperationResult<Customer>>
+public class GetCustomerHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCustomerCommand, OperationResult<Customer>>
 {
     public Task<OperationResult<Customer>> Handle(GetCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customerResult = repository.GetCustomer(request.Id);
+        var customerResult = unitOfWork.CustomerRepository.GetCustomer(request.Id);
         if(customerResult.IsFailure)
             return Task.FromResult(OperationResult<Customer>.Failure(customerResult.Error));
         

@@ -4,8 +4,8 @@ namespace system_obslugi_serwisu.Domain.Repairs;
 
 public record RepairErrors
 {
-    private static string _prefix = "Repairs";
+    private static readonly string Prefix = "Repairs";
     
     public static OperationError RepairNotFound(string message = "Repair not found") => 
-        new ($"{_prefix}.RepairNotFound", message);
+        new ($"{Prefix}.RepairNotFound", message);
 }

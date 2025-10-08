@@ -1,11 +1,14 @@
 ﻿using HotChocolate.Authorization;
+using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Customers;
 
-[Authorize]
 public class CustomerDto
 {
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+    public required string Email { get; set; }
+    public required string Name { get; set; }
+    public bool IsBusiness { get; set; }
+    public string? PreferredContactMethod { get; set; }
+    public string? PreferredReturnMethod { get; set; }
+    public AddressDto? Address { get; set; }
 }

@@ -1,13 +1,14 @@
-﻿using system_obslugi_serwisu.Shared;
+﻿using System.ComponentModel.DataAnnotations;
+using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Shared;
 
 public record AddressData
 {
-    public required string FullName { get; init; }
+    public required string RecipientName { get; init; }
     public required string Street { get; init; }
     public required string BuildingNumber { get; init; }
-    public required string ApartmentNumber { get; init; }
+    public string? ApartmentNumber { get; init; }
     public required string PostalCode { get; init; }
     public required string City { get; init; }
     public required Country Country { get; init; }
@@ -16,18 +17,31 @@ public record AddressData
 
 public class Address : ValueObject
 {
-    public string FullName { get; }
-    public string Street { get; }
-    public string BuildingNumber { get; }
-    public string ApartmentNumber { get; }
-    public PostalCode PostalCode { get; }
-    public string City { get; }
-    public Country Country { get; }
+    [MaxLength(100)]
+    public string RecipientName { get; private set; }
+    
+    [MaxLength(50)]
+    public string Street { get; private set; }
+    
+    [MaxLength(20)]
+    public string BuildingNumber { get; private set; }
+    
+    [MaxLength(20)]
+    public string? ApartmentNumber { get; private set; }
+    
+    public PostalCode PostalCode { get; private set; }
+    
+    [MaxLength(100)]
+    public string City { get; private set; }
+    
+    public Country Country { get; private set; }
+    
+    private Address() { } // For EF Core
 
-    private Address(string fullName, string street, string buildingNumber,
-        string apartmentNumber, PostalCode postalCode, string city, Country country)
+    private Address(string recipientName, string street, string buildingNumber,
+        string? apartmentNumber, PostalCode postalCode, string city, Country country)
     {
-        FullName = fullName;
+        RecipientName = recipientName;
         Street = street;
         BuildingNumber = buildingNumber;
         ApartmentNumber = apartmentNumber;
@@ -48,7 +62,7 @@ public class Address : ValueObject
         if (postalCodeResult.IsFailure)
             return postalCodeResult.Error;
 
-        return new Address(data.FullName, data.Street, data.BuildingNumber, data.ApartmentNumber,
+        return new Address(data.RecipientName, data.Street, data.BuildingNumber, data.ApartmentNumber,
             postalCodeResult.Value, data.City, data.Country);
     }
     
@@ -56,20 +70,40 @@ public class Address : ValueObject
     {
         return new AddressData
         {
-            FullName = data.FullName.Trim(),
+            RecipientName = data.RecipientName.Trim(),
             Street = data.Street.Trim(),
             BuildingNumber = data.BuildingNumber.Trim(),
-            ApartmentNumber = data.ApartmentNumber.Trim(),
+            ApartmentNumber = data.ApartmentNumber?.Trim(),
             PostalCode = data.PostalCode.Trim(),
             City = data.City.Trim(),
             Country = data.Country
         };
     }
 
+    private static OperationResult CheckFieldLengths(AddressData data)
+    {
+        if (data.RecipientName.Length > 100)
+            return AddressErrors.RecipientNameTooLong();
+        
+        if (data.Street.Length > 50)
+            return AddressErrors.StreetTooLong();
+        
+        if (data.BuildingNumber.Length > 20)
+            return AddressErrors.BuildingNumberTooLong();
+        
+        if (data.ApartmentNumber != null && data.ApartmentNumber.Length > 20)
+            return AddressErrors.ApartamentNumberTooLong();
+        
+        if (data.City.Length > 100)
+            return AddressErrors.CityTooLong();
+        
+        return OperationResult.Success();
+    }
+
     private static OperationResult CheckForEmptyFields(AddressData data)
     {
-        if (String.IsNullOrEmpty(data.FullName))
-            return AddressErrors.InvalidFullName();
+        if (String.IsNullOrEmpty(data.RecipientName))
+            return AddressErrors.InvalidRecipientName();
         
         if (String.IsNullOrEmpty(data.Street))
             return AddressErrors.InvalidStreet();
@@ -88,10 +122,10 @@ public class Address : ValueObject
 
     public override IEnumerable<object> GetAtomicValues()
     {
-        yield return FullName;
+        yield return RecipientName;
         yield return Street;
         yield return BuildingNumber;
-        yield return ApartmentNumber;
+        yield return ApartmentNumber?? String.Empty;
         yield return PostalCode;
         yield return City;
         yield return Country;

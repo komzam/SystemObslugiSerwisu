@@ -6,5 +6,5 @@ namespace system_obslugi_serwisu.Application.Customers.Get;
 
 public class GetCustomerCommand : IRequest<OperationResult<Customer>>
 {
-    public Guid Id { get; init; }
+    public required Guid Id { get; init; }
 }

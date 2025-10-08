@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using system_obslugi_serwisu.Application.Customers;
+using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Application.Identity;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Infrastructure.Database;
@@ -22,7 +24,8 @@ builder.Services.AddIdentity<User, ApplicationRole>()
 
 builder.Services.AddGraphQLServer()
     .AddAuthorization()
-    .AddQueryType<Query>();
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>();
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -30,7 +33,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.LicenseKey = Environment.GetEnvironmentVariable("MEDIATR_LICENSE_KEY");
 });
 
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IIdentityController, IdentityController>();
 
 var app = builder.Build();
 
