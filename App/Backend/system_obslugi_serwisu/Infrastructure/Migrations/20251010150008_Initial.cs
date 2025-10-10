@@ -52,6 +52,33 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Email_Value = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Name_FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Name_LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Name_CompanyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsBusiness = table.Column<bool>(type: "boolean", nullable: false),
+                    TaxIdNumber_Value = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    PreferredContactMethod = table.Column<int>(type: "integer", nullable: true),
+                    PreferredReturnMethod = table.Column<int>(type: "integer", nullable: true),
+                    Address_RecipientName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Address_Street = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    Address_BuildingNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Address_ApartmentNumber = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Address_PostalCode_Value = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    Address_City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Address_Country = table.Column<int>(type: "integer", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -212,6 +239,9 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

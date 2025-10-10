@@ -5,10 +5,12 @@ namespace system_obslugi_serwisu.Domain.Customers;
 
 public class Tin : ValueObject
 {
-    [MaxLength(20)]
-    public string Value {get;}
+    public const int TinMaxLength = 20;
     
-    private Tin() { } // For EF Core
+    public string Value { get; private set;}
+
+    private Tin() { }
+
     private Tin(string tin)
     {
         Value = tin;
@@ -21,7 +23,7 @@ public class Tin : ValueObject
         if (string.IsNullOrWhiteSpace(tin))
             return CustomerErrors.InvalidTin();
 
-        if (tin.Length > 20)
+        if (tin.Length > TinMaxLength)
             return CustomerErrors.TinTooLong();
         
         return new Tin(tin);

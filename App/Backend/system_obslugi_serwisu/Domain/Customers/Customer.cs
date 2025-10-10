@@ -21,17 +21,17 @@ public record CustomerData
 
 public class Customer
 {
-    public Guid Id {get; private set; }
-    public Email Email {get; private set;}
-    public Name Name {get; private set;}
-    public bool IsBusiness {get; private set;}
-    public Tin? TaxIdNumber {get; private set;}
-    public ContactMethod? PreferredContactMethod {get; private set;}
-    public ReturnMethod? PreferredReturnMethod {get; private set;}
-    public Address? Address {get; private set;}
-    public DateTimeOffset CreatedAt {get; private set;}
+    public Guid Id { get; private set; }
+    public Email Email { get; private set; }
+    public Name Name { get; private set; }
+    public bool IsBusiness { get; private set; }
+    public Tin? TaxIdNumber { get; private set; }
+    public ContactMethod? PreferredContactMethod { get; private set; }
+    public ReturnMethod? PreferredReturnMethod { get; private set; }
+    public Address? Address { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
 
-    private Customer() { } // For EF Core
+    private Customer() { }
 
     private Customer(Guid id, Email email, Name name, bool isBusiness, Tin? taxIdNumber,
         ContactMethod? preferredContactMethod, ReturnMethod? preferredReturnMethod, Address? address, DateTimeOffset createdAt)

@@ -6,10 +6,11 @@ namespace system_obslugi_serwisu.Domain.Shared;
 
 public class Email : ValueObject
 {
-    [MaxLength(150)]
+    public const int EmailMaxLength = 150; 
+    
     public string Value { get; private set; }
     
-    private Email() { } // For EF Core
+    private Email() { }
     
     private Email(string email)
     {
@@ -23,7 +24,7 @@ public class Email : ValueObject
         if (string.IsNullOrWhiteSpace(email))
             return EmailErrors.InvalidEmail();
         
-        if(email.Length > 150)
+        if(email.Length > EmailMaxLength)
             return EmailErrors.EmailTooLong();
         
         if(!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))

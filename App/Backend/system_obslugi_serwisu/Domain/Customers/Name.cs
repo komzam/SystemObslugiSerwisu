@@ -5,14 +5,15 @@ namespace system_obslugi_serwisu.Domain.Customers;
 
 public class Name : ValueObject
 {
-    [MaxLength(50)]
-    public string? FirstName {get; private set; }
+    public const int FirstNameMaxLength = 50;
+    public const int LastNameMaxLength = 50;
+    public const int CompanyNameMaxLength = 100;
     
-    [MaxLength(50)]
-    public string? LastName {get; private set;}
+    public string? FirstName { get; private set; }
     
-    [MaxLength(100)]
-    public string? CompanyName {get; private set;}
+    public string? LastName { get; private set; }
+    
+    public string? CompanyName {get; private set; }
     
     public string DisplayName {
         get
@@ -24,7 +25,7 @@ public class Name : ValueObject
         }
     }
     
-    private Name() { } // For EF Core
+    private Name() { }
 
     private Name(string? firstName, string? lastName, string? companyName = null)
     {
@@ -41,7 +42,7 @@ public class Name : ValueObject
         if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName))
             return CustomerErrors.InvalidName();
         
-        if (firstName.Length > 50 || lastName.Length > 50)
+        if (firstName.Length > FirstNameMaxLength || lastName.Length > LastNameMaxLength)
             return CustomerErrors.NameTooLong();
         
         return new Name(firstName, lastName);
@@ -54,7 +55,7 @@ public class Name : ValueObject
         if (string.IsNullOrWhiteSpace(companyName))
             return CustomerErrors.InvalidName();
         
-        if (companyName.Length > 100)
+        if (companyName.Length > CompanyNameMaxLength)
             return CustomerErrors.NameTooLong();
         
         return new Name(null, null, companyName);

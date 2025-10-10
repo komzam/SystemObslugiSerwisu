@@ -137,10 +137,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsBusiness")
                         .HasColumnType("boolean");
 
@@ -363,10 +359,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                             b1.Property<int>("Country")
                                 .HasColumnType("integer");
 
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .HasColumnType("text");
-
                             b1.Property<string>("RecipientName")
                                 .IsRequired()
                                 .HasMaxLength(100)
@@ -383,9 +375,51 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.Shared.PostalCode", "PostalCode", b2 =>
+                                {
+                                    b2.Property<Guid>("AddressCustomerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasMaxLength(20)
+                                        .HasColumnType("character varying(20)");
+
+                                    b2.HasKey("AddressCustomerId");
+
+                                    b2.ToTable("Customers");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("AddressCustomerId");
+                                });
+
+                            b1.Navigation("PostalCode")
+                                .IsRequired();
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.Email", "Email", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(150)
+                                .HasColumnType("character varying(150)");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
                         });
 
                     b.Navigation("Address");
+
+                    b.Navigation("Email")
+                        .IsRequired();
 
                     b.Navigation("Name")
                         .IsRequired();

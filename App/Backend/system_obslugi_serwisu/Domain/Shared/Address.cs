@@ -17,26 +17,27 @@ public record AddressData
 
 public class Address : ValueObject
 {
-    [MaxLength(100)]
+    public const int RecipientNameMaxLength = 100;
+    public const int StreetMaxLength = 50;
+    public const int BuildingNumberMaxLength = 20;
+    public const int ApartmentNumberMaxLength = 20;
+    public const int CityMaxLength = 100;
+    
     public string RecipientName { get; private set; }
     
-    [MaxLength(50)]
     public string Street { get; private set; }
     
-    [MaxLength(20)]
     public string BuildingNumber { get; private set; }
     
-    [MaxLength(20)]
     public string? ApartmentNumber { get; private set; }
     
     public PostalCode PostalCode { get; private set; }
     
-    [MaxLength(100)]
     public string City { get; private set; }
     
     public Country Country { get; private set; }
     
-    private Address() { } // For EF Core
+    private Address() { }
 
     private Address(string recipientName, string street, string buildingNumber,
         string? apartmentNumber, PostalCode postalCode, string city, Country country)
@@ -82,19 +83,19 @@ public class Address : ValueObject
 
     private static OperationResult CheckFieldLengths(AddressData data)
     {
-        if (data.RecipientName.Length > 100)
+        if (data.RecipientName.Length > RecipientNameMaxLength)
             return AddressErrors.RecipientNameTooLong();
         
-        if (data.Street.Length > 50)
+        if (data.Street.Length > StreetMaxLength)
             return AddressErrors.StreetTooLong();
         
-        if (data.BuildingNumber.Length > 20)
+        if (data.BuildingNumber.Length > BuildingNumberMaxLength)
             return AddressErrors.BuildingNumberTooLong();
         
-        if (data.ApartmentNumber != null && data.ApartmentNumber.Length > 20)
+        if (data.ApartmentNumber != null && data.ApartmentNumber.Length > ApartmentNumberMaxLength)
             return AddressErrors.ApartamentNumberTooLong();
         
-        if (data.City.Length > 100)
+        if (data.City.Length > CityMaxLength)
             return AddressErrors.CityTooLong();
         
         return OperationResult.Success();

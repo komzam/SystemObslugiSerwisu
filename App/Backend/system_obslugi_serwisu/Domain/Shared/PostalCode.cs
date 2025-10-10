@@ -6,12 +6,13 @@ namespace system_obslugi_serwisu.Domain.Shared;
 
 public class PostalCode : ValueObject
 {
-    [MaxLength(20)]
-    public string Value { get; private set; }
-
-    private PostalCode() { } // For EF Core
+    public const int PostalCodeMaxLength = 20;
     
-    public PostalCode(string postalCode)
+    public string Value { get; private set; }
+    
+    private PostalCode() { }
+    
+    private PostalCode(string postalCode)
     {
         Value = postalCode;
     }
@@ -20,7 +21,7 @@ public class PostalCode : ValueObject
     {
         postalCode = postalCode.Trim();
 
-        if (postalCode.Length > 20)
+        if (postalCode.Length > PostalCodeMaxLength)
             return AddressErrors.PostalCodeTooLong();
 
         if (!Regex.IsMatch(postalCode, PostalCodePatterns.Patterns[country]))
