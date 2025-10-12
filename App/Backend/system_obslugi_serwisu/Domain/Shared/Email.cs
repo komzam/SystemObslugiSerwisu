@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using system_obslugi_serwisu.Domain.Shared.Errors;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Shared;

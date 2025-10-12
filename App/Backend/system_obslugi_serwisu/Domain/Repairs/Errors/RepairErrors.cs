@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Domain.Repairs;
+namespace system_obslugi_serwisu.Domain.Repairs.Errors;
 
 public record RepairErrors
 {

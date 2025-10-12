@@ -1,4 +1,5 @@
 ﻿using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.Shared.Errors;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Shared;

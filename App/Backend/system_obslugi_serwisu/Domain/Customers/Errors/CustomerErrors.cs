@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Domain.Customers;
+namespace system_obslugi_serwisu.Domain.Customers.Errors;
 
 public static class CustomerErrors
 {

@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Domain.Shared;
+namespace system_obslugi_serwisu.Domain.Shared.Errors;
 
 public static class EmailErrors
 {

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using system_obslugi_serwisu.Domain.Shared;
+﻿using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
+using system_obslugi_serwisu.Domain.Customers.Errors;
 
 namespace system_obslugi_serwisu.Domain.Customers;
 

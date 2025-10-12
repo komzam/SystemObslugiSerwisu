@@ -1,6 +1,7 @@
 ﻿using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Domain.Customers.Errors;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Shared;
 

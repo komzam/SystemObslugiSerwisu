@@ -8,11 +8,14 @@ public class RepairShop
 {
     public Guid Id;
     
-    public string Name { get; }
-    
-    public Address Address { get; }
+    public string Name { get; private set; }
+    public Email Email { get; private set; }
+    public PhoneNumber Phone { get; private set; }
+    public Address Address { get; private set; }
+    public List<Worker> Workers { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
 
-    public List<Worker> Workers { get; }
+    private RepairShop() { }
 
     private RepairShop(string name, Address address, List<Worker> workers)
     {

@@ -1,8 +1,8 @@
 ﻿using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Domain.Shared;
+namespace system_obslugi_serwisu.Domain.Shared.Errors;
 
-public class AddressErrors
+public static class AddressErrors
 {
     private static string _prefix = "Address";
     
