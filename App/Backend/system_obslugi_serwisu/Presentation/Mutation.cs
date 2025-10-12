@@ -9,7 +9,7 @@ namespace system_obslugi_serwisu.Presentation;
 
 public class Mutation
 {
-    public async Task<CustomerDto> Register([Service] IMediator mediatr, RegisterRequest request)
+    public async Task<bool> Register([Service] IMediator mediatr, RegisterRequest request)
     {
         var customerResult = await mediatr.Send(new RegisterCustomerCommand
         {
@@ -27,7 +27,7 @@ public class Mutation
                 .SetCode(customerResult.Error.GetUserCode())
                 .Build());
         
-        return CustomerMapper.ToDto(customerResult.Value);
+        return true;
     }
     
     public async Task<bool> Login([Service] IMediator mediatr, LoginRequest request)

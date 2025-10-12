@@ -36,6 +36,18 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IIdentityController, IdentityController>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,6 +64,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGraphQL();
+app.UseCors("AllowFrontend");
+
 app.MapIdentityApi<User>();
 
 app.Run();

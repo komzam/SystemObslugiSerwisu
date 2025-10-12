@@ -6,9 +6,6 @@ import {ConversationButtonProps} from "@/app/Molecules/ConversationButton";
 import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
 import {StatusType} from "@/app/Atoms/Status";
 import {ConversationListCard} from "@/app/Organisms/ConversationListCard";
-import {ConversationList} from "@/app/Molecules/ConversationList";
-import {Button} from "@/app/Atoms/Button";
-import {LuAlignJustify} from "react-icons/lu";
 
 export default function Messages() {
     const [showConversation, setShowConversation] = React.useState(true);

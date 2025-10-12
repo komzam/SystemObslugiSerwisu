@@ -17,11 +17,15 @@
   },
   "Register": {
     "registerTitle": "Create your account",
+    "normalAccount": "Normal account",
+    "businessAccount": "Business account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "companyName": "Company name",
+    "tin": "TIN",
     "email": "E-mail",
     "password": "Password",
     "repeatPassword": "Repeat password",
-    "businessAccount": "Business account",
-    "tin": "TIN",
     "registerButton": "Register"
   },
   "RepairForm": {
@@ -139,5 +143,26 @@
     "details": "Details",
     "messagePlaceholder": "Type a message...",
     "send": "Send"
+  },
+  "Errors": {
+    "generalError": "There was an error",
+    "Identity": {
+      "UnknownError": "Unknown identity error",
+      "EmailExists": "Provided email already exists",
+      "InvalidPassword": "Provided password is invalid",
+      "InvalidCredentials": "Provided credentials are invalid",
+      "LockedOut": "You are locked out. Try again later",
+      "PasswordMismatch": "Provided passwords are not the same"
+    },
+    "Customers": {
+      "InvalidName": "Provided name is invalid",
+      "NameTooLong": "Provided name is too long",
+      "InvalidTin": "Provided Tax Identification Number is invalid",
+      "TinTooLong": "Provided Tax Identification Number is too long"
+    },
+    "Email": {
+      "InvalidEmail": "Provided email is invalid",
+      "EmailTooLong": "Provided email is too long"
+    }
   }
 }

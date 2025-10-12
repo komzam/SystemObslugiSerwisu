@@ -1,20 +1,99 @@
+"use client"
+
 import {Card} from "@/app/Atoms/Card";
-import {AddressForm} from "@/app/Molecules/AddressForm";
-import {RegisterCredentialsForm} from "@/app/Molecules/RegisterCredentialsForm";
+import {AccountType, RegisterForm, RegisterFormData} from "@/app/Molecules/RegisterForm";
+import {HorizontalSelect, HorizontalSelectOption} from "@/app/Molecules/HortizontalSelect";
+
 import {useTranslations} from "next-intl";
-import * as React from "react";
-import {RegisterAccountType} from "@/app/Molecules/RegisterAccountType";
+import {useRouter} from "@/i18n/navigation";
+
 import {Button} from "@/app/Atoms/Button";
+import {useMutation} from "@apollo/client/react";
+import {CombinedGraphQLErrors} from "@apollo/client/errors";
+import {REGISTER} from "@/graphql/Register";
+
+import { useState, FormEvent } from "react";
+import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
 
 export function RegisterCard() {
     const t = useTranslations("Register");
+    const tErr = useTranslations("Errors");
+    const [accountType, SetAccountType] = useState<AccountType>("normal");
+    const [error, setError] = useState<string | null>(null);
+    const accountTypes : HorizontalSelectOption[] = [
+        {value: "normal", label:t("normalAccount")},
+        {value: "business", label:t("businessAccount")}
+    ];
+    const [formData, setFormData] = useState<RegisterFormData>({
+        email: "",
+        password: "",
+        repeatPassword: "",
+        isBusiness: false,
+        firstName: "",
+        lastName: "",
+        companyName: "",
+        taxIdNumber: ""
+    });
+
+    const onFormChange = (fieldName: string, value: string) =>
+    {
+        setFormData((prev) => ({ ...prev, [fieldName]: value }))
+    };
+
+    const accountTypeChanged = (selected: number) => {
+        const selectedValue : AccountType = accountTypes[selected].value as AccountType;
+        SetAccountType(selectedValue);
+        setFormData((formData) => ({ ...formData, isBusiness: selectedValue == "business"}));
+        if(selectedValue == "business") {
+            onFormChange("firstName", "");
+            onFormChange("lastName", "");
+        }else{
+            onFormChange("companyName", "");
+        }
+    };
+
+    const [register] = useMutation(REGISTER);
+    const router = useRouter();
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if(formData.password != formData.repeatPassword) {
+            setError(tErr("Identity.PasswordMismatch"));
+            return;
+        }
+
+        try {
+            await register({
+                variables: formData
+            });
+            router.push("/signIn");
+        } catch (err: unknown) {
+            console.log(err);
+            if (CombinedGraphQLErrors.is(err)) {
+                const code = err.errors[0].extensions?.code as string | undefined;
+                if(!code)
+                    setError(tErr("generalError"));
+                else if (tErr.has(code))
+                    setError(tErr(code));
+                else
+                    setError(tErr("generalError"));
+            }else{
+                setError(tErr("generalError"));
+            }
+        }
+    }
+
 
     return (
-        <Card className="flex flex-col justify-center items-center gap-10 w-lg">
-            <span className="text-larger2 font-bold text-center">{t("registerTitle")}</span>
-            <RegisterCredentialsForm />
-            <RegisterAccountType/>
-            <Button className="w-full">{t("registerButton")}</Button>
+        <Card className="w-lg flex flex-col justify-center items-center">
+            <span className="text-larger2 font-bold text-center mb-5">{t("registerTitle")}</span>
+            <HorizontalSelect className="mb-10" options={accountTypes} onChangeAction={accountTypeChanged} />
+            {error != null && <HighlightedText className="w-full wrap-break-word mb-2" color={HighlightColors.Red}>{error}</HighlightedText>}
+            <form className="bg-inherit w-full flex flex-col justify-center items-center gap-10" onSubmit={handleSubmit}>
+                <RegisterForm accountType={accountType} formData={formData} onFormChange={onFormChange}/>
+                <Button className="w-full" type="submit">{t("registerButton")}</Button>
+            </form>
         </Card>
     );
 }

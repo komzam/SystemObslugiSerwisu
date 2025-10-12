@@ -17,11 +17,15 @@
   },
   "Register": {
     "registerTitle": "Utwórz swoje konto",
+    "normalAccount": "Konto normalne",
+    "businessAccount": "Konto firmowe",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "companyName": "Nazwa firmy",
+    "tin": "NIP",
     "email": "E-mail",
     "password": "Hasło",
     "repeatPassword": "Powtórz hasło",
-    "businessAccount": "Konto firmowe",
-    "tin": "NIP",
     "registerButton": "Zarejestruj się"
   },
   "RepairForm": {
@@ -139,5 +143,26 @@
     "details": "Szczegóły",
     "messagePlaceholder": "Napisz wiadomość...",
     "send": "Wyślij"
+  },
+  "Errors": {
+    "generalError": "Wystąpił błąd",
+    "Identity": {
+      "UnknownError": "Nieznany błąd tożsamości",
+      "EmailExists": "Wprowadzony email już instnieje",
+      "InvalidPassword": "Wprowadzone hasło jest niepoprawne",
+      "InvalidCredentials": "Wprowadzone dane są niepoprawne",
+      "LockedOut": "Jesteś zablokowany. Spróbuj ponownie później",
+      "PasswordMismatch": "Wprowadzone hasła nie są takie same"
+    },
+    "Customers": {
+      "InvalidName": "Wprowadzona nazwa jest niepoprawna",
+      "NameTooLong": "Wprowadzona nazwa jest za długa",
+      "InvalidTin": "Wprowadzony Numer Indentyfikacji Podatkowej jest niepoprawny",
+      "TinTooLong": "Wprowadzony Numer Indentyfikacji Podatkowej jest za długi"
+    },
+    "Email": {
+      "InvalidEmail": "Wprowadzony email jest niepoprawny",
+      "EmailTooLong": "Wprowadzony email jest za długi"
+    }
   }
 }

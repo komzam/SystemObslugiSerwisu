@@ -7,12 +7,15 @@ import { logOut } from "@/app/Utils/Utils"
 import {LuBell, LuChevronDown, LuAlignJustify} from "react-icons/lu";
 import {useRouter} from "@/i18n/navigation";
 import {useTranslations} from "next-intl";
+import {useAuthContext} from "@/app/Utils/AuthContext";
 
 
 export function NavbarActions() {
-    const isLoggedIn = false;
+    const authContext = useAuthContext();
     const t = useTranslations( "Navbar" );
     const router = useRouter();
+
+    const isLoggedIn = authContext.isLoggedIn;
 
     const shrinkedMenu : Dropdown2Items = [
         { valueLabel: t("repairs"), onClick: () => router.push("/repairs")},
@@ -22,7 +25,7 @@ export function NavbarActions() {
 
     const myAccountButtons : Dropdown2Items = [
         { valueLabel: t("editAccount"), onClick: () => router.push("/editAccount")},
-        { valueLabel: t("logOut"), onClick: () => logOut() }
+        { valueLabel: t("logOut"), onClick: () => authContext.logout() },
     ]
 
 

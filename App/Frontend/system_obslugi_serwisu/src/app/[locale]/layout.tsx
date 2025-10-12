@@ -3,10 +3,14 @@ import { Roboto } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import "../globals.css";
 import {Navbar} from "@/app/Organisms/Navbar";
+import {ApolloClientProvider} from "@/app/Utils/ApolloClientProvider";
+import {AuthContextProvider} from "@/app/Utils/AuthContext";
 
 const roboto = Roboto({
   variable: "--font-roboto",
 });
+
+
 
 export const metadata: Metadata = {
   title: "System Obsługi Serwisu",
@@ -17,11 +21,15 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
   return (
     <html lang="en">
       <body className={`${roboto.variable}`}>
-        <NextIntlClientProvider>
-            <Navbar>
-                {children}
-            </Navbar>
-        </NextIntlClientProvider>
+          <ApolloClientProvider>
+              <AuthContextProvider>
+                <NextIntlClientProvider>
+                    <Navbar>
+                        {children}
+                    </Navbar>
+                </NextIntlClientProvider>
+              </AuthContextProvider>
+          </ApolloClientProvider>
       </body>
     </html>
   );
