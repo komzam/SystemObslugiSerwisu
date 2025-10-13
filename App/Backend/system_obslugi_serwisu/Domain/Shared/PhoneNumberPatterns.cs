@@ -4,6 +4,6 @@ public static class PhoneNumberPatterns
 {
     public static readonly Dictionary<Country, string> Patterns = new()
     {
-        {Country.Poland, @"^\d{2}-\d{3}$"}
+        {Country.Poland, @"^+48\d{9}$"}
     };
 }

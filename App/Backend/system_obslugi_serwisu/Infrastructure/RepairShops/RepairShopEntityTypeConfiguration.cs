@@ -7,28 +7,29 @@ namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
 public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<RepairShop>
 {
-    public void Configure(EntityTypeBuilder<RepairShop> customerConfiguration)
+    private void ConfigureDay(OwnedNavigationBuilder<OpeningHours, TimeInterval> builder)
     {
-        /*customerConfiguration.HasKey(customer => customer.Id);
+        builder.Property(day => day.From);
+        builder.Property(day => day.To);
+    }
 
-        customerConfiguration.OwnsOne(customer => customer.Email, email =>
+    public void Configure(EntityTypeBuilder<RepairShop> repairShopConfiguration)
+    {
+        repairShopConfiguration.HasKey(repairShop => repairShop.Id);
+
+        repairShopConfiguration.Property(repairShop => repairShop.Name).HasMaxLength(RepairShop.NameMaxLength);
+        
+        repairShopConfiguration.OwnsOne(repairShop => repairShop.Email, email =>
         {
             email.Property(e => e.Value).HasMaxLength(Email.EmailMaxLength);
         });
-        
-        customerConfiguration.OwnsOne(customer => customer.Name, name =>
-        {
-            name.Property(n => n.FirstName).HasMaxLength(Name.FirstNameMaxLength);
-            name.Property(n => n.LastName).HasMaxLength(Name.LastNameMaxLength);
-            name.Property(n => n.CompanyName).HasMaxLength(Name.CompanyNameMaxLength);
-        });
 
-        customerConfiguration.OwnsOne(customer => customer.TaxIdNumber, taxIdNumber =>
+        repairShopConfiguration.OwnsOne(repairShop => repairShop.Phone, phoneNumber =>
         {
-            taxIdNumber.Property(tin => tin.Value).HasMaxLength(Tin.TinMaxLength);
+            phoneNumber.Property(phone => phone.Value).HasMaxLength(PhoneNumber.PhoneNumberMaxLength);
         });
         
-        customerConfiguration.OwnsOne(customer => customer.Address, address =>
+        repairShopConfiguration.OwnsOne(repairShop => repairShop.Address, address =>
         {
             address.Property(addr => addr.RecipientName).HasMaxLength(Address.RecipientNameMaxLength);
             address.Property(addr => addr.Street).HasMaxLength(Address.StreetMaxLength);
@@ -40,6 +41,22 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
                 postalCode.Property(p => p.Value).HasMaxLength(PostalCode.PostalCodeMaxLength);
             });
             address.Property(addr => addr.Country);
-        });*/
+        });
+        
+        repairShopConfiguration.OwnsOne(repairShop => repairShop.OpeningHours, openingHours =>
+        {
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Monday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Tuesday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Wednesday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Thursday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Friday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Saturday));
+            ConfigureDay(openingHours.OwnsOne(oph => oph.Sunday));
+        });
+
+        repairShopConfiguration.HasMany(repairShop => repairShop.Workers)
+            .WithOne(worker => worker.RepairShop);
+
+        repairShopConfiguration.Property(repairShop => repairShop.CreatedAt);
     }
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import "../globals.css";
-import {Navbar} from "@/app/Organisms/Navbar";
+import * as Navbar from "@/app/Organisms/Navbar";
 import {ApolloClientProvider} from "@/app/Utils/ApolloClientProvider";
 import {AuthContextProvider} from "@/app/Utils/AuthContext";
 
@@ -24,9 +24,12 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           <ApolloClientProvider>
               <AuthContextProvider>
                 <NextIntlClientProvider>
-                    <Navbar>
-                        {children}
-                    </Navbar>
+                    <Navbar.Root>
+                        <Navbar.Navbar/>
+                        <Navbar.Outlet className="pt-16 h-screen">
+                            {children}
+                        </Navbar.Outlet>
+                    </Navbar.Root>
                 </NextIntlClientProvider>
               </AuthContextProvider>
           </ApolloClientProvider>

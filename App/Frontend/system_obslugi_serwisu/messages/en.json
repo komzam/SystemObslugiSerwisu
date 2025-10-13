@@ -1,4 +1,11 @@
 {
+  "MainPage": {
+    "title": "Do you need a quick repair?",
+    "subtitle": "Find the best repair shop in your area",
+    "searchBar1": "Type in the repair shop name",
+    "searchBar2": "Where?",
+    "searchButton": "Search"
+  },
   "Navbar":{
     "repairs": "Repairs",
     "messages": "Messages",

@@ -8,4 +8,10 @@ public static class RepairShopErrors
 
     public static OperationError RepairShopNotFound(string message = "Repair shop not found") =>
         new ($"{Prefix}.RepairShopNotFound", message);
+    
+    public static OperationError InvalidName(string message = "Invalid name") =>
+        new ($"{Prefix}.InvalidName", message);
+    
+    public static OperationError NameTooLong(string message = "The name is too long") =>
+        new ($"{Prefix}.NameTooLong", message);
 }

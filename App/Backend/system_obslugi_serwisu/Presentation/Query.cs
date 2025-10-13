@@ -3,6 +3,7 @@ using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.Customers.Get;
 using system_obslugi_serwisu.Presentation.Customers;
+using system_obslugi_serwisu.Presentation.RepairShops;
 
 namespace system_obslugi_serwisu.Presentation;
 
@@ -26,5 +27,10 @@ public class Query
                 .Build());
         
         return CustomerMapper.ToDto(customerResult.Value);
+    }
+
+    public async Task<List<RepairShopDto>> SearchShopsByName([Service] IMediator mediatr)
+    {
+        var shopsListResult = await mediatr.Send()
     }
 }
