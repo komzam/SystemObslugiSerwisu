@@ -14,6 +14,14 @@
     "editAccount": "Edytuj konto",
     "logOut": "Wyloguj się"
   },
+  "RepairShop": {
+    "reviews": "{count, plural, one {# opinia} few {# opinie} many {# opinii} other {# opinii}}",
+    "open": "Otwarte",
+    "closed": "Zamknięte",
+    "opensAt": "Otwiera o",
+    "closesAt": "Zamyka o",
+    "seeProfile": "Zobacz profil"
+  },
   "SignIn": {
     "email": "E-mail",
     "password": "Hasło",

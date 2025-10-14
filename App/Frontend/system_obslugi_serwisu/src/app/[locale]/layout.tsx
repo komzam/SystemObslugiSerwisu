@@ -8,9 +8,8 @@ import {AuthContextProvider} from "@/app/Utils/AuthContext";
 
 const roboto = Roboto({
   variable: "--font-roboto",
+  weight: "300"
 });
-
-
 
 export const metadata: Metadata = {
   title: "System Obsługi Serwisu",
