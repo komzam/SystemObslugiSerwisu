@@ -32,17 +32,18 @@ public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShop
     {
         List<RepairShop> repairShops;
         int totalCount;
+        string nameLower = name.ToLower();
         
         try
         {
             repairShops = await databaseContext.RepairShops
-                .Where(rs => rs.Name.Contains(name))
+                .Where(rs => rs.Name.ToLower().Contains(nameLower))
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             totalCount = await databaseContext.RepairShops
-                .Where(rs => rs.Name.Contains(name)).CountAsync();
+                .Where(rs => rs.Name.ToLower().Contains(nameLower)).CountAsync();
         }
         catch
         {

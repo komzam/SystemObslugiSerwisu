@@ -1,10 +1,11 @@
 ﻿import {ReactNode} from "react";
-import {Star} from "@/app/Atoms/Star";
 import {useTranslations} from "next-intl";
-import { LuMapPin, LuClock, LuUser } from "react-icons/lu";
+import { LuClock, LuUser } from "react-icons/lu";
 import {OpenStatus} from "@/app/Molecules/OpenStatus";
 import {Button} from "@/app/Atoms/Button";
 import Link from "next/link";
+import {Stars} from "@/app/Molecules/Stars";
+import * as RepairShopInfo from "@/app/Molecules/RepairShopInfo";
 
 export type RootProps = {
     children?: ReactNode;
@@ -56,25 +57,10 @@ export type RatingStarsProps = {
 
 export function RatingStars({numberOfStars, className=""}: RatingStarsProps) {
     numberOfStars = Math.min(Math.max(numberOfStars, 0), 5); // 0-5
-    const fullStars:number = Math.floor(numberOfStars);
-    const halfStar:boolean = numberOfStars-fullStars >= 0.5;
-    const stars: ReactNode[] = [];
-
-    for(let i=0; i<5; i++){
-        if(i<fullStars) {
-            stars.push(<Star type="full" key={i}/>);
-        }else if(i==fullStars && halfStar){
-            stars.push(<Star type="half" key={i}/>);
-        }else{
-            stars.push(<Star type="empty" key={i}/>);
-        }
-    }
 
     return (
         <div className="flex flex-row gap-2 items-center">
-            <div className="flex flex-row">
-                {stars}
-            </div>
+            <Stars numberOfStars={numberOfStars}/>
             <span className="text-accent4 font-bold">{numberOfStars}</span>
         </div>
     )
@@ -103,27 +89,7 @@ export function RatingSeparator({className}: RatingSeparatorProps) {
     return <div className={`w-0.5 bg-accent4 h-4 ${className}`}/>
 }
 
-
-export type AddressProps = {
-    className?: string;
-    street: string;
-    buildingNumber: string;
-    aptNumber?: string;
-    postalCode: string;
-    city: string;
-}
-
-export function Address({className, street, buildingNumber, aptNumber, postalCode, city}: AddressProps) {
-    return (
-        <div className={`flex flex-row items-center gap-2 ${className}`}>
-            <LuMapPin className="text-accent4"/>
-            <p>{street} {buildingNumber}{aptNumber!=null && "/" + aptNumber}, {postalCode} {city}</p>
-        </div>
-    )
-}
-
-
-type DayHours = { from: string; to: string } | null;
+export const Address = RepairShopInfo.Address;
 
 export type IsOpenProps = {
     className?: string;
@@ -152,7 +118,7 @@ export function SeeProfileButton({className="", repairShopId}: SeeProfileButtonP
     const t = useTranslations("RepairShop");
 
     return (
-        <Link href={`/repairShop/${repairShopId}`}>
+        <Link className="w-fit" href={`/repairShop/${repairShopId}`}>
             <Button icon={<LuUser size="18px"/>}>
                 {t("seeProfile")}
             </Button>
