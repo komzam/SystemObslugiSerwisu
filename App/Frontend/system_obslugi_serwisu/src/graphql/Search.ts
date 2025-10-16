@@ -12,6 +12,8 @@ export const SEARCH = gql`
             items{
                 id,
                 name,
+                rating,
+                reviewCount,
                 address{
                     street,
                     buildingNumber,
@@ -31,6 +33,8 @@ export const SEARCH = gql`
 export type SearchRepairShop = {
     id: string;
     name: string;
+    rating: number;
+    reviewCount: number;
     address:{
         street: string;
         buildingNumber: string;

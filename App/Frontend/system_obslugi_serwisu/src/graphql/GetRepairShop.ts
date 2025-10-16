@@ -9,6 +9,9 @@ export const GET_REPAIRSHOP = gql`
             name,
             email,
             phone,
+            rating,
+            reviewCount,
+            aboutUs,
             address{
                 street,
                 buildingNumber,
@@ -60,6 +63,9 @@ export type GetRepairShop = {
     name: string;
     email: string;
     phone: string;
+    rating: number;
+    reviewCount: number;
+    aboutUs?: string;
     address:{
         street: string;
         buildingNumber: string;

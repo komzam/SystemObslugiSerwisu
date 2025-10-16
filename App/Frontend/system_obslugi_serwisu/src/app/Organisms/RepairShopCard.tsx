@@ -15,9 +15,9 @@ export function RepairShopCard({repairShop}: RepairShopCardProps) {
                     <div>
                         <RepairShopElementInfo.Title>{repairShop.name}</RepairShopElementInfo.Title>
                         <RepairShopElementInfo.RatingRoot>
-                            <RepairShopElementInfo.RatingStars numberOfStars={4.8}/>
+                            <RepairShopElementInfo.RatingStars numberOfStars={repairShop.rating}/>
                             <RepairShopElementInfo.RatingSeparator/>
-                            <RepairShopElementInfo.RatingReviews numberOfReviews={125}/>
+                            <RepairShopElementInfo.RatingReviews numberOfReviews={repairShop.reviewCount}/>
                         </RepairShopElementInfo.RatingRoot>
                     </div>
                     <div className="flex flex-col gap-1">

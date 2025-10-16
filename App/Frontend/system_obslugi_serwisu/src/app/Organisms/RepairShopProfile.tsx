@@ -16,7 +16,7 @@ export type TitleProps = {
     address: GetRepairShop["address"];
 }
 
-export function Title({name, address}: TitleProps) {
+export function Title({name, numberOfStars, numberOfReviews, address}: TitleProps) {
     const t = useTranslations("RepairShop");
 
     return(
@@ -26,9 +26,9 @@ export function Title({name, address}: TitleProps) {
                 <div className="flex-1 flex flex-col gap-2">
                     <RepairShopElementInfo.Title>{name}</RepairShopElementInfo.Title>
                     <RepairShopElementInfo.RatingRoot>
-                        <RepairShopElementInfo.RatingStars numberOfStars={4.8}/>
+                        <RepairShopElementInfo.RatingStars numberOfStars={numberOfStars}/>
                         <RepairShopElementInfo.RatingSeparator/>
-                        <RepairShopElementInfo.RatingReviews numberOfReviews={125}/>
+                        <RepairShopElementInfo.RatingReviews numberOfReviews={numberOfReviews}/>
                     </RepairShopElementInfo.RatingRoot>
                     <RepairShopElementInfo.Address address={address}/>
                 </div>
@@ -48,7 +48,6 @@ type MultiCardProps = {
 };
 export function MutliCard({aboutUs, priceList, reviews}: MultiCardProps) {
     const t = useTranslations("RepairShop");
-
     return (
         <CardWithTabs.Root defaultTabName="aboutUs">
             <CardWithTabs.TabsList>
@@ -70,13 +69,13 @@ export function MutliCard({aboutUs, priceList, reviews}: MultiCardProps) {
 }
 
 
-type AboutUsProps = { aboutUs: string; }
+type AboutUsProps = { aboutUs?: string; }
 export function AboutUs({aboutUs}: AboutUsProps) {
     const t = useTranslations("RepairShop");
     return (
         <div className="flex flex-col gap-3">
             <p className={"text-larger2 font-bold"}>{t("aboutOurRepairShop")}</p>
-            <p>{aboutUs}</p>
+            {aboutUs != null ? <p>{aboutUs}</p> : <p>{t("noAboutUs")}</p>}
         </div>
     )
 }

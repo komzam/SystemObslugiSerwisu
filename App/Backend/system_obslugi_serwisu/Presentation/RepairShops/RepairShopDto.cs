@@ -8,6 +8,9 @@ public class RepairShopDto
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string Phone { get; set; }
+    public double Rating { get; set; }
+    public int ReviewCount { get; set; }
+    public string? AboutUs { get; set; }
     public required AddressDto Address { get; set; }
     public required OpeningHoursDto OpeningHours { get; set; }
 }

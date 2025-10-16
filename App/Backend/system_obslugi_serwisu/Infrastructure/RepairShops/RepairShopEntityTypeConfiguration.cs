@@ -19,6 +19,12 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
 
         repairShopConfiguration.Property(repairShop => repairShop.Name).HasMaxLength(RepairShop.NameMaxLength);
         
+        repairShopConfiguration.Property(repairShop => repairShop.AboutUs).HasMaxLength(RepairShop.AboutUsMaxLength);
+        
+        repairShopConfiguration.Property(repairShop => repairShop.Rating);
+        
+        repairShopConfiguration.Property(repairShop => repairShop.ReviewCount);
+        
         repairShopConfiguration.OwnsOne(repairShop => repairShop.Email, email =>
         {
             email.Property(e => e.Value).HasMaxLength(Email.EmailMaxLength);
@@ -56,6 +62,12 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
 
         repairShopConfiguration.HasMany(repairShop => repairShop.Workers)
             .WithOne(worker => worker.RepairShop);
+        
+        repairShopConfiguration.HasMany(repairShop => repairShop.Reviews)
+            .WithOne(review => review.RepairShop);
+        
+        repairShopConfiguration.HasMany(repairShop => repairShop.Services)
+            .WithOne(service => service.RepairShop);
 
         repairShopConfiguration.Property(repairShop => repairShop.CreatedAt);
     }

@@ -14,7 +14,7 @@ export function Root({children, defaultTabName}: RootProps) {
 type TabsListProps = { children?: ReactNode };
 export function TabsList({children}: TabsListProps): ReactNode {
     return(
-        <Card className="rounded-b-none border-b-1 border-b-accent4 pt-3 pb-3">
+        <Card className="rounded-b-none border-b-1 border-b-accent3 pt-3 pb-3">
             <Tabs.List className="flex flex-row gap-6">
                 {children}
             </Tabs.List>

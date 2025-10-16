@@ -14,6 +14,9 @@ public class RepairShopMapper
             Name = repairShop.Name,
             Email = repairShop.Email.Value,
             Phone = repairShop.Phone.Value,
+            Rating = repairShop.Rating,
+            ReviewCount = repairShop.ReviewCount,
+            AboutUs = repairShop.AboutUs,
             Address = SharedMapper.ToDto(repairShop.Address),
             OpeningHours = ToDto(repairShop.OpeningHours)
         };
