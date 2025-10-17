@@ -1,5 +1,4 @@
 ﻿import {gql} from '@apollo/client';
-import {AuthInfo} from "@/app/Utils/AuthContext";
 
 export const GET_REPAIRSHOP = gql`
     query GetRepairShop($id: String!) {

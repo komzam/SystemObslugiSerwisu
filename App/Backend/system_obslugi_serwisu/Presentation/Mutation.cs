@@ -1,8 +1,12 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using HotChocolate.Authorization;
+using MediatR;
 using system_obslugi_serwisu.Application.Customers.Login;
 using system_obslugi_serwisu.Application.Customers.Logout;
 using system_obslugi_serwisu.Application.Customers.Register;
+using system_obslugi_serwisu.Application.Reviews.Add;
 using system_obslugi_serwisu.Presentation.Customers;
+using system_obslugi_serwisu.Presentation.Reviews.Add;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation;
@@ -21,19 +25,7 @@ public class Mutation
             CompanyName = request.CompanyName,
             TaxIdNumber = request.TaxIdNumber,
         });
-        if(customerResult.IsFailure)
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(customerResult.Error.GetUserMessage())
-                .SetCode(customerResult.Error.GetUserCode())
-                .Build());
-        
-        return true;
-    }
-    
-    public async Task<bool> Login([Service] IMediator mediatr, LoginRequest request)
-    {
-        var customerResult = await mediatr.Send(new LoginCustomerCommand{ Email = request.Email, Password = request.Password, RememberMe = request.RememberMe});
-        if(customerResult.IsFailure)
+        if (customerResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(customerResult.Error.GetUserMessage())
                 .SetCode(customerResult.Error.GetUserCode())
@@ -41,11 +33,24 @@ public class Mutation
 
         return true;
     }
-    
+
+    public async Task<bool> Login([Service] IMediator mediatr, LoginRequest request)
+    {
+        var customerResult = await mediatr.Send(new LoginCustomerCommand
+            { Email = request.Email, Password = request.Password, RememberMe = request.RememberMe });
+        if (customerResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(customerResult.Error.GetUserMessage())
+                .SetCode(customerResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+
     public async Task<bool> Logout([Service] IMediator mediatr)
     {
         var customerResult = await mediatr.Send(new LogoutCustomerCommand());
-        if(customerResult.IsFailure)
+        if (customerResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(customerResult.Error.GetUserMessage())
                 .SetCode(customerResult.Error.GetUserCode())
@@ -53,4 +58,38 @@ public class Mutation
 
         return true;
     }
+
+    [Authorize]
+    public async Task<bool> AddReview([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, AddReviewRequest request)
+    {
+        var customerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(customerIdString, out var customerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid customer id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid repair shop id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var addReviewResult = await mediatr.Send(new AddReviewCommand
+        {
+            RepairShopId = repairShopId,
+            CustomerId = customerId,
+            Rating = request.Rating,
+            Comment = request.Comment,
+        });
+        
+        if (addReviewResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(addReviewResult.Error.GetUserMessage())
+                .SetCode(addReviewResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+
 }

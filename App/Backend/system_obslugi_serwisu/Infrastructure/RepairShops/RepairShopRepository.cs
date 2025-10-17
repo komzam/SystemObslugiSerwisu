@@ -9,13 +9,27 @@ namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
 public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShopRepository
 {
-    public async Task<OperationResult<RepairShop>> Get(Guid id)
+    public Task<OperationResult<RepairShop>> Get(Guid id)
+    {
+        return Get(id, new  RepairShopInclude());
+    }
+
+    public async Task<OperationResult<RepairShop>> Get(Guid id, RepairShopInclude repairShopInclude)
     {
         RepairShop? repairShop;
 
+        var query = databaseContext.RepairShops.AsQueryable();
+
+        if (repairShopInclude.Reviews)
+            query = query.Include(rs => rs.Reviews)
+                .ThenInclude(r => r.Author);
+
+        if (repairShopInclude.Services)
+            query = query.Include(rs => rs.Services);
+
         try
         {
-            repairShop = await databaseContext.RepairShops.FindAsync(id);
+            repairShop = await query.FirstOrDefaultAsync(repairshop => repairshop.Id == id);
         }
         catch
         {

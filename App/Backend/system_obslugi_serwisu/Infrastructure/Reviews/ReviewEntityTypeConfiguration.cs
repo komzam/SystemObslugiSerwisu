@@ -9,7 +9,8 @@ public class ReviewEntityTypeConfiguration : IEntityTypeConfiguration<Review>
     public void Configure(EntityTypeBuilder<Review> reviewConfiguration)
     {
         reviewConfiguration.HasKey(review => review.Id);
-
+        reviewConfiguration.Property(review => review.Id).ValueGeneratedNever();
+        
         reviewConfiguration.HasOne(review => review.RepairShop);
         
         reviewConfiguration.HasOne(review => review.Author);

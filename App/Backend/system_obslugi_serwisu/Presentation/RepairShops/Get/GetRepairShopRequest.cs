@@ -1,4 +1,4 @@
-﻿namespace system_obslugi_serwisu.Presentation.RepairShops;
+﻿namespace system_obslugi_serwisu.Presentation.RepairShops.Get;
 
 public class GetRepairShopRequest
 {

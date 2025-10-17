@@ -34,7 +34,7 @@ public class RegisterCustomerHandler(IUnitOfWork unitOfWork, IIdentityController
         if(createAuthUserResult.IsFailure)
             return createAuthUserResult.Error;
 
-        var saveResult = unitOfWork.SaveChanges();
+        var saveResult = await unitOfWork.SaveChanges();
         if(saveResult.IsFailure)
             return saveResult.Error;
         

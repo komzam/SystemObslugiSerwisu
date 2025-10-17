@@ -1,4 +1,5 @@
-﻿using system_obslugi_serwisu.Shared;
+﻿using System.Diagnostics;
+using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers.Errors;
 
 namespace system_obslugi_serwisu.Domain.Customers;
@@ -22,6 +23,16 @@ public class Name : ValueObject
                 return CompanyName;
             
             return $"{FirstName} {LastName}";
+        }
+    }
+    
+    public string SafeDisplayName {
+        get
+        {
+            if(CompanyName != null)
+                return CompanyName;
+            
+            return $"{FirstName} {LastName?[0]}.";
         }
     }
     

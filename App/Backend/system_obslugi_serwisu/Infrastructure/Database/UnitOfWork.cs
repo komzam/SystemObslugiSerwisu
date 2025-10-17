@@ -1,8 +1,12 @@
 ﻿using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.RepairShops;
+using system_obslugi_serwisu.Application.Reviews;
+using system_obslugi_serwisu.Domain.RepairShops;
+using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
+using system_obslugi_serwisu.Infrastructure.Reviews;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Database;
@@ -11,6 +15,7 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
 {
     private CustomerRepository? _customerRepository;
     private RepairShopRepository? _repairShopRepository;
+    private ReviewRepository? _reviewRepository;
     
     public ICustomerRepository CustomerRepository {
         get
@@ -33,12 +38,23 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
             return _repairShopRepository;
         }
     }
-    
-    public OperationResult SaveChanges()
+
+    public IReviewRepository ReviewRepository {
+        get
+        {
+            if (_reviewRepository == null)
+            {
+                _reviewRepository = new ReviewRepository(databaseContext);
+            }
+            return _reviewRepository;
+        }
+    }
+
+    public async Task<OperationResult> SaveChanges()
     {
         try
         {
-            databaseContext.SaveChangesAsync();
+            await databaseContext.SaveChangesAsync();
         }
         catch (Exception e)
         {

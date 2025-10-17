@@ -1,10 +1,10 @@
 ﻿using system_obslugi_serwisu.Domain.RepairShops;
-using system_obslugi_serwisu.Presentation.Customers;
 using system_obslugi_serwisu.Presentation.Shared;
+using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 
 namespace system_obslugi_serwisu.Presentation.RepairShops;
 
-public class RepairShopMapper
+public static class RepairShopMapper
 {
     public static RepairShopDto ToDto(RepairShop repairShop)
     {

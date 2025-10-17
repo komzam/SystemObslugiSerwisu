@@ -62,7 +62,7 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
 
         repairShopConfiguration.HasMany(repairShop => repairShop.Workers)
             .WithOne(worker => worker.RepairShop);
-        
+
         repairShopConfiguration.HasMany(repairShop => repairShop.Reviews)
             .WithOne(review => review.RepairShop);
         

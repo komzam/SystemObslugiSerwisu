@@ -99,7 +99,7 @@ public class RepairShop
         Rating = ReviewCount > 0 ? Math.Round(_reviews.Average(r => r.Rating), 1) : 0;
     }
 
-    public OperationResult AddReview(Customer author, int rating, string comment)
+    public OperationResult AddReview(Customer author, int rating, string? comment)
     {
         var reviewResult = Review.Create(this, author, rating, comment);
         if(reviewResult.IsFailure)

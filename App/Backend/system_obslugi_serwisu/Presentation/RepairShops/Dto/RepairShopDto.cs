@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Presentation.Shared;
 
-namespace system_obslugi_serwisu.Presentation.RepairShops;
+namespace system_obslugi_serwisu.Presentation.RepairShops.Dto;
 
 public class RepairShopDto
 {
