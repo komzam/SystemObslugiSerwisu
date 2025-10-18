@@ -1,11 +1,17 @@
 ﻿"use client"
-import {Fragment} from "react";
-import { useSearchParams } from 'next/navigation'
 import {useTranslations} from "next-intl";
 import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
 import {Stars} from "@/app/Molecules/Stars";
-import {useQuery} from "@apollo/client/react";
+import {useMutation, useQuery} from "@apollo/client/react";
 import {GET_REVIEWS, GetReviewsQuery, GetReview} from "@/graphql/GetReviews";
+import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
+import {useAuthContext} from "@/app/Utils/AuthContext";
+import {Button} from "@/app/Atoms/Button";
+import DialogWindow from "@/app/Molecules/DialogWindow";
+import {TextArea} from "@/app/Atoms/TextArea";
+import {StarsSelect} from "@/app/Molecules/StarsSelect";
+import {ChangeEvent, MouseEvent, useState} from "react";
+import {ADD_REVIEW} from "@/graphql/AddReview";
 
 
 type ReviewProps = GetReview & {
@@ -23,24 +29,88 @@ function Review({authorName, rating, comment, className=""}: ReviewProps) {
     )
 }
 
+type AddReviewProps = { repairShopId: string};
+function AddReview({repairShopId}: AddReviewProps){
+    const t = useTranslations("RepairShop");
+    const [stars, setStars] = useState<number>(0);
+    const [comment, setComment] = useState<string|null>(null);
+    const [addReviewMutation] = useMutation(ADD_REVIEW, {refetchQueries: [
+            {
+                query: GET_REVIEWS,
+                variables: { repairShopId, pageNumber: 1, pageSize: 10 }
+            }
+        ],});
+
+
+    const addReview = async (e: MouseEvent<HTMLButtonElement>) => {
+        if(stars==0) {
+            e.preventDefault();
+            return;
+        }
+
+        await addReviewMutation({
+            variables:{
+                repairShopId: repairShopId,
+                rating: stars,
+                comment: comment
+            }
+        });
+        setStars(0);
+        setComment(null);
+    }
+
+    return (
+        <DialogWindow.Root>
+            <DialogWindow.Trigger asChild>
+                <Button className="w-fit" variant="secondary">{t("addReview")}</Button>
+            </DialogWindow.Trigger>
+            <DialogWindow.Window aria-describedby={undefined} className="w-[clamp(20rem,calc(100vw-var(--page-margin)*2),40rem)]">
+                <div className="flex flex-col gap-3">
+                    <DialogWindow.Title>{t("addReviewTitle")}</DialogWindow.Title>
+                    <StarsSelect onChangeAction={setStars} starSize="25px"/>
+                    <TextArea onChange={(e:ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value)}
+                              className="w-full" placeholder={t("addReviewPlaceholder")} />
+                    <div className="flex flex-col items-end">
+                        <DialogWindow.Close asChild>
+                            <Button onClick={addReview}>{t("addReview")}</Button>
+                        </DialogWindow.Close>
+                    </div>
+                </div>
+            </DialogWindow.Window>
+        </DialogWindow.Root>
+    )
+}
+
+
 export type ReviewsProps = {repairShopId: string}
 export function Reviews({repairShopId}: ReviewsProps) {
     const t = useTranslations("RepairShop");
+    const tComm = useTranslations("Common");
     const { loading, error, data } = useQuery<GetReviewsQuery>(GET_REVIEWS, {variables: {repairShopId:repairShopId,
                                                                                         pageNumber:1,
                                                                                         pageSize:10}});
+    const authContext = useAuthContext();
 
-    if(loading) return <p>Loading...</p>;
-    if (!data) return <p>No data</p>;
+
+    if(loading) return <LoadingIcon/>;
+    if (!data) return <p>{tComm("noData")}</p>;
 
     const reviews = data.reviews.items;
     if (reviews.length === 0) return <p>{t("noReviews")}</p>;
 
     return (
-        <div className="flex flex-col divide-y divide-accent3">
-            {reviews.map((review, reviewIndex) => (
-                <Review key={reviewIndex} {...review} className="py-4 px-2"/>
-            ))}
+        <div className="flex flex-col gap-5">
+            <div className="flex flex-row gap-2 items-center justify-between">
+                <p className="text-larger2 font-bold">{t("usersReviews")}</p>
+                {authContext.isLoggedIn && <AddReview repairShopId={repairShopId}/>}
+            </div>
+            <div className="flex flex-col divide-y divide-accent3">
+                {reviews.map((review, reviewIndex) => (
+                    <Review key={reviewIndex} {...review}
+                            className={`${reviewIndex!=0 && "pt-4"} ${reviewIndex!=reviews.length-1 && "pb-4"} px-2`}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

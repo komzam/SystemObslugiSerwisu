@@ -29,6 +29,10 @@
     "noAboutUs": "Brak opisu o nas",
     "noPriceList": "Brak cennika",
     "noReviews": "Brak opinii",
+    "addReview": "Dodaj opinię",
+    "addReviewPlaceholder": "Napisz swoją opinię tutaj",
+    "addReviewTitle": "Napisz swoją opinię",
+    "usersReviews": "Opinie użytkowników",
     "aboutOurRepairShop": "O naszym serwisie",
     "contactInfo": "Informacje kontaktowe",
     "address": "Adres",
@@ -199,5 +203,9 @@
       "InvalidEmail": "Wprowadzony email jest niepoprawny",
       "EmailTooLong": "Wprowadzony email jest za długi"
     }
+  },
+  "Common": {
+    "loading": "Ładowanie",
+    "noData": "Brak danych"
   }
 }

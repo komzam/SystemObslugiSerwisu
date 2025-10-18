@@ -29,6 +29,10 @@
     "noAboutUs": "No about us description",
     "noPriceList": "No price list",
     "noReviews": "No reviews",
+    "addReview": "Add review",
+    "addReviewPlaceholder": "Type your review here",
+    "addReviewTitle": "Write your review",
+    "usersReviews": "Users reviews",
     "aboutOurRepairShop": "About our repair shop",
     "contactInfo": "Contact informations",
     "address": "Address",
@@ -199,5 +203,9 @@
       "InvalidEmail": "Provided email is invalid",
       "EmailTooLong": "Provided email is too long"
     }
+  },
+  "Common": {
+    "loading": "Loading",
+    "noData": "No data"
   }
 }
