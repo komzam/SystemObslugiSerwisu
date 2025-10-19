@@ -12,6 +12,7 @@ import {TextArea} from "@/app/Atoms/TextArea";
 import {StarsSelect} from "@/app/Molecules/StarsSelect";
 import {ChangeEvent, MouseEvent, useState} from "react";
 import {ADD_REVIEW} from "@/graphql/AddReview";
+import {PageSelector} from "@/app/Molecules/PageSelector";
 
 
 type ReviewProps = GetReview & {
@@ -37,7 +38,7 @@ function AddReview({repairShopId}: AddReviewProps){
     const [addReviewMutation] = useMutation(ADD_REVIEW, {refetchQueries: [
             {
                 query: GET_REVIEWS,
-                variables: { repairShopId, pageNumber: 1, pageSize: 10 }
+                variables: { repairShopId, pageNumber: 1, pageSize: 5 }
             }
         ],});
 
@@ -86,9 +87,10 @@ export type ReviewsProps = {repairShopId: string}
 export function Reviews({repairShopId}: ReviewsProps) {
     const t = useTranslations("RepairShop");
     const tComm = useTranslations("Common");
-    const { loading, error, data } = useQuery<GetReviewsQuery>(GET_REVIEWS, {variables: {repairShopId:repairShopId,
-                                                                                        pageNumber:1,
-                                                                                        pageSize:10}});
+    const [currentPage, setCurrentPage] = useState(1);
+    const { loading, error, data} = useQuery<GetReviewsQuery>(GET_REVIEWS, {variables: {repairShopId:repairShopId,
+                                                                                        pageNumber:currentPage,
+                                                                                        pageSize:5}});
     const authContext = useAuthContext();
 
 
@@ -96,7 +98,6 @@ export function Reviews({repairShopId}: ReviewsProps) {
     if (!data) return <p>{tComm("noData")}</p>;
 
     const reviews = data.reviews.items;
-    if (reviews.length === 0) return <p>{t("noReviews")}</p>;
 
     return (
         <div className="flex flex-col gap-5">
@@ -104,13 +105,20 @@ export function Reviews({repairShopId}: ReviewsProps) {
                 <p className="text-larger2 font-bold">{t("usersReviews")}</p>
                 {authContext.isLoggedIn && <AddReview repairShopId={repairShopId}/>}
             </div>
-            <div className="flex flex-col divide-y divide-accent3">
-                {reviews.map((review, reviewIndex) => (
-                    <Review key={reviewIndex} {...review}
-                            className={`${reviewIndex!=0 && "pt-4"} ${reviewIndex!=reviews.length-1 && "pb-4"} px-2`}
-                    />
-                ))}
-            </div>
+            {
+                (reviews.length === 0) ? <p>{t("noReviews")}</p>
+                    :
+                <div className="flex flex-col divide-y divide-accent3">
+                    {reviews.map((review, reviewIndex) => (
+                        <Review key={reviewIndex} {...review}
+                                className={`${reviewIndex!=0 && "pt-4"} ${reviewIndex!=reviews.length-1 && "pb-4"}`}
+                        />
+                    ))}
+                </div>
+            }
+            <PageSelector totalPages={data.reviews.totalPages} currentPage={currentPage} onPageChange={function (page: number): void {
+                setCurrentPage(page);
+            }}/>
         </div>
     );
 }

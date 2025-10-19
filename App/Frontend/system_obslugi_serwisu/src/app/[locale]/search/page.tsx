@@ -16,13 +16,13 @@ type SeachParams = {
 
 
 export default function Search() {
-    let searchParams = useSearchParams();
+    const searchParams = useSearchParams();
     const { loading, error, data } = useQuery<SearchQuery>(SEARCH, {variables:{name:searchParams.get("name"), pageNumber:Number(searchParams.get("page")), pageSize: 5}});
 
     if(loading) return <LoadingIcon/>;
 
     return(
-        <div className="p-[var(--page-margin)] bg-inherit">
+        <div className="bg-inherit">
             <div className="flex flex-col items-center">
                 {data?.searchShopsByName.items.map((repairShop, repairShopIndex) => (
                     <RepairShopCard repairShop={repairShop} key={repairShopIndex}/>

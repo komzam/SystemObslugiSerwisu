@@ -18,7 +18,7 @@ export default function RepairForm() {
     const finish = () => {router.push("/")};
 
     return(
-        <div className="p-[var(--page-margin)] bg-inherit flex flex-col gap-5 items-center ">
+        <div className="bg-inherit flex flex-col gap-5 items-center ">
             <RepairFormProgressBar currentStep={page}/>
             <RepairFormDevInfo className={page==0? "" : "hidden"} leftBtnVisible={false} rightBtnOnClick={nextPage}/>
             <RepairFormFaultInfo className={page==1? "" : "hidden"} leftBtnOnClick={prevPage} rightBtnOnClick={nextPage}/>

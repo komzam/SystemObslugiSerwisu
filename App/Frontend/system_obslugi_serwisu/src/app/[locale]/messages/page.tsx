@@ -30,7 +30,7 @@ export default function Messages() {
     ]
 
     return (
-        <div className="p-[var(--page-margin)] bg-inherit flex flex-row h-full gap-2 justify-center">
+        <div className="bg-inherit flex flex-row h-full gap-2 justify-center">
             <ConversationListCard className={`hidden md:flex`} conversations={conversations} />
             {!showConversation && <ConversationListCard className={`w-full md:hidden`} conversations={conversations} />}
             <ConversationCard className={`${!showConversation && "hidden"} md:flex`} title={"Playstation 5"} repairTicketNumber={123456789} messages={messages} status={StatusType.AwaitingConfirmation}/>

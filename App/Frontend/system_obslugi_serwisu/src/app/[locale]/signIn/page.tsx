@@ -5,7 +5,7 @@ import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
 export default function SignIn() {
     return (
         <ProtectedRoute mustBe={"loggedOut"} redirectTo={"/"}>
-            <div className="p-[var(--page-margin)] flex justify-center ">
+            <div className="flex justify-center ">
                 <SignInCard/>
             </div>
         </ProtectedRoute>
