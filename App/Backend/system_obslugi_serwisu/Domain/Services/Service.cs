@@ -12,21 +12,19 @@ public class Service
     public Guid Id { get; private set; }
     public RepairShop RepairShop { get; private set; }
     public string Name { get; private set; }
-    public decimal Price { get; private set; }
-    public Currency Currency { get; private set; }
+    public Money Price { get; private set; }
     
     private Service() { }
 
-    private Service(RepairShop repairShop, string name, decimal price, Currency currency)
+    private Service(RepairShop repairShop, string name, Money price)
     {
         Id = Guid.NewGuid();
         RepairShop = repairShop;
         Name = name;
         Price = price;
-        Currency = currency;
     }
 
-    private static OperationResult ValidateInput(string name, decimal price)
+    private static OperationResult ValidateInput(string name)
     {
         if (name.Length > NameMaxLength)
             return ServiceErrors.NameTooLong();
@@ -34,20 +32,21 @@ public class Service
         if (String.IsNullOrWhiteSpace(name))
             return ServiceErrors.InvalidName();
         
-        if (price < 0)
-            return ServiceErrors.InvalidPrice();
-        
         return OperationResult.Success();
     }
 
-    public static OperationResult<Service> Create(RepairShop repairShop, string name, decimal price, Currency currency)
+    public static OperationResult<Service> Create(RepairShop repairShop, string name, decimal price, CurrencyCode currencyCode)
     {
         name = name.Trim();
         
-        var validationResult = ValidateInput(name, price);
+        var validationResult = ValidateInput(name);
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Service(repairShop, name, price, currency);
+        var moneyResult = Money.Create(price, currencyCode);
+        if(moneyResult.IsFailure)
+            return moneyResult.Error;
+        
+        return new Service(repairShop, name, moneyResult.Value);
     }
 }

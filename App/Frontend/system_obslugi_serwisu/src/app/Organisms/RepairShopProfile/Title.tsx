@@ -4,15 +4,19 @@ import {Card} from "@/app/Atoms/Card";
 import {Button} from "@/app/Atoms/Button";
 import {LuMessageSquare, LuWrench} from "react-icons/lu";
 import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
+import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
+import {OpeningHours} from "@/app/Types/OpeningHours";
 
 export type TitleProps = {
     name: string;
     numberOfStars: number;
     numberOfReviews: number;
     address: GetRepairShop["address"];
+    timeZoneId: string;
+    openingHours: OpeningHours;
 }
 
-export function Title({name, numberOfStars, numberOfReviews, address}: TitleProps) {
+export function Title({name, numberOfStars, numberOfReviews, address, timeZoneId, openingHours}: TitleProps) {
     const t = useTranslations("RepairShop");
 
     return(
@@ -27,6 +31,7 @@ export function Title({name, numberOfStars, numberOfReviews, address}: TitleProp
                         <RepairShopElementInfo.RatingReviews numberOfReviews={numberOfReviews}/>
                     </RepairShopElementInfo.RatingRoot>
                     <RepairShopElementInfo.Address address={address}/>
+                    <RepairShopInfo.IsOpen openingHours={openingHours} timeZoneId={timeZoneId}/>
                 </div>
                 <div className="flex flex-col md:flex-row h-fit gap-2">
                     <Button variant="secondary" icon={<LuMessageSquare size="18px"/>}>{t("contactRepairShop")}</Button>

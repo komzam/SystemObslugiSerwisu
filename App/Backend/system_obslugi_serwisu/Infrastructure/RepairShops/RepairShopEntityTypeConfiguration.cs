@@ -19,6 +19,8 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
 
         repairShopConfiguration.Property(repairShop => repairShop.Name).HasMaxLength(RepairShop.NameMaxLength);
         
+        repairShopConfiguration.Property(repairShop => repairShop.TimeZoneId).HasMaxLength(TimeZoneHelper.TimeZoneMaxLength);
+        
         repairShopConfiguration.Property(repairShop => repairShop.AboutUs).HasMaxLength(RepairShop.AboutUsMaxLength);
         
         repairShopConfiguration.Property(repairShop => repairShop.Rating);

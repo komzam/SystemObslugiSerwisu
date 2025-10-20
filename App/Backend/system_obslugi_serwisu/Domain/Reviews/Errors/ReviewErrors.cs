@@ -9,6 +9,9 @@ public static class ReviewErrors
     public static OperationError ReviewNotFound(string message = "Review not found") => 
         new ($"{Prefix}.ReviewNotFound", message);
     
+    public static OperationError ReviewAccessDenied(string message = "Review access denied") =>
+        new ($"{Prefix}.ReviewAccessDenied", message);
+    
     public static OperationError InvalidRating(string message = "Invalid rating") => 
         new ($"{Prefix}.InvalidRating", message);
     

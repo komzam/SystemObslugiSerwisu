@@ -1,7 +1,7 @@
 ﻿import {GetRepairShop} from "@/graphql/GetRepairShop";
 import {useTranslations} from "next-intl";
 import {Card} from "@/app/Atoms/Card";
-import {AddressWithTitle, Contact, OpeningHours} from "@/app/Molecules/RepairShopInfo";
+import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
 
 type ContactInfoProps = {
     address:GetRepairShop["address"];
@@ -16,9 +16,9 @@ export function ContactInfo({address, openingHours, phone, email}: ContactInfoPr
     return(
         <Card className="flex flex-col gap-3">
             <Card.Label>{t("contactInfo")}</Card.Label>
-            <AddressWithTitle address={address}/>
-            <OpeningHours openingHours={openingHours}/>
-            <Contact phone={phone} email={email}/>
+            <RepairShopInfo.AddressWithTitle address={address}/>
+            <RepairShopInfo.OpeningHours openingHours={openingHours}/>
+            <RepairShopInfo.Contact phone={phone} email={email}/>
         </Card>
     )
 }

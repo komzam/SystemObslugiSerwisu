@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using system_obslugi_serwisu.Infrastructure.Database;
@@ -11,9 +12,11 @@ using system_obslugi_serwisu.Infrastructure.Database;
 namespace system_obslugi_serwisu.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251020162031_ServicesUsesMoneyVO")]
+    partial class ServicesUsesMoneyVO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,11 +178,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Property<int>("ReviewCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("TimeZoneId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.HasKey("Id");
 
                     b.ToTable("RepairShops");
@@ -218,6 +216,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Services.Service", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")

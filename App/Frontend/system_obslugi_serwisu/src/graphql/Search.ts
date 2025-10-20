@@ -1,5 +1,6 @@
 ﻿import {gql} from '@apollo/client';
 import {AuthInfo} from "@/app/Utils/AuthContext";
+import {OpeningHours} from "@/app/Types/OpeningHours";
 
 export const SEARCH = gql`
     query Search($name: String!, $pageNumber: Int!, $pageSize: Int!) {
@@ -12,6 +13,7 @@ export const SEARCH = gql`
             items{
                 id,
                 name,
+                timeZoneId,
                 rating,
                 reviewCount,
                 address{
@@ -20,6 +22,36 @@ export const SEARCH = gql`
                     apartmentNumber,
                     postalCode,
                     city
+                },
+                openingHours{
+                    monday{
+                        from,
+                        to
+                    },
+                    tuesday{
+                        from,
+                        to
+                    },
+                    wednesday{
+                        from,
+                        to
+                    },
+                    thursday{
+                        from,
+                        to
+                    },
+                    friday{
+                        from,
+                        to
+                    },
+                    saturday{
+                        from,
+                        to
+                    },
+                    sunday{
+                        from,
+                        to
+                    }
                 }
             },
             pageNumber,
@@ -29,10 +61,10 @@ export const SEARCH = gql`
     }
 `
 
-
 export type SearchRepairShop = {
     id: string;
     name: string;
+    timeZoneId: string;
     rating: number;
     reviewCount: number;
     address:{
@@ -41,7 +73,8 @@ export type SearchRepairShop = {
         apartmentNumber?: string;
         postalCode: string;
         city: string;
-    }
+    },
+    openingHours:OpeningHours;
 }
 
 export interface SearchQuery{

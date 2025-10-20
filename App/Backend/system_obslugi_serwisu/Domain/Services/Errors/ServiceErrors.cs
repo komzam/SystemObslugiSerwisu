@@ -14,7 +14,4 @@ public static class ServiceErrors
     
     public static OperationError InvalidName(string message = "Invalid name") => 
         new ($"{Prefix}.InvalidName", message);
-    
-    public static OperationError InvalidPrice(string message = "Invalid price") => 
-        new ($"{Prefix}.InvalidPrice", message);
 }

@@ -1,4 +1,5 @@
 ﻿import {gql} from '@apollo/client';
+import {OpeningHours} from "@/app/Types/OpeningHours";
 
 export const GET_REPAIRSHOP = gql`
     query GetRepairShop($id: String!) {
@@ -8,6 +9,7 @@ export const GET_REPAIRSHOP = gql`
             name,
             email,
             phone,
+            timeZoneId,
             rating,
             reviewCount,
             aboutUs,
@@ -52,16 +54,12 @@ export const GET_REPAIRSHOP = gql`
     }
 `
 
-type OpeningInterval = {
-    from: string;
-    to: string;
-} | null;
-
 export type GetRepairShop = {
     id: string;
     name: string;
     email: string;
     phone: string;
+    timeZoneId: string;
     rating: number;
     reviewCount: number;
     aboutUs?: string;
@@ -72,15 +70,7 @@ export type GetRepairShop = {
         postalCode: string;
         city: string;
     };
-    openingHours:{
-        monday: OpeningInterval;
-        tuesday: OpeningInterval;
-        wednesday: OpeningInterval;
-        thursday: OpeningInterval;
-        friday: OpeningInterval;
-        saturday: OpeningInterval;
-        sunday: OpeningInterval;
-    }
+    openingHours:OpeningHours;
 }
 
 export interface GetRepairShopQuery{

@@ -88,9 +88,13 @@ export function Reviews({repairShopId}: ReviewsProps) {
     const t = useTranslations("RepairShop");
     const tComm = useTranslations("Common");
     const [currentPage, setCurrentPage] = useState(1);
-    const { loading, error, data} = useQuery<GetReviewsQuery>(GET_REVIEWS, {variables: {repairShopId:repairShopId,
-                                                                                        pageNumber:currentPage,
-                                                                                        pageSize:5}});
+    const { loading, error, data} = useQuery<GetReviewsQuery>(GET_REVIEWS, {
+        variables: {
+            repairShopId:repairShopId,
+            pageNumber:currentPage,
+            pageSize:5
+        }
+    });
     const authContext = useAuthContext();
 
 

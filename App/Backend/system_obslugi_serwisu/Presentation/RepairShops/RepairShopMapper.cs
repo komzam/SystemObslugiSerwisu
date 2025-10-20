@@ -14,6 +14,7 @@ public static class RepairShopMapper
             Name = repairShop.Name,
             Email = repairShop.Email.Value,
             Phone = repairShop.Phone.Value,
+            TimeZoneId = repairShop.TimeZoneId,
             Rating = repairShop.Rating,
             ReviewCount = repairShop.ReviewCount,
             AboutUs = repairShop.AboutUs,

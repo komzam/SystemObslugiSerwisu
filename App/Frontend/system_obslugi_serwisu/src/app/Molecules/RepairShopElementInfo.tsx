@@ -5,7 +5,7 @@ import {OpenStatus} from "@/app/Molecules/OpenStatus";
 import {Button} from "@/app/Atoms/Button";
 import Link from "next/link";
 import {Stars} from "@/app/Molecules/Stars";
-import * as RepairShopInfo from "@/app/Molecules/RepairShopInfo";
+import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
 
 export type RootProps = {
     children?: ReactNode;
@@ -91,23 +91,7 @@ export function RatingSeparator({className}: RatingSeparatorProps) {
 
 export const Address = RepairShopInfo.Address;
 
-export type IsOpenProps = {
-    className?: string;
-}
-
-export function IsOpen({className}: IsOpenProps) {
-    const t = useTranslations("RepairShop");
-
-    return (
-        <div className={`flex flex-row items-center gap-3 ${className}`}>
-            <div className="flex flex-row items-center gap-2">
-                <LuClock className="text-accent4"/>
-                <OpenStatus isOpen={true}/>
-            </div>
-            <p>{t("closesAt")} 18:00</p>
-        </div>
-    )
-}
+export const IsOpen = RepairShopInfo.IsOpen;
 
 export type SeeProfileButtonProps = {
     className?: string;

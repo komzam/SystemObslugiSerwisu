@@ -27,6 +27,7 @@ public class RepairShop
     public Email Email { get; private set; }
     public PhoneNumber Phone { get; private set; }
     public Address Address { get; private set; }
+    public string TimeZoneId { get; private set; }
     public double Rating { get; private set; }
     public int ReviewCount { get; private set; }
     public string? AboutUs { get; private set; }
@@ -43,13 +44,14 @@ public class RepairShop
     {
     }
 
-    private RepairShop(string name, Email email, PhoneNumber phoneNumber, Address address)
+    private RepairShop(string name, Email email, PhoneNumber phoneNumber, Address address, string timeZoneId)
     {
         Id = Guid.NewGuid();
         Name = name;
         Email = email;
         Phone = phoneNumber;
         Address = address;
+        TimeZoneId = timeZoneId;
         OpeningHours = new OpeningHours();
     }
 
@@ -89,8 +91,11 @@ public class RepairShop
         var phoneResult = PhoneNumber.Create(data.Phone, data.Address.Country);
         if (phoneResult.IsFailure)
             return phoneResult.Error;
+        
+        var timeZoneId = TimeZoneHelper.IanaIdFromCountry(data.Address.Country);
+        
 
-        return new RepairShop(data.Name, emailResult.Value, phoneResult.Value, data.Address);
+        return new RepairShop(data.Name, emailResult.Value, phoneResult.Value, data.Address, timeZoneId);
     }
 
     private void UpdateReviewStatistics()
@@ -111,12 +116,15 @@ public class RepairShop
         return OperationResult.Success();
     }
 
-    public OperationResult RemoveReview(Guid reviewId)
+    public OperationResult RemoveReview(Guid reviewId, Customer requester)
     {
         Review? review = _reviews.Find(r => r.Id == reviewId);
 
         if (review == null)
             return ReviewErrors.ReviewNotFound();
+
+        if (review.Author.Id != requester.Id)
+            return ReviewErrors.ReviewAccessDenied();
         
         if(_reviews.Remove(review))
             UpdateReviewStatistics();
@@ -124,9 +132,9 @@ public class RepairShop
         return OperationResult.Success();
     }
     
-    public OperationResult AddService(string name, decimal price, Currency currency)
+    public OperationResult AddService(string name, decimal price, CurrencyCode currencyCode)
     {
-        var serviceResult = Service.Create(this, name, price, currency);
+        var serviceResult = Service.Create(this, name, price, currencyCode);
         if(serviceResult.IsFailure)
             return serviceResult.Error;
         

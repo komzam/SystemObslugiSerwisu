@@ -22,7 +22,7 @@ export function RepairShopCard({repairShop}: RepairShopCardProps) {
                     </div>
                     <div className="flex flex-col gap-1">
                         <RepairShopElementInfo.Address address={repairShop.address}/>
-                        <RepairShopElementInfo.IsOpen/>
+                        <RepairShopElementInfo.IsOpen timeZoneId={repairShop.timeZoneId} openingHours={repairShop.openingHours}/>
                     </div>
                     <RepairShopElementInfo.SeeProfileButton repairShopId={repairShop.id}/>
                 </RepairShopElementInfo.Root>

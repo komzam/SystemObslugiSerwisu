@@ -5,8 +5,10 @@ using system_obslugi_serwisu.Application.Customers.Login;
 using system_obslugi_serwisu.Application.Customers.Logout;
 using system_obslugi_serwisu.Application.Customers.Register;
 using system_obslugi_serwisu.Application.Reviews.Add;
+using system_obslugi_serwisu.Application.Reviews.Delete;
 using system_obslugi_serwisu.Presentation.Customers;
 using system_obslugi_serwisu.Presentation.Reviews.Add;
+using system_obslugi_serwisu.Presentation.Reviews.Delete;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation;
@@ -91,5 +93,42 @@ public class Mutation
 
         return true;
     }
+    
+    [Authorize]
+    public async Task<bool> DeleteReview([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, DeleteReviewRequest request)
+    {
+        var customerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(customerIdString, out var customerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid customer id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid repair shop id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        if (!Guid.TryParse(request.ReviewId, out var reviewId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid review id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var deleteReviewResult = await mediatr.Send(new DeleteReviewCommand()
+        {
+            RepairShopId = repairShopId,
+            ReviewId = reviewId,
+            CustomerId = customerId
+        });
+        
+        if (deleteReviewResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(deleteReviewResult.Error.GetUserMessage())
+                .SetCode(deleteReviewResult.Error.GetUserCode())
+                .Build());
 
+        return true;
+    }
 }
