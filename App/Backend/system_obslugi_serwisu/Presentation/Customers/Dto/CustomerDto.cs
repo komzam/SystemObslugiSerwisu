@@ -1,7 +1,7 @@
 ﻿using HotChocolate.Authorization;
 using system_obslugi_serwisu.Presentation.Shared;
 
-namespace system_obslugi_serwisu.Presentation.Customers;
+namespace system_obslugi_serwisu.Presentation.Customers.Dto;
 
 public class CustomerDto
 {

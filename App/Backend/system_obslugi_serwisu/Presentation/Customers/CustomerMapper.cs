@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Presentation.Shared;
-using system_obslugi_serwisu.Shared;
+using system_obslugi_serwisu.Presentation.Customers.Dto;
 
 namespace system_obslugi_serwisu.Presentation.Customers;
 

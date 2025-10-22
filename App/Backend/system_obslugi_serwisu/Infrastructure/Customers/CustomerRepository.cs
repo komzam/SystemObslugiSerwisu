@@ -1,4 +1,5 @@
-﻿using system_obslugi_serwisu.Application.Customers;
+﻿using Microsoft.EntityFrameworkCore;
+using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Customers.Errors;
@@ -9,13 +10,13 @@ namespace system_obslugi_serwisu.Infrastructure.Customers;
 
 public class CustomerRepository(DatabaseContext databaseContext) : ICustomerRepository
 {
-    public OperationResult<Customer> GetCustomer(Guid id)
+    public async Task<OperationResult<Customer>> GetCustomer(Guid id)
     {
         Customer? customer;
         
         try
         {
-             customer = databaseContext.Customers.FirstOrDefault(c => c.Id == id);
+             customer = await databaseContext.Customers.FirstOrDefaultAsync(c => c.Id == id);
         }
         catch (Exception e)
         {
@@ -28,11 +29,11 @@ public class CustomerRepository(DatabaseContext databaseContext) : ICustomerRepo
         return customer;
     }
 
-    public OperationResult CreateCustomer(Customer customer)
+    public async Task<OperationResult> CreateCustomer(Customer customer)
     {
         try
         {
-            databaseContext.Customers.Add(customer);
+            await databaseContext.Customers.AddAsync(customer);
         }
         catch (Exception e)
         {

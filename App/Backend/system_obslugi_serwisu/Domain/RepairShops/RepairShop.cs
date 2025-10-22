@@ -1,4 +1,5 @@
 ﻿using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Domain.Reviews.Errors;
 using system_obslugi_serwisu.Domain.Services;
@@ -12,6 +13,7 @@ namespace system_obslugi_serwisu.Domain.RepairShops;
 public record RepairShopData {
     public required string Name { get; set; }
     public required string Email { get; set; }
+    public required string PhoneRegionCode { get; set; }
     public required string Phone { get; set; }
     public required Address Address { get; set; }
 }
@@ -33,6 +35,7 @@ public class RepairShop
     public string? AboutUs { get; private set; }
     public OpeningHours OpeningHours { get; private set; }
     public List<Worker>? Workers { get; private set; }
+    public List<Repair> Repairs { get; private set; } = new List<Repair>();
     public IReadOnlyList<Review> Reviews => _reviews.AsReadOnly();
     public IReadOnlyList<Service> Services => _services.AsReadOnly();
     public DateTimeOffset CreatedAt { get; private set; }
@@ -40,9 +43,7 @@ public class RepairShop
     private List<Review> _reviews = new();
     private List<Service> _services = new();
 
-    private RepairShop()
-    {
-    }
+    private RepairShop() { }
 
     private RepairShop(string name, Email email, PhoneNumber phoneNumber, Address address, string timeZoneId)
     {
@@ -60,8 +61,6 @@ public class RepairShop
         return data with
         {
             Name = data.Name.Trim(),
-            Email = data.Email.Trim(),
-            Phone = data.Phone.Trim()
         };
     }
 
@@ -88,13 +87,12 @@ public class RepairShop
         if (emailResult.IsFailure)
             return emailResult.Error;
 
-        var phoneResult = PhoneNumber.Create(data.Phone, data.Address.Country);
+        var phoneResult = PhoneNumber.Create(data.Phone, data.PhoneRegionCode);
         if (phoneResult.IsFailure)
             return phoneResult.Error;
         
         var timeZoneId = TimeZoneHelper.IanaIdFromCountry(data.Address.Country);
         
-
         return new RepairShop(data.Name, emailResult.Value, phoneResult.Value, data.Address, timeZoneId);
     }
 

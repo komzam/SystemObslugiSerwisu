@@ -13,7 +13,7 @@ public static class RepairShopMapper
             Id = repairShop.Id.ToString(),
             Name = repairShop.Name,
             Email = repairShop.Email.Value,
-            Phone = repairShop.Phone.Value,
+            Phone = repairShop.Phone.Number,
             TimeZoneId = repairShop.TimeZoneId,
             Rating = repairShop.Rating,
             ReviewCount = repairShop.ReviewCount,

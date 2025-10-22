@@ -13,7 +13,7 @@ public class DeleteReviewHandler(IUnitOfWork unitOfWork) : IRequestHandler<Delet
         if (repairShopResult.IsFailure)
             return repairShopResult.Error;
         
-        var customerResult = unitOfWork.CustomerRepository.GetCustomer(request.CustomerId);
+        var customerResult = await unitOfWork.CustomerRepository.GetCustomer(request.CustomerId);
         if (customerResult.IsFailure)
             return customerResult.Error;
         

@@ -7,12 +7,12 @@ namespace system_obslugi_serwisu.Application.Customers.Get;
 
 public class GetCustomerHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCustomerCommand, OperationResult<Customer>>
 {
-    public Task<OperationResult<Customer>> Handle(GetCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Customer>> Handle(GetCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customerResult = unitOfWork.CustomerRepository.GetCustomer(request.Id);
+        var customerResult = await unitOfWork.CustomerRepository.GetCustomer(request.Id);
         if(customerResult.IsFailure)
-            return Task.FromResult(OperationResult<Customer>.Failure(customerResult.Error));
+            return customerResult.Error;
         
-        return Task.FromResult(OperationResult<Customer>.Success(customerResult.Value));
+        return customerResult.Value;
     }
 }

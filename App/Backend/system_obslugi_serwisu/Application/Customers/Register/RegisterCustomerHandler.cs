@@ -26,7 +26,7 @@ public class RegisterCustomerHandler(IUnitOfWork unitOfWork, IIdentityController
 
         var customer = customerResult.Value;
         
-        var createCustomerResult = unitOfWork.CustomerRepository.CreateCustomer(customer);
+        var createCustomerResult = await unitOfWork.CustomerRepository.CreateCustomer(customer);
         if(createCustomerResult.IsFailure)
             return createCustomerResult.Error;
 

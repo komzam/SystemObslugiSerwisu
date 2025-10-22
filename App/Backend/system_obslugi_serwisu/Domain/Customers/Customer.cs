@@ -1,6 +1,7 @@
 ﻿using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers.Errors;
+using system_obslugi_serwisu.Domain.Repairs;
 
 namespace system_obslugi_serwisu.Domain.Customers;
 
@@ -25,10 +26,12 @@ public class Customer
     public Email Email { get; private set; }
     public Name Name { get; private set; }
     public bool IsBusiness { get; private set; }
+    public PhoneNumber? Phone { get; private set; }
     public Tin? TaxIdNumber { get; private set; }
     public ContactMethod? PreferredContactMethod { get; private set; }
     public ReturnMethod? PreferredReturnMethod { get; private set; }
     public Address? Address { get; private set; }
+    public List<Repair> Repairs { get; private set; } = new List<Repair>();
     public DateTimeOffset CreatedAt { get; private set; }
 
     private Customer() { }

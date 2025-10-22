@@ -13,7 +13,7 @@ public class AddReviewHandler(IUnitOfWork unitOfWork) : IRequestHandler<AddRevie
         if (repairShopResult.IsFailure)
             return repairShopResult.Error;
         
-        var customerResult = unitOfWork.CustomerRepository.GetCustomer(request.CustomerId);
+        var customerResult = await unitOfWork.CustomerRepository.GetCustomer(request.CustomerId);
         if (customerResult.IsFailure)
             return customerResult.Error;
         

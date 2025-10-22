@@ -31,7 +31,7 @@ export function IsOpen({openingHours, timeZoneId, className=""}: IsOpenProps) {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
 
     const now = DateTime.now().setZone(timeZoneId);
-    const userTimeZone = now.zone;
+    const userTimeZone = DateTime.now().zone;
     const weekday = now.weekday-1; // 0-6
     const today: keyof OpeningHours = days[weekday];
     const tomorrow: keyof OpeningHours = days[(weekday+1)%7];

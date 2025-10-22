@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Identity;
-using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Infrastructure.Migrations;
@@ -22,10 +20,7 @@ builder.Services.AddIdentity<User, ApplicationRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddApiEndpoints();
 
-builder.Services.AddGraphQLServer()
-    .AddAuthorization()
-    .AddQueryType<Query>()
-    .AddMutationType<Mutation>();
+GraphQlConfig.Apply(builder);
 
 builder.Services.AddMediatR(cfg =>
 {

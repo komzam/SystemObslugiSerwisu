@@ -185,6 +185,32 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.ToTable("RepairShops");
                 });
 
+            modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.Repair", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RepairShopId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("RepairShopId");
+
+                    b.ToTable("Repairs");
+                });
+
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Reviews.Review", b =>
                 {
                     b.Property<Guid>("Id")
@@ -478,6 +504,29 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.PhoneNumber", "Phone", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
+
+                            b1.Property<string>("RegionCode")
+                                .IsRequired()
+                                .HasMaxLength(2)
+                                .HasColumnType("character varying(2)");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
+
                     b.OwnsOne("system_obslugi_serwisu.Domain.Customers.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("CustomerId")
@@ -528,6 +577,8 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.Navigation("Name")
                         .IsRequired();
+
+                    b.Navigation("Phone");
 
                     b.Navigation("TaxIdNumber");
                 });
@@ -778,10 +829,15 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                             b1.Property<Guid>("RepairShopId")
                                 .HasColumnType("uuid");
 
-                            b1.Property<string>("Value")
+                            b1.Property<string>("Number")
                                 .IsRequired()
                                 .HasMaxLength(20)
                                 .HasColumnType("character varying(20)");
+
+                            b1.Property<string>("RegionCode")
+                                .IsRequired()
+                                .HasMaxLength(2)
+                                .HasColumnType("character varying(2)");
 
                             b1.HasKey("RepairShopId");
 
@@ -801,6 +857,241 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Phone")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.Repair", b =>
+                {
+                    b.HasOne("system_obslugi_serwisu.Domain.Customers.Customer", "Customer")
+                        .WithMany("Repairs")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", "RepairShop")
+                        .WithMany("Repairs")
+                        .HasForeignKey("RepairShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Repairs.ContactInfo", "ContactInfo", b1 =>
+                        {
+                            b1.Property<Guid>("RepairId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
+
+                            b1.Property<int>("PreferredContactMethod")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("RepairId");
+
+                            b1.ToTable("Repairs");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairId");
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.Shared.Email", "Email", b2 =>
+                                {
+                                    b2.Property<Guid>("ContactInfoRepairId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("ContactInfoRepairId");
+
+                                    b2.ToTable("Repairs");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ContactInfoRepairId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.Shared.PhoneNumber", "PhoneNumber", b2 =>
+                                {
+                                    b2.Property<Guid>("ContactInfoRepairId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("Number")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("RegionCode")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("ContactInfoRepairId");
+
+                                    b2.ToTable("Repairs");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ContactInfoRepairId");
+                                });
+
+                            b1.Navigation("Email")
+                                .IsRequired();
+
+                            b1.Navigation("PhoneNumber")
+                                .IsRequired();
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Repairs.DeviceInfo", "DeviceInfo", b1 =>
+                        {
+                            b1.Property<Guid>("RepairId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("DeviceType")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Manufacturer")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
+
+                            b1.Property<string>("Model")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
+
+                            b1.Property<string>("SerialNumber")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)");
+
+                            b1.HasKey("RepairId");
+
+                            b1.ToTable("Repairs");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairId");
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Repairs.FaultInfo", "FaultInfo", b1 =>
+                        {
+                            b1.Property<Guid>("RepairId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("character varying(1000)");
+
+                            b1.Property<string>("HowToReproduce")
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("character varying(1000)");
+
+                            b1.Property<bool>("PreviouslyRepaired")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("WhenOccured")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)");
+
+                            b1.HasKey("RepairId");
+
+                            b1.ToTable("Repairs");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairId");
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Repairs.ReturnInfo", "ReturnInfo", b1 =>
+                        {
+                            b1.Property<Guid>("RepairId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("ReturnMethod")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("RepairId");
+
+                            b1.ToTable("Repairs");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairId");
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.Shared.Address", "ReturnAddress", b2 =>
+                                {
+                                    b2.Property<Guid>("ReturnInfoRepairId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<string>("ApartmentNumber")
+                                        .HasMaxLength(20)
+                                        .HasColumnType("character varying(20)");
+
+                                    b2.Property<string>("BuildingNumber")
+                                        .IsRequired()
+                                        .HasMaxLength(20)
+                                        .HasColumnType("character varying(20)");
+
+                                    b2.Property<string>("City")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.Property<int>("Country")
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("RecipientName")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("character varying(100)");
+
+                                    b2.Property<string>("Street")
+                                        .IsRequired()
+                                        .HasMaxLength(50)
+                                        .HasColumnType("character varying(50)");
+
+                                    b2.HasKey("ReturnInfoRepairId");
+
+                                    b2.ToTable("Repairs");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ReturnInfoRepairId");
+
+                                    b2.OwnsOne("system_obslugi_serwisu.Domain.Shared.PostalCode", "PostalCode", b3 =>
+                                        {
+                                            b3.Property<Guid>("AddressReturnInfoRepairId")
+                                                .HasColumnType("uuid");
+
+                                            b3.Property<string>("Value")
+                                                .IsRequired()
+                                                .HasMaxLength(20)
+                                                .HasColumnType("character varying(20)");
+
+                                            b3.HasKey("AddressReturnInfoRepairId");
+
+                                            b3.ToTable("Repairs");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("AddressReturnInfoRepairId");
+                                        });
+
+                                    b2.Navigation("PostalCode")
+                                        .IsRequired();
+                                });
+
+                            b1.Navigation("ReturnAddress");
+                        });
+
+                    b.Navigation("ContactInfo")
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("DeviceInfo")
+                        .IsRequired();
+
+                    b.Navigation("FaultInfo")
+                        .IsRequired();
+
+                    b.Navigation("RepairShop");
+
+                    b.Navigation("ReturnInfo")
                         .IsRequired();
                 });
 
@@ -867,8 +1158,15 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Navigation("RepairShop");
                 });
 
+            modelBuilder.Entity("system_obslugi_serwisu.Domain.Customers.Customer", b =>
+                {
+                    b.Navigation("Repairs");
+                });
+
             modelBuilder.Entity("system_obslugi_serwisu.Domain.RepairShops.RepairShop", b =>
                 {
+                    b.Navigation("Repairs");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("Services");

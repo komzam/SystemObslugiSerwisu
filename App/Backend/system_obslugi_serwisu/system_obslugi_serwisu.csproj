@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="HotChocolate.AspNetCore" Version="16.0.0-p.8.11" />
         <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="16.0.0-p.8.11" />
+        <PackageReference Include="libphonenumber-csharp" Version="9.0.16" />
         <PackageReference Include="MediatR" Version="13.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />

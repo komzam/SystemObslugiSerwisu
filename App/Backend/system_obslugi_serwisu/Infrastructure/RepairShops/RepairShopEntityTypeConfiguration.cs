@@ -34,7 +34,8 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
 
         repairShopConfiguration.OwnsOne(repairShop => repairShop.Phone, phoneNumber =>
         {
-            phoneNumber.Property(phone => phone.Value).HasMaxLength(PhoneNumber.PhoneNumberMaxLength);
+            phoneNumber.Property(phone => phone.Number).HasMaxLength(PhoneNumber.PhoneNumberMaxLength);
+            phoneNumber.Property(phone => phone.RegionCode).HasMaxLength(PhoneNumber.RegionCodeMaxLength);
         });
         
         repairShopConfiguration.OwnsOne(repairShop => repairShop.Address, address =>
@@ -70,6 +71,9 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
         
         repairShopConfiguration.HasMany(repairShop => repairShop.Services)
             .WithOne(service => service.RepairShop);
+        
+        repairShopConfiguration.HasMany(repairShop => repairShop.Repairs)
+            .WithOne(repair => repair.RepairShop);
 
         repairShopConfiguration.Property(repairShop => repairShop.CreatedAt);
     }

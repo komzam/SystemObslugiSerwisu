@@ -29,7 +29,8 @@ export default async function RepairShop({params}: PageProps) {
                                                         numberOfReviews={data.repairShop.reviewCount} address={data.repairShop.address}
                                                         timeZoneId={data.repairShop.timeZoneId} openingHours={data.repairShop.openingHours}/>}
                 {data!=null && <RepairShopProfile.MultiCard reviews={{repairShopId:id}} aboutUs={{aboutUs:data.repairShop.aboutUs}} priceList={{repairShopId:id}}/>}
-                {data!=null && <RepairShopProfile.ContactInfo address={data.repairShop.address} openingHours={data.repairShop.openingHours} phone={data.repairShop.phone} email={data.repairShop.email}/>}
+                {data!=null && <RepairShopProfile.ContactInfo address={data.repairShop.address} openingHours={data.repairShop.openingHours} timeZoneId={data.repairShop.timeZoneId}
+                                                              phone={data.repairShop.phone} email={data.repairShop.email}/>}
             </div>
         </div>
     )

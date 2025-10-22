@@ -16,6 +16,12 @@ public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer
             email.Property(e => e.Value).HasMaxLength(Email.EmailMaxLength);
         });
         
+        customerConfiguration.OwnsOne(customer => customer.Phone, phone =>
+        {
+            phone.Property(p => p.Number).HasMaxLength(PhoneNumber.PhoneNumberMaxLength);
+            phone.Property(p => p.RegionCode).HasMaxLength(PhoneNumber.RegionCodeMaxLength);
+        });
+        
         customerConfiguration.OwnsOne(customer => customer.Name, name =>
         {
             name.Property(n => n.FirstName).HasMaxLength(Name.FirstNameMaxLength);
@@ -41,5 +47,8 @@ public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer
             });
             address.Property(addr => addr.Country);
         });
+
+        customerConfiguration.HasMany(customer => customer.Repairs)
+            .WithOne(repair => repair.Customer);
     }
 }
