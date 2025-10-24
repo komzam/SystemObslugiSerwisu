@@ -1,7 +1,7 @@
 import {gql} from "@apollo/client";
 
 export const GET_SERVICES = gql`
-query Services($repairShopId: String!, $pageNumber: Int!, $pageSize: Int!) {
+    query Services($repairShopId: String!, $pageNumber: Int!, $pageSize: Int!) {
     services(request:  {
         repairShopId: $repairShopId,
         pageNumber: $pageNumber,
@@ -17,19 +17,3 @@ query Services($repairShopId: String!, $pageNumber: Int!, $pageSize: Int!) {
     }
 }
 `
-
-export type GetService = {
-    name: string,
-    price: string
-}
-
-export type GetServices = {
-    items: GetService[];
-    pageNumber: number;
-    totalCount: number;
-    totalPages: number;
-}
-
-export interface GetServicesQuery{
-    services: GetServices;
-}

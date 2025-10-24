@@ -1,6 +1,7 @@
 ﻿import {useTranslations} from "next-intl";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
-export type AboutUsProps = { aboutUs?: string; }
+export type AboutUsProps = { aboutUs?: GetRepairShopQuery["repairShop"]["aboutUs"]; }
 export function AboutUs({aboutUs}: AboutUsProps) {
     const t = useTranslations("RepairShop");
     return (

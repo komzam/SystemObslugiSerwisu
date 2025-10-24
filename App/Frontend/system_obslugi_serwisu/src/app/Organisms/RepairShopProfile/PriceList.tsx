@@ -7,8 +7,9 @@ import {useQuery} from "@apollo/client/react";
 import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
 import {GET_SERVICES, GetServicesQuery} from "@/graphql/GetServices";
 import {PageSelector} from "@/app/Molecules/PageSelector";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
-export type PriceListProps = { repairShopId: string }
+export type PriceListProps = { repairShopId: GetRepairShopQuery["repairShop"]["id"] };
 export function PriceList({repairShopId}: PriceListProps) {
     const t = useTranslations("RepairShop");
     const tComm = useTranslations("Common");

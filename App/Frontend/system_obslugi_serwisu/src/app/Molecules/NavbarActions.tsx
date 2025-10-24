@@ -3,7 +3,6 @@
 import * as React from "react";
 import {Dropdown2, Dropdown2Items} from "@/app/Molecules/Dropdown2";
 import {NavbarButton} from "@/app/Atoms/NavbarButton";
-import { logOut } from "@/app/Utils/Utils"
 import {LuBell, LuChevronDown, LuAlignJustify} from "react-icons/lu";
 import {useRouter} from "@/i18n/navigation";
 import {useTranslations} from "next-intl";
@@ -28,11 +27,11 @@ export function NavbarActions() {
         { valueLabel: t("logOut"), onClick: () => authContext.logout() },
     ]
 
+    if(authContext.isLoading) return <></>
 
     return (
         <div>
             <div className="md:flex md:flex-row md:items-center md:gap-5 hidden">
-
                 <NavbarButton href="/repairs">{t("repairs")}</NavbarButton>
                 <NavbarButton href="/messages">{t("messages")}</NavbarButton>
 

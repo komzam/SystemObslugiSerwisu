@@ -8,6 +8,7 @@ export const GET_REVIEWS = gql`
        pageSize: $pageSize
     }){
       items{
+        id,
         authorName,
         rating,
         comment,
@@ -18,20 +19,3 @@ export const GET_REVIEWS = gql`
     }
 }
 `
-
-export type GetReview = {
-    authorName: string;
-    rating: number;
-    comment?: string;
-}
-
-export type GetReviews = {
-    items: GetReview[];
-    pageNumber: number;
-    totalCount: number;
-    totalPages: number;
-}
-
-export interface GetReviewsQuery{
-    reviews: GetReviews;
-}

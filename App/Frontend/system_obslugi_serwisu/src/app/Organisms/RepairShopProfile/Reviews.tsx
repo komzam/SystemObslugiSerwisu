@@ -3,7 +3,7 @@ import {useTranslations} from "next-intl";
 import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
 import {Stars} from "@/app/Molecules/Stars";
 import {useMutation, useQuery} from "@apollo/client/react";
-import {GET_REVIEWS, GetReviewsQuery, GetReview} from "@/graphql/GetReviews";
+import {GET_REVIEWS} from "@/graphql/GetReviews";
 import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
 import {useAuthContext} from "@/app/Utils/AuthContext";
 import {Button} from "@/app/Atoms/Button";
@@ -13,9 +13,15 @@ import {StarsSelect} from "@/app/Molecules/StarsSelect";
 import {ChangeEvent, MouseEvent, useState} from "react";
 import {ADD_REVIEW} from "@/graphql/AddReview";
 import {PageSelector} from "@/app/Molecules/PageSelector";
+import {
+    ReviewsQuery,
+    ReviewsQueryVariables,
+    AddReviewMutationVariables,
+    AddReviewMutation, GetRepairShopQuery
+} from "@/__generated__/types";
 
 
-type ReviewProps = GetReview & {
+type ReviewProps = ReviewsQuery["reviews"]["items"][number] & {
     className?: string;
 };
 function Review({authorName, rating, comment, className=""}: ReviewProps) {
@@ -30,12 +36,12 @@ function Review({authorName, rating, comment, className=""}: ReviewProps) {
     )
 }
 
-type AddReviewProps = { repairShopId: string};
+type AddReviewProps = { repairShopId: GetRepairShopQuery["repairShop"]["id"]};
 function AddReview({repairShopId}: AddReviewProps){
     const t = useTranslations("RepairShop");
     const [stars, setStars] = useState<number>(0);
     const [comment, setComment] = useState<string|null>(null);
-    const [addReviewMutation] = useMutation(ADD_REVIEW, {refetchQueries: [
+    const [addReviewMutation] = useMutation<AddReviewMutation, AddReviewMutationVariables>(ADD_REVIEW, {refetchQueries: [
             {
                 query: GET_REVIEWS,
                 variables: { repairShopId, pageNumber: 1, pageSize: 5 }
@@ -83,12 +89,15 @@ function AddReview({repairShopId}: AddReviewProps){
 }
 
 
-export type ReviewsProps = {repairShopId: string}
+
+
+
+export type ReviewsProps = {repairShopId: GetRepairShopQuery["repairShop"]["id"]}
 export function Reviews({repairShopId}: ReviewsProps) {
     const t = useTranslations("RepairShop");
     const tComm = useTranslations("Common");
     const [currentPage, setCurrentPage] = useState(1);
-    const { loading, error, data} = useQuery<GetReviewsQuery>(GET_REVIEWS, {
+    const { loading, error, data} = useQuery<ReviewsQuery, ReviewsQueryVariables>(GET_REVIEWS, {
         variables: {
             repairShopId:repairShopId,
             pageNumber:currentPage,

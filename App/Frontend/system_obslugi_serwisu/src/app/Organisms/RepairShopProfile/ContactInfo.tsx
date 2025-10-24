@@ -1,15 +1,14 @@
-﻿import {GetRepairShop} from "@/graphql/GetRepairShop";
-import {useTranslations} from "next-intl";
+﻿import {useTranslations} from "next-intl";
 import {Card} from "@/app/Atoms/Card";
 import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
-import { OpeningHours } from "@/app/Types/OpeningHours";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
 type ContactInfoProps = {
-    address:GetRepairShop["address"];
-    openingHours:OpeningHours;
-    timeZoneId:string;
-    phone:string;
-    email:string;
+    address:GetRepairShopQuery["repairShop"]["address"];
+    openingHours:GetRepairShopQuery["repairShop"]["openingHours"];
+    timeZoneId:GetRepairShopQuery["repairShop"]["timeZoneId"];
+    phone:GetRepairShopQuery["repairShop"]["phone"];
+    email:GetRepairShopQuery["repairShop"]["email"];
 };
 
 

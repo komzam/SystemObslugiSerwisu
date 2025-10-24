@@ -1,19 +1,19 @@
 import {useTranslations} from "next-intl";
 import {LuClock} from "react-icons/lu";
 import {IconAndTitle} from "./IconAndTitle";
-import {OpeningHours as OpeningHoursType} from "@/app/Types/OpeningHours";
 import {DateTime} from "luxon";
+import {GetRepairShopQuery, TimeIntervalDto} from "@/__generated__/types";
 
 export type OpeningHoursProps = {
-    openingHours:OpeningHoursType;
+    openingHours:GetRepairShopQuery["repairShop"]["openingHours"];
     timeZoneId: string;
 }
 export function OpeningHours({openingHours, timeZoneId}: OpeningHoursProps) {
     const t = useTranslations("RepairShop");
     const userTimeZone = DateTime.now().zone;
 
-    const formatTime = (dayName:string, day: {from: string; to: string} | null) => {
-        if(day === null)
+    const formatTime = (dayName:string, day: GetRepairShopQuery["repairShop"]["openingHours"]["monday"]) => {
+        if(day === null || day === undefined)
             return <p>{t(dayName)}: t("closed")</p>
 
         const open = DateTime.fromFormat(day.from, "HH:mm", {zone: timeZoneId}).setZone(userTimeZone);

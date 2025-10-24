@@ -1,8 +1,7 @@
 import {gql} from "@apollo/client";
-import {AuthInfo} from "@/app/Utils/AuthContext";
 
 export const AUTH_CONTEXT_QUERY = gql`
-    query Me {
+    query AuthContext {
         me {
            email,
            name,
@@ -10,7 +9,3 @@ export const AUTH_CONTEXT_QUERY = gql`
         }
     }
 `
-
-export interface AuthContextQuery{
-    me: AuthInfo
-}

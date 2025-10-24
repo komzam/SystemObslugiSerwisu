@@ -5,10 +5,11 @@ import {LuClock} from "react-icons/lu";
 import {OpenStatus} from "@/app/Molecules/OpenStatus";
 import {OpeningHours} from "@/app/Types/OpeningHours";
 import {DateTime} from "luxon";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
 export type IsOpenProps = {
-    openingHours: OpeningHours;
-    timeZoneId: string;
+    openingHours: GetRepairShopQuery["repairShop"]["openingHours"];
+    timeZoneId: GetRepairShopQuery["repairShop"]["timeZoneId"];
     className?: string;
 }
 

@@ -91,13 +91,14 @@
     "additionalInfo": {
       "title": "Additional information",
       "contactInformation": "Contact information",
+      "fullName": "Full name",
       "email": "E-mail",
       "phoneNumber": "Phone number",
       "preferredContactMethod": "Preferred contact method",
       "contactMethods": {
-        "thisApp": "This app",
-        "phoneCall": "Phone call",
-        "sms": "SMS"
+        "App": "This app",
+        "PhoneCall": "Phone call",
+        "Sms": "SMS"
       },
       "returnInformation": "Return information",
       "returnMethod": "Return method",

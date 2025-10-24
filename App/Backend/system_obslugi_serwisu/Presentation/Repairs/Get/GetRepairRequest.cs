@@ -1,4 +1,6 @@
-﻿namespace system_obslugi_serwisu.Presentation.Repairs.Get;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace system_obslugi_serwisu.Presentation.Repairs.Get;
 
 public class GetRepairRequest
 {

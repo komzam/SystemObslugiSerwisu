@@ -20,7 +20,6 @@ type Value = {
 
 export function Dropdown2( {classNameTrigger="", classNamePortal="", triggerText="", triggerIcon, items, ...props} : Dropdown2Props ) : React.ReactNode {
 
-
     return (
         <DropdownMenu.Root>
             <DropdownMenu.Trigger className={`${classNameTrigger} focus:outline-0 select-none`} asChild>

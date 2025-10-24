@@ -1,14 +1,14 @@
 import {RepairFormCard, RepairFormCardProps} from "@/app/Molecules/RepairFormCard";
 import {useTranslations} from "next-intl";
-import {FaultInfoForm} from "@/app/Molecules/FaultInfoForm";
+import {FaultInfoForm, FaultInfoFormProps} from "@/app/Molecules/FaultInfoForm";
 
-type FormProps = Omit<RepairFormCardProps, 'title'>
+type FormProps = FaultInfoFormProps & Omit<RepairFormCardProps, 'title'>;
 
-export function RepairFormFaultInfo({...props}:FormProps) {
+export function RepairFormFaultInfo({formData, onFormChange, ...props}:FormProps) {
     const t = useTranslations("RepairForm.faultInfo");
     return (
         <RepairFormCard title={t("title")} {...props}>
-            <FaultInfoForm/>
+            <FaultInfoForm formData={formData} onFormChange={onFormChange}/>
         </RepairFormCard>
     )
 }

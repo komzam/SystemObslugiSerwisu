@@ -11,4 +11,5 @@ public class RepairDto
     public required DeviceInfoDto DeviceInfo { get; set; }
     public required FaultInfoDto FaultInfo { get; set; }
     public required ReturnInfoDto ReturnInfo { get; set; }
+    public required DateTimeOffset CreatedAt { get; set; }
 }

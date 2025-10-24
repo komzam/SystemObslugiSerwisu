@@ -5,11 +5,11 @@ import {Reviews, ReviewsProps} from "@/app/Organisms/RepairShopProfile/Reviews";
 import * as CardWithTabs from "@/app/Molecules/CardWithTabs";
 
 type MultiCardProps = {
-    aboutUs: AboutUsProps;
-    priceList: PriceListProps;
-    reviews: ReviewsProps;
+    aboutUsProps: AboutUsProps;
+    priceListProps: PriceListProps;
+    reviewsProps: ReviewsProps;
 };
-export function MultiCard({aboutUs, priceList, reviews}: MultiCardProps) {
+export function MultiCard({aboutUsProps, priceListProps, reviewsProps}: MultiCardProps) {
     const t = useTranslations("RepairShop");
     return (
         <CardWithTabs.Root defaultTabName="aboutUs">
@@ -19,13 +19,13 @@ export function MultiCard({aboutUs, priceList, reviews}: MultiCardProps) {
                 <CardWithTabs.Trigger buttonText={t("reviewsTab")} tabName="reviews"/>
             </CardWithTabs.TabsList>
             <CardWithTabs.Content tabName="aboutUs">
-                <AboutUs {...aboutUs}/>
+                <AboutUs {...aboutUsProps}/>
             </CardWithTabs.Content>
             <CardWithTabs.Content tabName="priceList">
-                <PriceList {...priceList}/>
+                <PriceList {...priceListProps}/>
             </CardWithTabs.Content>
             <CardWithTabs.Content tabName="reviews">
-                <Reviews {...reviews}/>
+                <Reviews {...reviewsProps}/>
             </CardWithTabs.Content>
         </CardWithTabs.Root>
     )

@@ -23,14 +23,14 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           <ApolloClientProvider>
               <AuthContextProvider>
                 <NextIntlClientProvider>
-                    <Navbar.Root>
-                        <Navbar.Navbar/>
-                        <Navbar.Outlet className="pt-16 h-screen">
-                            <div className="bg-inherit p-[var(--page-margin)]">
-                                {children}
-                            </div>
-                        </Navbar.Outlet>
-                    </Navbar.Root>
+                        <Navbar.Root>
+                            <Navbar.Navbar/>
+                            <Navbar.Outlet className="pt-16 h-screen">
+                                <div className="bg-inherit p-[var(--page-margin)]">
+                                    {children}
+                                </div>
+                            </Navbar.Outlet>
+                        </Navbar.Root>
                 </NextIntlClientProvider>
               </AuthContextProvider>
           </ApolloClientProvider>

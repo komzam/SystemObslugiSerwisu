@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as Select from "@radix-ui/react-select";
 import { LuChevronDown, LuChevronUp, LuCheck } from "react-icons/lu";
+import {memo} from "react";
 
 export type DropdownProps = Select.SelectProps &{
     classNameTrigger?: string;
@@ -25,7 +26,6 @@ type Value = {
 
 export function Dropdown( { placeholder, items, classNameTrigger="", classNamePortal="", ...props } : DropdownProps ) : React.ReactNode {
 
-
     return (
     <Select.Root {...props}>
         <Select.Trigger className={`bg-inherit p-2 border-2 rounded-md drop-shadow-sm border-secondary flex flex-row justify-between items-center focus:outline-0 ${classNameTrigger}`}>
@@ -35,27 +35,12 @@ export function Dropdown( { placeholder, items, classNameTrigger="", classNamePo
             </Select.Icon>
         </Select.Trigger>
         <Select.Portal>
-            <Select.Content className={`bg-white py-2 px-3 rounded-md drop-shadow-sm ${classNamePortal}`}>
+            <Select.Content className={`bg-white py-2 px-3 rounded-md drop-shadow-sm ${classNamePortal}`} position={"popper"}>
                 <Select.ScrollUpButton className="flex justify-center items-center">
                     <LuChevronUp />
                 </Select.ScrollUpButton>
                 <Select.Viewport>
-                    {
-                        items.map((group:Group, groupNumber:number) => (
-                            <Select.Group key={groupNumber}>
-                                {
-                                    group.groupName!=undefined &&
-                                    group.groupName != "" &&
-                                    <Select.Label className="text-smaller1 text-accent4 select-none">{group.groupName}</Select.Label>
-                                }
-                                {
-                                    group.values.map((value:Value, valueNumber:number)=>(
-                                        <SelectItem value={value.valueName} key={valueNumber} disabled={value.isDisabled != undefined && value.isDisabled}>{value.valueLabel}</SelectItem>
-                                    ))
-                                }
-                            </Select.Group>
-                        ))
-                    }
+                    <DropdownList items={items}/>
                 </Select.Viewport>
                 <Select.ScrollDownButton className="flex justify-center items-center">
                     <LuChevronDown />
@@ -84,3 +69,26 @@ const SelectItem = React.forwardRef<HTMLDivElement, Select.SelectItemProps>(
     },
 );
 SelectItem.displayName = 'SelectItem';
+
+const DropdownList = memo(function DropdownList({ items }: {items: DropdownItems;}) {
+    return(
+        <>
+            {
+                items.map((group:Group, groupNumber:number) => (
+                    <Select.Group key={groupNumber}>
+                        {
+                            group.groupName != undefined &&
+                            group.groupName != "" &&
+                            <Select.Label className="text-smaller1 text-accent4 select-none">{group.groupName}</Select.Label>
+                        }
+                        {
+                            group.values.map((value:Value, valueNumber:number)=>(
+                                <SelectItem value={value.valueName} key={valueNumber} disabled={value.isDisabled != undefined && value.isDisabled}>{value.valueLabel}</SelectItem>
+                            ))
+                        }
+                    </Select.Group>
+                ))
+            }
+        </>
+    )
+});

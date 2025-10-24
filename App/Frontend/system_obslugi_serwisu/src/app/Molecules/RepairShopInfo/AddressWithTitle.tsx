@@ -2,10 +2,11 @@ import {useTranslations} from "next-intl";
 import {LuMapPin} from "react-icons/lu";
 import {SearchRepairShop} from "@/graphql/Search";
 import {IconAndTitle} from "./IconAndTitle";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
 export type AddressWithTitleProps = {
     className?: string;
-    address: SearchRepairShop["address"];
+    address: GetRepairShopQuery["repairShop"]["address"];
 }
 
 export function AddressWithTitle({address}: AddressWithTitleProps) {

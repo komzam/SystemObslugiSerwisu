@@ -17,6 +17,7 @@ public class RepairMapper
             DeviceInfo = ToDto(repair.DeviceInfo),
             FaultInfo = ToDto(repair.FaultInfo),
             ReturnInfo = ToDto(repair.ReturnInfo),
+            CreatedAt = repair.CreatedAt,
         };
     }
 
