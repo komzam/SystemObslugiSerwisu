@@ -26,7 +26,7 @@ export type AddressDto = {
   apartmentNumber?: Maybe<Scalars['String']['output']>;
   buildingNumber: Scalars['String']['output'];
   city: Scalars['String']['output'];
-  country: Scalars['String']['output'];
+  country: Country;
   postalCode: Scalars['String']['output'];
   recipientName: Scalars['String']['output'];
   street: Scalars['String']['output'];
@@ -92,8 +92,10 @@ export type CustomerDto = {
   email: Scalars['String']['output'];
   isBusiness: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  preferredContactMethod?: Maybe<Scalars['String']['output']>;
-  preferredReturnMethod?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  phoneRegionCode?: Maybe<Scalars['String']['output']>;
+  preferredContactMethod?: Maybe<ContactMethod>;
+  preferredReturnMethod?: Maybe<ReturnMethod>;
 };
 
 export type DeleteReviewRequestInput = {
@@ -393,7 +395,7 @@ export type AddReviewMutation = { __typename?: 'Mutation', addReview: boolean };
 export type AuthContextQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', email: string, name: string, isBusiness: boolean } };
+export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', email: string, name: string, phone?: string | null, phoneRegionCode?: string | null, preferredContactMethod?: ContactMethod | null, preferredReturnMethod?: ReturnMethod | null, isBusiness: boolean, address?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } | null } };
 
 export type BookRepairMutationVariables = Exact<{
   request: BookRepairRequestInput;

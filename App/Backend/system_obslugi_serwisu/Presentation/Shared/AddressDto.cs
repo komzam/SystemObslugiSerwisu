@@ -1,4 +1,6 @@
-﻿namespace system_obslugi_serwisu.Presentation.Shared;
+﻿using system_obslugi_serwisu.Domain.Shared;
+
+namespace system_obslugi_serwisu.Presentation.Shared;
 
 public class AddressDto
 {
@@ -8,5 +10,5 @@ public class AddressDto
     public string? ApartmentNumber { get; set; }
     public required string PostalCode { get; set; }
     public required string City { get; set; }
-    public required string Country { get; set; }
+    public required Country Country { get; set; }
 }

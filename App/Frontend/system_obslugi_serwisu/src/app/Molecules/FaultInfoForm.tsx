@@ -3,6 +3,7 @@ import {LabeledTextInput} from "@/app/Molecules/LabeledTextInput";
 import {LabeledTextArea} from "@/app/Molecules/LabeledTextArea";
 import {LabeledSwitch} from "@/app/Molecules/LabeledSwitch";
 import {BookRepairMutationVariables} from "@/__generated__/types";
+import {useRepairFormContext} from "@/app/Utils/RepairFormProvider";
 
 type FaultInfoKey = keyof BookRepairMutationVariables["request"]["faultInfo"];
 
@@ -11,25 +12,26 @@ export type FaultInfoChangeHandler = <K extends FaultInfoKey>(
     value: BookRepairMutationVariables["request"]["faultInfo"][K]
 ) => void;
 
-export type FaultInfoFormProps = {
-    formData: BookRepairMutationVariables["request"]["faultInfo"];
-    onFormChange: FaultInfoChangeHandler;
-}
-
-export function FaultInfoForm({formData, onFormChange}: FaultInfoFormProps) {
+export function FaultInfoForm() {
     const t = useTranslations("RepairForm.faultInfo");
+    const repairFormContext = useRepairFormContext();
+    const formData = repairFormContext.repairFormData.faultInfo;
+
+    const updateForm:FaultInfoChangeHandler = (fieldName, value) => {
+        repairFormContext.setRepairForm((prev) => ({ ...prev, faultInfo:{ ...prev.faultInfo, [fieldName]: value }}));
+    };
 
     return(
         <div className="bg-inherit flex flex-col gap-5 w-full">
-            <LabeledTextInput wrapperClassName="w-full" className="w-full" id="whenFaultOccured" label={t("whenFaultOccured")}
-                              onChange={(e) => onFormChange("whenOccured", e.target.value)}/>
-            <LabeledTextArea wrapperClassName="w-full" className="w-full" id={"howToReplicateFault"} label={t("howToReplicateFault")}
-                             onChange={(e) => onFormChange("howToReproduce", e.target.value)}/>
-            <LabeledTextArea wrapperClassName="w-full" className="w-full" id={"describeFault"} label={t("describeFault")}
-                             onChange={(e) => onFormChange("description", e.target.value)}/>
+            <LabeledTextInput wrapperClassName="w-full" className="w-full" id="whenFaultOccured" label={t("whenFaultOccured")} value={formData.whenOccured}
+                              onChange={(e) => updateForm("whenOccured", e.target.value)}/>
+            <LabeledTextArea wrapperClassName="w-full" className="w-full" id={"howToReplicateFault"} label={t("howToReplicateFault")} value={formData.howToReproduce}
+                             onChange={(e) => updateForm("howToReproduce", e.target.value)}/>
+            <LabeledTextArea wrapperClassName="w-full" className="w-full" id={"describeFault"} label={t("describeFault")} value={formData.description}
+                             onChange={(e) => updateForm("description", e.target.value)}/>
             <div className="pl-2">
-                <LabeledSwitch id="wasRepairedBefore" label={t("wasRepairedBefore")}
-                               onChange={(checked) => onFormChange("previouslyRepaired", checked)}/>
+                <LabeledSwitch id="wasRepairedBefore" label={t("wasRepairedBefore")} checked={formData.previouslyRepaired}
+                               onChange={(checked) => updateForm("previouslyRepaired", checked)}/>
             </div>
         </div>
     )

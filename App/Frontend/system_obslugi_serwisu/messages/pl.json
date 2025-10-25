@@ -103,8 +103,8 @@
       "returnInformation": "Informacje dotyczące zwrotu",
       "returnMethod": "Sposób zwrotu",
       "returnMethods": {
-        "selfPickup": "Odbiór osobisty",
-        "courierDelivery": "Dostawa kurierem"
+        "SelfPickup": "Odbiór osobisty",
+        "CourierDelivery": "Dostawa kurierem"
       },
       "otherInformation": "Inne informacje",
       "deviceLoginInfo": "Dane logowania do urządzenia",
@@ -130,7 +130,7 @@
     }
   },
   "Address": {
-    "fullName": "Imię i nazwisko",
+    "recipientName": "Nazwa odbiorcy",
     "streetName": "Ulica",
     "buildingNumber": "Nr. budynku",
     "aptNumber": "Nr. mieszkania",
@@ -183,6 +183,32 @@
     "details": "Szczegóły",
     "messagePlaceholder": "Napisz wiadomość...",
     "send": "Wyślij"
+  },
+  "DeviceTypes": {
+    "Smartphone": "Smartfon",
+    "Tablet": "Tablet",
+    "Laptop": "Laptop",
+    "Desktop": "Komputer stacjonarny",
+
+    "Smartwatch": "Smartwatch",
+    "Wearable": "Wearable",
+
+    "GamingConsole": "Konsola do gier",
+    "Television": "Telewizor",
+    "Monitor": "Monitor",
+    "Speaker": "Głośnik",
+    "Headphones": "Słuchawki",
+
+    "Camera": "Kamera",
+    "Drone": "Dron",
+
+    "NetworkDevice": "Urządzenie sieciowe",
+    "SmartHomeDevice": "Urządzenie smart home",
+
+    "Printer": "Drukarka",
+    "Scanner": "Skaner",
+
+    "Other": "Inne"
   },
   "Errors": {
     "generalError": "Wystąpił błąd",

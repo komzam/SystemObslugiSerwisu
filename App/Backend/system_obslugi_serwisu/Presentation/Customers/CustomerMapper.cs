@@ -12,9 +12,11 @@ public static class CustomerMapper
         {
             Email = customer.Email.Value,
             Name = customer.Name.DisplayName,
+            Phone = customer.Phone?.Number,
+            PhoneRegionCode = customer.Phone?.RegionCode,
             IsBusiness = customer.IsBusiness,
-            PreferredContactMethod = customer.PreferredContactMethod?.ToString(),
-            PreferredReturnMethod = customer.PreferredReturnMethod?.ToString(),
+            PreferredContactMethod = customer.PreferredContactMethod,
+            PreferredReturnMethod = customer.PreferredReturnMethod,
             Address = customer.Address==null ? null : SharedMapper.ToDto(customer.Address)
         };
         return customerDto;

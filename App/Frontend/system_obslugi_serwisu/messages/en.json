@@ -103,8 +103,8 @@
       "returnInformation": "Return information",
       "returnMethod": "Return method",
       "returnMethods": {
-        "selfPickup": "Self-pickup",
-        "courierDelivery": "Courier delivery"
+        "SelfPickup": "Self-pickup",
+        "CourierDelivery": "Courier delivery"
       },
       "otherInformation": "Other information",
       "deviceLoginInfo": "Device login info",
@@ -130,7 +130,7 @@
     }
   },
   "Address": {
-    "fullName": "Full name",
+    "recipientName": "Recipient name",
     "streetName": "Street name",
     "buildingNumber": "Building number",
     "aptNumber": "Apt. number",
@@ -183,6 +183,32 @@
     "details": "Details",
     "messagePlaceholder": "Type a message...",
     "send": "Send"
+  },
+  "DeviceTypes": {
+    "Smartphone": "Smartphone",
+    "Tablet": "Tablet",
+    "Laptop": "Laptop",
+    "Desktop": "Desktop",
+
+    "Smartwatch": "Smartwatch",
+    "Wearable": "Wearable",
+
+    "GamingConsole": "Gaming console",
+    "Television": "Television",
+    "Monitor": "Monitor",
+    "Speaker": "Speaker",
+    "Headphones": "Headphones",
+
+    "Camera": "Camera",
+    "Drone": "Drone",
+
+    "NetworkDevice": "Network device",
+    "SmartHomeDevice": "Smart home device",
+
+    "Printer": "Printer",
+    "Scanner": "Scanner",
+
+    "Other": "Other"
   },
   "Errors": {
     "generalError": "There was an error",

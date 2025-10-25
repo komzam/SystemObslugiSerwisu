@@ -16,7 +16,7 @@ public static class SharedMapper
             ApartmentNumber = address.ApartmentNumber,
             PostalCode = address.PostalCode.Value,
             City = address.City,
-            Country = address.Country.ToString()
+            Country = address.Country
 
         };
         return addressDto;
@@ -24,9 +24,6 @@ public static class SharedMapper
     
     public static OperationResult<Address> FromDto(AddressDto addressDto)
     {
-        if (!Enum.TryParse<Country>(addressDto.Country, out var country))
-            return AddressErrors.InvalidCountry();
-
         var address = Address.Create(new()
         {
             RecipientName = addressDto.RecipientName,
@@ -35,7 +32,7 @@ public static class SharedMapper
             ApartmentNumber = addressDto.ApartmentNumber,
             PostalCode = addressDto.PostalCode,
             City = addressDto.City,
-            Country = country
+            Country = addressDto.Country
         });
         
         return address;

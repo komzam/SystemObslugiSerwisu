@@ -2,14 +2,16 @@ import * as RSwitch from "@radix-ui/react-switch"
 
 export type SwitchProps = {
     id: string,
-    onChange?: (checked: boolean) => void
+    onChange?: (checked: boolean) => void,
+    checked?: boolean,
 }
 
-export function Switch({id, onChange} : SwitchProps) {
+export function Switch({id, onChange, checked} : SwitchProps) {
     return (
         <RSwitch.Root
             className="w-10 h-6 min-w-10 min-h-6 bg-accent3 rounded-full relative data-[state=checked]:bg-primary outline-none cursor-pointer"
             onCheckedChange={onChange}
+            checked={checked}
             id={id}
         >
             <RSwitch.Thumb
