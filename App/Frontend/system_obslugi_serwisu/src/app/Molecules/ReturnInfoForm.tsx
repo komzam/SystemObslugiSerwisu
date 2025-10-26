@@ -52,7 +52,6 @@ export function ReturnInfoForm() {
 
     const returnMethods : DropdownItems = useMemo(() => {
         const items: DropdownItems = [{values: []}];
-        let i = 0;
         for (const key in ReturnMethod) {
             if (ReturnMethod.hasOwnProperty(key)) {
                 const enumKey = key as keyof typeof ReturnMethod;
@@ -60,7 +59,6 @@ export function ReturnInfoForm() {
                     valueName: ReturnMethod[enumKey],
                     valueLabel: t("returnMethods." + key),
                 });
-                i++;
             }
         }
         return items;
@@ -69,7 +67,6 @@ export function ReturnInfoForm() {
     useEffect(() => {
         if(authContext.isLoggedIn){
             updateForm("returnMethod", authContext.authInfo?.preferredReturnMethod?? ReturnMethod.SelfPickup);
-            console.log(authContext.authInfo);
             if(formData.address?.recipientName == "" && authContext.authInfo?.address){
                 updateForm("address", authContext.authInfo.address)
             }

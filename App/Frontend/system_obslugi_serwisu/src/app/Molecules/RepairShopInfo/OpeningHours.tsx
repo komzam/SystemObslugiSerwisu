@@ -14,7 +14,7 @@ export function OpeningHours({openingHours, timeZoneId}: OpeningHoursProps) {
 
     const formatTime = (dayName:string, day: GetRepairShopQuery["repairShop"]["openingHours"]["monday"]) => {
         if(day === null || day === undefined)
-            return <p>{t(dayName)}: t("closed")</p>
+            return <p>{t(dayName)}: {t("closed")}</p>
 
         const open = DateTime.fromFormat(day.from, "HH:mm", {zone: timeZoneId}).setZone(userTimeZone);
         const close = DateTime.fromFormat(day.to, "HH:mm", {zone: timeZoneId}).setZone(userTimeZone);
