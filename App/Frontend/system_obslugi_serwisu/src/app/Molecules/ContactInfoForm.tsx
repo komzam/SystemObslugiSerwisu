@@ -43,16 +43,6 @@ export function ContactInfoForm() {
         return items;
     }, []);
 
-    useEffect(() => {
-        if(authContext.isLoggedIn && formData.email == ""){
-            updateForm("fullName", authContext.authInfo?.name);
-            updateForm("email", authContext.authInfo?.email);
-            updateForm("phoneNumber", authContext.authInfo?.phone?? "");
-            updateForm("phoneRegionCode", authContext.authInfo?.phoneRegionCode?? "PL");
-            updateForm("preferredContactMethod", authContext.authInfo?.preferredContactMethod?? ContactMethod.Sms)
-        }
-    }, []);
-
     return (
         <div className="bg-inherit flex flex-col gap-5">
             <LabeledTextInput wrapperClassName="w-full" className="w-full" id="fullName" label={t("fullName")}

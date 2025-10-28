@@ -23,6 +23,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthContextProvider({children}: AuthContextProviderProps) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [authInfo, setAuthInfo] = useState<AuthContextQuery["me"] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { loading, data, refetch } = useQuery<AuthContextQuery, AuthContextQueryVariables>(
         AUTH_CONTEXT_QUERY,
@@ -35,6 +36,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps) {
     const client = useApolloClient();
 
     useEffect(() => {
+        setIsLoading(true);
         if(!loading){
             if (data?.me) {
                 setAuthInfo(data.me);
@@ -43,6 +45,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps) {
                 setAuthInfo(null);
                 setIsLoggedIn(false);
             }
+            setIsLoading(false);
         }
     }, [loading, data]);
 
@@ -55,7 +58,7 @@ export function AuthContextProvider({children}: AuthContextProviderProps) {
     const update = async () => await refetch();
 
     return (
-        <AuthContext.Provider value={{authInfo, isLoggedIn, logout, update, isLoading: loading}}>
+        <AuthContext.Provider value={{authInfo, isLoggedIn, logout, update, isLoading}}>
             {children}
         </AuthContext.Provider>
     )
