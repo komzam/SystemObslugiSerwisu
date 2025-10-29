@@ -1,6 +1,5 @@
 import {useTranslations} from "next-intl";
 import {LuMapPin} from "react-icons/lu";
-import {SearchRepairShop} from "@/graphql/Search";
 import {IconAndTitle} from "./IconAndTitle";
 import {GetRepairShopQuery} from "@/__generated__/types";
 

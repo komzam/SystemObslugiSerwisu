@@ -94,7 +94,10 @@ public class Address : ValueObject
             return AddressErrors.BuildingNumberTooLong();
         
         if (data.ApartmentNumber != null && data.ApartmentNumber.Length > ApartmentNumberMaxLength)
-            return AddressErrors.ApartamentNumberTooLong();
+            return AddressErrors.ApartmentNumberTooLong();
+        
+        if (data.ApartmentNumber != null && String.IsNullOrWhiteSpace(data.ApartmentNumber))
+            return AddressErrors.InvalidApartmentNumber();
         
         if (data.City.Length > CityMaxLength)
             return AddressErrors.CityTooLong();

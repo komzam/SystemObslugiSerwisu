@@ -45,12 +45,12 @@ export function DeviceInfoForm() {
             value={formData.deviceType} onValueChange={(value) => { updateForm("deviceType", value as DeviceType);}}/>
             <div className="bg-inherit flex flex-col md:flex-row gap-5 w-full">
                 <LabeledTextInput value={formData.manufacturer} wrapperClassName="w-full md:flex-1" className="w-full" id="manufacturer" label={t("manufacturer")}
-                                  onChange={(e) => updateForm("manufacturer", e.target.value)}/>
+                                  onChange={(e) => updateForm("manufacturer", e.target.value)} required={true}/>
                 <LabeledTextInput value={formData.model} wrapperClassName="w-full md:flex-1" className="w-full" id="modelName" label={t("modelName")}
-                                  onChange={(e) => updateForm("model", e.target.value)}/>
+                                  onChange={(e) => updateForm("model", e.target.value)} required={true}/>
             </div>
             <LabeledTextInput value={formData.serialNumber} wrapperClassName="w-full" className="w-full" id="serialNumber" label={t("serialNumber")}
-                              onChange={(e) => updateForm("serialNumber", e.target.value)}/>
+                              onChange={(e) => updateForm("serialNumber", e.target.value)} required={true}/>
         </div>
     )
 }

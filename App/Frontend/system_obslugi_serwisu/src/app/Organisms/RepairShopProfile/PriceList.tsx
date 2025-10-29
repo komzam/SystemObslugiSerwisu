@@ -5,16 +5,16 @@ import {KeyValueList} from "@/app/Molecules/KeyValueList";
 import {useState} from "react";
 import {useQuery} from "@apollo/client/react";
 import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
-import {GET_SERVICES, GetServicesQuery} from "@/graphql/GetServices";
+import {GET_SERVICES} from "@/graphql/GetServices";
 import {PageSelector} from "@/app/Molecules/PageSelector";
-import {GetRepairShopQuery} from "@/__generated__/types";
+import {GetRepairShopQuery, ServicesQuery, ServicesQueryVariables} from "@/__generated__/types";
 
 export type PriceListProps = { repairShopId: GetRepairShopQuery["repairShop"]["id"] };
 export function PriceList({repairShopId}: PriceListProps) {
     const t = useTranslations("RepairShop");
     const tComm = useTranslations("Common");
     const [currentPage, setCurrentPage] = useState(1);
-    const { loading, error, data} = useQuery<GetServicesQuery>(GET_SERVICES, {
+    const { loading, error, data} = useQuery<ServicesQuery, ServicesQueryVariables>(GET_SERVICES, {
         variables: {
             repairShopId:repairShopId,
             pageNumber:currentPage,

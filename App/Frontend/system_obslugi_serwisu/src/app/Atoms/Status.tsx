@@ -1,20 +1,5 @@
 import {useTranslations} from "next-intl";
-
-export enum StatusType{
-    Booked="booked",
-    ToBeDiagnosed="toBeDiagnosed",
-    AwaitingConfirmation="awaitingConfirmation",
-    Canceled="canceled",
-    ReadyToRepair="readyToRepair",
-    InRepair="inRepair",
-    AwaitingParts="awaitingParts",
-    PaymentRequired="paymentRequired",
-    ToBeSentOut="toBeSentOut",
-    ReadyForPickup="readyForPickup",
-    SentOut="sentOut",
-    Completed="completed",
-    Complaint="complaint"
-}
+import {RepairStatus} from "@/__generated__/types";
 
 type StatusVariant = {
     dot: string;
@@ -55,25 +40,25 @@ const variants: Record<string, StatusVariant> = {
     },
 }
 
-const StatusToVisual: Record<StatusType, keyof typeof variants> = {
-    booked: "gray",
-    toBeDiagnosed: "blue",
-    awaitingConfirmation: "orange",
-    canceled: "red",
-    readyToRepair: "yellow",
-    inRepair: "yellow",
-    awaitingParts: "orange",
-    paymentRequired: "orange",
-    toBeSentOut: "green",
-    readyForPickup: "green",
-    sentOut: "gray",
-    completed: "gray",
-    complaint: "red",
+const StatusToVisual: Record<RepairStatus, keyof typeof variants> = {
+    BOOKED: "gray",
+    TO_BE_DIAGNOSED: "blue",
+    AWAITING_CONFIRMATION: "orange",
+    CANCELED: "red",
+    READY_TO_REPAIR: "yellow",
+    IN_REPAIR: "yellow",
+    AWAITING_PARTS: "orange",
+    PAYMENT_REQUIRED: "orange",
+    TO_BE_SENT_OUT: "green",
+    READY_FOR_PICKUP: "green",
+    SENT_OUT: "gray",
+    COMPLETED: "gray",
+    COMPLAINT: "red",
 }
 
 
 type StatusProps = {
-    type: StatusType;
+    type: RepairStatus;
     className?: string;
 }
 

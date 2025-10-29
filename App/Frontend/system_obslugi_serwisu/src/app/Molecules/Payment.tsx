@@ -1,11 +1,7 @@
 "use client";
 
 import {useTranslations} from "next-intl";
-import {KeyValueList} from "@/app/Molecules/KeyValueList";
-import {KeyValueLineProps} from "@/app/Molecules/KeyValueLine";
-import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
 import {Button} from "@/app/Atoms/Button";
-import {useState} from "react";
 import {LabeledText} from "@/app/Molecules/LabeledText";
 
 export type PaymentProps = {

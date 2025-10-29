@@ -15,10 +15,13 @@ export function ProtectedRoute({ children, mustBe="loggedIn", redirectTo="/signI
     const router = useRouter();
 
     useEffect(() => {
-        if((!authContext.isLoggedIn && mustBe == "loggedIn") || (authContext.isLoggedIn && mustBe == "loggedOut"))
-            router.replace(redirectTo);
-    });
+        if(!authContext.isLoading) {
+            if ((!authContext.isLoggedIn && mustBe == "loggedIn") || (authContext.isLoggedIn && mustBe == "loggedOut"))
+                router.replace(redirectTo);
+        }
+    }, [authContext.isLoading]);
 
+    if(authContext.isLoading) return null;
     if((!authContext.isLoggedIn && mustBe == "loggedIn") || (authContext.isLoggedIn && mustBe == "loggedOut"))
         return null;
 

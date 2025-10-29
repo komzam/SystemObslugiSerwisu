@@ -1,5 +1,6 @@
 ﻿using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
+using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Repairs;
@@ -11,12 +12,13 @@ public class RepairMapper
         return new RepairDto
         {
             Id = repair.Id.ToString(),
-            RepairShopId = repair.RepairShop.Id.ToString(),
+            RepairShop = RepairShopMapper.ToDto(repair.RepairShop),
             Status = repair.Status,
             ContactInfo = ToDto(repair.ContactInfo),
             DeviceInfo = ToDto(repair.DeviceInfo),
             FaultInfo = ToDto(repair.FaultInfo),
             ReturnInfo = ToDto(repair.ReturnInfo),
+            AdditionalComment = repair.AdditionalComment,
             CreatedAt = repair.CreatedAt,
         };
     }
@@ -47,7 +49,7 @@ public class RepairMapper
     {
         return new FaultInfoDto
         {
-            WhenOccured = faultInfo.WhenOccured,
+            WhenOccurred = faultInfo.WhenOccurred,
             HowToReproduce = faultInfo.HowToReproduce,
             Description = faultInfo.Description,
             PreviouslyRepaired = faultInfo.PreviouslyRepaired

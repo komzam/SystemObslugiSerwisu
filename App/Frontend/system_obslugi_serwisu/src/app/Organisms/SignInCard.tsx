@@ -4,13 +4,13 @@ import {Card} from "@/app/Atoms/Card";
 import {SignInForm, SignInFormData} from "@/app/Molecules/SignInForm";
 import {SignInButton} from "@/app/Molecules/SignInButton";
 import {useTranslations} from "next-intl";
-import {createRef, useState, FormEvent} from "react";
+import { useState, FormEvent} from "react";
 import {useMutation} from "@apollo/client/react";
 import {LOGIN} from "@/graphql/Login";
-import {CombinedGraphQLErrors} from "@apollo/client/errors";
 import {useAuthContext} from "@/app/Utils/AuthContext";
 import {useRouter} from "@/i18n/navigation";
 import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
+import {ErrorName} from "@/app/Utils/ErrorName";
 
 export function SignInCard() {
     const t = useTranslations("SignIn");
@@ -35,17 +35,7 @@ export function SignInCard() {
             authContext.update();
             router.push("/");
         } catch (err: unknown) {
-            if (CombinedGraphQLErrors.is(err)) {
-                const code = err.errors[0].extensions?.code as string | undefined;
-                if(!code)
-                    setError(tErr("generalError"));
-                else if (tErr.has(code))
-                    setError(tErr(code));
-                else
-                    setError(tErr("generalError"));
-            }else{
-                setError(tErr("generalError"));
-            }
+            setError(ErrorName(err, tErr));
         }
     }
 

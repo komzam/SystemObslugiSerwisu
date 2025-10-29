@@ -1,6 +1,5 @@
 ﻿import {ReactNode} from "react";
 import {Star} from "@/app/Atoms/Star";
-import {RatingStarsProps} from "@/app/Molecules/RepairShopElementInfo";
 
 export type StarsProps = {
     numberOfStars: number;

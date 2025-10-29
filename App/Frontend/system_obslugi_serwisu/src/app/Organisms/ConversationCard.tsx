@@ -5,16 +5,17 @@ import * as React from "react";
 import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
 import {CardWithHeader} from "@/app/Atoms/CardWithHeader";
 import {Button} from "@/app/Atoms/Button";
-import {LuAlignJustify, LuWrench} from "react-icons/lu";
-import {Status, StatusType} from "@/app/Atoms/Status";
+import {LuWrench} from "react-icons/lu";
+import {Status} from "@/app/Atoms/Status";
 import {TextArea} from "@/app/Atoms/TextArea";
 import {useEffect, useRef} from "react";
 import {useTranslations} from "next-intl";
+import {RepairStatus} from "@/__generated__/types";
 
 export type ConversationCardProps = {
     title: string;
     repairTicketNumber: number;
-    status: StatusType;
+    status: RepairStatus;
     messages: ConversationMessageProps[];
     className?: string;
 }

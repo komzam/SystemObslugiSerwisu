@@ -13,6 +13,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
+  UUID: { input: any; output: any; }
 };
 
 export type AddReviewRequestInput = {
@@ -53,6 +54,7 @@ export enum ApplyPolicy {
 }
 
 export type BookRepairRequestInput = {
+  additionalComment?: InputMaybe<Scalars['String']['input']>;
   contactInfo: ContactInfoInput;
   deviceInfo: DeviceInfoInput;
   faultInfo: FaultInfoInput;
@@ -90,12 +92,19 @@ export type CustomerDto = {
   __typename?: 'CustomerDto';
   address?: Maybe<AddressDto>;
   email: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   isBusiness: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   phoneRegionCode?: Maybe<Scalars['String']['output']>;
   preferredContactMethod?: Maybe<ContactMethod>;
   preferredReturnMethod?: Maybe<ReturnMethod>;
+  repairs: PaginatedListOfRepairDto;
+};
+
+
+export type CustomerDtoRepairsArgs = {
+  request: GetRepairListRequestInput;
 };
 
 export type DeleteReviewRequestInput = {
@@ -144,14 +153,19 @@ export type FaultInfoDto = {
   description: Scalars['String']['output'];
   howToReproduce: Scalars['String']['output'];
   previouslyRepaired: Scalars['Boolean']['output'];
-  whenOccured: Scalars['String']['output'];
+  whenOccurred: Scalars['String']['output'];
 };
 
 export type FaultInfoInput = {
   description: Scalars['String']['input'];
   howToReproduce: Scalars['String']['input'];
   previouslyRepaired: Scalars['Boolean']['input'];
-  whenOccured: Scalars['String']['input'];
+  whenOccurred: Scalars['String']['input'];
+};
+
+export type GetRepairListRequestInput = {
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
 };
 
 export type GetRepairRequestInput = {
@@ -224,6 +238,15 @@ export type OpeningHoursDto = {
   thursday?: Maybe<TimeIntervalDto>;
   tuesday?: Maybe<TimeIntervalDto>;
   wednesday?: Maybe<TimeIntervalDto>;
+};
+
+export type PaginatedListOfRepairDto = {
+  __typename?: 'PaginatedListOfRepairDto';
+  items: Array<RepairDto>;
+  pageNumber: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  totalCount: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
 };
 
 export type PaginatedListOfRepairShopDto = {
@@ -300,12 +323,13 @@ export type RegisterRequestInput = {
 
 export type RepairDto = {
   __typename?: 'RepairDto';
+  additionalComment?: Maybe<Scalars['String']['output']>;
   contactInfo: ContactInfoDto;
   createdAt: Scalars['DateTime']['output'];
   deviceInfo: DeviceInfoDto;
   faultInfo: FaultInfoDto;
   id: Scalars['String']['output'];
-  repairShopId: Scalars['String']['output'];
+  repairShop: RepairShopDto;
   returnInfo: ReturnInfoDto;
   status: RepairStatus;
 };
@@ -402,7 +426,22 @@ export type BookRepairMutationVariables = Exact<{
 }>;
 
 
-export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: string, repairShopId: string, createdAt: any } };
+export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: string, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
+
+export type GetCustomerRepairsQueryVariables = Exact<{
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+}>;
+
+
+export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
+
+export type GetRepairQueryVariables = Exact<{
+  repairId: Scalars['String']['input'];
+}>;
+
+
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: string, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: string, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean } } };
 
 export type GetRepairShopQueryVariables = Exact<{
   id: Scalars['String']['input'];

@@ -6,10 +6,16 @@ import {CardWithHeader} from "@/app/Atoms/CardWithHeader";
 import {Button} from "@/app/Atoms/Button";
 import {KeyValueList} from "@/app/Molecules/KeyValueList";
 import {KeyValueLineProps} from "@/app/Molecules/KeyValueLine";
+import {DateTime} from "luxon";
+import {AddressDto} from "@/__generated__/types";
 
-type FormProps = Omit<RepairFormCardProps, 'title'>
+type FormProps = Omit<RepairFormCardProps, 'title'> & {
+    repairTickerNumber: string;
+    createdAt: string;
+    repairShopAddress: AddressDto;
+};
 
-export function RepairFormConfirmation({...props} : FormProps) {
+export function RepairFormConfirmation({repairTickerNumber, createdAt, repairShopAddress, ...props} : FormProps) {
     const t = useTranslations("RepairForm.confirmation");
 
     const steps : StepInfo[] = [
@@ -19,8 +25,8 @@ export function RepairFormConfirmation({...props} : FormProps) {
     ]
 
     const ticketDetails: KeyValueLineProps[] = [
-        { label: t("repairTicketNumber"), value: "TICKET NUMBER" },
-        { label: t("created"), value: "CREATE DATE" }
+        { label: t("repairTicketNumber"), value: repairTickerNumber },
+        { label: t("created"), value: DateTime.fromISO(createdAt).toFormat("HH:mm:ss dd.MM.yyyy") }
     ]
 
     return (
@@ -39,7 +45,9 @@ export function RepairFormConfirmation({...props} : FormProps) {
                         <span className="text-larger2 text-white">{t("repairShopAddress")}</span>
                     </CardWithHeader.Header>
                     <CardWithHeader.Card>
-                        <span>ADDRESS</span>
+                        <p>{repairShopAddress.recipientName}</p>
+                        <p>{repairShopAddress.street} {repairShopAddress.buildingNumber}{repairShopAddress.apartmentNumber && `/${repairShopAddress.apartmentNumber}`}</p>
+                        <p>{repairShopAddress.city} {repairShopAddress.postalCode}</p>
                     </CardWithHeader.Card>
                 </CardWithHeader>
             </div>

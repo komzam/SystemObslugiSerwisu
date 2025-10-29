@@ -5,6 +5,7 @@ import "../globals.css";
 import * as Navbar from "@/app/Organisms/Navbar";
 import {ApolloClientProvider} from "@/app/Utils/ApolloClientProvider";
 import {AuthContextProvider} from "@/app/Utils/AuthContext";
+import {ReactNode} from "react";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description: "System ułatwiający naprawy sprzętu.",
 };
 
-export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
+export default function RootLayout({ children, }: Readonly<{ children: ReactNode; }>) {
   return (
     <html lang="en">
       <body className={`${roboto.variable}`}>

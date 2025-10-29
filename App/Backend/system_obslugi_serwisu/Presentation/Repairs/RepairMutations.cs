@@ -42,7 +42,8 @@ public class RepairMutations
             ContactInfo = request.ContactInfo,
             DeviceInfo = request.DeviceInfo,
             FaultInfo = request.FaultInfo,
-            ReturnInfo = request.ReturnInfo
+            ReturnInfo = request.ReturnInfo,
+            AdditionalComment = request.AdditionalComment
         });
         if (repairResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()

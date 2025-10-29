@@ -1,4 +1,4 @@
-import {Dot, DotProps} from "@/app/Atoms/Dot"
+import {Dot} from "@/app/Atoms/Dot"
 
 export type StepProps = {
     stepNumber: number;

@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Domain.RepairShops;
+namespace system_obslugi_serwisu.Domain.RepairShops.Errors;
 
 public static class RepairShopErrors
 {

@@ -47,7 +47,8 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
             ContactInfo = contactInfoResult.Value,
             DeviceInfo = deviceInfoResult.Value,
             FaultInfo = faultInfoResult.Value,
-            ReturnInfo = returnInfoResult.Value
+            ReturnInfo = returnInfoResult.Value,
+            AdditionalComment = request.AdditionalComment
         });
         if(repairResult.IsFailure)
             return repairResult.Error;
@@ -104,7 +105,7 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
     
     private OperationResult<FaultInfo> CreateFaultInfo(FaultInfoInput faultInfoInput)
     {
-        return FaultInfo.Create(faultInfoInput.WhenOccured, faultInfoInput.HowToReproduce,
+        return FaultInfo.Create(faultInfoInput.WhenOccurred, faultInfoInput.HowToReproduce,
             faultInfoInput.Description, faultInfoInput.PreviouslyRepaired);
     }
     

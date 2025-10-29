@@ -14,6 +14,7 @@ public class GraphQlConfig
             .AddAuthorization()
             .AddQueryType<Query>()
                 .AddTypeExtension<CustomerQueries>()
+                .AddTypeExtension<CustomerExtensions>()
                 .AddTypeExtension<RepairShopQueries>()
                 .AddTypeExtension<ReviewQueries>()
                 .AddTypeExtension<ServiceQueries>()

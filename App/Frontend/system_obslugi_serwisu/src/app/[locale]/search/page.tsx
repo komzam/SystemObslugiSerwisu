@@ -1,12 +1,13 @@
 ﻿"use client"
 
 import {RepairShopCard} from "@/app/Organisms/RepairShopCard";
-import {SEARCH, SearchQuery} from "@/graphql/Search";
+import {SEARCH} from "@/graphql/Search";
 import {useQuery} from "@apollo/client/react";
 import {useSearchParams} from "next/navigation";
 import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
+import {SearchQuery, SearchQueryVariables} from "@/__generated__/types";
 
-type SeachParams = {
+type SearchParams = {
     searchParams: {
         name?: string,
         address?: string,
@@ -17,7 +18,7 @@ type SeachParams = {
 
 export default function Search() {
     const searchParams = useSearchParams();
-    const { loading, error, data } = useQuery<SearchQuery>(SEARCH, {variables:{name:searchParams.get("name"), pageNumber:Number(searchParams.get("page")), pageSize: 5}});
+    const { loading, error, data } = useQuery<SearchQuery, SearchQueryVariables>(SEARCH, {variables:{name:searchParams.get("name")??"", pageNumber:Number(searchParams.get("page"))??1, pageSize: 5}});
 
     if(loading) return <LoadingIcon/>;
 

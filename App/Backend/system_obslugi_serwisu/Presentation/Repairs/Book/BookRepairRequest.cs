@@ -9,4 +9,5 @@ public record BookRepairRequest
     public required DeviceInfoInput DeviceInfo { get; init; }
     public required FaultInfoInput FaultInfo { get; init; }
     public required ReturnInfoInput ReturnInfo { get; init; }
+    public string? AdditionalComment { get; init; }
 }

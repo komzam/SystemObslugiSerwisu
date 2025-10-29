@@ -1,9 +1,30 @@
 ﻿import {createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState} from "react";
 import {BookRepairMutationVariables, ContactMethod, Country, DeviceType, ReturnMethod} from "@/__generated__/types";
 import {useAuthContext} from "@/app/Utils/AuthContext";
+import {useDebounce} from "@/app/Hooks/useDebounce";
 
 export type RepairFormProviderProps = {
     children: ReactNode;
+}
+
+const defaultContactInfo: BookRepairMutationVariables["request"]["contactInfo"] = {
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    phoneRegionCode: "PL",
+    preferredContactMethod: ContactMethod.Sms
+}
+
+const defaultReturnInfo: BookRepairMutationVariables["request"]["returnInfo"]= {
+    returnMethod: ReturnMethod.SelfPickup,
+    address: {
+        recipientName: "",
+        street: "",
+        buildingNumber: "",
+        postalCode: "",
+        city: "",
+        country: Country.Poland
+    }
 }
 
 const defaultRepairForm: BookRepairMutationVariables["request"] = {
@@ -15,40 +36,27 @@ const defaultRepairForm: BookRepairMutationVariables["request"] = {
         serialNumber: "",
     },
     faultInfo:{
-        whenOccured: "",
+        whenOccurred: "",
         howToReproduce: "",
         description: "",
         previouslyRepaired: false
     },
-    contactInfo:{
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-        phoneRegionCode: "PL",
-        preferredContactMethod: ContactMethod.Sms
-    },
-    returnInfo:{
-        returnMethod: ReturnMethod.SelfPickup,
-        address: {
-            recipientName: "",
-            street: "",
-            buildingNumber: "",
-            postalCode: "",
-            city: "",
-            country: Country.Poland
-        }
-    }
+    contactInfo: defaultContactInfo,
+    returnInfo: defaultReturnInfo,
+    additionalComment: null
 }
 
 type RepairFormContextProps = {
     setRepairForm:  Dispatch<SetStateAction<BookRepairMutationVariables["request"]>>;
     repairFormData: BookRepairMutationVariables["request"];
+    clearStorage: () => void;
 }
 
 const RepairFormContext = createContext<RepairFormContextProps | null>(null);
 
 export function RepairFormProvider({children} : RepairFormProviderProps) {
     const [repairForm, setRepairForm] = useState<BookRepairMutationVariables["request"]>(defaultRepairForm);
+    const debouncedRepairForm = useDebounce(repairForm);
     const authContext = useAuthContext();
 
     useEffect(() => {
@@ -58,23 +66,37 @@ export function RepairFormProvider({children} : RepairFormProviderProps) {
     }, []);
 
     useEffect(() => {
-       sessionStorage.setItem("repairFormData", JSON.stringify(repairForm));
-    }, [repairForm]);
+        sessionStorage.setItem("repairFormData", JSON.stringify(repairForm));
+    }, [debouncedRepairForm]);
 
     useEffect(() => {
-        if(authContext.isLoggedIn && repairForm.contactInfo.email == ""){
-            setRepairForm((prev) => ({...prev, contactInfo:{
-                fullName: authContext.authInfo?.name,
-                email: authContext.authInfo?.email,
-                phoneNumber: authContext.authInfo?.phone?? "",
-                phoneRegionCode: authContext.authInfo?.phoneRegionCode?? "PL",
-                preferredContactMethod: authContext.authInfo?.preferredContactMethod?? ContactMethod.Sms
-            }}));
+        if (authContext.isLoggedIn && repairForm.contactInfo == defaultContactInfo) {
+            setRepairForm((prev) => ({
+                ...prev, contactInfo: {
+                    fullName: authContext.authInfo?.name,
+                    email: authContext.authInfo?.email,
+                    phoneNumber: authContext.authInfo?.phone ?? "",
+                    phoneRegionCode: authContext.authInfo?.phoneRegionCode ?? "PL",
+                    preferredContactMethod: authContext.authInfo?.preferredContactMethod ?? ContactMethod.Sms
+                }
+            }));
+        }
+        if (authContext.isLoggedIn && repairForm.returnInfo == defaultReturnInfo) {
+            setRepairForm((prev) => ({
+                ...prev, returnInfo: {
+                    returnMethod: authContext.authInfo?.preferredReturnMethod ?? ReturnMethod.SelfPickup,
+                    address: authContext.authInfo?.address
+                }
+            }));
         }
     }, [authContext.authInfo]);
 
+    const clearStorage = () => {
+        sessionStorage.removeItem("repairFormData");
+    }
+
     return (
-        <RepairFormContext.Provider value={{repairFormData: repairForm, setRepairForm: setRepairForm}}>
+        <RepairFormContext.Provider value={{repairFormData: repairForm, setRepairForm, clearStorage}}>
             {children}
         </RepairFormContext.Provider>
     )

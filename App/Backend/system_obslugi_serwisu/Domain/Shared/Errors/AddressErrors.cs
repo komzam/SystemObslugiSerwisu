@@ -24,10 +24,10 @@ public static class AddressErrors
     public static OperationError BuildingNumberTooLong(string message = "The building number is too long") => 
         new ($"{_prefix}.BuildingNumberTooLong", message);
     
-    public static OperationError InvalidApartamentNumber(string message = "Invalid apartament number") => 
+    public static OperationError InvalidApartmentNumber(string message = "Invalid apartment number") => 
         new ($"{_prefix}.InvalidApartamentNumber", message);
     
-    public static OperationError ApartamentNumberTooLong(string message = "The apartament number is too long") => 
+    public static OperationError ApartmentNumberTooLong(string message = "The apartment number is too long") => 
         new ($"{_prefix}.ApartamentNumberTooLong", message);
     
     public static OperationError InvalidPostalCode(string message = "Invalid postal code") => 

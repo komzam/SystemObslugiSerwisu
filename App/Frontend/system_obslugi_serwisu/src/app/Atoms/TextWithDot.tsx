@@ -1,6 +1,4 @@
-﻿import {ReactNode} from "react";
-
-export type TextWithDotProps = {
+﻿export type TextWithDotProps = {
     className?: string;
     children?: string;
 }

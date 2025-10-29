@@ -36,8 +36,8 @@ export function Title({name, repairShopId, rating, reviewCount, address, timeZon
                 </div>
                 <div className="flex flex-col md:flex-row h-fit gap-2">
                     <Button variant="secondary" icon={<LuMessageSquare size="18px"/>}>{t("contactRepairShop")}</Button>
-                    <Link href={`/repairShop/${repairShopId}/bookRepair`} className="w-fit">
-                        <Button icon={<LuWrench size="18px"/>}>{t("bookARepair")}</Button>
+                    <Link href={`/repairShop/${repairShopId}/bookRepair`} className="w-full md:w-fit">
+                        <Button className="w-full md:w-fit" icon={<LuWrench size="18px"/>}>{t("bookARepair")}</Button>
                     </Link>
                 </div>
             </Card>

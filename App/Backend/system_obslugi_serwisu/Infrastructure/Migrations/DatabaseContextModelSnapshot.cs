@@ -190,6 +190,10 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AdditionalComment")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -986,7 +990,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                             b1.Property<bool>("PreviouslyRepaired")
                                 .HasColumnType("boolean");
 
-                            b1.Property<string>("WhenOccured")
+                            b1.Property<string>("WhenOccurred")
                                 .IsRequired()
                                 .HasMaxLength(200)
                                 .HasColumnType("character varying(200)");

@@ -50,7 +50,7 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
 
         repairConfiguration.OwnsOne(repair => repair.FaultInfo, faultInfo =>
         {
-            faultInfo.Property(fi => fi.WhenOccured).HasMaxLength(FaultInfo.WhenOccuredMaxLength);
+            faultInfo.Property(fi => fi.WhenOccurred).HasMaxLength(FaultInfo.WhenOccuredMaxLength);
             faultInfo.Property(fi => fi.HowToReproduce).HasMaxLength(FaultInfo.HowToReproduceMaxLength);
             faultInfo.Property(fi => fi.Description).HasMaxLength(FaultInfo.DescriptionMaxLength);
             faultInfo.Property(fi => fi.PreviouslyRepaired);
@@ -73,7 +73,8 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
                 address.Property(addr => addr.Country);
             });
         });
-
+        
+        repairConfiguration.Property(repair => repair.AdditionalComment).HasMaxLength(Repair.AdditionalCommentMaxLength);
         repairConfiguration.Property(repair => repair.CreatedAt);
     }
 }

@@ -1,7 +1,6 @@
 ﻿import {ReactNode} from "react";
 import {useTranslations} from "next-intl";
-import { LuClock, LuUser } from "react-icons/lu";
-import {OpenStatus} from "@/app/Molecules/OpenStatus";
+import { LuUser } from "react-icons/lu";
 import {Button} from "@/app/Atoms/Button";
 import Link from "next/link";
 import {Stars} from "@/app/Molecules/Stars";

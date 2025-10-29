@@ -1,5 +1,6 @@
 ﻿using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.RepairShops.Errors;
 using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Domain.Reviews.Errors;
 using system_obslugi_serwisu.Domain.Services;

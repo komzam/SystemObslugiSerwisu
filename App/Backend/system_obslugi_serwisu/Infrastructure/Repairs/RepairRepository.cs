@@ -32,6 +32,38 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         return customer;
     }
 
+    public async Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(Guid customerId, int pageNumber, int pageSize)
+    {
+        List<Repair> repairs;
+        int totalCount;
+        
+        try
+        {
+            repairs = await databaseContext.Repairs
+                .Include(r => r.RepairShop)
+                .Include(r => r.Customer)
+                .Where(r => r.Customer != null && r.Customer.Id == customerId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            totalCount = await databaseContext.Repairs
+                .Where(r => r.Customer != null && r.Customer.Id == customerId).CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new PaginatedList<Repair>
+        {
+            Items = repairs,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
     public async Task<OperationResult> CreateRepair(Repair repair)
     {
         try

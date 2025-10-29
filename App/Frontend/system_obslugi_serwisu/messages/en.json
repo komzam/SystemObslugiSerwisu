@@ -83,7 +83,7 @@
     },
     "faultInfo": {
       "title": "Fault information",
-      "whenFaultOccured": "When the fault occured",
+      "whenFaultOccurred": "When the fault occurred",
       "wasRepairedBefore": "Has the device been repaired before ?",
       "howToReplicateFault": "How to replicate the fault",
       "describeFault": "Describe the fault"
@@ -138,19 +138,19 @@
     "city": "City"
   },
   "Status": {
-    "booked": "Booked",
-    "toBeDiagnosed": "To Be Diagnosed",
-    "awaitingConfirmation": "Awaiting Confirmation",
-    "canceled": "Canceled",
-    "readyToRepair": "Ready To Repair",
-    "inRepair": "In Repair",
-    "awaitingParts": "Awaiting Parts",
-    "paymentRequired": "Payment Required",
-    "toBeSentOut": "To Be Sent Out",
-    "readyForPickup": "Ready For Pickup",
-    "sentOut": "Sent Out",
-    "completed": "Completed",
-    "complaint": "Complaint"
+    "BOOKED": "Booked",
+    "TO_BE_DIAGNOSED": "To Be Diagnosed",
+    "AWAITING_CONFIRMATION": "Awaiting Confirmation",
+    "CANCELED": "Canceled",
+    "READY_TO_REPAIR": "Ready To Repair",
+    "IN_REPAIR": "In Repair",
+    "AWAITING_PARTS": "Awaiting Parts",
+    "PAYMENT_REQUIRED": "Payment Required",
+    "TO_BE_SENT_OUT": "To Be Sent Out",
+    "READY_FOR_PICKUP": "Ready For Pickup",
+    "SENT_OUT": "Sent Out",
+    "COMPLETED": "Completed",
+    "COMPLAINT": "Complaint"
   },
   "RepairDetails": {
     "deviceInfo": "Device information",
@@ -162,7 +162,7 @@
     "manufacturer": "Manufacturer",
     "modelName": "Model name",
     "serialNumber": "Serial number",
-    "whenFaultOccured": "When the fault occured",
+    "whenFaultOccurred": "When the fault occurred",
     "howToReplicateFault": "How to replicate the fault",
     "faultDescription": "Fault description",
     "costEstimate": "Cost estimate",
@@ -214,21 +214,92 @@
     "generalError": "There was an error",
     "Identity": {
       "UnknownError": "Unknown identity error",
-      "EmailExists": "Provided email already exists",
-      "InvalidPassword": "Provided password is invalid",
-      "InvalidCredentials": "Provided credentials are invalid",
+      "EmailExists": "Email already exists",
+      "InvalidPassword": "Password is invalid",
+      "InvalidCredentials": "Credentials are invalid",
       "LockedOut": "You are locked out. Try again later",
-      "PasswordMismatch": "Provided passwords are not the same"
+      "PasswordMismatch": "Passwords are not the same"
     },
     "Customers": {
-      "InvalidName": "Provided name is invalid",
-      "NameTooLong": "Provided name is too long",
-      "InvalidTin": "Provided Tax Identification Number is invalid",
-      "TinTooLong": "Provided Tax Identification Number is too long"
+      "CustomerNotFound": "Customer was not found",
+      "InvalidName": "Name is invalid",
+      "NameTooLong": "Name is too long",
+      "InvalidTin": "Tax Identification Number is invalid",
+      "TinTooLong": "Tax Identification Number is too long"
     },
     "Email": {
-      "InvalidEmail": "Provided email is invalid",
-      "EmailTooLong": "Provided email is too long"
+      "InvalidEmail": "Email is invalid",
+      "EmailTooLong": "Email is too long"
+    },
+    "Repairs": {
+      "RepairNotFound": "Repair was not found"
+    },
+    "ContactInfo": {
+      "FullNameTooLong": "Full name is too long",
+      "InvalidFullName": "Full name is invalid"
+    },
+    "DeviceInfo": {
+      "ManufacturerTooLong": "Manufacturer name is too long",
+      "InvalidManufacturer": "Manufacturer name is invalid",
+      "ModelTooLong": "Model name is too long",
+      "InvalidModel": "Model name is invalid",
+      "SerialNumberTooLong": "Serial number is too long",
+      "SerialNumberInvalid": "Serial number is invalid"
+    },
+    "FaultInfo": {
+      "WhenOccurredTooLong": "When occurred text is too long",
+      "InvalidWhenOccurred": "When occurred text is invalid",
+      "HowToReproduceTooLong": "How to reproduce text is too long",
+      "InvalidHowToReproduce": "How to reproduce text is invalid",
+      "DescriptionTooLong": "Fault description is too long",
+      "InvalidDescription": "Fault description is invalid"
+    },
+    "ReturnInfo": {
+      "ReturnAddressMissing": "Return address is missing"
+    },
+    "RepairShops": {
+      "RepairShopNotFound": "Repair shop was not found",
+      "InvalidName": "Repair shop name is invalid",
+      "NameTooLong": "Repair shop name is too long"
+    },
+    "TimeInterval": {
+      "InvalidFromTime": "Interval from time is invalid",
+      "InvalidToTime": "Interval to time is invalid",
+      "InvalidInterval": "Interval is invalid"
+    },
+    "Reviews": {
+      "ReviewNotFound": "Review was not found",
+      "ReviewAccessDenied": "Review access denied",
+      "InvalidRating": "Review rating is invalid",
+      "CommentTooLong": "Review comment is too long"
+    },
+    "Services": {
+      "ServiceNotFound": "Service was not found",
+      "NameTooLong": "Service name is too long",
+      "InvalidName": "Service name is invalid"
+    },
+    "Address": {
+      "InvalidRecipientName": "Recipient name is invalid",
+      "RecipientNameTooLong": "Recipient name is too long",
+      "InvalidStreet": "Street name is invalid",
+      "StreetTooLong": "Street name is too long",
+      "InvalidBuildingNumber": "Building number is invalid",
+      "BuildingNumberTooLong": "Building number is too long",
+      "InvalidApartmentNumber": "Apartment number is invalid",
+      "ApartmentNumberTooLong": "Apartment number is too long",
+      "InvalidPostalCode": "Postal code is invalid",
+      "PostalCodeTooLong": "Postal code is too long",
+      "InvalidCity": "City name is invalid",
+      "CityTooLong": "City name is too long",
+      "InvalidCountry": "Country name is invalid",
+      "CountryTooLong": "Country name is too long"
+    },
+    "Money": {
+      "InvalidAmount": "Money amount invalid"
+    },
+    "PhoneNumber":{
+      "PhoneNumberTooLong": "Phone number is too long",
+      "InvalidPhoneNumber": "Phone number is invalid"
     }
   },
   "Common": {

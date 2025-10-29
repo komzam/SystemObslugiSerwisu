@@ -1,9 +1,9 @@
 ﻿import {Card} from "@/app/Atoms/Card";
 import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
-import {SearchRepairShop} from "@/graphql/Search";
+import {SearchQuery} from "@/__generated__/types";
 
 export type RepairShopCardProps = {
-    repairShop:SearchRepairShop
+    repairShop:SearchQuery["searchShopsByName"]["items"][number];
 }
 
 export function RepairShopCard({repairShop}: RepairShopCardProps) {

@@ -1,13 +1,14 @@
-import {Status, StatusType} from "@/app/Atoms/Status";
+import {Status} from "@/app/Atoms/Status";
 import {Card} from "@/app/Atoms/Card";
 import {Button} from "@/app/Atoms/Button";
 import {useTranslations} from "next-intl";
 import { LuMessageSquare } from "react-icons/lu";
+import {RepairStatus} from "@/__generated__/types";
 
 export type RepairDetailsTitleProps = {
     title: string;
-    repairTicketNumber: number;
-    status: StatusType
+    repairTicketNumber: string;
+    status: RepairStatus
 }
 
 export function RepairDetailsTitle({ title, repairTicketNumber, status }: RepairDetailsTitleProps) {

@@ -3,9 +3,8 @@
 import {useTranslations} from "next-intl";
 import {LuClock} from "react-icons/lu";
 import {OpenStatus} from "@/app/Molecules/OpenStatus";
-import {OpeningHours} from "@/app/Types/OpeningHours";
 import {DateTime} from "luxon";
-import {GetRepairShopQuery} from "@/__generated__/types";
+import {GetRepairShopQuery, OpeningHoursDto} from "@/__generated__/types";
 
 export type IsOpenProps = {
     openingHours: GetRepairShopQuery["repairShop"]["openingHours"];
@@ -34,8 +33,8 @@ export function IsOpen({openingHours, timeZoneId, className=""}: IsOpenProps) {
     const now = DateTime.now().setZone(timeZoneId);
     const userTimeZone = DateTime.now().zone;
     const weekday = now.weekday-1; // 0-6
-    const today: keyof OpeningHours = days[weekday];
-    const tomorrow: keyof OpeningHours = days[(weekday+1)%7];
+    const today: keyof OpeningHoursDto = days[weekday];
+    const tomorrow: keyof OpeningHoursDto = days[(weekday+1)%7];
 
     let isOpen:boolean;
     let changeTime: string| null = null;

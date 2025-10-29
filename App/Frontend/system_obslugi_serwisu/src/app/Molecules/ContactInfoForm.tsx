@@ -4,10 +4,9 @@ import {LabeledDropdown} from "@/app/Molecules/LabeledDropdown";
 import {DropdownItems} from "@/app/Molecules/Dropdown";
 import {BookRepairMutationVariables, ContactMethod} from "@/__generated__/types";
 import {PhoneInput} from "@/app/Molecules/PhoneInput";
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 import {useAuthContext} from "@/app/Utils/AuthContext";
 import {useRepairFormContext} from "@/app/Utils/RepairFormProvider";
-import {DeviceInfoChangeHandler} from "@/app/Molecules/DeviceInfoForm";
 
 
 type ContactInfoKey = keyof BookRepairMutationVariables["request"]["contactInfo"];
@@ -48,15 +47,17 @@ export function ContactInfoForm() {
             <LabeledTextInput wrapperClassName="w-full" className="w-full" id="fullName" label={t("fullName")}
                               disabled={authContext.isLoggedIn}
                               value={formData.fullName?? ""}
-                              onChange={(e) => updateForm("fullName", e.target.value)}/>
+                              onChange={(e) => updateForm("fullName", e.target.value)}
+                              required={true}/>
             <div className="bg-inherit flex flex-col md:flex-row gap-5 w-full">
                 <LabeledTextInput wrapperClassName="w-full md:flex-1" className="w-full" id="email" label={t("email")}
                                   disabled={authContext.isLoggedIn}
                                   value={formData.email?? ""}
-                                  onChange={(e) => updateForm("email", e.target.value)}/>
+                                  onChange={(e) => updateForm("email", e.target.value)}
+                                  required={true}/>
                 <PhoneInput wrapperClassName="w-full md:flex-1" className="w-full" id={"phoneNumber"} label={t("phoneNumber")}
                             countryCode={formData.phoneRegionCode} onCountryChange={(countryCode) => updateForm("phoneRegionCode", countryCode)}
-                            phone={formData.phoneNumber} onPhoneChange={(phoneNumber) => updateForm("phoneNumber", phoneNumber)}/>
+                            phone={formData.phoneNumber} onPhoneChange={(phoneNumber) => updateForm("phoneNumber", phoneNumber)} required={true}/>
             </div>
             <LabeledDropdown placeholder="Select" items={contactMethods} label={t("preferredContactMethod")} value={formData.preferredContactMethod}
                 onValueChange={(value) => { updateForm("preferredContactMethod", value as ContactMethod);}}/>

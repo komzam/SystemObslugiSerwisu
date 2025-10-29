@@ -13,6 +13,7 @@ public class BookRepairCommand : IRequest<OperationResult<Repair>>
     public required DeviceInfoInput DeviceInfo { get; init; }
     public required FaultInfoInput FaultInfo { get; init; }
     public required ReturnInfoInput ReturnInfo { get; init; }
+    public string? AdditionalComment { get; init; }
 }
 
 public record ContactInfoInput
@@ -34,7 +35,7 @@ public record DeviceInfoInput
 
 public record FaultInfoInput
 {
-    public required string WhenOccured { get; init; }
+    public required string WhenOccurred { get; init; }
     public required string HowToReproduce { get; init; }
     public required string Description { get; init; }
     public required bool PreviouslyRepaired { get; init; }

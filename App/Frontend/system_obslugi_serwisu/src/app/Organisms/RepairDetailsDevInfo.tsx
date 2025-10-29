@@ -1,9 +1,10 @@
 import {useTranslations} from "next-intl";
 import {KeyValueLine} from "@/app/Molecules/KeyValueLine";
 import {Card} from "@/app/Atoms/Card";
+import {DeviceType} from "@/__generated__/types";
 
 export type RepairDetailsDevInfoProps = {
-    deviceType: string;
+    deviceType: DeviceType;
     manufacturer: string;
     modelName: string;
     serialNumber: string;

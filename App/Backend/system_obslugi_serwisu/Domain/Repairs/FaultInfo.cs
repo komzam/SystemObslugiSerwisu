@@ -9,16 +9,16 @@ public class FaultInfo : ValueObject
     public const int HowToReproduceMaxLength = 1000;
     public const int DescriptionMaxLength = 1000;
     
-    public string WhenOccured { get; private set; }
+    public string WhenOccurred { get; private set; }
     public string HowToReproduce { get; private set; }
     public string Description { get; private set; }
     public bool PreviouslyRepaired { get; private set; }
     
     private FaultInfo(){}
 
-    private FaultInfo(string whenOccured, string howToReproduce, string description, bool previouslyRepaired)
+    private FaultInfo(string whenOccurred, string howToReproduce, string description, bool previouslyRepaired)
     {
-        WhenOccured = whenOccured;
+        WhenOccurred = whenOccurred;
         HowToReproduce = howToReproduce;
         Description = description;
         PreviouslyRepaired = previouslyRepaired;
@@ -28,10 +28,10 @@ public class FaultInfo : ValueObject
         string description)
     {
         if (string.IsNullOrWhiteSpace(whenOccured))
-            return FaultInfoErrors.InvalidWhenOccured();
+            return FaultInfoErrors.InvalidWhenOccurred();
         
         if (whenOccured.Length > WhenOccuredMaxLength)
-            return FaultInfoErrors.WhenOccuredTooLong();
+            return FaultInfoErrors.WhenOccurredTooLong();
         
         if (string.IsNullOrWhiteSpace(howToReproduce))
             return FaultInfoErrors.InvalidHowToReproduce();
@@ -48,23 +48,23 @@ public class FaultInfo : ValueObject
         return OperationResult.Success();
     }
 
-    public static OperationResult<FaultInfo> Create(string whenOccured, string howToReproduce, string description,
+    public static OperationResult<FaultInfo> Create(string whenOccurred, string howToReproduce, string description,
         bool previouslyRepaired)
     {
-        whenOccured = whenOccured.Trim();
+        whenOccurred = whenOccurred.Trim();
         howToReproduce = howToReproduce.Trim();
         description = description.Trim();
         
-        var validationResult = ValidateInput(whenOccured, howToReproduce, description);
+        var validationResult = ValidateInput(whenOccurred, howToReproduce, description);
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new FaultInfo(whenOccured, howToReproduce, description, previouslyRepaired);
+        return new FaultInfo(whenOccurred, howToReproduce, description, previouslyRepaired);
     }
 
     public override IEnumerable<object> GetAtomicValues()
     {
-        yield return WhenOccured;
+        yield return WhenOccurred;
         yield return HowToReproduce;
         yield return Description;
         yield return PreviouslyRepaired;

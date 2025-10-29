@@ -1,4 +1,4 @@
-import {Step, StepProps} from "@/app/Molecules/Step";
+import {Step} from "@/app/Molecules/Step";
 
 export type StepListProps = {
     steps: StepInfo[];

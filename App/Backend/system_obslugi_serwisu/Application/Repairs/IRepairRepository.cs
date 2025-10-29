@@ -6,5 +6,6 @@ namespace system_obslugi_serwisu.Application.Repairs;
 public interface IRepairRepository
 {
     public Task<OperationResult<Repair>> GetRepair(Guid id);
+    public Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(Guid customerId, int pageNumber, int pageSize);
     public Task<OperationResult> CreateRepair(Repair repair);
 }

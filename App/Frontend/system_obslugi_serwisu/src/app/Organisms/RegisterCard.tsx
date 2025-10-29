@@ -9,11 +9,11 @@ import {useRouter} from "@/i18n/navigation";
 
 import {Button} from "@/app/Atoms/Button";
 import {useMutation} from "@apollo/client/react";
-import {CombinedGraphQLErrors} from "@apollo/client/errors";
 import {REGISTER} from "@/graphql/Register";
 
 import { useState, FormEvent } from "react";
 import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
+import {ErrorName} from "@/app/Utils/ErrorName";
 
 export function RegisterCard() {
     const t = useTranslations("Register");
@@ -69,18 +69,7 @@ export function RegisterCard() {
             });
             router.push("/signIn");
         } catch (err: unknown) {
-            console.log(err);
-            if (CombinedGraphQLErrors.is(err)) {
-                const code = err.errors[0].extensions?.code as string | undefined;
-                if(!code)
-                    setError(tErr("generalError"));
-                else if (tErr.has(code))
-                    setError(tErr(code));
-                else
-                    setError(tErr("generalError"));
-            }else{
-                setError(tErr("generalError"));
-            }
+            setError(ErrorName(err, tErr));
         }
     }
 

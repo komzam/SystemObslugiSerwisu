@@ -1,6 +1,8 @@
-type CardWithHeaderProps = React.ComponentPropsWithRef<"div"> & {
+import {ComponentPropsWithRef, ReactNode} from "react";
+
+type CardWithHeaderProps = ComponentPropsWithRef<"div"> & {
     className?: string;
-    children?: React.ReactNode;
+    children?: ReactNode;
 }
 
 export function CardWithHeader({className="", children, ...props}: CardWithHeaderProps) {

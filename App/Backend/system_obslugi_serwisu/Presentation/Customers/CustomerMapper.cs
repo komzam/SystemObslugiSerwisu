@@ -10,6 +10,7 @@ public static class CustomerMapper
     {
         var customerDto = new CustomerDto
         {
+            Id = customer.Id,
             Email = customer.Email.Value,
             Name = customer.Name.DisplayName,
             Phone = customer.Phone?.Number,

@@ -83,7 +83,7 @@
     },
     "faultInfo": {
       "title": "Informacje o usterce",
-      "whenFaultOccured": "Kiedy wystąpiła usterka",
+      "whenFaultOccurred": "Kiedy wystąpiła usterka",
       "wasRepairedBefore": "Czy urządzenie było wcześniej naprawiane ?",
       "howToReplicateFault": "Jak odtworzyć usterkę",
       "describeFault": "Opisz usterkę"
@@ -138,19 +138,19 @@
     "city": "Miasto"
   },
   "Status": {
-    "booked": "Zarejestrowane",
-    "toBeDiagnosed": "Oczekuje Na Diagozę",
-    "awaitingConfirmation": "Oczekuje Na Potwierdzenie",
-    "canceled": "Anulowane",
-    "readyToRepair": "Gotowe Do Naprawy",
-    "inRepair": "W Naprawie",
-    "awaitingParts": "Oczekuje Na Części",
-    "paymentRequired": "Wymagana Płatność",
-    "toBeSentOut": "Do Wysłania",
-    "readyForPickup": "Gotowe Do Odbioru",
-    "sentOut": "Wysłane",
-    "completed": "Zakończone",
-    "complaint": "Reklamacja"
+    "BOOKED": "Zarejestrowane",
+    "TO_BE_DIAGNOSED": "Oczekuje Na Diagozę",
+    "AWAITING_CONFIRMATION": "Oczekuje Na Potwierdzenie",
+    "CANCELED": "Anulowane",
+    "READY_TO_REPAIR": "Gotowe Do Naprawy",
+    "IN_REPAIR": "W Naprawie",
+    "AWAITING_PARTS": "Oczekuje Na Części",
+    "PAYMENT_REQUIRED": "Wymagana Płatność",
+    "TO_BE_SENT_OUT": "Do Wysłania",
+    "READY_FOR_PICKUP": "Gotowe Do Odbioru",
+    "SENT_OUT": "Wysłane",
+    "COMPLETED": "Zakończone",
+    "COMPLAINT": "Reklamacja"
   },
   "RepairDetails": {
     "deviceInfo": "Informacje o urządzeniu",
@@ -162,7 +162,7 @@
     "manufacturer": "Producent",
     "modelName": "Nazwa modelu",
     "serialNumber": "Numer seryjny",
-    "whenFaultOccured": "Kiedy wystąpiła usterka",
+    "whenFaultOccurred": "Kiedy wystąpiła usterka",
     "howToReplicateFault": "Jak odtworzyć usterkę",
     "faultDescription": "Opis usterki",
     "costEstimate": "Kosztorys",
@@ -214,21 +214,92 @@
     "generalError": "Wystąpił błąd",
     "Identity": {
       "UnknownError": "Nieznany błąd tożsamości",
-      "EmailExists": "Wprowadzony email już instnieje",
-      "InvalidPassword": "Wprowadzone hasło jest niepoprawne",
-      "InvalidCredentials": "Wprowadzone dane są niepoprawne",
+      "EmailExists": "Email już instnieje",
+      "InvalidPassword": "Hasło jest niepoprawne",
+      "InvalidCredentials": "Dane są niepoprawne",
       "LockedOut": "Jesteś zablokowany. Spróbuj ponownie później",
-      "PasswordMismatch": "Wprowadzone hasła nie są takie same"
+      "PasswordMismatch": "Hasła nie są takie same"
     },
     "Customers": {
-      "InvalidName": "Wprowadzona nazwa jest niepoprawna",
-      "NameTooLong": "Wprowadzona nazwa jest za długa",
-      "InvalidTin": "Wprowadzony Numer Indentyfikacji Podatkowej jest niepoprawny",
-      "TinTooLong": "Wprowadzony Numer Indentyfikacji Podatkowej jest za długi"
+      "CustomerNotFound": "Nie znaleziono klienta",
+      "InvalidName": "Nazwa jest niepoprawna",
+      "NameTooLong": "Nazwa jest za długa",
+      "InvalidTin": "Numer Indentyfikacji Podatkowej jest niepoprawny",
+      "TinTooLong": "Numer Indentyfikacji Podatkowej jest za długi"
     },
     "Email": {
-      "InvalidEmail": "Wprowadzony email jest niepoprawny",
-      "EmailTooLong": "Wprowadzony email jest za długi"
+      "InvalidEmail": "Email jest niepoprawny",
+      "EmailTooLong": "Email jest za długi"
+    },
+    "Repairs": {
+      "RepairNotFound": "Nie znaleziono naprawy"
+    },
+    "ContactInfo": {
+      "FullNameTooLong": "Imię i nazwisko jest za długie",
+      "InvalidFullName": "Imię i nazwisko jest niepoprawne"
+    },
+    "DeviceInfo": {
+      "ManufacturerTooLong": "Nazwa producenta jest za długa",
+      "InvalidManufacturer": "Nazwa producenta jest niepoprawna",
+      "ModelTooLong": "Nazwa modelu jest za długa",
+      "InvalidModel": "Nazwa modelu jest niepoprawna",
+      "SerialNumberTooLong": "Numer seryjny jest za długi",
+      "SerialNumberInvalid": "Numer seryjny jest niepoprawny"
+    },
+    "FaultInfo": {
+      "WhenOccurredTooLong": "Pole kiedy wystąpiła usterka jest za długie",
+      "InvalidWhenOccurred": "Pole kiedy wystąpiła usterka jest niepoprawne",
+      "HowToReproduceTooLong": "Pole jak odtworzyć usterkę jest za długie",
+      "InvalidHowToReproduce": "Pole jak odtworzyć usterkę jest niepoprawne",
+      "DescriptionTooLong": "Opis usterki jest za długi",
+      "InvalidDescription": "Opis usterki jest niepoprawny"
+    },
+    "ReturnInfo": {
+      "ReturnAddressMissing": "Brak adresu zwrotnego"
+    },
+    "RepairShops": {
+      "RepairShopNotFound": "Nie znaleziono serwisu",
+      "InvalidName": "Nazwa serwisu jest niepoprawna",
+      "NameTooLong": "Nazwa serwisu jest za długa"
+    },
+    "TimeInterval": {
+      "InvalidFromTime": "Pole od w przedziale jest niepoprawne",
+      "InvalidToTime": "Pole do w przedziale jest niepoprawne",
+      "InvalidInterval": "Przedział jest niepoprawny"
+    },
+    "Reviews": {
+      "ReviewNotFound": "Nie znaleziono opinii",
+      "ReviewAccessDenied": "Odmowa dostępu do opinii",
+      "InvalidRating": "Ocena w opinii jest niepoprawna",
+      "CommentTooLong": "Komentarz w opinii jest za długi"
+    },
+    "Services": {
+      "ServiceNotFound": "Nie znaleziono usługi",
+      "NameTooLong": "Nazwa usługi jest za długa",
+      "InvalidName": "Nazwa usługi jest niepoprawna"
+    },
+    "Address": {
+      "InvalidRecipientName": "Nazwa odbiorcy jest niepoprawna",
+      "RecipientNameTooLong": "Nazwa odbiorcy jest za długa",
+      "InvalidStreet": "Nazwa ulicy jest niepoprawna",
+      "StreetTooLong": "Nazwa ulicy jest za długa",
+      "InvalidBuildingNumber": "Numer budynku jest niepoprawny",
+      "BuildingNumberTooLong": "Numer budynku jest za długi",
+      "InvalidApartmentNumber": "Numer mieszkania jest niepoprawny",
+      "ApartmentNumberTooLong": "Numer mieszkania jest za długi",
+      "InvalidPostalCode": "Kod pocztowy jest niepoprawny",
+      "PostalCodeTooLong": "Kod pocztowy jest za długi",
+      "InvalidCity": "Nazwa miasta jest niepoprawna",
+      "CityTooLong": "Nazwa miasta jest za długa",
+      "InvalidCountry": "Nazwa kraju jest niepoprawna",
+      "CountryTooLong": "Nazwa kraju jest za długa"
+    },
+    "Money": {
+      "InvalidAmount": "Niepoprawna wartość pieniędzy"
+    },
+    "PhoneNumber":{
+      "PhoneNumberTooLong": "Numer telefonu jest za długi",
+      "InvalidPhoneNumber": "Numer telefonu jest niepoprawny"
     }
   },
   "Common": {

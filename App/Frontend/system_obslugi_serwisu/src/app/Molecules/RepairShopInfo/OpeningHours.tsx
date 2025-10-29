@@ -2,7 +2,7 @@ import {useTranslations} from "next-intl";
 import {LuClock} from "react-icons/lu";
 import {IconAndTitle} from "./IconAndTitle";
 import {DateTime} from "luxon";
-import {GetRepairShopQuery, TimeIntervalDto} from "@/__generated__/types";
+import {GetRepairShopQuery} from "@/__generated__/types";
 
 export type OpeningHoursProps = {
     openingHours:GetRepairShopQuery["repairShop"]["openingHours"];

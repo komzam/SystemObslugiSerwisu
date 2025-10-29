@@ -6,11 +6,11 @@ public static class FaultInfoErrors
 {
     private static readonly string Prefix = "FaultInfo";
     
-    public static OperationError WhenOccuredTooLong(string message = "The when occured is too long") => 
-        new ($"{Prefix}.WhenOccuredTooLong", message);
+    public static OperationError WhenOccurredTooLong(string message = "The when occurred is too long") => 
+        new ($"{Prefix}.WhenOccurredTooLong", message);
     
-    public static OperationError InvalidWhenOccured(string message = "Invalid when occured") => 
-        new ($"{Prefix}.InvalidWhenOccured", message);
+    public static OperationError InvalidWhenOccurred(string message = "Invalid when occurred") => 
+        new ($"{Prefix}.InvalidWhenOccurred", message);
     
     public static OperationError HowToReproduceTooLong(string message = "The how to reproduce is too long") => 
         new ($"{Prefix}.HowToReproduceTooLong", message);

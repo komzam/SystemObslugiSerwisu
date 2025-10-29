@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react";
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 import {useTranslations} from "next-intl";
 import {LabeledDropdown} from "@/app/Molecules/LabeledDropdown";
 import {DropdownItems} from "@/app/Molecules/Dropdown";
@@ -38,6 +38,9 @@ export function ReturnInfoForm() {
     };
 
     const updateAddressForm:AddressChangeHandler = (fieldName, value) => {
+        if(fieldName.startsWith("__"))
+            return;
+
         repairFormContext.setRepairForm((prev) => {
             const address = prev.returnInfo.address ?? defaultAddressForm;
             return { ...prev, returnInfo:{
@@ -62,15 +65,6 @@ export function ReturnInfoForm() {
             }
         }
         return items;
-    }, []);
-
-    useEffect(() => {
-        if(authContext.isLoggedIn){
-            updateForm("returnMethod", authContext.authInfo?.preferredReturnMethod?? ReturnMethod.SelfPickup);
-            if(formData.address?.recipientName == "" && authContext.authInfo?.address){
-                updateForm("address", authContext.authInfo.address)
-            }
-        }
     }, []);
 
     return (

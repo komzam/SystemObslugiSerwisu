@@ -2,6 +2,7 @@
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Domain.RepairShops;
+using system_obslugi_serwisu.Domain.RepairShops.Errors;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Shared;
 
