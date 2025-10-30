@@ -2,6 +2,8 @@ import {useTranslations} from "next-intl";
 import {KeyValueLine} from "@/app/Molecules/KeyValueLine";
 import {Card} from "@/app/Atoms/Card";
 import {DeviceType} from "@/__generated__/types";
+import {getEnumKeyByValue} from "@/app/Utils/Enum";
+
 
 export type RepairDetailsDevInfoProps = {
     deviceType: DeviceType;
@@ -12,13 +14,14 @@ export type RepairDetailsDevInfoProps = {
 
 export function RepairDetailsDevInfo({ deviceType, manufacturer, modelName, serialNumber }: RepairDetailsDevInfoProps) {
     const t = useTranslations("RepairDetails");
+    const tDevType = useTranslations("DeviceTypes");
 
     return (
         <Card>
             <Card.Label>{t("deviceInfo")}</Card.Label>
             <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col sm:flex-row w-full gap-2 sm:gap-5">
-                    <KeyValueLine wrapperClassName="flex-1" label={t("deviceType")} valueBold={true} value={deviceType} />
+                    <KeyValueLine wrapperClassName="flex-1" label={t("deviceType")} valueBold={true} value={tDevType(getEnumKeyByValue(DeviceType, deviceType)?? "")}/>
                     <KeyValueLine wrapperClassName="flex-1" label={t("manufacturer")} valueBold={true} value={manufacturer} />
                 </div>
                 <div className="flex flex-col sm:flex-row w-full gap-2 sm:gap-5">
