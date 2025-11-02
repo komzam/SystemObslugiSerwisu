@@ -1,6 +1,8 @@
-﻿using system_obslugi_serwisu.Shared;
+﻿using Stateless;
+using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
+using system_obslugi_serwisu.Domain.Repairs.RepairStateMachine;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
 
@@ -17,7 +19,7 @@ public record RepairData
     public string? AdditionalComment { get; init; }
 }
 
-public class Repair
+public partial class Repair
 {
     public const int AdditionalCommentMaxLength = 500;
     
@@ -64,7 +66,7 @@ public class Repair
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Repair(data.RepairShop, data.Customer, RepairStatus.Booked, data.ContactInfo,
+        return new Repair(data.RepairShop, data.Customer, RepairStatus.AwaitingDelivery, data.ContactInfo,
             data.DeviceInfo, data.FaultInfo, data.ReturnInfo, data.AdditionalComment);
     }
 }

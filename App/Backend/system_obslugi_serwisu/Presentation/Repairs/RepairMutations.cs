@@ -3,6 +3,7 @@ using MediatR;
 using system_obslugi_serwisu.Application.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
+using system_obslugi_serwisu.Presentation.Repairs.RepairState;
 
 namespace system_obslugi_serwisu.Presentation.Repairs;
 
@@ -10,6 +11,8 @@ namespace system_obslugi_serwisu.Presentation.Repairs;
 [ExtendObjectType(typeof(Mutation))]
 public class RepairMutations
 {
+    public RepairActions RepairActions([Service] IMediator mediatr) => new RepairActions(mediatr);
+    
     public async Task<RepairDto> BookRepair([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, BookRepairRequest request)
     {
         var customerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);

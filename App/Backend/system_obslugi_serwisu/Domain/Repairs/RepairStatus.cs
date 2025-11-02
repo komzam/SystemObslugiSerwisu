@@ -2,17 +2,27 @@
 
 public enum RepairStatus
 {
-    Booked,
-    ToBeDiagnosed,
-    AwaitingConfirmation,
-    Canceled,
-    ReadyToRepair,
+    AwaitingDelivery,
+    Received,
+    
+    AwaitingDiagnosis,
+    Diagnosing,
+    Unfixable,
+    AwaitingApproval,
+    
+    DiagnosisFeeRequired,
+    FinalPaymentRequired,
+    
+    AwaitingRepair,
     InRepair,
+    RepairFailed,
     AwaitingParts,
-    PaymentRequired,
-    ToBeSentOut,
+    
     ReadyForPickup,
-    SentOut,
+    AwaitingShipping,
+    Shipped,
+    
     Completed,
+    Canceled,
     Complaint
 }

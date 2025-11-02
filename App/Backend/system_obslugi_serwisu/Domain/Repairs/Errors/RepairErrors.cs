@@ -11,4 +11,10 @@ public static class RepairErrors
     
     public static OperationError AdditionalCommentTooLong(string message = "Additional comment is too long") =>
         new ($"{Prefix}.AdditionalCommentTooLong", message);
+    
+    public static OperationError AccessDenied(string message = "Access to repair denied") =>
+        new ($"{Prefix}.AccessDenied", message);
+    
+    public static OperationError InvalidTrigger(string message = "Invalid trigger") =>
+        new ($"{Prefix}.InvalidTrigger", message);
 }

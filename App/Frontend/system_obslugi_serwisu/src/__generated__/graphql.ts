@@ -205,6 +205,7 @@ export type Mutation = {
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
+  repairActions: RepairActions;
 };
 
 
@@ -324,6 +325,118 @@ export type RegisterRequestInput = {
   taxIdNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type RepairActions = {
+  __typename?: 'RepairActions';
+  approveQuote: Scalars['Boolean']['output'];
+  cancel: Scalars['Boolean']['output'];
+  checkInAndQueue: Scalars['Boolean']['output'];
+  completeRepairFailure: Scalars['Boolean']['output'];
+  completeRepairSuccess: Scalars['Boolean']['output'];
+  declareUnfixable: Scalars['Boolean']['output'];
+  finalizeDelivery: Scalars['Boolean']['output'];
+  partsArrived: Scalars['Boolean']['output'];
+  partsNeeded: Scalars['Boolean']['output'];
+  paymentCompleted: Scalars['Boolean']['output'];
+  pickup: Scalars['Boolean']['output'];
+  rejectQuote: Scalars['Boolean']['output'];
+  reportComplaint: Scalars['Boolean']['output'];
+  resolveComplaint: Scalars['Boolean']['output'];
+  ship: Scalars['Boolean']['output'];
+  startDiagnosis: Scalars['Boolean']['output'];
+  startRepair: Scalars['Boolean']['output'];
+  submitQuote: Scalars['Boolean']['output'];
+};
+
+
+export type RepairActionsApproveQuoteArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsCancelArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsCheckInAndQueueArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsCompleteRepairFailureArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsCompleteRepairSuccessArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsDeclareUnfixableArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsFinalizeDeliveryArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsPartsArrivedArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsPartsNeededArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsPaymentCompletedArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsPickupArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsRejectQuoteArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsReportComplaintArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsResolveComplaintArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsShipArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsStartDiagnosisArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsStartRepairArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
+export type RepairActionsSubmitQuoteArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
 export type RepairDto = {
   __typename?: 'RepairDto';
   additionalComment?: Maybe<Scalars['String']['output']>;
@@ -352,19 +465,24 @@ export type RepairShopDto = {
 };
 
 export enum RepairStatus {
-  AwaitingConfirmation = 'AWAITING_CONFIRMATION',
+  AwaitingApproval = 'AWAITING_APPROVAL',
+  AwaitingDelivery = 'AWAITING_DELIVERY',
+  AwaitingDiagnosis = 'AWAITING_DIAGNOSIS',
   AwaitingParts = 'AWAITING_PARTS',
-  Booked = 'BOOKED',
+  AwaitingRepair = 'AWAITING_REPAIR',
+  AwaitingShipping = 'AWAITING_SHIPPING',
   Canceled = 'CANCELED',
   Complaint = 'COMPLAINT',
   Completed = 'COMPLETED',
+  Diagnosing = 'DIAGNOSING',
+  DiagnosisFeeRequired = 'DIAGNOSIS_FEE_REQUIRED',
+  FinalPaymentRequired = 'FINAL_PAYMENT_REQUIRED',
   InRepair = 'IN_REPAIR',
-  PaymentRequired = 'PAYMENT_REQUIRED',
   ReadyForPickup = 'READY_FOR_PICKUP',
-  ReadyToRepair = 'READY_TO_REPAIR',
-  SentOut = 'SENT_OUT',
-  ToBeDiagnosed = 'TO_BE_DIAGNOSED',
-  ToBeSentOut = 'TO_BE_SENT_OUT'
+  Received = 'RECEIVED',
+  RepairFailed = 'REPAIR_FAILED',
+  Shipped = 'SHIPPED',
+  Unfixable = 'UNFIXABLE'
 }
 
 export type ReturnInfoDto = {

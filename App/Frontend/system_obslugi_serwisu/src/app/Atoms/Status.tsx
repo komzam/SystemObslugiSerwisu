@@ -41,19 +41,24 @@ const variants: Record<string, StatusVariant> = {
 }
 
 const StatusToVisual: Record<RepairStatus, keyof typeof variants> = {
-    BOOKED: "gray",
-    TO_BE_DIAGNOSED: "blue",
-    AWAITING_CONFIRMATION: "orange",
-    CANCELED: "red",
-    READY_TO_REPAIR: "yellow",
-    IN_REPAIR: "yellow",
-    AWAITING_PARTS: "orange",
-    PAYMENT_REQUIRED: "orange",
-    TO_BE_SENT_OUT: "green",
-    READY_FOR_PICKUP: "green",
-    SENT_OUT: "gray",
-    COMPLETED: "gray",
-    COMPLAINT: "red",
+    [RepairStatus.AwaitingDelivery]: "gray",
+    [RepairStatus.Received]: "blue",
+    [RepairStatus.AwaitingDiagnosis]: "blue",
+    [RepairStatus.Diagnosing]: "yellow",
+    [RepairStatus.Unfixable]: "red",
+    [RepairStatus.AwaitingApproval]: "orange",
+    [RepairStatus.DiagnosisFeeRequired]: "orange",
+    [RepairStatus.FinalPaymentRequired]: "orange",
+    [RepairStatus.AwaitingRepair]: "blue",
+    [RepairStatus.InRepair]: "yellow",
+    [RepairStatus.AwaitingParts]: "blue",
+    [RepairStatus.RepairFailed]: "red",
+    [RepairStatus.ReadyForPickup]: "green",
+    [RepairStatus.AwaitingShipping]: "blue",
+    [RepairStatus.Shipped]: "green",
+    [RepairStatus.Completed]: "gray",
+    [RepairStatus.Canceled]: "red",
+    [RepairStatus.Complaint]: "red"
 }
 
 
