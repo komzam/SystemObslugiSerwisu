@@ -1,11 +1,13 @@
 ﻿using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
+using system_obslugi_serwisu.Presentation.Repairs.Dto.RepairSteps;
 using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Repairs;
 
-public class RepairMapper
+public static class RepairMapper
 {
     public static RepairDto ToDto(Repair repair)
     {
@@ -19,6 +21,7 @@ public class RepairMapper
             FaultInfo = ToDto(repair.FaultInfo),
             ReturnInfo = ToDto(repair.ReturnInfo),
             AdditionalComment = repair.AdditionalComment,
+            RepairHistory = repair.RepairHistory.Select(ToDto).ToList(),
             CreatedAt = repair.CreatedAt,
         };
     }
@@ -62,6 +65,55 @@ public class RepairMapper
         {
             ReturnMethod = returnInfo.ReturnMethod,
             ReturnAddress = returnInfo.ReturnAddress==null ? null : SharedMapper.ToDto(returnInfo.ReturnAddress)
+        };
+    }
+
+    public static RepairStepDto ToDto(RepairStep repairStep)
+    {
+        return repairStep switch
+        {
+            NormalRepairStep nrs => ToDto(nrs),
+            PaymentRepairStep prs => ToDto(prs),
+            QuoteRepairStep qrs => ToDto(qrs)
+        };
+    }
+
+    public static NormalRepairStepDto ToDto(NormalRepairStep repairStep)
+    {
+        return new NormalRepairStepDto
+        {
+            Id = repairStep.Id,
+            Status = repairStep.Status,
+            CreatedAt = repairStep.CreatedAt,
+            Description = repairStep.Description
+        };
+    }
+
+    public static PaymentRepairStepDto ToDto(PaymentRepairStep repairStep)
+    {
+        return new PaymentRepairStepDto
+        {
+            Id = repairStep.Id,
+            Status = repairStep.Status,
+            CreatedAt = repairStep.CreatedAt,
+            Description = repairStep.Description,
+            Amount = repairStep.Amount.FormattedValue,
+            Paid = repairStep.Paid,
+        };
+    }
+    
+    public static QuoteRepairStepDto ToDto(QuoteRepairStep repairStep)
+    {
+        return new QuoteRepairStepDto
+        {
+            Id = repairStep.Id,
+            Status = repairStep.Status,
+            CreatedAt = repairStep.CreatedAt,
+            Description = repairStep.Description,
+            LaborCost = repairStep.LaborCost.FormattedValue,
+            PartsCost = repairStep.PartsCost.FormattedValue,
+            TotalCost = repairStep.TotalCost.FormattedValue,
+            QuoteAccepted = repairStep.QuoteAccepted
         };
     }
 }

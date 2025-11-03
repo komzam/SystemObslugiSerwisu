@@ -8,9 +8,9 @@ import {Button} from "@/app/Atoms/Button";
 import {useState} from "react";
 
 export type CostEstimateProps = {
-    partsCost: number;
-    laborCost: number;
-    totalCost: number;
+    partsCost: string;
+    laborCost: string;
+    totalCost: string;
     state?: "pending" | "approved" | "cancelled";
 }
 
@@ -19,9 +19,9 @@ export function CostEstimate({partsCost, laborCost, totalCost, state="pending"}:
     const [internalState, setInternalState] = useState<"pending" | "approved" | "cancelled">(state);
 
     const estimateList: KeyValueLineProps[] = [
-        {label: t("parts"), value: partsCost.toFixed(2), valueBold:true},
-        {label: t("labor"), value: laborCost.toFixed(2), valueBold:true},
-        {label: t("totalEstimate"), value: totalCost.toFixed(2), labelBold:true, valueBold:true}
+        {label: t("parts"), value: partsCost, valueBold:true},
+        {label: t("labor"), value: laborCost, valueBold:true},
+        {label: t("totalEstimate"), value: totalCost, labelBold:true, valueBold:true}
     ]
 
     return(

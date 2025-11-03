@@ -21,7 +21,23 @@ export const GET_REPAIR = gql`
                 description,
                 previouslyRepaired
             },
-            additionalComment
+            additionalComment,
+            repairHistory{
+                id,
+                status,
+                createdAt,
+                description,
+                ... on PaymentRepairStepDto{
+                    amount,
+                    paid
+                },
+                ... on QuoteRepairStepDto{
+                    laborCost,
+                    partsCost,
+                    totalCost,
+                    quoteAccepted
+                }
+            }
         }
     }
 `

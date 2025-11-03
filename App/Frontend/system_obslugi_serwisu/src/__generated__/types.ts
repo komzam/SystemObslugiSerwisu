@@ -230,6 +230,14 @@ export type MutationRegisterArgs = {
   request: RegisterRequestInput;
 };
 
+export type NormalRepairStepDto = RepairStepDto & {
+  __typename?: 'NormalRepairStepDto';
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
+  status: RepairStatus;
+};
+
 export type OpeningHoursDto = {
   __typename?: 'OpeningHoursDto';
   friday?: Maybe<TimeIntervalDto>;
@@ -277,6 +285,16 @@ export type PaginatedListOfServiceDto = {
   totalPages: Scalars['Int']['output'];
 };
 
+export type PaymentRepairStepDto = RepairStepDto & {
+  __typename?: 'PaymentRepairStepDto';
+  amount: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
+  paid: Scalars['Boolean']['output'];
+  status: RepairStatus;
+};
+
 export type Query = {
   __typename?: 'Query';
   me: CustomerDto;
@@ -310,6 +328,18 @@ export type QuerySearchShopsByNameArgs = {
 
 export type QueryServicesArgs = {
   request: GetServicesRequestInput;
+};
+
+export type QuoteRepairStepDto = RepairStepDto & {
+  __typename?: 'QuoteRepairStepDto';
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
+  laborCost: Scalars['String']['output'];
+  partsCost: Scalars['String']['output'];
+  quoteAccepted?: Maybe<Scalars['Boolean']['output']>;
+  status: RepairStatus;
+  totalCost: Scalars['String']['output'];
 };
 
 export type RegisterRequestInput = {
@@ -442,6 +472,7 @@ export type RepairDto = {
   deviceInfo: DeviceInfoDto;
   faultInfo: FaultInfoDto;
   id: Scalars['String']['output'];
+  repairHistory: Array<RepairStepDto>;
   repairShop: RepairShopDto;
   returnInfo: ReturnInfoDto;
   status: RepairStatus;
@@ -481,6 +512,13 @@ export enum RepairStatus {
   Shipped = 'SHIPPED',
   Unfixable = 'UNFIXABLE'
 }
+
+export type RepairStepDto = {
+  createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['UUID']['output'];
+  status: RepairStatus;
+};
 
 export type ReturnInfoDto = {
   __typename?: 'ReturnInfoDto';
@@ -559,7 +597,11 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: string, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: string, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean } } };
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: string, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: string, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
+      | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
+      | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
+      | { __typename?: 'QuoteRepairStepDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null, id: any, status: RepairStatus, createdAt: any, description?: string | null }
+    > } };
 
 export type GetRepairShopQueryVariables = Exact<{
   id: Scalars['String']['input'];

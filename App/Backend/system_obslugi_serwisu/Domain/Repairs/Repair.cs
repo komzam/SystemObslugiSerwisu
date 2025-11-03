@@ -1,10 +1,8 @@
-﻿using Stateless;
-using system_obslugi_serwisu.Shared;
+﻿using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
-using system_obslugi_serwisu.Domain.Repairs.RepairStateMachine;
+using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
 using system_obslugi_serwisu.Domain.RepairShops;
-using system_obslugi_serwisu.Domain.Shared;
 
 namespace system_obslugi_serwisu.Domain.Repairs;
 
@@ -31,9 +29,11 @@ public partial class Repair
     public DeviceInfo DeviceInfo { get; private set; }
     public FaultInfo FaultInfo { get; private set; }
     public ReturnInfo ReturnInfo { get; private set; }
-    
+    public IReadOnlyList<RepairStep> RepairHistory => _repairHistory.AsReadOnly();
     public string? AdditionalComment { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
+    
+    private List<RepairStep> _repairHistory = new();
 
     private Repair() { }
 
@@ -66,7 +66,20 @@ public partial class Repair
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Repair(data.RepairShop, data.Customer, RepairStatus.AwaitingDelivery, data.ContactInfo,
+        var repair =  new Repair(data.RepairShop, data.Customer, RepairStatus.AwaitingDelivery, data.ContactInfo,
             data.DeviceInfo, data.FaultInfo, data.ReturnInfo, data.AdditionalComment);
+        
+        var firstHistoryStep = NormalRepairStep.Create(RepairStatus.AwaitingDelivery, repair, null);
+        if(firstHistoryStep.IsFailure)
+            return firstHistoryStep.Error;
+        
+        repair.AddRepairStep(firstHistoryStep.Value);
+
+        return repair;
+    }
+
+    private void AddRepairStep(RepairStep repairStep)
+    {
+        _repairHistory.Add(repairStep);
     }
 }

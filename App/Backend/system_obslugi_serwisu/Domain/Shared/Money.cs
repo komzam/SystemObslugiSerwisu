@@ -35,4 +35,15 @@ public class Money : ValueObject
         yield return Value;
         yield return Currency;
     }
+    
+    public static Money operator +(Money left, Money right)
+    {
+        if (left is null) throw new ArgumentNullException(nameof(left));
+        if (right is null) throw new ArgumentNullException(nameof(right));
+
+        if (!left.Currency.Equals(right.Currency))
+            throw new InvalidOperationException("Currency mismatch.");
+
+        return new Money(left.Value + right.Value, left.Currency);
+    }
 }

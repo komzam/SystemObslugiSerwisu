@@ -76,5 +76,8 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
         
         repairConfiguration.Property(repair => repair.AdditionalComment).HasMaxLength(Repair.AdditionalCommentMaxLength);
         repairConfiguration.Property(repair => repair.CreatedAt);
+
+        repairConfiguration.HasMany(repair => repair.RepairHistory)
+            .WithOne(repair => repair.Repair);
     }
 }

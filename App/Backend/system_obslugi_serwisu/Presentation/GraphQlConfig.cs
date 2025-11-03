@@ -1,5 +1,6 @@
 ﻿using system_obslugi_serwisu.Presentation.Customers;
 using system_obslugi_serwisu.Presentation.Repairs;
+using system_obslugi_serwisu.Presentation.Repairs.Dto.RepairSteps;
 using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.Reviews;
 using system_obslugi_serwisu.Presentation.Services;
@@ -12,6 +13,9 @@ public class GraphQlConfig
     {
         builder.Services.AddGraphQLServer()
             .AddAuthorization()
+            .AddType<NormalRepairStepDto>()
+            .AddType<PaymentRepairStepDto>()
+            .AddType<QuoteRepairStepDto>()
             .AddQueryType<Query>()
                 .AddTypeExtension<CustomerQueries>()
                 .AddTypeExtension<CustomerExtensions>()
