@@ -8,7 +8,7 @@ public class NormalRepairStep : RepairStep
     private NormalRepairStep() { }
     private NormalRepairStep(RepairStatus status, Repair repair, string? description) : base(status, repair, description) { }
 
-    public static OperationResult<NormalRepairStep> Create(RepairStatus status, Repair repair, string? description)
+    public static OperationResult<NormalRepairStep> Create(RepairStatus status, Repair repair, string? description=null)
     {
         var validateResult = ValidateDescription(description);
         if (validateResult.IsFailure)

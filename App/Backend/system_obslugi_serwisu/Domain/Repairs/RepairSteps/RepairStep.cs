@@ -24,7 +24,7 @@ public abstract class RepairStep
         CreatedAt = DateTimeOffset.UtcNow;
     }
 
-    protected static OperationResult ValidateDescription(string? description)
+    public static OperationResult ValidateDescription(string? description)
     {
         if (description != null && description.Length > DescriptionMaxLength)
             return RepairStepErrors.DescriptionTooLong();

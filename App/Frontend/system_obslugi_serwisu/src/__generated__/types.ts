@@ -502,6 +502,7 @@ export enum RepairStatus {
   Canceled = 'CANCELED',
   Complaint = 'COMPLAINT',
   Completed = 'COMPLETED',
+  Created = 'CREATED',
   Diagnosing = 'DIAGNOSING',
   DiagnosisFeeRequired = 'DIAGNOSIS_FEE_REQUIRED',
   FinalPaymentRequired = 'FINAL_PAYMENT_REQUIRED',

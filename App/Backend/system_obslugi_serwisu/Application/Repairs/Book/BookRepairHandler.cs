@@ -52,6 +52,10 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
         });
         if(repairResult.IsFailure)
             return repairResult.Error;
+
+        var finalizeResult = await repairResult.Value.FinalizeBooking();
+        if(finalizeResult.IsFailure)
+            return finalizeResult.Error;
         
         var createResult = await unitOfWork.RepairRepository.CreateRepair(repairResult.Value);
         if(createResult.IsFailure)

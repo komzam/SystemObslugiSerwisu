@@ -15,7 +15,7 @@ public class PaymentRepairStep : RepairStep
         Paid = false;
     }
 
-    public static OperationResult<PaymentRepairStep> Create( RepairStatus status, Repair repair, Money amount ,string? description)
+    public static OperationResult<PaymentRepairStep> Create( RepairStatus status, Repair repair, Money amount ,string? description=null)
     {
         var validationResult = ValidateDescription(description);
         if (validationResult.IsFailure)

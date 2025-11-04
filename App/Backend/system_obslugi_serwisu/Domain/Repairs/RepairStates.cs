@@ -1,6 +1,8 @@
 ﻿using Stateless;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.Repairs.RepairStateMachine;
+using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
+using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Repairs;
@@ -11,26 +13,39 @@ public partial class Repair
         get
         {
             if (_fsm == null)
-                _fsm = RepairStateMachineFactory.Create(() => Status, s => Status = s, this);
+                _fsm = RepairStateMachineFactory.Create(
+                    () => Status,
+                    s => Status = s,
+                    AddRepairStep,
+                    this);
             return _fsm;
         }
     }
 
     private StateMachine<RepairStatus, RepairTrigger>? _fsm;
     
-    private async Task<OperationResult> FireTriggerAsync(RepairTrigger trigger)
+    private async Task<OperationResult> FireTriggerAsync(RepairTrigger trigger, string? description = null)
     {
         if (!StateMachine.CanFire(trigger))
             return RepairErrors.InvalidTrigger();
-
-        await StateMachine.FireAsync(trigger);
+        
+        await StateMachine.FireAsync(trigger, description);
         
         return OperationResult.Success();
     }
-
-    public async Task<OperationResult> CheckIn()
+    
+    public async Task<OperationResult> FinalizeBooking()
     {
-        return await FireTriggerAsync(RepairTrigger.CheckIn);
+        return await FireTriggerAsync(RepairTrigger.FinalizeBooking);
+    }
+    
+    public async Task<OperationResult> CheckIn(string? description = null)
+    {
+        var validationResult = RepairStep.ValidateDescription(description);
+        if(validationResult.IsFailure)
+            return validationResult.Error;
+        
+        return await FireTriggerAsync(RepairTrigger.CheckIn, description);
     }
     
     public async Task<OperationResult> QueueForDiagnosis()
@@ -43,18 +58,29 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.StartDiagnosis);
     }
     
-    public async Task<OperationResult> SubmitQuote()
+    public async Task<OperationResult> SubmitQuote(Quote quote, string? description = null)
     {
-        return await FireTriggerAsync(RepairTrigger.SubmitQuote);
+        var validationResult = RepairStep.ValidateDescription(description);
+        if(validationResult.IsFailure)
+            return validationResult.Error;
+        
+        Quote = quote;
+        return await FireTriggerAsync(RepairTrigger.SubmitQuote, description);
     }
 
-    public async Task<OperationResult> DeclareUnfixable()
+    public async Task<OperationResult> DeclareUnfixable(string? description = null)
     {
-        return await FireTriggerAsync(RepairTrigger.DeclareUnfixable);
+        var validationResult = RepairStep.ValidateDescription(description);
+        if(validationResult.IsFailure)
+            return validationResult.Error;
+     
+        return await FireTriggerAsync(RepairTrigger.DeclareUnfixable, description);
     }
     
-    public async Task<OperationResult> FinalizeUnfixable()
+    public async Task<OperationResult> FinalizeUnfixable(Money diagnosisFee)
     {
+        DiagnosisFee = diagnosisFee;
+        
         return await FireTriggerAsync(RepairTrigger.FinalizeUnfixable);
     }
     
@@ -63,8 +89,10 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.ApproveQuote);
     }
     
-    public async Task<OperationResult> RejectQuote()
+    public async Task<OperationResult> RejectQuote(Money diagnosisFee)
     {
+        DiagnosisFee = diagnosisFee;
+        
         return await FireTriggerAsync(RepairTrigger.RejectQuote);
     }
     
@@ -83,14 +111,23 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.PartsArrived);
     }
 
-    public async Task<OperationResult> CompleteRepairSuccess()
+    public async Task<OperationResult> CompleteRepairSuccess(Money finalCost, string? description = null)
     {
-        return await FireTriggerAsync(RepairTrigger.CompleteRepairSuccess);
+        var validationResult = RepairStep.ValidateDescription(description);
+        if(validationResult.IsFailure)
+            return validationResult.Error;
+        
+        FinalCost = finalCost;
+        return await FireTriggerAsync(RepairTrigger.CompleteRepairSuccess, description);
     }
 
-    public async Task<OperationResult> CompleteRepairFailure()
+    public async Task<OperationResult> CompleteRepairFailure(string? description = null)
     {
-        return await FireTriggerAsync(RepairTrigger.CompleteRepairFailure);
+        var validationResult = RepairStep.ValidateDescription(description);
+        if(validationResult.IsFailure)
+            return validationResult.Error;
+        
+        return await FireTriggerAsync(RepairTrigger.CompleteRepairFailure, description);
     }
 
     public async Task<OperationResult> FinalizeFailedRepair()

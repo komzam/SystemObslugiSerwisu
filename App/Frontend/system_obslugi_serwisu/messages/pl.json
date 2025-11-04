@@ -138,6 +138,7 @@
     "city": "Miasto"
   },
   "Status": {
+    "CREATED": "Utworzony",
     "AWAITING_DELIVERY": "Oczekuje na dostawę",
     "RECEIVED": "Przyjęte do Serwisu",
     "AWAITING_DIAGNOSIS": "Oczekuje na Diagnozę",

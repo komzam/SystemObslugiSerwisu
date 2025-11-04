@@ -2,6 +2,7 @@
 
 public enum RepairStatus
 {
+    Created,
     AwaitingDelivery,
     Received,
     

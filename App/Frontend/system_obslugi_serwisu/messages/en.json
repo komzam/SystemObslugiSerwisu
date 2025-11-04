@@ -138,6 +138,7 @@
     "city": "City"
   },
   "Status": {
+    "CREATED": "Created",
     "AWAITING_DELIVERY": "Awaiting Delivery",
     "RECEIVED": "Received",
     "AWAITING_DIAGNOSIS": "Awaiting Diagnosis",

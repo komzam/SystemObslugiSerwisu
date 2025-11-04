@@ -2,6 +2,7 @@
 
 public enum RepairTrigger
 {
+    FinalizeBooking,
     CheckIn,
     QueueForDiagnosis,
     StartDiagnosis,

@@ -41,6 +41,7 @@ const variants: Record<string, StatusVariant> = {
 }
 
 const StatusToVisual: Record<RepairStatus, keyof typeof variants> = {
+    [RepairStatus.Created]: "gray",
     [RepairStatus.AwaitingDelivery]: "gray",
     [RepairStatus.Received]: "blue",
     [RepairStatus.AwaitingDiagnosis]: "blue",
