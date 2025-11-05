@@ -684,6 +684,20 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: boolean };
 
+export type ApproveQuoteMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ApproveQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', approveQuote: boolean } };
+
+export type RejectQuoteMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type RejectQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', rejectQuote: boolean } };
+
 export type SearchQueryVariables = Exact<{
   name: Scalars['String']['input'];
   pageNumber: Scalars['Int']['input'];

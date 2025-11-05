@@ -46,7 +46,7 @@ export default function Repair() {
                         howToReplicateFault={repair.faultInfo.howToReproduce}
                         faultDescription={repair.faultInfo.description}/>
                     <RepairDetailsImages/>
-                    <RepairDetailsHistory repairHistory={repair.repairHistory}/>
+                    <RepairDetailsHistory repairId={repair.id} repairHistory={repair.repairHistory}/>
                 </div>
             </div>
         </ProtectedRoute>

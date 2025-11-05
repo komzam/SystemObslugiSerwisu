@@ -6,10 +6,11 @@ import {DateTime} from "luxon";
 
 
 export type RepairDetailsHistoryProps = {
+    repairId: string;
     repairHistory: GetRepairQuery["repair"]["repairHistory"];
 }
 
-export function RepairDetailsHistory({repairHistory} : RepairDetailsHistoryProps){
+export function RepairDetailsHistory({repairId, repairHistory} : RepairDetailsHistoryProps){
     const t = useTranslations("RepairDetails");
     const tHistory = useTranslations("RepairHistory");
 
@@ -28,6 +29,7 @@ export function RepairDetailsHistory({repairHistory} : RepairDetailsHistoryProps
                 break;
             case "QuoteRepairStepDto":
                 steps.push({stepName:name, date:date, description:repairStep.description??description, costEstimate: {
+                    repairId: repairId,
                     partsCost:repairStep.quote.partsCost,
                     laborCost:repairStep.quote.laborCost,
                     totalCost:repairStep.quote.totalCost,

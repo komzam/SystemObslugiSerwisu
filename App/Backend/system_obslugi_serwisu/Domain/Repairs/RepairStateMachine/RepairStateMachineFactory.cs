@@ -74,7 +74,18 @@ public static class RepairStateMachineFactory
             .PermitIf(RepairTrigger.RejectQuote, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null && repairInstance.DiagnosisFee.Value != 0)
             .PermitIf(RepairTrigger.RejectQuote, RepairStatus.AwaitingShipping, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
             .PermitIf(RepairTrigger.RejectQuote, RepairStatus.ReadyForPickup, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.SelfPickup)
-            .OnEntryFrom(submitQuoteTrigger, (Action<string?>)QuoteStep);
+            .OnEntryFrom(submitQuoteTrigger, QuoteStep)
+            .OnExit(transition =>
+            {
+                var accepted = transition.Trigger == RepairTrigger.ApproveQuote;
+                var step = repairInstance.RepairHistory
+                    .FirstOrDefault(rs => rs.Status == RepairStatus.AwaitingApproval);
+
+                if (step is QuoteRepairStep quoteStep)
+                {
+                    quoteStep.Quote.QuoteAccepted = accepted;
+                }
+            });
 
         machine.Configure(RepairStatus.DiagnosisFeeRequired)
             .PermitIf(RepairTrigger.PaymentCompleted, RepairStatus.AwaitingShipping, () => repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
