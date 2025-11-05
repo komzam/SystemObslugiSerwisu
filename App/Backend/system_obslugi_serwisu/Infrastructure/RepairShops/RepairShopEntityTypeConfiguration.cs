@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Infrastructure.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
@@ -74,6 +75,8 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
         
         repairShopConfiguration.HasMany(repairShop => repairShop.Repairs)
             .WithOne(repair => repair.RepairShop);
+        
+        repairShopConfiguration.OwnsMoney(repairShop => repairShop.DiagnosisFee, "DiagnosisFee");
 
         repairShopConfiguration.Property(repairShop => repairShop.CreatedAt);
     }

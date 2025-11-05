@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Repairs.RepairState.DeclareUnfixable;
@@ -12,7 +13,7 @@ public class DeclareUnfixableHandler(IUnitOfWork unitOfWork) : IRequestHandler<D
         if(repairResult.IsFailure)
             return repairResult.Error;
         
-        var declareUnfixableResult = await repairResult.Value.DeclareUnfixable();
+        var declareUnfixableResult = await repairResult.Value.DeclareUnfixable(request.Description);
         if(declareUnfixableResult.IsFailure)
             return declareUnfixableResult.Error;
 

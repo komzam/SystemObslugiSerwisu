@@ -10,25 +10,28 @@ export type RepairDetailsHistoryProps = {
 }
 
 export function RepairDetailsHistory({repairHistory} : RepairDetailsHistoryProps){
-    const t = useTranslations("RepairDetails")
+    const t = useTranslations("RepairDetails");
+    const tHistory = useTranslations("RepairHistory");
 
     const steps : RepairHistoryStepProps[] = []
 
     for(var repairStep of repairHistory){
+        const name = tHistory(`${repairStep.status}.title`);
+        const description = tHistory(`${repairStep.status}.description`);
         const date = DateTime.fromISO(repairStep.createdAt).toFormat("dd.MM.yyyy HH:mm");
         switch(repairStep.__typename){
             case "NormalRepairStepDto":
-                steps.push({stepName:"Repair step name here", date:date, description:repairStep.description??"Example step description"});
+                steps.push({stepName:name, date:date, description:repairStep.description??description});
                 break;
             case "PaymentRepairStepDto":
-                steps.push({stepName:"Repair step name here", date:date, description:repairStep.description??"Example step description", payment: {finalAmount:repairStep.amount}});
+                steps.push({stepName:name, date:date, description:repairStep.description??description, payment: {finalAmount:repairStep.amount}});
                 break;
             case "QuoteRepairStepDto":
-                steps.push({stepName:"Repair step name here", date:date, description:repairStep.description??"Example step description", costEstimate: {
-                    partsCost:repairStep.partsCost,
-                    laborCost:repairStep.laborCost,
-                    totalCost:repairStep.totalCost,
-                    state: repairStep.quoteAccepted == null ? "pending" : repairStep.quoteAccepted ? "approved" : "cancelled"
+                steps.push({stepName:name, date:date, description:repairStep.description??description, costEstimate: {
+                    partsCost:repairStep.quote.partsCost,
+                    laborCost:repairStep.quote.laborCost,
+                    totalCost:repairStep.quote.totalCost,
+                    state: repairStep.quote.quoteAccepted == null ? "pending" : repairStep.quote.quoteAccepted ? "approved" : "cancelled"
                     }
                 });
                 break;

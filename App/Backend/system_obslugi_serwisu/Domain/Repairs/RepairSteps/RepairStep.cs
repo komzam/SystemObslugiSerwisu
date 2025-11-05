@@ -8,6 +8,7 @@ public abstract class RepairStep
     public const int DescriptionMaxLength = 200;
     
     public Guid Id { get; private set; }
+    public int StepNumber { get; private set; }
     public RepairStatus Status { get; private set; }
     public Repair Repair { get; private set; }
     public string? Description { get; private set; }
@@ -15,9 +16,10 @@ public abstract class RepairStep
 
     protected RepairStep() { }
 
-    protected RepairStep(RepairStatus status, Repair repair, string? description)
+    protected RepairStep(int stepNumber, RepairStatus status, Repair repair, string? description)
     {
         Id = Guid.NewGuid();
+        StepNumber = stepNumber;
         Status = status;
         Repair = repair;
         Description = description;

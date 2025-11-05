@@ -23,6 +23,8 @@ public class RepairStepTypeConfiguration : IEntityTypeConfiguration<RepairStep>
 
         builder.Property(repairStep => repairStep.Status);
 
+        builder.Property(repairStep => repairStep.StepNumber);
+
         builder.Property(repairStep => repairStep.CreatedAt);
     }
 }

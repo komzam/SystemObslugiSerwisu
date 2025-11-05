@@ -68,6 +68,17 @@ public static class RepairMapper
         };
     }
 
+    public static QuoteDto ToDto(Quote quote)
+    {
+        return new QuoteDto
+        {
+            LaborCost = quote.LaborCost.FormattedValue,
+            PartsCost = quote.PartsCost.FormattedValue,
+            TotalCost = quote.TotalCost.FormattedValue,
+            QuoteAccepted = quote.QuoteAccepted
+        };
+    }
+
     public static RepairStepDto ToDto(RepairStep repairStep)
     {
         return repairStep switch
@@ -110,10 +121,7 @@ public static class RepairMapper
             Status = repairStep.Status,
             CreatedAt = repairStep.CreatedAt,
             Description = repairStep.Description,
-            LaborCost = repairStep.LaborCost.FormattedValue,
-            PartsCost = repairStep.PartsCost.FormattedValue,
-            TotalCost = repairStep.TotalCost.FormattedValue,
-            QuoteAccepted = repairStep.QuoteAccepted
+            Quote = ToDto(repairStep.Quote)
         };
     }
 }

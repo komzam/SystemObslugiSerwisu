@@ -6,4 +6,5 @@ namespace system_obslugi_serwisu.Application.Repairs.RepairState.CompleteRepairF
 public class CompleteRepairFailureCommand: IRequest<OperationResult>
 {
     public Guid RepairId { get; init; }
+    public string? Description { get; init; }
 }

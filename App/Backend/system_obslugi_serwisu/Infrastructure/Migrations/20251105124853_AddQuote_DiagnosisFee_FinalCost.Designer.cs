@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using system_obslugi_serwisu.Infrastructure.Database;
@@ -11,9 +12,11 @@ using system_obslugi_serwisu.Infrastructure.Database;
 namespace system_obslugi_serwisu.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251105124853_AddQuote_DiagnosisFee_FinalCost")]
+    partial class AddQuote_DiagnosisFee_FinalCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,9 +234,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StepNumber")
                         .HasColumnType("integer");
 
                     b.Property<string>("StepType")

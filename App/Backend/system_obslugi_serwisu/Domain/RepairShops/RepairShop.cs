@@ -34,6 +34,7 @@ public class RepairShop
     public double Rating { get; private set; }
     public int ReviewCount { get; private set; }
     public string? AboutUs { get; private set; }
+    public Money? DiagnosisFee { get; private set; }
     public OpeningHours OpeningHours { get; private set; }
     public List<Worker>? Workers { get; private set; }
     public List<Repair> Repairs { get; private set; } = new List<Repair>();

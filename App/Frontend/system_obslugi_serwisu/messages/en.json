@@ -158,6 +158,84 @@
     "CANCELED": "Canceled",
     "COMPLAINT": "Complaint"
   },
+  "RepairHistory": {
+    "CREATED":{
+      "title": "Created",
+      "description": "The repair ticket has been successfully created and registered."
+    },
+    "AWAITING_DELIVERY":{
+      "title": "Awaiting Delivery",
+      "description": "The device is awaiting delivery to the repair shop."
+    },
+    "RECEIVED":{
+      "title": "Received",
+      "description": "The device has been received by the repair shop."
+    },
+    "AWAITING_DIAGNOSIS":{
+      "title": "Awaiting Diagnosis",
+      "description": "The device is in the queue for diagnosis."
+    },
+    "DIAGNOSING":{
+      "title": "Diagnosing",
+      "description": "A technician is currently examining the device to determine the fault."
+    },
+    "UNFIXABLE":{
+      "title": "Unfixable",
+      "description": "The device has been diagnosed and deemed unfixable or beyond economical repair."
+    },
+    "AWAITING_APPROVAL":{
+      "title": "Awaiting Quote Approval",
+      "description": "A repair quote has been issued and is awaiting customer approval."
+    },
+    "AWAITING_REPAIR":{
+      "title": "Awaiting Repair",
+      "description": "The quote has been approved. The device is awaiting the start of the repair process."
+    },
+    "IN_REPAIR":{
+      "title": "In Repair",
+      "description": "The device is currently being repaired by a technician."
+    },
+    "REPAIR_FAILED":{
+      "title": "Repair Failed",
+      "description": "The repair attempt was unsuccessful."
+    },
+    "AWAITING_PARTS":{
+      "title": "Awaiting Parts",
+      "description": "The repair is paused while necessary spare parts are being sourced."
+    },
+    "DIAGNOSIS_FEE_REQUIRED":{
+      "title": "Diagnosis Fee Required",
+      "description": "A payment is required to cover the diagnosis fee."
+    },
+    "FINAL_PAYMENT_REQUIRED":{
+      "title": "Final Payment Required",
+      "description": "The repair is complete, and final payment is required before release."
+    },
+    "READY_FOR_PICKUP":{
+      "title": "Ready for Pickup",
+      "description": "The device is complete and is ready to be picked up by the customer."
+    },
+    "AWAITING_SHIPPING":{
+      "title": "Awaiting Shipping",
+      "description": "The device is packaged and awaiting handover to the shipping carrier."
+    },
+    "SHIPPED":{
+      "title": "Shipped",
+      "description": "The device has been shipped and is in transit back to the customer."
+    },
+    "COMPLETED":{
+      "title": "Completed",
+      "description": "The repair process is finished, and the transaction is closed."
+    },
+    "CANCELED":{
+      "title": "Canceled",
+      "description": "The repair ticket has been canceled."
+    },
+    "COMPLAINT":{
+      "title": "Complaint",
+      "description": "A complaint has been registered regarding the repair service."
+    }
+  },
   "RepairDetails": {
     "deviceInfo": "Device information",
     "faultInfo": "Fault information",

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Infrastructure.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Repairs;
 
@@ -74,6 +75,9 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
             });
         });
         
+        repairConfiguration.OwnsQuote(repair => repair.Quote);
+        repairConfiguration.OwnsMoney(repair => repair.DiagnosisFee, "DiagnosisFee");
+        repairConfiguration.OwnsMoney(repair => repair.FinalCost, "FinalCost");
         repairConfiguration.Property(repair => repair.AdditionalComment).HasMaxLength(Repair.AdditionalCommentMaxLength);
         repairConfiguration.Property(repair => repair.CreatedAt);
 

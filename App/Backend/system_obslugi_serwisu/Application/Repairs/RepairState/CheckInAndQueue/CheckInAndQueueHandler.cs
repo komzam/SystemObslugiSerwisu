@@ -12,7 +12,7 @@ public class CheckInAndQueueHandler(IUnitOfWork unitOfWork) : IRequestHandler<Ch
         if (repairResult.IsFailure)
             return repairResult.Error;
 
-        var checkInResult = await repairResult.Value.CheckIn();
+        var checkInResult = await repairResult.Value.CheckIn(request.Description);
         if(checkInResult.IsFailure)
             return checkInResult.Error;
         

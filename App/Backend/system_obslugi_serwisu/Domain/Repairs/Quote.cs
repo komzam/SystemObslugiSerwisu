@@ -10,6 +10,7 @@ public class Quote : ValueObject
     public Money PartsCost { get; private set; }
     public Money TotalCost => LaborCost + PartsCost;
     public bool? QuoteAccepted { get; set; }
+    public DateTimeOffset CreatedAt { get;  private set; }
     
     private Quote() { }
     private Quote(Money laborCost, Money partsCost)
@@ -17,6 +18,7 @@ public class Quote : ValueObject
         LaborCost = laborCost;
         PartsCost = partsCost;
         QuoteAccepted = null;
+        CreatedAt = DateTimeOffset.UtcNow;
     }
     
     public static OperationResult<Quote> Create(Money laborCost, Money partsCost)

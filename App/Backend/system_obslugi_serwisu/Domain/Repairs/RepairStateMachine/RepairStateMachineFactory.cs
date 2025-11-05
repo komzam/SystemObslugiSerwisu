@@ -16,26 +16,26 @@ public static class RepairStateMachineFactory
         var machine = new StateMachine<RepairStatus, RepairTrigger>(stateAccessor, stateMutator);
         void NormalStep(string? description)
         {
-            var repairStep = NormalRepairStep.Create(machine.State, repairInstance, description);
+            var repairStep = NormalRepairStep.Create(repairInstance.RepairHistory.Count, machine.State, repairInstance, description);
             addRepairStep(repairStep.Value);
         }
 
         void DiagnosisFeeStep(string? description)
         {
             var repairStep =
-                PaymentRepairStep.Create(machine.State, repairInstance, repairInstance.DiagnosisFee, description);
+                PaymentRepairStep.Create(repairInstance.RepairHistory.Count, machine.State, repairInstance, repairInstance.DiagnosisFee, description);
             addRepairStep(repairStep.Value);
         }
 
         void FinalPaymentStep(string? description)
         {
-            var repairStep = PaymentRepairStep.Create(machine.State, repairInstance, repairInstance.FinalCost, description);
+            var repairStep = PaymentRepairStep.Create(repairInstance.RepairHistory.Count, machine.State, repairInstance, repairInstance.FinalCost, description);
             addRepairStep(repairStep.Value);
         }
 
         void QuoteStep(string? description)
         {
-            var repairStep = QuoteRepairStep.Create(machine.State, repairInstance, repairInstance.Quote, description);
+            var repairStep = QuoteRepairStep.Create(repairInstance.RepairHistory.Count, machine.State, repairInstance, repairInstance.Quote, description);
             addRepairStep(repairStep.Value);
         }
 
@@ -63,13 +63,17 @@ public static class RepairStateMachineFactory
         
         var declareUnfixableTrigger = machine.SetTriggerParameters<string?>(RepairTrigger.DeclareUnfixable);
         machine.Configure(RepairStatus.Unfixable)
-            .PermitIf(RepairTrigger.FinalizeUnfixable, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null)
+            .PermitIf(RepairTrigger.FinalizeUnfixable, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null && repairInstance.DiagnosisFee.Value != 0)
+            .PermitIf(RepairTrigger.FinalizeUnfixable, RepairStatus.AwaitingShipping, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
+            .PermitIf(RepairTrigger.FinalizeUnfixable, RepairStatus.ReadyForPickup, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.SelfPickup)
             .OnEntryFrom(declareUnfixableTrigger, NormalStep);
         
         var submitQuoteTrigger = machine.SetTriggerParameters<string?>(RepairTrigger.SubmitQuote);
         machine.Configure(RepairStatus.AwaitingApproval)
             .Permit(RepairTrigger.ApproveQuote, RepairStatus.AwaitingRepair)
-            .PermitIf(RepairTrigger.RejectQuote, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null)
+            .PermitIf(RepairTrigger.RejectQuote, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null && repairInstance.DiagnosisFee.Value != 0)
+            .PermitIf(RepairTrigger.RejectQuote, RepairStatus.AwaitingShipping, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
+            .PermitIf(RepairTrigger.RejectQuote, RepairStatus.ReadyForPickup, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.SelfPickup)
             .OnEntryFrom(submitQuoteTrigger, (Action<string?>)QuoteStep);
 
         machine.Configure(RepairStatus.DiagnosisFeeRequired)
@@ -88,7 +92,9 @@ public static class RepairStateMachineFactory
             .OnEntry(() => NormalStep(null));
 
         machine.Configure(RepairStatus.InRepair)
-            .PermitIf(RepairTrigger.CompleteRepairSuccess, RepairStatus.FinalPaymentRequired, () => repairInstance.FinalCost != null)
+            .PermitIf(RepairTrigger.CompleteRepairSuccess, RepairStatus.FinalPaymentRequired, () => repairInstance.FinalCost != null && repairInstance.FinalCost.Value != 0)
+            .PermitIf(RepairTrigger.CompleteRepairSuccess, RepairStatus.AwaitingShipping, () => (repairInstance.FinalCost == null || repairInstance.FinalCost.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
+            .PermitIf(RepairTrigger.CompleteRepairSuccess, RepairStatus.ReadyForPickup, () => (repairInstance.FinalCost == null || repairInstance.FinalCost.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.SelfPickup)
             .Permit(RepairTrigger.CompleteRepairFailure, RepairStatus.RepairFailed)
             .Permit(RepairTrigger.PartsNeeded, RepairStatus.AwaitingParts)
             .OnEntryFrom(RepairTrigger.StartRepair, () => NormalStep(null));
@@ -103,11 +109,15 @@ public static class RepairStateMachineFactory
 
         machine.Configure(RepairStatus.ReadyForPickup)
             .Permit(RepairTrigger.Pickup, RepairStatus.Completed)
-            .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null));
+            .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.RejectQuote, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null));
         
         machine.Configure(RepairStatus.AwaitingShipping)
             .Permit(RepairTrigger.Ship, RepairStatus.Shipped)
-            .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null));
+            .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.RejectQuote, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null));
         
         machine.Configure(RepairStatus.Shipped)
             .Permit(RepairTrigger.FinalizeDelivery, RepairStatus.Completed)

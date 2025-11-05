@@ -9,18 +9,18 @@ public class PaymentRepairStep : RepairStep
     public bool Paid { get; set; }
 
     private PaymentRepairStep() { }
-    private PaymentRepairStep(RepairStatus status, Repair repair, Money amount, string? description) : base(status, repair, description)
+    private PaymentRepairStep(int stepNumber, RepairStatus status, Repair repair, Money amount, string? description) : base(stepNumber, status, repair, description)
     {
         Amount = amount;
         Paid = false;
     }
 
-    public static OperationResult<PaymentRepairStep> Create( RepairStatus status, Repair repair, Money amount ,string? description=null)
+    public static OperationResult<PaymentRepairStep> Create( int stepNumber, RepairStatus status, Repair repair, Money amount ,string? description=null)
     {
         var validationResult = ValidateDescription(description);
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new PaymentRepairStep(status, repair, amount, description);
+        return new PaymentRepairStep(stepNumber, status, repair, amount, description);
     }
 }

@@ -32,10 +32,12 @@ export const GET_REPAIR = gql`
                     paid
                 },
                 ... on QuoteRepairStepDto{
-                    laborCost,
-                    partsCost,
-                    totalCost,
-                    quoteAccepted
+                    quote {
+                        laborCost,
+                        partsCost,
+                        totalCost,
+                        quoteAccepted   
+                    }
                 }
             }
         }

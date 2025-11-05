@@ -13,6 +13,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
+  Decimal: { input: any; output: any; }
   UUID: { input: any; output: any; }
 };
 
@@ -62,6 +63,13 @@ export type BookRepairRequestInput = {
   returnInfo: ReturnInfoInput;
 };
 
+export type CompleteRepairSuccessRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  finalCost?: InputMaybe<Scalars['Decimal']['input']>;
+  finalCostCurrency?: InputMaybe<CurrencyCode>;
+  repairId: Scalars['UUID']['input'];
+};
+
 export type ContactInfoDto = {
   __typename?: 'ContactInfoDto';
   email: Scalars['String']['output'];
@@ -86,6 +94,11 @@ export enum ContactMethod {
 
 export enum Country {
   Poland = 'POLAND'
+}
+
+export enum CurrencyCode {
+  Pln = 'PLN',
+  Usd = 'USD'
 }
 
 export type CustomerDto = {
@@ -330,16 +343,21 @@ export type QueryServicesArgs = {
   request: GetServicesRequestInput;
 };
 
+export type QuoteDto = {
+  __typename?: 'QuoteDto';
+  laborCost: Scalars['String']['output'];
+  partsCost: Scalars['String']['output'];
+  quoteAccepted?: Maybe<Scalars['Boolean']['output']>;
+  totalCost: Scalars['String']['output'];
+};
+
 export type QuoteRepairStepDto = RepairStepDto & {
   __typename?: 'QuoteRepairStepDto';
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['UUID']['output'];
-  laborCost: Scalars['String']['output'];
-  partsCost: Scalars['String']['output'];
-  quoteAccepted?: Maybe<Scalars['Boolean']['output']>;
+  quote: QuoteDto;
   status: RepairStatus;
-  totalCost: Scalars['String']['output'];
 };
 
 export type RegisterRequestInput = {
@@ -386,21 +404,24 @@ export type RepairActionsCancelArgs = {
 
 
 export type RepairActionsCheckInAndQueueArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
   repairId: Scalars['UUID']['input'];
 };
 
 
 export type RepairActionsCompleteRepairFailureArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
   repairId: Scalars['UUID']['input'];
 };
 
 
 export type RepairActionsCompleteRepairSuccessArgs = {
-  repairId: Scalars['UUID']['input'];
+  request: CompleteRepairSuccessRequestInput;
 };
 
 
 export type RepairActionsDeclareUnfixableArgs = {
+  description?: InputMaybe<Scalars['String']['input']>;
   repairId: Scalars['UUID']['input'];
 };
 
@@ -461,7 +482,7 @@ export type RepairActionsStartRepairArgs = {
 
 
 export type RepairActionsSubmitQuoteArgs = {
-  repairId: Scalars['UUID']['input'];
+  request: SubmitQuoteRequestInput;
 };
 
 export type RepairDto = {
@@ -558,6 +579,14 @@ export type ServiceDto = {
   price: Scalars['String']['output'];
 };
 
+export type SubmitQuoteRequestInput = {
+  currency: CurrencyCode;
+  description?: InputMaybe<Scalars['String']['input']>;
+  laborCost: Scalars['Decimal']['input'];
+  partsCost: Scalars['Decimal']['input'];
+  repairId: Scalars['UUID']['input'];
+};
+
 export type TimeIntervalDto = {
   __typename?: 'TimeIntervalDto';
   from: Scalars['String']['output'];
@@ -601,7 +630,7 @@ export type GetRepairQueryVariables = Exact<{
 export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: string, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: string, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
-      | { __typename?: 'QuoteRepairStepDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null, id: any, status: RepairStatus, createdAt: any, description?: string | null }
+      | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }
     > } };
 
 export type GetRepairShopQueryVariables = Exact<{

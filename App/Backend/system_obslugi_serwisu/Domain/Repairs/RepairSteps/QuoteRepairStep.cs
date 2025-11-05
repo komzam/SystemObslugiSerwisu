@@ -9,18 +9,18 @@ public class QuoteRepairStep : RepairStep
     public Quote Quote { get; private set;} 
     
     private QuoteRepairStep() { }
-    private QuoteRepairStep(RepairStatus status, Repair repair, Quote quote, string? description) : base(status, repair, description)
+    private QuoteRepairStep(int stepNumber, RepairStatus status, Repair repair, Quote quote, string? description) : base(stepNumber, status, repair, description)
     {
         Quote = quote;
     }
     
-    public static OperationResult<QuoteRepairStep> Create(RepairStatus status, Repair repair, Quote quote, string? description=null)
+    public static OperationResult<QuoteRepairStep> Create(int stepNumber, RepairStatus status, Repair repair, Quote quote, string? description=null)
     {
         var descriptionValidationResult = ValidateDescription(description);
         if (descriptionValidationResult.IsFailure)
             return descriptionValidationResult.Error;
         
-        return new QuoteRepairStep(status, repair, quote, description);
+        return new QuoteRepairStep(stepNumber, status, repair, quote, description);
     }
 
 }

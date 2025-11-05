@@ -158,6 +158,84 @@
     "CANCELED": "Anulowane",
     "COMPLAINT": "Reklamacja"
   },
+  "RepairHistory": {
+    "CREATED":{
+      "title": "Utworzony",
+      "description": "Zgłoszenie naprawy zostało pomyślnie utworzone i zarejestrowane."
+    },
+    "AWAITING_DELIVERY":{
+      "title": "Oczekuje na dostawę",
+      "description": "Urządzenie oczekuje na dostarczenie do serwisu."
+    },
+    "RECEIVED":{
+      "title": "Przyjęte do Serwisu",
+      "description": "Urządzenie zostało przyjęte przez serwis."
+    },
+    "AWAITING_DIAGNOSIS":{
+      "title": "Oczekuje na Diagnozę",
+      "description": "Urządzenie znajduje się w kolejce do diagnozy."
+    },
+    "DIAGNOSING":{
+      "title": "Diagnozowanie w Trakcie",
+      "description": "Serwisant aktualnie bada urządzenie w celu ustalenia usterki."
+    },
+    "UNFIXABLE":{
+      "title": "Nienaprawialne",
+      "description": "Urządzenie zostało zdiagnozowane jako nienaprawialne lub nieopłacalne w naprawie."
+    },
+    "AWAITING_APPROVAL":{
+      "title": "Oczekuje Akceptacji Wyceny",
+      "description": "Wycena naprawy została wystawiona i oczekuje na akceptację klienta."
+    },
+    "AWAITING_REPAIR":{
+      "title": "Oczekuje na Naprawę",
+      "description": "Wycena została zaakceptowana. Urządzenie oczekuje na rozpoczęcie procesu naprawy."
+    },
+    "IN_REPAIR":{
+      "title": "W Naprawie",
+      "description": "Urządzenie jest aktualnie naprawiane przez serwisanta."
+    },
+    "REPAIR_FAILED":{
+      "title": "Naprawa Nieudana",
+      "description": "Próba naprawy zakończyła się niepowodzeniem."
+    },
+    "AWAITING_PARTS":{
+      "title": "Oczekuje na Części",
+      "description": "Naprawa została wstrzymana w oczekiwaniu na niezbędne części zamienne."
+    },
+    "DIAGNOSIS_FEE_REQUIRED":{
+      "title": "Wymagana Opłata Diagnostyczna",
+      "description": "Wymagana jest płatność w celu pokrycia opłaty za diagnozę."
+    },
+    "FINAL_PAYMENT_REQUIRED":{
+      "title": "Wymagana Płatność Końcowa",
+      "description": "Naprawa jest zakończona, a do wydania urządzenia wymagana jest płatność końcowa."
+    },
+    "READY_FOR_PICKUP":{
+      "title": "Gotowe do Odbioru",
+      "description": "Naprawa urządzenia jest zakończona i jest ono gotowe do odbioru przez klienta."
+    },
+    "AWAITING_SHIPPING":{
+      "title": "Oczekuje na Wysyłkę",
+      "description": "Urządzenie zostało spakowane i oczekuje na przekazanie przewoźnikowi."
+    },
+    "SHIPPED":{
+      "title": "Wysłane",
+      "description": "Urządzenie zostało wysłane i jest w drodze powrotnej do klienta."
+    },
+    "COMPLETED":{
+      "title": "Zrealizowane",
+      "description": "Proces naprawy został zakończony, a transakcja jest zamknięta."
+    },
+    "CANCELED":{
+      "title": "Anulowane",
+      "description": "Zgłoszenie naprawy zostało anulowane."
+    },
+    "COMPLAINT":{
+      "title": "Reklamacja",
+      "description": "Została zarejestrowana reklamacja dotycząca usługi naprawy."
+    }
+  },
   "RepairDetails": {
     "deviceInfo": "Informacje o urządzeniu",
     "faultInfo": "Informacje o usterce",

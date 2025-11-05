@@ -12,14 +12,14 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
 {
     public async Task<OperationResult<Repair>> GetRepair(Guid id)
     {
-        Repair? customer;
+        Repair? repair;
         
         try
         {
-            customer = await databaseContext.Repairs
+            repair = await databaseContext.Repairs
                 .Include(r => r.RepairShop)
                 .Include(r => r.Customer)
-                .Include(r => r.RepairHistory)
+                .Include(r => r.RepairHistory.OrderBy(rs => rs.StepNumber))
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
         catch (Exception e)
@@ -27,10 +27,10 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
             return DatabaseErrors.UnknownError();
         }
 
-        if (customer == null)
+        if (repair == null)
             return RepairErrors.RepairNotFound();
         
-        return customer;
+        return repair;
     }
 
     public async Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(Guid customerId, int pageNumber, int pageSize)

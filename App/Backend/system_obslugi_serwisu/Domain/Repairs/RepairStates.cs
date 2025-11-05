@@ -77,9 +77,10 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.DeclareUnfixable, description);
     }
     
-    public async Task<OperationResult> FinalizeUnfixable(Money diagnosisFee)
+    public async Task<OperationResult> FinalizeUnfixable()
     {
-        DiagnosisFee = diagnosisFee;
+        if(DiagnosisFee == null)
+            DiagnosisFee = RepairShop.DiagnosisFee;
         
         return await FireTriggerAsync(RepairTrigger.FinalizeUnfixable);
     }
@@ -89,9 +90,10 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.ApproveQuote);
     }
     
-    public async Task<OperationResult> RejectQuote(Money diagnosisFee)
+    public async Task<OperationResult> RejectQuote()
     {
-        DiagnosisFee = diagnosisFee;
+        if(DiagnosisFee == null)
+            DiagnosisFee = RepairShop.DiagnosisFee;
         
         return await FireTriggerAsync(RepairTrigger.RejectQuote);
     }
@@ -111,13 +113,16 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.PartsArrived);
     }
 
-    public async Task<OperationResult> CompleteRepairSuccess(Money finalCost, string? description = null)
+    public async Task<OperationResult> CompleteRepairSuccess(Money? finalCost, string? description = null)
     {
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
-        
-        FinalCost = finalCost;
+
+        if (finalCost == null)
+            FinalCost = Quote.TotalCost;
+        else
+            FinalCost = finalCost;
         return await FireTriggerAsync(RepairTrigger.CompleteRepairSuccess, description);
     }
 

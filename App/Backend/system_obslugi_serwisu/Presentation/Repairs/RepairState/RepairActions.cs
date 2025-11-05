@@ -29,9 +29,9 @@ public class RepairActions
         _mediator = mediator;
     }
 
-    public async Task<bool> CheckInAndQueue(Guid repairId)
+    public async Task<bool> CheckInAndQueue(Guid repairId, string? description)
     {
-        var checkInAndQueueResult = await _mediator.Send(new CheckInAndQueueCommand { RepairId = repairId });
+        var checkInAndQueueResult = await _mediator.Send(new CheckInAndQueueCommand { RepairId = repairId, Description = description });
         if(checkInAndQueueResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(checkInAndQueueResult.Error.GetUserMessage())
@@ -43,7 +43,7 @@ public class RepairActions
     
     public async Task<bool> StartDiagnosis(Guid repairId)
     {
-        var startDiagnosisResult = await _mediator.Send(new StartDiagnosisCommand{ RepairId = repairId });
+        var startDiagnosisResult = await _mediator.Send(new StartDiagnosisCommand{ RepairId = repairId});
         if(startDiagnosisResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(startDiagnosisResult.Error.GetUserMessage())
@@ -53,9 +53,16 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> SubmitQuote(Guid repairId)
+    public async Task<bool> SubmitQuote(SubmitQuoteRequest request)
     {
-        var submitQuoteResult = await _mediator.Send(new SubmitQuoteCommand { RepairId = repairId });
+        var submitQuoteResult = await _mediator.Send(new SubmitQuoteCommand
+        {
+            RepairId = request.RepairId,
+            Currency = request.Currency,
+            LaborCost = request.LaborCost,
+            PartsCost = request.PartsCost,
+            Description = request.Description
+        });
         if(submitQuoteResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(submitQuoteResult.Error.GetUserMessage())
@@ -65,9 +72,9 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> DeclareUnfixable(Guid repairId)
+    public async Task<bool> DeclareUnfixable(Guid repairId, string? description)
     {
-        var declareUnfixableResult = await _mediator.Send(new DeclareUnfixableCommand { RepairId = repairId });
+        var declareUnfixableResult = await _mediator.Send(new DeclareUnfixableCommand { RepairId = repairId, Description = description});
         if(declareUnfixableResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(declareUnfixableResult.Error.GetUserMessage())
@@ -137,9 +144,15 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> CompleteRepairSuccess(Guid repairId)
+    public async Task<bool> CompleteRepairSuccess(CompleteRepairSuccessRequest request)
     {
-        var completeRepairSuccessResult = await _mediator.Send(new CompleteRepairSuccessCommand { RepairId = repairId });
+        var completeRepairSuccessResult = await _mediator.Send(new CompleteRepairSuccessCommand
+        {
+            RepairId = request.RepairId,
+            FinalCost = request.FinalCost,
+            FinalCostCurrency = request.FinalCostCurrency,
+            Description = request.Description
+        });
         if(completeRepairSuccessResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(completeRepairSuccessResult.Error.GetUserMessage())
@@ -149,9 +162,9 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> CompleteRepairFailure(Guid repairId)
+    public async Task<bool> CompleteRepairFailure(Guid repairId, string? description)
     {
-        var completeRepairFailureResult = await _mediator.Send(new CompleteRepairFailureCommand { RepairId = repairId });
+        var completeRepairFailureResult = await _mediator.Send(new CompleteRepairFailureCommand { RepairId = repairId, Description = description });
         if(completeRepairFailureResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(completeRepairFailureResult.Error.GetUserMessage())

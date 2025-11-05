@@ -12,7 +12,7 @@ public class CompleteRepairFailureHandler(IUnitOfWork unitOfWork) : IRequestHand
         if(repairResult.IsFailure)
             return repairResult.Error;
 
-        var completeRepairFailureResult = await repairResult.Value.CompleteRepairFailure();
+        var completeRepairFailureResult = await repairResult.Value.CompleteRepairFailure(request.Description);
         if(completeRepairFailureResult.IsFailure)
             return completeRepairFailureResult.Error;
         

@@ -9,8 +9,6 @@ public class QuoteRepairStepTypeConfiguration : IEntityTypeConfiguration<QuoteRe
 {
     public void Configure(EntityTypeBuilder<QuoteRepairStep> builder)
     {
-        builder.OwnsMoney(repairStep => repairStep.LaborCost, "LaborCost");
-        builder.OwnsMoney(repairStep => repairStep.PartsCost, "PartsCost");
-        builder.Property(repairStep => repairStep.QuoteAccepted);
+        builder.OwnsQuote( qrs => qrs.Quote);
     }
 }

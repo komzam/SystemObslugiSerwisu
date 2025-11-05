@@ -6,14 +6,14 @@ namespace system_obslugi_serwisu.Domain.Repairs.RepairSteps;
 public class NormalRepairStep : RepairStep
 {
     private NormalRepairStep() { }
-    private NormalRepairStep(RepairStatus status, Repair repair, string? description) : base(status, repair, description) { }
+    private NormalRepairStep(int stepNumber, RepairStatus status, Repair repair, string? description) : base(stepNumber, status, repair, description) { }
 
-    public static OperationResult<NormalRepairStep> Create(RepairStatus status, Repair repair, string? description=null)
+    public static OperationResult<NormalRepairStep> Create(int stepNumber, RepairStatus status, Repair repair, string? description=null)
     {
         var validateResult = ValidateDescription(description);
         if (validateResult.IsFailure)
             return validateResult.Error;
         
-        return new NormalRepairStep(status, repair, description);
+        return new NormalRepairStep(stepNumber, status, repair, description);
     }
 }

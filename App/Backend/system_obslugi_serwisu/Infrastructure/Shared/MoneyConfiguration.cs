@@ -17,10 +17,35 @@ public static class MoneyConfiguration
         {
             money.Property(m => m.Value)
                 .HasColumnName($"{prefix}_Value")
+                .IsRequired()
                 .HasPrecision(18, 2);
 
             money.Property(m => m.Currency)
                 .HasColumnName($"{prefix}_Currency")
+                .IsRequired()
+                .HasConversion(
+                    c => c.Code,
+                    code => Currency.Create(code).Value);
+        });
+    }
+    
+    public static void OwnsMoney<TEntity, TOwner>(
+        this OwnedNavigationBuilder<TEntity, TOwner> ownerBuilder,
+        Expression<Func<TOwner, Money?>> navigationExpression,
+        string prefix)
+        where TEntity : class
+        where TOwner : class
+    {
+        ownerBuilder.OwnsOne(navigationExpression, money =>
+        {
+            money.Property(m => m.Value)
+                .HasColumnName($"{prefix}_Value")
+                .IsRequired()
+                .HasPrecision(18, 2);
+
+            money.Property(m => m.Currency)
+                .HasColumnName($"{prefix}_Currency")
+                .IsRequired()
                 .HasConversion(
                     c => c.Code,
                     code => Currency.Create(code).Value);

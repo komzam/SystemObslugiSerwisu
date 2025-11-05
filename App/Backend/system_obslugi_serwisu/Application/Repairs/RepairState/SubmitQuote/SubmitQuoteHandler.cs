@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Repairs.RepairState.SubmitQuote;
@@ -11,8 +13,20 @@ public class SubmitQuoteHandler(IUnitOfWork unitOfWork) : IRequestHandler<Submit
         var repairResult = await unitOfWork.RepairRepository.GetRepair(request.RepairId);
         if(repairResult.IsFailure)
             return repairResult.Error;
+
+        var laborCostResult = Money.Create(request.LaborCost, request.Currency);
+        if(laborCostResult.IsFailure)
+            return laborCostResult.Error;
         
-        var submitQuoteResult = await repairResult.Value.SubmitQuote();
+        var partsCostResult = Money.Create(request.PartsCost, request.Currency);
+        if(partsCostResult.IsFailure)
+            return partsCostResult.Error;
+        
+        var quoteResult = Quote.Create(laborCostResult.Value, partsCostResult.Value);
+        if(quoteResult.IsFailure)
+            return quoteResult.Error;
+        
+        var submitQuoteResult = await repairResult.Value.SubmitQuote(quoteResult.Value, request.Description);
         if(submitQuoteResult.IsFailure)
             return submitQuoteResult.Error;
 
