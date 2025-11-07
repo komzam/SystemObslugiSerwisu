@@ -10,20 +10,19 @@ namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
 public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShopRepository
 {
-    public Task<OperationResult<RepairShop>> Get(Guid id)
+    public Task<OperationResult<RepairShop>> Get(RepairShopId id)
     {
-        return Get(id, new  RepairShopInclude());
+        return Get(id, new RepairShopInclude());
     }
 
-    public async Task<OperationResult<RepairShop>> Get(Guid id, RepairShopInclude repairShopInclude)
+    public async Task<OperationResult<RepairShop>> Get(RepairShopId id, RepairShopInclude repairShopInclude)
     {
         RepairShop? repairShop;
 
         var query = databaseContext.RepairShops.AsQueryable();
 
         if (repairShopInclude.Reviews)
-            query = query.Include(rs => rs.Reviews)
-                .ThenInclude(r => r.Author);
+            query = query.Include(rs => rs.Reviews);
 
         if (repairShopInclude.Services)
             query = query.Include(rs => rs.Services);

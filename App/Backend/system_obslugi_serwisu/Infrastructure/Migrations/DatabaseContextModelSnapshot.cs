@@ -131,7 +131,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -154,7 +153,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
             modelBuilder.Entity("system_obslugi_serwisu.Domain.RepairShops.RepairShop", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AboutUs")
@@ -275,8 +273,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("RepairShopId");
 
                     b.ToTable("Reviews");
@@ -305,15 +301,19 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Workers.Worker", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("RepairShopId")
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid?>("RepairShopId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -951,11 +951,11 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.Repair", b =>
                 {
-                    b.HasOne("system_obslugi_serwisu.Domain.Customers.Customer", "Customer")
+                    b.HasOne("system_obslugi_serwisu.Domain.Customers.Customer", null)
                         .WithMany("Repairs")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", "RepairShop")
+                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", null)
                         .WithMany("Repairs")
                         .HasForeignKey("RepairShopId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1283,8 +1283,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Navigation("ContactInfo")
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("DeviceInfo")
                         .IsRequired();
 
@@ -1296,8 +1294,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
                     b.Navigation("FinalCost");
 
                     b.Navigation("Quote");
-
-                    b.Navigation("RepairShop");
 
                     b.Navigation("ReturnInfo")
                         .IsRequired();
@@ -1316,26 +1312,16 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Reviews.Review", b =>
                 {
-                    b.HasOne("system_obslugi_serwisu.Domain.Customers.Customer", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", "RepairShop")
+                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", null)
                         .WithMany("Reviews")
                         .HasForeignKey("RepairShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("RepairShop");
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Services.Service", b =>
                 {
-                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", "RepairShop")
+                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", null)
                         .WithMany("Services")
                         .HasForeignKey("RepairShopId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1365,19 +1351,13 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.Navigation("Price")
                         .IsRequired();
-
-                    b.Navigation("RepairShop");
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Workers.Worker", b =>
                 {
-                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", "RepairShop")
+                    b.HasOne("system_obslugi_serwisu.Domain.RepairShops.RepairShop", null)
                         .WithMany("Workers")
-                        .HasForeignKey("RepairShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RepairShop");
+                        .HasForeignKey("RepairShopId");
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.RepairSteps.PaymentRepairStep", b =>

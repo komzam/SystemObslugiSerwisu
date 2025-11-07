@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Services;
 using system_obslugi_serwisu.Shared;
 
@@ -10,7 +11,7 @@ public class GetServicesHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetSer
     public async Task<OperationResult<PaginatedList<Service>>> Handle(GetServicesCommand request, CancellationToken cancellationToken)
     {
         var servicesListResult = await unitOfWork.ServiceRepository.Get(
-            request.RepairShopId,
+            new RepairShopId(request.RepairShopId),
             request.PageNumber,
             request.PageSize
         );

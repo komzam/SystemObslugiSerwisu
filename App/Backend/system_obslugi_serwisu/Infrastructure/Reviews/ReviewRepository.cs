@@ -10,7 +10,7 @@ namespace system_obslugi_serwisu.Infrastructure.Reviews;
 
 public class ReviewRepository(DatabaseContext databaseContext) : IReviewRepository
 {
-    public async Task<OperationResult<PaginatedList<Review>>> Get(Guid repairShopId, int pageNumber, int pageSize)
+    public async Task<OperationResult<PaginatedList<Review>>> Get(RepairShopId repairShopId, int pageNumber, int pageSize)
     {
         List<Review> reviews;
         int totalCount;
@@ -18,16 +18,14 @@ public class ReviewRepository(DatabaseContext databaseContext) : IReviewReposito
         try
         {
             reviews = await databaseContext.Reviews
-                .Include(r => r.RepairShop)
-                .Include(r => r.Author)
-                .Where(review => review.RepairShop.Id == repairShopId)
+                .Where(review => review.RepairShopId == repairShopId)
                 .OrderByDescending(review => review.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             totalCount = await databaseContext.Reviews
-                .Where(review => review.RepairShop.Id == repairShopId).CountAsync();
+                .Where(review => review.RepairShopId == repairShopId).CountAsync();
         }
         catch
         {

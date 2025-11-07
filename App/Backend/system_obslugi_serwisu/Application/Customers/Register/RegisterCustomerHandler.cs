@@ -30,7 +30,7 @@ public class RegisterCustomerHandler(IUnitOfWork unitOfWork, IIdentityController
         if(createCustomerResult.IsFailure)
             return createCustomerResult.Error;
 
-        var createAuthUserResult = await identityController.Register(customer.Id, customer.Email.Value, request.Password);
+        var createAuthUserResult = await identityController.Register(customer.Id.Value, customer.Email.Value, request.Password);
         if(createAuthUserResult.IsFailure)
             return createAuthUserResult.Error;
 

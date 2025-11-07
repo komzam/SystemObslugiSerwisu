@@ -1,8 +1,13 @@
 ﻿using Stateless;
+using system_obslugi_serwisu.Domain.Actors;
+using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.Repairs.RepairStateMachine;
 using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.SystemActors;
+using system_obslugi_serwisu.Domain.Users;
+using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Repairs;
@@ -39,8 +44,11 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.FinalizeBooking);
     }
     
-    public async Task<OperationResult> CheckIn(string? description = null)
+    public async Task<OperationResult> CheckIn(Worker worker, string? description = null)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
@@ -48,18 +56,27 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.CheckIn, description);
     }
     
-    public async Task<OperationResult> QueueForDiagnosis()
+    public async Task<OperationResult> QueueForDiagnosis(Worker worker)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.QueueForDiagnosis);
     }
     
-    public async Task<OperationResult> StartDiagnosis()
+    public async Task<OperationResult> StartDiagnosis(Worker worker)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.StartDiagnosis);
     }
     
-    public async Task<OperationResult> SubmitQuote(Quote quote, string? description = null)
+    public async Task<OperationResult> SubmitQuote(Worker worker, Quote quote, string? description = null)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
@@ -68,8 +85,11 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.SubmitQuote, description);
     }
 
-    public async Task<OperationResult> DeclareUnfixable(string? description = null)
+    public async Task<OperationResult> DeclareUnfixable(Worker worker, string? description = null)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
@@ -77,44 +97,101 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.DeclareUnfixable, description);
     }
     
-    public async Task<OperationResult> FinalizeUnfixable()
+    public async Task<OperationResult> FinalizeUnfixable(Worker worker, Money? repairShopDiagnosticFee)
     {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         if(DiagnosisFee == null)
-            DiagnosisFee = RepairShop.DiagnosisFee;
+            DiagnosisFee = repairShopDiagnosticFee;
         
         return await FireTriggerAsync(RepairTrigger.FinalizeUnfixable);
     }
     
-    public async Task<OperationResult> ApproveQuote()
+    public async Task<OperationResult> ApproveQuote(User user)
     {
+        if (user is Customer customer)
+        {
+            if(customer.Id != CustomerId)
+                return RepairErrors.AccessDenied();
+        }else if (user is Worker worker)
+        {
+            if (!worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+
         return await FireTriggerAsync(RepairTrigger.ApproveQuote);
     }
     
-    public async Task<OperationResult> RejectQuote()
+    public async Task<OperationResult> RejectQuote(User user, Money? repairShopDiagnosticFee)
     {
+        if (user is Customer customer)
+        {
+            if(customer.Id != CustomerId)
+                return RepairErrors.AccessDenied();
+        }else if (user is Worker worker)
+        {
+            if (!worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+        
         if(DiagnosisFee == null)
-            DiagnosisFee = RepairShop.DiagnosisFee;
+            DiagnosisFee = repairShopDiagnosticFee;
         
         return await FireTriggerAsync(RepairTrigger.RejectQuote);
     }
     
-    public async Task<OperationResult> StartRepair()
+    public async Task<OperationResult> StartRepair(Worker worker)
     {
+        if (worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.StartRepair);
     }
 
-    public async Task<OperationResult> PartsNeeded()
+    public async Task<OperationResult> PartsNeeded(IActor actor)
     {
+        if (actor is Worker worker)
+        {
+            if (worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }else if (actor is SystemActor system) { }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+
         return await FireTriggerAsync(RepairTrigger.PartsNeeded);
     }
     
-    public async Task<OperationResult> PartsArrived()
+    public async Task<OperationResult> PartsArrived(IActor actor)
     {
+        if (actor is Worker worker)
+        {
+            if (worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }else if (actor is SystemActor system) { }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+        
         return await FireTriggerAsync(RepairTrigger.PartsArrived);
     }
 
-    public async Task<OperationResult> CompleteRepairSuccess(Money? finalCost, string? description = null)
+    public async Task<OperationResult> CompleteRepairSuccess(Worker worker, Money? finalCost, string? description = null)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
@@ -126,8 +203,11 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.CompleteRepairSuccess, description);
     }
 
-    public async Task<OperationResult> CompleteRepairFailure(string? description = null)
+    public async Task<OperationResult> CompleteRepairFailure(Worker worker, string? description = null)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         var validationResult = RepairStep.ValidateDescription(description);
         if(validationResult.IsFailure)
             return validationResult.Error;
@@ -135,28 +215,61 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.CompleteRepairFailure, description);
     }
 
-    public async Task<OperationResult> FinalizeFailedRepair()
+    public async Task<OperationResult> FinalizeFailedRepair(Worker worker)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.FinalizeFailedRepair);
     }
     
-    public async Task<OperationResult> PaymentCompleted()
+    public async Task<OperationResult> PaymentCompleted(IActor actor)
     {
+        if (actor is Worker worker)
+        {
+            if (worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }else if (actor is SystemActor system) { }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+        
         return await FireTriggerAsync(RepairTrigger.PaymentCompleted);
     }
     
-    public async Task<OperationResult> Pickup()
+    public async Task<OperationResult> Pickup(Worker worker)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.Pickup);
     }
     
-    public async Task<OperationResult> Ship()
+    public async Task<OperationResult> Ship(Worker worker)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.Ship);
     }
     
-    public async Task<OperationResult> FinalizeDelivery()
+    public async Task<OperationResult> FinalizeDelivery(User user)
     {
+        if (user is Customer customer)
+        {
+            if(customer.Id != CustomerId)
+                return RepairErrors.AccessDenied();
+        }else if (user is Worker worker)
+        {
+            if (!worker.IsWorkingAt(RepairShopId))
+                return RepairErrors.AccessDenied();
+        }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+        
         return await FireTriggerAsync(RepairTrigger.FinalizeDelivery);
     }
     
@@ -165,13 +278,19 @@ public partial class Repair
         return await FireTriggerAsync(RepairTrigger.Cancel);
     }
 
-    public async Task<OperationResult> ReportComplaint()
+    public async Task<OperationResult> ReportComplaint(Customer customer)
     {
+        if(customer.Id != CustomerId)
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.ReportComplaint);
     }
     
-    public async Task<OperationResult> ResolveComplaint()
+    public async Task<OperationResult> ResolveComplaint(Worker worker)
     {
+        if(!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+        
         return await FireTriggerAsync(RepairTrigger.ResolveComplaint);
     }
 }

@@ -9,7 +9,9 @@ export const GET_REVIEWS = gql`
     }){
       items{
         id,
-        authorName,
+        author{
+          name  
+        },
         rating,
         comment,
       },

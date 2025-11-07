@@ -4,6 +4,7 @@ using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
 using system_obslugi_serwisu.Application.Services;
+using system_obslugi_serwisu.Application.Workers;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Infrastructure.Customers;
@@ -11,6 +12,7 @@ using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Reviews;
 using system_obslugi_serwisu.Infrastructure.Services;
+using system_obslugi_serwisu.Infrastructure.Workers;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Database;
@@ -19,6 +21,7 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
 {
     private CustomerRepository? _customerRepository;
     private RepairShopRepository? _repairShopRepository;
+    private WorkerRepository? _workerRepository;
     private RepairRepository? _repairRepository;
     private ReviewRepository? _reviewRepository;
     private ServiceRepository? _serviceRepository;
@@ -42,6 +45,17 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
                 _repairShopRepository = new RepairShopRepository(databaseContext);
             }
             return _repairShopRepository;
+        }
+    }
+    
+    public IWorkerRepository WorkerRepository {
+        get
+        {
+            if (_workerRepository == null)
+            {
+                _workerRepository = new WorkerRepository(databaseContext);
+            }
+            return _workerRepository;
         }
     }
     

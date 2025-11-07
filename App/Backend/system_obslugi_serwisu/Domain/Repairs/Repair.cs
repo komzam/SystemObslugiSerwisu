@@ -9,8 +9,8 @@ namespace system_obslugi_serwisu.Domain.Repairs;
 
 public record RepairData
 {
-    public required RepairShop RepairShop { get; init; }
-    public Customer? Customer { get; init; }
+    public required RepairShopId RepairShopId { get; init; }
+    public CustomerId? CustomerId { get; init; }
     public required ContactInfo ContactInfo { get; init; }
     public required DeviceInfo DeviceInfo { get; init; }
     public required FaultInfo FaultInfo { get; init; }
@@ -18,13 +18,15 @@ public record RepairData
     public string? AdditionalComment { get; init; }
 }
 
+public record RepairId(Guid Value);
+
 public partial class Repair
 {
     public const int AdditionalCommentMaxLength = 500;
     
-    public Guid Id { get; private set; }
-    public RepairShop RepairShop { get; private set; }
-    public Customer? Customer { get; private set; }
+    public RepairId Id { get; private set; }
+    public RepairShopId RepairShopId { get; private set; }
+    public CustomerId? CustomerId { get; private set; }
     public RepairStatus Status { get; private set; }
     public ContactInfo ContactInfo { get; private set; }
     public DeviceInfo DeviceInfo { get; private set; }
@@ -41,12 +43,12 @@ public partial class Repair
 
     private Repair() { }
 
-    private Repair(RepairShop repairShop, Customer? customer, RepairStatus status, ContactInfo contactInfo,
+    private Repair(RepairShopId repairShopId, CustomerId? customerId, RepairStatus status, ContactInfo contactInfo,
         DeviceInfo deviceInfo, FaultInfo faultInfo, ReturnInfo returnInfo, string? additionalComment)
     {
-        Id = Guid.NewGuid();
-        RepairShop = repairShop;
-        Customer = customer;
+        Id = new RepairId(Guid.NewGuid());
+        RepairShopId = repairShopId;
+        CustomerId = customerId;
         Status = status;
         ContactInfo = contactInfo;
         DeviceInfo = deviceInfo;
@@ -70,7 +72,7 @@ public partial class Repair
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Repair(data.RepairShop, data.Customer, RepairStatus.Created, data.ContactInfo,
+        return new Repair(data.RepairShopId, data.CustomerId, RepairStatus.Created, data.ContactInfo,
             data.DeviceInfo, data.FaultInfo, data.ReturnInfo, data.AdditionalComment);
     }
 

@@ -5,5 +5,6 @@ namespace system_obslugi_serwisu.Application.Repairs.RepairState.ReportComplaint
 
 public class ReportComplaintCommand: IRequest<OperationResult>
 {
-    public Guid RepairId { get; init; }
+    public required Guid RepairId { get; init; }
+    public required Guid CustomerId { get; init; }
 }

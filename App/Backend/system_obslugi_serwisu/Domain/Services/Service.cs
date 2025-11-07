@@ -5,21 +5,23 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Services;
 
+public record ServiceId(Guid Value);
+
 public class Service
 {
     public const int NameMaxLength = 100;
     
-    public Guid Id { get; private set; }
-    public RepairShop RepairShop { get; private set; }
+    public ServiceId Id { get; private set; }
+    public RepairShopId RepairShopId { get; private set; }
     public string Name { get; private set; }
     public Money Price { get; private set; }
     
     private Service() { }
 
-    private Service(RepairShop repairShop, string name, Money price)
+    private Service(RepairShopId repairShopId, string name, Money price)
     {
-        Id = Guid.NewGuid();
-        RepairShop = repairShop;
+        Id = new ServiceId(Guid.NewGuid());
+        RepairShopId = repairShopId;
         Name = name;
         Price = price;
     }
@@ -35,7 +37,7 @@ public class Service
         return OperationResult.Success();
     }
 
-    public static OperationResult<Service> Create(RepairShop repairShop, string name, decimal price, CurrencyCode currencyCode)
+    public static OperationResult<Service> Create(RepairShopId repairShopId, string name, decimal price, CurrencyCode currencyCode)
     {
         name = name.Trim();
         
@@ -47,6 +49,6 @@ public class Service
         if(moneyResult.IsFailure)
             return moneyResult.Error;
         
-        return new Service(repairShop, name, moneyResult.Value);
+        return new Service(repairShopId, name, moneyResult.Value);
     }
 }

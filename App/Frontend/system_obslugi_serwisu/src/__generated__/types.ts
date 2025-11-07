@@ -17,6 +17,11 @@ export type Scalars = {
   UUID: { input: any; output: any; }
 };
 
+export enum ActingRole {
+  Customer = 'CUSTOMER',
+  Worker = 'WORKER'
+}
+
 export type AddReviewRequestInput = {
   comment?: InputMaybe<Scalars['String']['input']>;
   rating: Scalars['Int']['input'];
@@ -54,6 +59,11 @@ export enum ApplyPolicy {
   Validation = 'VALIDATION'
 }
 
+export type ApproveQuoteRequestInput = {
+  actingRole: ActingRole;
+  repairId: Scalars['UUID']['input'];
+};
+
 export type BookRepairRequestInput = {
   additionalComment?: InputMaybe<Scalars['String']['input']>;
   contactInfo: ContactInfoInput;
@@ -61,6 +71,16 @@ export type BookRepairRequestInput = {
   faultInfo: FaultInfoInput;
   repairShopId: Scalars['String']['input'];
   returnInfo: ReturnInfoInput;
+};
+
+export type CheckInAndQueueRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  repairId: Scalars['UUID']['input'];
+};
+
+export type CompleteRepairFailureRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  repairId: Scalars['UUID']['input'];
 };
 
 export type CompleteRepairSuccessRequestInput = {
@@ -120,6 +140,11 @@ export type CustomerDtoRepairsArgs = {
   request: GetRepairListRequestInput;
 };
 
+export type DeclareUnfixableRequestInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  repairId: Scalars['UUID']['input'];
+};
+
 export type DeleteReviewRequestInput = {
   repairShopId: Scalars['String']['input'];
   reviewId: Scalars['String']['input'];
@@ -174,6 +199,11 @@ export type FaultInfoInput = {
   howToReproduce: Scalars['String']['input'];
   previouslyRepaired: Scalars['Boolean']['input'];
   whenOccurred: Scalars['String']['input'];
+};
+
+export type FinalizeDeliveryRequestInput = {
+  actingRole: ActingRole;
+  repairId: Scalars['UUID']['input'];
 };
 
 export type GetRepairListRequestInput = {
@@ -370,10 +400,14 @@ export type RegisterRequestInput = {
   taxIdNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type RejectQuoteRequestInput = {
+  actingRole: ActingRole;
+  repairId: Scalars['UUID']['input'];
+};
+
 export type RepairActions = {
   __typename?: 'RepairActions';
   approveQuote: Scalars['Boolean']['output'];
-  cancel: Scalars['Boolean']['output'];
   checkInAndQueue: Scalars['Boolean']['output'];
   completeRepairFailure: Scalars['Boolean']['output'];
   completeRepairSuccess: Scalars['Boolean']['output'];
@@ -394,24 +428,17 @@ export type RepairActions = {
 
 
 export type RepairActionsApproveQuoteArgs = {
-  repairId: Scalars['UUID']['input'];
-};
-
-
-export type RepairActionsCancelArgs = {
-  repairId: Scalars['UUID']['input'];
+  request: ApproveQuoteRequestInput;
 };
 
 
 export type RepairActionsCheckInAndQueueArgs = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  repairId: Scalars['UUID']['input'];
+  request: CheckInAndQueueRequestInput;
 };
 
 
 export type RepairActionsCompleteRepairFailureArgs = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  repairId: Scalars['UUID']['input'];
+  request: CompleteRepairFailureRequestInput;
 };
 
 
@@ -421,13 +448,12 @@ export type RepairActionsCompleteRepairSuccessArgs = {
 
 
 export type RepairActionsDeclareUnfixableArgs = {
-  description?: InputMaybe<Scalars['String']['input']>;
-  repairId: Scalars['UUID']['input'];
+  request: DeclareUnfixableRequestInput;
 };
 
 
 export type RepairActionsFinalizeDeliveryArgs = {
-  repairId: Scalars['UUID']['input'];
+  request: FinalizeDeliveryRequestInput;
 };
 
 
@@ -452,7 +478,7 @@ export type RepairActionsPickupArgs = {
 
 
 export type RepairActionsRejectQuoteArgs = {
-  repairId: Scalars['UUID']['input'];
+  request: RejectQuoteRequestInput;
 };
 
 
@@ -492,9 +518,10 @@ export type RepairDto = {
   createdAt: Scalars['DateTime']['output'];
   deviceInfo: DeviceInfoDto;
   faultInfo: FaultInfoDto;
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   repairHistory: Array<RepairStepDto>;
   repairShop: RepairShopDto;
+  repairShopId: Scalars['UUID']['output'];
   returnInfo: ReturnInfoDto;
   status: RepairStatus;
 };
@@ -504,7 +531,7 @@ export type RepairShopDto = {
   aboutUs?: Maybe<Scalars['String']['output']>;
   address: AddressDto;
   email: Scalars['String']['output'];
-  id: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   openingHours: OpeningHoursDto;
   phone: Scalars['String']['output'];
@@ -558,9 +585,14 @@ export enum ReturnMethod {
   SelfPickup = 'SELF_PICKUP'
 }
 
+export type ReviewAuthorDto = {
+  __typename?: 'ReviewAuthorDto';
+  name: Scalars['String']['output'];
+};
+
 export type ReviewDto = {
   __typename?: 'ReviewDto';
-  authorName: Scalars['String']['output'];
+  author?: Maybe<ReviewAuthorDto>;
   comment?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   rating: Scalars['Int']['output'];
@@ -612,7 +644,7 @@ export type BookRepairMutationVariables = Exact<{
 }>;
 
 
-export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: string, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
+export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
 
 export type GetCustomerRepairsQueryVariables = Exact<{
   pageNumber: Scalars['Int']['input'];
@@ -620,14 +652,14 @@ export type GetCustomerRepairsQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
+export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['String']['input'];
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: string, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: string, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }
@@ -638,7 +670,7 @@ export type GetRepairShopQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: string, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
+export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
 
 export type ReviewsQueryVariables = Exact<{
   repairShopId: Scalars['String']['input'];
@@ -647,7 +679,7 @@ export type ReviewsQueryVariables = Exact<{
 }>;
 
 
-export type ReviewsQuery = { __typename?: 'Query', reviews: { __typename?: 'PaginatedListOfReviewDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'ReviewDto', id: string, authorName: string, rating: number, comment?: string | null }> } };
+export type ReviewsQuery = { __typename?: 'Query', reviews: { __typename?: 'PaginatedListOfReviewDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'ReviewDto', id: string, rating: number, comment?: string | null, author?: { __typename?: 'ReviewAuthorDto', name: string } | null }> } };
 
 export type ServicesQueryVariables = Exact<{
   repairShopId: Scalars['String']['input'];
@@ -686,6 +718,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: boolean };
 
 export type ApproveQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
 }>;
 
 
@@ -693,6 +726,7 @@ export type ApproveQuoteMutation = { __typename?: 'Mutation', repairActions: { _
 
 export type RejectQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
 }>;
 
 
@@ -705,4 +739,4 @@ export type SearchQueryVariables = Exact<{
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: string, name: string, timeZoneId: string, rating: number, reviewCount: number, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };
+export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, name: string, timeZoneId: string, rating: number, reviewCount: number, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };

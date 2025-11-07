@@ -7,6 +7,7 @@ namespace system_obslugi_serwisu.Application.Repairs.RepairState.CompleteRepairS
 public class CompleteRepairSuccessCommand: IRequest<OperationResult>
 {
     public required Guid RepairId { get; init; }
+    public required Guid WorkerId { get; init; }
     public CurrencyCode? FinalCostCurrency { get; init; }
     public decimal? FinalCost { get; init; }
     public string? Description { get; init; }

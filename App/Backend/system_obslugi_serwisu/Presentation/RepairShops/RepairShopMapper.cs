@@ -10,7 +10,7 @@ public static class RepairShopMapper
     {
         return new RepairShopDto
         {
-            Id = repairShop.Id.ToString(),
+            Id = repairShop.Id.Value,
             Name = repairShop.Name,
             Email = repairShop.Email.Value,
             Phone = repairShop.Phone.Number,

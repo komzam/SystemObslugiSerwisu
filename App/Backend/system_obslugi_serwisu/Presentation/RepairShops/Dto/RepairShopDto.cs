@@ -4,7 +4,7 @@ namespace system_obslugi_serwisu.Presentation.RepairShops.Dto;
 
 public class RepairShopDto
 {
-    public required string Id { get ; set; }
+    public required Guid Id { get ; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
     public required string Phone { get; set; }

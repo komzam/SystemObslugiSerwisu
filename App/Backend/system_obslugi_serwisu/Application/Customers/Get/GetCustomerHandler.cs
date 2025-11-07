@@ -9,7 +9,7 @@ public class GetCustomerHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCus
 {
     public async Task<OperationResult<Customer>> Handle(GetCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customerResult = await unitOfWork.CustomerRepository.GetCustomer(request.Id);
+        var customerResult = await unitOfWork.CustomerRepository.GetCustomer(new CustomerId(request.Id));
         if(customerResult.IsFailure)
             return customerResult.Error;
         

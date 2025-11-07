@@ -19,13 +19,15 @@ public record RepairShopData {
     public required Address Address { get; set; }
 }
 
+public record RepairShopId(Guid Value);
+
 public class RepairShop
 {
     public const int NameMaxLength = 100;
     public const int AboutUsMaxLength = 500;
 
 
-    public Guid Id;
+    public RepairShopId Id;
     public string Name { get; private set; }
     public Email Email { get; private set; }
     public PhoneNumber Phone { get; private set; }
@@ -49,7 +51,7 @@ public class RepairShop
 
     private RepairShop(string name, Email email, PhoneNumber phoneNumber, Address address, string timeZoneId)
     {
-        Id = Guid.NewGuid();
+        Id = new RepairShopId(Guid.NewGuid());
         Name = name;
         Email = email;
         Phone = phoneNumber;
@@ -106,7 +108,7 @@ public class RepairShop
 
     public OperationResult AddReview(Customer author, int rating, string? comment)
     {
-        var reviewResult = Review.Create(this, author, rating, comment);
+        var reviewResult = Review.Create(Id, author.Id, rating, comment);
         if(reviewResult.IsFailure)
             return reviewResult.Error;
         
@@ -116,14 +118,14 @@ public class RepairShop
         return OperationResult.Success();
     }
 
-    public OperationResult RemoveReview(Guid reviewId, Customer requester)
+    public OperationResult RemoveReview(ReviewId reviewId, Customer requester)
     {
         Review? review = _reviews.Find(r => r.Id == reviewId);
 
         if (review == null)
             return ReviewErrors.ReviewNotFound();
 
-        if (review.Author.Id != requester.Id)
+        if (review.AuthorId != requester.Id)
             return ReviewErrors.ReviewAccessDenied();
         
         if(_reviews.Remove(review))
@@ -134,7 +136,7 @@ public class RepairShop
     
     public OperationResult AddService(string name, decimal price, CurrencyCode currencyCode)
     {
-        var serviceResult = Service.Create(this, name, price, currencyCode);
+        var serviceResult = Service.Create(Id, name, price, currencyCode);
         if(serviceResult.IsFailure)
             return serviceResult.Error;
         
@@ -143,7 +145,7 @@ public class RepairShop
         return OperationResult.Success();
     }
 
-    public OperationResult RemoveService(Guid serviceId)
+    public OperationResult RemoveService(ServiceId serviceId)
     {
         Service? service = _services.Find(s => s.Id == serviceId);
 

@@ -1,5 +1,11 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Application.Shared;
+using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.Repairs.Errors;
+using system_obslugi_serwisu.Domain.Users;
+using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Repairs.RepairState.ApproveQuote;
@@ -8,11 +14,31 @@ public class ApproveQuoteHandler(IUnitOfWork unitOfWork) : IRequestHandler<Appro
 {
     public async Task<OperationResult> Handle(ApproveQuoteCommand request, CancellationToken cancellationToken)
     {
-        var repairResult = await unitOfWork.RepairRepository.GetRepair(request.RepairId);
+        var repairResult = await unitOfWork.RepairRepository.GetRepair(new RepairId(request.RepairId));
         if (repairResult.IsFailure)
             return repairResult.Error;
 
-        var approveQuoteResult = await repairResult.Value.ApproveQuote();
+        User user;
+        if (request.ActingRole == ActingRole.Customer)
+        {
+            var customerResult = await unitOfWork.CustomerRepository.GetCustomer(new CustomerId(request.UserId));
+            if(customerResult.IsFailure)
+                return customerResult.Error;
+            user = customerResult.Value;
+        }
+        else if(request.ActingRole == ActingRole.Worker)
+        {
+            var workerResult = await unitOfWork.WorkerRepository.GetWorker(new WorkerId(request.UserId));
+            if(workerResult.IsFailure)
+                return workerResult.Error;
+            user = workerResult.Value;
+        }
+        else
+        {
+            return RepairErrors.AccessDenied();
+        }
+
+        var approveQuoteResult = await repairResult.Value.ApproveQuote(user);
         if(approveQuoteResult.IsFailure)
             return approveQuoteResult.Error;
 

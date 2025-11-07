@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Repairs.RepairState.Cancel;
@@ -8,7 +9,7 @@ public class CancelHandler(IUnitOfWork unitOfWork) : IRequestHandler<CancelComma
 {
     public async Task<OperationResult> Handle(CancelCommand request, CancellationToken cancellationToken)
     {
-        var repairResult = await unitOfWork.RepairRepository.GetRepair(request.RepairId);
+        var repairResult = await unitOfWork.RepairRepository.GetRepair(new RepairId(request.RepairId));
         if(repairResult.IsFailure)
             return repairResult.Error;
 

@@ -11,9 +11,9 @@ public class RepairShopInclude
 
 public interface IRepairShopRepository
 {
-    public Task<OperationResult<RepairShop>> Get(Guid id);
+    public Task<OperationResult<RepairShop>> Get(RepairShopId id);
     
-    public Task<OperationResult<RepairShop>> Get(Guid id, RepairShopInclude repairShopInclude);
+    public Task<OperationResult<RepairShop>> Get(RepairShopId id, RepairShopInclude repairShopInclude);
     
     public Task<OperationResult<PaginatedList<RepairShop>>> SearchByName(string name, int pageNumber, int pageSize);
 }

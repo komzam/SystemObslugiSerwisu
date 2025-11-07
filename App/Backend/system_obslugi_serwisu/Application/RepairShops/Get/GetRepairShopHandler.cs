@@ -9,7 +9,7 @@ public class GetRepairShopHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetR
 {
     public async Task<OperationResult<RepairShop>> Handle(GetRepairShopCommand request, CancellationToken cancellationToken)
     {
-        var repairShopResult = await unitOfWork.RepairShopRepository.Get(request.Id);
+        var repairShopResult = await unitOfWork.RepairShopRepository.Get(new RepairShopId(request.Id));
         if (repairShopResult.IsFailure)
             return repairShopResult.Error;
         

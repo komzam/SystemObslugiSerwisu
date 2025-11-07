@@ -5,7 +5,7 @@ import {RepairDetailsDevInfo} from "@/app/Organisms/RepairDetailsDevInfo";
 import {RepairDetailsFaultInfo} from "@/app/Organisms/RepairDetailsFaultInfo";
 import {RepairDetailsImages} from "@/app/Organisms/RepairDetailsImages";
 import {RepairDetailsHistory} from "@/app/Organisms/RepairDetailsHistory";
-import {GetRepairQuery, GetRepairQueryVariables, RepairStatus} from "@/__generated__/types";
+import {GetRepairQuery, GetRepairQueryVariables} from "@/__generated__/types";
 import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
 import {useQuery} from "@apollo/client/react";
 import {GET_REPAIR} from "@/graphql/GetRepair";

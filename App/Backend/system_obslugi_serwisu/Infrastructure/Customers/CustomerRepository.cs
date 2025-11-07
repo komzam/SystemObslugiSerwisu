@@ -10,7 +10,7 @@ namespace system_obslugi_serwisu.Infrastructure.Customers;
 
 public class CustomerRepository(DatabaseContext databaseContext) : ICustomerRepository
 {
-    public async Task<OperationResult<Customer>> GetCustomer(Guid id)
+    public async Task<OperationResult<Customer>> GetCustomer(CustomerId id)
     {
         Customer? customer;
         
@@ -27,6 +27,22 @@ public class CustomerRepository(DatabaseContext databaseContext) : ICustomerRepo
             return CustomerErrors.CustomerNotFound();
         
         return customer;
+    }
+
+    public async Task<OperationResult<List<Customer>>> GetCustomers(List<CustomerId> customerIds)
+    {
+        List<Customer> customers;
+        
+        try
+        {
+            customers = await databaseContext.Customers.Where(c => customerIds.Contains(c.Id)).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            return DatabaseErrors.UnknownError();
+        }
+        
+        return customers;
     }
 
     public async Task<OperationResult> CreateCustomer(Customer customer)

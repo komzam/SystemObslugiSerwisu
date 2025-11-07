@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Repairs;
+using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Infrastructure.Database;
@@ -10,15 +11,13 @@ namespace system_obslugi_serwisu.Infrastructure.Repairs;
 
 public class RepairRepository(DatabaseContext databaseContext) : IRepairRepository
 {
-    public async Task<OperationResult<Repair>> GetRepair(Guid id)
+    public async Task<OperationResult<Repair>> GetRepair(RepairId id)
     {
         Repair? repair;
         
         try
         {
             repair = await databaseContext.Repairs
-                .Include(r => r.RepairShop)
-                .Include(r => r.Customer)
                 .Include(r => r.RepairHistory.OrderBy(rs => rs.StepNumber))
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
@@ -33,7 +32,7 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         return repair;
     }
 
-    public async Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(Guid customerId, int pageNumber, int pageSize)
+    public async Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(CustomerId customerId, int pageNumber, int pageSize)
     {
         List<Repair> repairs;
         int totalCount;
@@ -41,17 +40,15 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         try
         {
             repairs = await databaseContext.Repairs
-                .Include(r => r.RepairShop)
-                .Include(r => r.Customer)
                 .Include(r => r.RepairHistory)
                 .OrderByDescending(r => r.CreatedAt)
-                .Where(r => r.Customer != null && r.Customer.Id == customerId)
+                .Where(r => r.CustomerId != null && r.CustomerId == customerId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             totalCount = await databaseContext.Repairs
-                .Where(r => r.Customer != null && r.Customer.Id == customerId).CountAsync();
+                .Where(r => r.CustomerId != null && r.CustomerId == customerId).CountAsync();
         }
         catch
         {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Services;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Services;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Shared;
@@ -9,7 +10,7 @@ namespace system_obslugi_serwisu.Infrastructure.Services;
 
 public class ServiceRepository(DatabaseContext databaseContext) : IServiceRepository
 {
-    public async Task<OperationResult<PaginatedList<Service>>> Get(Guid repairShopId, int pageNumber, int pageSize)
+    public async Task<OperationResult<PaginatedList<Service>>> Get(RepairShopId repairShopId, int pageNumber, int pageSize)
     {
         List<Service> services;
         int totalCount;
@@ -17,15 +18,14 @@ public class ServiceRepository(DatabaseContext databaseContext) : IServiceReposi
         try
         {
             services = await databaseContext.Services
-                .Include(r => r.RepairShop)
-                .Where(service => service.RepairShop.Id == repairShopId)
+                .Where(service => service.RepairShopId == repairShopId)
                 .OrderBy(service => service.Name)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
             totalCount = await databaseContext.Services
-                .Where(service => service.RepairShop.Id == repairShopId).CountAsync();
+                .Where(service => service.RepairShopId == repairShopId).CountAsync();
         }
         catch
         {

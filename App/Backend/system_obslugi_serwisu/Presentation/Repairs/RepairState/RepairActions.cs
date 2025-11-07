@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using HotChocolate.Authorization;
+using MediatR;
 using system_obslugi_serwisu.Application.Repairs.RepairState.ApproveQuote;
 using system_obslugi_serwisu.Application.Repairs.RepairState.Cancel;
 using system_obslugi_serwisu.Application.Repairs.RepairState.CheckInAndQueue;
@@ -17,6 +19,7 @@ using system_obslugi_serwisu.Application.Repairs.RepairState.Ship;
 using system_obslugi_serwisu.Application.Repairs.RepairState.StartDiagnosis;
 using system_obslugi_serwisu.Application.Repairs.RepairState.StartRepair;
 using system_obslugi_serwisu.Application.Repairs.RepairState.SubmitQuote;
+using system_obslugi_serwisu.Presentation.Repairs.RepairState.Requests;
 
 namespace system_obslugi_serwisu.Presentation.Repairs.RepairState;
 
@@ -29,9 +32,23 @@ public class RepairActions
         _mediator = mediator;
     }
 
-    public async Task<bool> CheckInAndQueue(Guid repairId, string? description)
+    
+    [Authorize]
+    public async Task<bool> CheckInAndQueue(ClaimsPrincipal claimsPrincipal, CheckInAndQueueRequest request)
     {
-        var checkInAndQueueResult = await _mediator.Send(new CheckInAndQueueCommand { RepairId = repairId, Description = description });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var checkInAndQueueResult = await _mediator.Send(new CheckInAndQueueCommand
+        {
+            RepairId = request.RepairId,
+            WorkerId = workerId,
+            Description = request.Description
+        });
         if(checkInAndQueueResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(checkInAndQueueResult.Error.GetUserMessage())
@@ -41,9 +58,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> StartDiagnosis(Guid repairId)
+    [Authorize]
+    public async Task<bool> StartDiagnosis(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var startDiagnosisResult = await _mediator.Send(new StartDiagnosisCommand{ RepairId = repairId});
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var startDiagnosisResult = await _mediator.Send(new StartDiagnosisCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(startDiagnosisResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(startDiagnosisResult.Error.GetUserMessage())
@@ -53,11 +82,20 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> SubmitQuote(SubmitQuoteRequest request)
+    [Authorize]
+    public async Task<bool> SubmitQuote(ClaimsPrincipal claimsPrincipal, SubmitQuoteRequest request)
     {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
         var submitQuoteResult = await _mediator.Send(new SubmitQuoteCommand
         {
             RepairId = request.RepairId,
+            WorkerId = workerId,
             Currency = request.Currency,
             LaborCost = request.LaborCost,
             PartsCost = request.PartsCost,
@@ -72,9 +110,22 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> DeclareUnfixable(Guid repairId, string? description)
+    [Authorize]
+    public async Task<bool> DeclareUnfixable(ClaimsPrincipal claimsPrincipal, DeclareUnfixableRequest request)
     {
-        var declareUnfixableResult = await _mediator.Send(new DeclareUnfixableCommand { RepairId = repairId, Description = description});
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var declareUnfixableResult = await _mediator.Send(new DeclareUnfixableCommand
+        {
+            RepairId = request.RepairId,
+            WorkerId = workerId,
+            Description = request.Description
+        });
         if(declareUnfixableResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(declareUnfixableResult.Error.GetUserMessage())
@@ -84,9 +135,22 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> ApproveQuote(Guid repairId)
+    [Authorize]
+    public async Task<bool> ApproveQuote(ClaimsPrincipal claimsPrincipal, ApproveQuoteRequest request)
     {
-        var approveQuoteResult = await _mediator.Send(new ApproveQuoteCommand { RepairId = repairId });
+        var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdString, out var userId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid user id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var approveQuoteResult = await _mediator.Send(new ApproveQuoteCommand
+        {
+            RepairId = request.RepairId,
+            UserId = userId,
+            ActingRole = request.ActingRole
+        });
         if(approveQuoteResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(approveQuoteResult.Error.GetUserMessage())
@@ -96,9 +160,22 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> RejectQuote(Guid repairId)
+    [Authorize]
+    public async Task<bool> RejectQuote(ClaimsPrincipal claimsPrincipal, RejectQuoteRequest request)
     {
-        var rejectQuoteResult = await _mediator.Send(new RejectQuoteCommand { RepairId = repairId });
+        var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdString, out var userId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid user id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var rejectQuoteResult = await _mediator.Send(new RejectQuoteCommand
+        {
+            RepairId = request.RepairId,
+            UserId = userId,
+            ActingRole = request.ActingRole
+        });
         if(rejectQuoteResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(rejectQuoteResult.Error.GetUserMessage())
@@ -108,9 +185,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> StartRepair(Guid repairId)
+    [Authorize]
+    public async Task<bool> StartRepair(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var startRepairResult = await _mediator.Send(new StartRepairCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var startRepairResult = await _mediator.Send(new StartRepairCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(startRepairResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(startRepairResult.Error.GetUserMessage())
@@ -120,9 +209,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> PartsNeeded(Guid repairId)
+    [Authorize]
+    public async Task<bool> PartsNeeded(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var partsNeededResult = await _mediator.Send(new PartsNeededCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var partsNeededResult = await _mediator.Send(new PartsNeededCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(partsNeededResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(partsNeededResult.Error.GetUserMessage())
@@ -132,9 +233,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> PartsArrived(Guid repairId)
+    [Authorize]
+    public async Task<bool> PartsArrived(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var partsArrivedResult = await _mediator.Send(new PartsArrivedCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var partsArrivedResult = await _mediator.Send(new PartsArrivedCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(partsArrivedResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(partsArrivedResult.Error.GetUserMessage())
@@ -144,11 +257,20 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> CompleteRepairSuccess(CompleteRepairSuccessRequest request)
+    [Authorize]
+    public async Task<bool> CompleteRepairSuccess(ClaimsPrincipal claimsPrincipal, CompleteRepairSuccessRequest request)
     {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
         var completeRepairSuccessResult = await _mediator.Send(new CompleteRepairSuccessCommand
         {
             RepairId = request.RepairId,
+            WorkerId = workerId,
             FinalCost = request.FinalCost,
             FinalCostCurrency = request.FinalCostCurrency,
             Description = request.Description
@@ -162,9 +284,22 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> CompleteRepairFailure(Guid repairId, string? description)
+    [Authorize]
+    public async Task<bool> CompleteRepairFailure(ClaimsPrincipal claimsPrincipal, CompleteRepairFailureRequest request)
     {
-        var completeRepairFailureResult = await _mediator.Send(new CompleteRepairFailureCommand { RepairId = repairId, Description = description });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var completeRepairFailureResult = await _mediator.Send(new CompleteRepairFailureCommand
+        {
+            RepairId = request.RepairId,
+            WorkerId = workerId,
+            Description = request.Description
+        });
         if(completeRepairFailureResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(completeRepairFailureResult.Error.GetUserMessage())
@@ -174,9 +309,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> PaymentCompleted(Guid repairId)
+    [Authorize]
+    public async Task<bool> PaymentCompleted(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var paymentCompletedResult = await _mediator.Send(new PaymentCompletedCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var paymentCompletedResult = await _mediator.Send(new PaymentCompletedCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(paymentCompletedResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(paymentCompletedResult.Error.GetUserMessage())
@@ -186,9 +333,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> Pickup(Guid repairId)
+    [Authorize]
+    public async Task<bool> Pickup(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var pickupResult = await _mediator.Send(new PickupCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var pickupResult = await _mediator.Send(new PickupCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(pickupResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(pickupResult.Error.GetUserMessage())
@@ -198,9 +357,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> Ship(Guid repairId)
+    [Authorize]
+    public async Task<bool> Ship(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var shipResult = await _mediator.Send(new ShipCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var shipResult = await _mediator.Send(new ShipCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(shipResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(shipResult.Error.GetUserMessage())
@@ -210,9 +381,22 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> FinalizeDelivery(Guid repairId)
+    [Authorize]
+    public async Task<bool> FinalizeDelivery(ClaimsPrincipal claimsPrincipal, FinalizeDeliveryRequest request)
     {
-        var finalizeDeliveryResult = await _mediator.Send(new FinalizeDeliveryCommand { RepairId = repairId });
+        var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdString, out var userId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid user id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var finalizeDeliveryResult = await _mediator.Send(new FinalizeDeliveryCommand
+        {
+            RepairId = request.RepairId,
+            UserId = userId,
+            ActingRole = request.ActingRole
+        });
         if(finalizeDeliveryResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(finalizeDeliveryResult.Error.GetUserMessage())
@@ -222,6 +406,7 @@ public class RepairActions
         return true;
     }
     
+    /*[Authorize]
     public async Task<bool> Cancel(Guid repairId)
     {
         var cancelResult = await _mediator.Send(new CancelCommand { RepairId = repairId });
@@ -232,11 +417,23 @@ public class RepairActions
                 .Build());
 
         return true;
-    }
+    }*/
     
-    public async Task<bool> ReportComplaint(Guid repairId)
+    [Authorize]
+    public async Task<bool> ReportComplaint(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var reportComplaintResult = await _mediator.Send(new ReportComplaintCommand { RepairId = repairId });
+        var customerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(customerIdString, out var customerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid customer id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var reportComplaintResult = await _mediator.Send(new ReportComplaintCommand
+        {
+            RepairId = repairId,
+            CustomerId = customerId
+        });
         if(reportComplaintResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(reportComplaintResult.Error.GetUserMessage())
@@ -246,9 +443,21 @@ public class RepairActions
         return true;
     }
     
-    public async Task<bool> ResolveComplaint(Guid repairId)
+    [Authorize]
+    public async Task<bool> ResolveComplaint(ClaimsPrincipal claimsPrincipal, Guid repairId)
     {
-        var resolveComplaintResult = await _mediator.Send(new ResolveComplaintCommand { RepairId = repairId });
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var resolveComplaintResult = await _mediator.Send(new ResolveComplaintCommand
+        {
+            RepairId = repairId,
+            WorkerId = workerId
+        });
         if(resolveComplaintResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(resolveComplaintResult.Error.GetUserMessage())

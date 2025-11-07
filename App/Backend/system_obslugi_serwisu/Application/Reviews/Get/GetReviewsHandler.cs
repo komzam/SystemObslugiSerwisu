@@ -11,7 +11,7 @@ public class GetReviewsHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetRevi
 {
     public async Task<OperationResult<PaginatedList<Review>>> Handle(GetReviewsCommand request, CancellationToken cancellationToken)
     {
-        var reviewListResult = await unitOfWork.ReviewRepository.Get(request.RepairShopId,
+        var reviewListResult = await unitOfWork.ReviewRepository.Get(new RepairShopId(request.RepairShopId),
                                                                                     request.PageNumber,
                                                                                     request.PageSize);
         if (reviewListResult.IsFailure)

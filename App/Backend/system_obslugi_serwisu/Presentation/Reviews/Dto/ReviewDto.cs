@@ -3,7 +3,8 @@
 public class ReviewDto
 {
     public required string Id { get; init; }
-    public required string AuthorName { get; init; }
+    [GraphQLIgnore]
+    public required Guid AuthorId { get; init; }
     public required int Rating { get; init; }
     public string? Comment { get; init; }
 }

@@ -1,6 +1,6 @@
 ﻿using system_obslugi_serwisu.Domain.Shared;
 
-namespace system_obslugi_serwisu.Presentation.Repairs.RepairState;
+namespace system_obslugi_serwisu.Presentation.Repairs.RepairState.Requests;
 
 public class SubmitQuoteRequest
 {

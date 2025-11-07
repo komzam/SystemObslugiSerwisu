@@ -24,11 +24,11 @@ import {
 type ReviewProps = ReviewsQuery["reviews"]["items"][number] & {
     className?: string;
 };
-function Review({authorName, rating, comment, className=""}: ReviewProps) {
+function Review({author, rating, comment, className=""}: ReviewProps) {
     return(
         <div className={`flex flex-col gap-2 ${className}`}>
             <RepairShopElementInfo.RatingRoot>
-                <p className="font-bold">{authorName}</p>
+                <p className="font-bold">{author?.name}</p>
                 <Stars numberOfStars={rating}/>
             </RepairShopElementInfo.RatingRoot>
             <p className="line-clamp-3 wrap-break-word">{comment}</p>

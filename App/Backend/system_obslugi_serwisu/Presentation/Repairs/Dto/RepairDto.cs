@@ -1,4 +1,5 @@
 ﻿using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Presentation.Repairs.Dto.RepairSteps;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 
@@ -6,8 +7,8 @@ namespace system_obslugi_serwisu.Presentation.Repairs.Dto;
 
 public class RepairDto
 {
-    public required string Id { get; set; }
-    public required RepairShopDto RepairShop { get; set; }
+    public required Guid Id { get; set; }
+    public required Guid RepairShopId { get; set; }
     public RepairStatus Status { get; set; }
     public required ContactInfoDto ContactInfo { get; set; }
     public required DeviceInfoDto DeviceInfo { get; set; }

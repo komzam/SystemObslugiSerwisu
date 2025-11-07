@@ -9,7 +9,7 @@ public class GetRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetRepai
 {
     public async Task<OperationResult<Repair>> Handle(GetRepairCommand request, CancellationToken cancellationToken)
     {
-        var repairResult = await unitOfWork.RepairRepository.GetRepair(request.RepairId);
+        var repairResult = await unitOfWork.RepairRepository.GetRepair(new RepairId(request.RepairId));
         if(repairResult.IsFailure)
             return repairResult.Error;
         

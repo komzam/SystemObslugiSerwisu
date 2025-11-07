@@ -1,6 +1,6 @@
 "use client"
 
-import {RepairItem, RepairItemProps} from "@/app/Molecules/RepairItem";
+import {RepairItem} from "@/app/Molecules/RepairItem";
 import {useQuery} from "@apollo/client/react";
 import {GET_CUSTOMER_REPAIRS} from "@/graphql/GetCustomerRepairs";
 import {GetCustomerRepairsQuery, GetCustomerRepairsQueryVariables} from "@/__generated__/types";

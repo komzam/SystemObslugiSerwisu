@@ -2,6 +2,7 @@
 using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers.Errors;
 using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.Users;
 
 namespace system_obslugi_serwisu.Domain.Customers;
 
@@ -20,9 +21,11 @@ public record CustomerData
     public Address? Address { get; init; }
 }
 
-public class Customer
+public record CustomerId(Guid Value);
+
+public class Customer : User
 {
-    public Guid Id { get; private set; }
+    public CustomerId Id { get; private set; }
     public Email Email { get; private set; }
     public Name Name { get; private set; }
     public bool IsBusiness { get; private set; }
@@ -39,7 +42,7 @@ public class Customer
     private Customer(Guid id, Email email, Name name, bool isBusiness, Tin? taxIdNumber,
         ContactMethod? preferredContactMethod, ReturnMethod? preferredReturnMethod, Address? address, DateTimeOffset createdAt)
     {
-        Id = id;
+        Id = new CustomerId(id);
         Email = email;
         Name = name;
         IsBusiness = isBusiness;

@@ -9,6 +9,13 @@ import {useState} from "react";
 import {useMutation} from "@apollo/client/react";
 import {APPROVE_QUOTE} from "@/graphql/RepairActions/ApproveQuote";
 import {REJECT_QUOTE} from "@/graphql/RepairActions/RejectQuote";
+import {
+    ActingRole,
+    ApproveQuoteMutation,
+    ApproveQuoteMutationVariables,
+    RejectQuoteMutation,
+    RejectQuoteMutationVariables
+} from "@/__generated__/types";
 
 export type CostEstimateProps = {
     repairId: string;
@@ -21,8 +28,8 @@ export type CostEstimateProps = {
 export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="pending"}: CostEstimateProps) {
     const t = useTranslations("RepairDetails");
     const [internalState, setInternalState] = useState<"pending" | "approved" | "cancelled">(state);
-    const [approveQuote] = useMutation(APPROVE_QUOTE, {variables:{repairId: repairId}});
-    const [rejectQuote] = useMutation(REJECT_QUOTE, {variables:{repairId: repairId}});
+    const [approveQuote] = useMutation<ApproveQuoteMutation, ApproveQuoteMutationVariables>(APPROVE_QUOTE);
+    const [rejectQuote] = useMutation<RejectQuoteMutation, RejectQuoteMutationVariables>(REJECT_QUOTE, );
 
     const estimateList: KeyValueLineProps[] = [
         {label: t("parts"), value: partsCost, valueBold:true},
@@ -32,14 +39,14 @@ export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="
 
     const onApprove = async () => {
         try {
-            await approveQuote();
+            await approveQuote({variables:{repairId: repairId, actingRole: ActingRole.Customer}});
             setInternalState("approved");
         }catch{}
     }
 
     const onReject = async () => {
         try {
-            await rejectQuote();
+            await rejectQuote({variables:{repairId: repairId, actingRole: ActingRole.Customer}});
             setInternalState("cancelled");
         }catch{}
     }

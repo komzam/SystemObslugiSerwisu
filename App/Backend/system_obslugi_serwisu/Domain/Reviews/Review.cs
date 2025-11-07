@@ -5,24 +5,26 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Reviews;
 
+public record ReviewId(Guid Value);
+
 public class Review
 {
     public const int CommentMaxLength = 500;
 
-    public Guid Id { get; private set; }
-    public RepairShop RepairShop { get; private set; }
-    public Customer Author { get; private set; }
+    public ReviewId Id { get; private set; }
+    public RepairShopId RepairShopId { get; private set; }
+    public CustomerId AuthorId { get; private set; }
     public int Rating { get; private set; }
     public string? Comment { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
 
     private Review() { }
 
-    private Review(RepairShop repairShop, Customer author, int rating, string? comment)
+    private Review(RepairShopId repairShopId, CustomerId authorId, int rating, string? comment)
     {
-        Id = Guid.NewGuid();
-        RepairShop = repairShop;
-        Author = author;
+        Id = new ReviewId(Guid.NewGuid());
+        RepairShopId = repairShopId;
+        AuthorId = authorId;
         Rating = rating;
         Comment = comment;
         CreatedAt = DateTimeOffset.UtcNow;
@@ -39,13 +41,13 @@ public class Review
         return OperationResult.Success();
     }
 
-    public static OperationResult<Review> Create(RepairShop repairShop,Customer author, int rating, string? comment)
+    public static OperationResult<Review> Create(RepairShopId repairShopId,CustomerId authorId, int rating, string? comment)
     {
         var validationResult = ValidateInputs(rating, comment);
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Review(repairShop, author, rating, comment);
+        return new Review(repairShopId, authorId, rating, comment);
     }
 
 }

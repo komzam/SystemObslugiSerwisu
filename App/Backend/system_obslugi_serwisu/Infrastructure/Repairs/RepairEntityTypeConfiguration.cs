@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Infrastructure.Shared;
 
@@ -11,14 +13,23 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
     public void Configure(EntityTypeBuilder<Repair> repairConfiguration)
     {
         repairConfiguration.HasKey(repair => repair.Id);
-        repairConfiguration.Property(repair => repair.Id).ValueGeneratedNever();
+        repairConfiguration.Property(repair => repair.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new RepairId(value)
+            )
+            .ValueGeneratedNever();
 
-        repairConfiguration.HasOne(repair => repair.RepairShop)
-            .WithMany(repairShop => repairShop.Repairs);
+        repairConfiguration.Property(repair => repair.RepairShopId)
+            .HasConversion(
+                id => id.Value,
+                value => new RepairShopId(value));
+
+        repairConfiguration.Property(repair => repair.CustomerId)
+            .HasConversion(
+                id => id == null ? (Guid?)null : id.Value,
+                value => value == null ? null : new CustomerId(value.Value));
         
-        repairConfiguration.HasOne(repair => repair.Customer)
-            .WithMany(customer => customer.Repairs);
-
         repairConfiguration.Property(repair => repair.Status);
 
         repairConfiguration.OwnsOne(repair => repair.ContactInfo,

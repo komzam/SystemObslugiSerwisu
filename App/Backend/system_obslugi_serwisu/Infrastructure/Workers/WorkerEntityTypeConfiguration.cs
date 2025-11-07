@@ -12,6 +12,17 @@ public class WorkerEntityTypeConfiguration : IEntityTypeConfiguration<Worker>
     public void Configure(EntityTypeBuilder<Worker> workerConfiguration)
     {
         workerConfiguration.HasKey(worker => worker.Id);
-        workerConfiguration.Property(worker => worker.Name).HasMaxLength(100);
+        workerConfiguration.Property(worker => worker.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new WorkerId(value))
+            .ValueGeneratedNever();
+        
+        workerConfiguration.Property(worker => worker.RepairShopId).HasConversion(
+            id => id == null ? (Guid?)null : id.Value,
+            value => value == null ? null : new RepairShopId(value.Value));
+        
+        workerConfiguration.Property(worker => worker.FirstName).HasMaxLength(Worker.FirstNameMaxLength);
+        workerConfiguration.Property(worker => worker.LastName).HasMaxLength(Worker.LastNameMaxLength);
     }
 }

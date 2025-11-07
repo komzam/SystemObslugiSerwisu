@@ -13,8 +13,8 @@ public static class RepairMapper
     {
         return new RepairDto
         {
-            Id = repair.Id.ToString(),
-            RepairShop = RepairShopMapper.ToDto(repair.RepairShop),
+            Id = repair.Id.Value,
+            RepairShopId = repair.RepairShopId.Value,
             Status = repair.Status,
             ContactInfo = ToDto(repair.ContactInfo),
             DeviceInfo = ToDto(repair.DeviceInfo),

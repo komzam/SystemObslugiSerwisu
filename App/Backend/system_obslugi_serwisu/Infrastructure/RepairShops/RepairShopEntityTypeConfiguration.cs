@@ -17,6 +17,11 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
     public void Configure(EntityTypeBuilder<RepairShop> repairShopConfiguration)
     {
         repairShopConfiguration.HasKey(repairShop => repairShop.Id);
+        repairShopConfiguration.Property(repairShop => repairShop.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new RepairShopId(value))
+            .ValueGeneratedNever();
 
         repairShopConfiguration.Property(repairShop => repairShop.Name).HasMaxLength(RepairShop.NameMaxLength);
         
@@ -63,18 +68,6 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
             ConfigureDay(openingHours.OwnsOne(oph => oph.Saturday));
             ConfigureDay(openingHours.OwnsOne(oph => oph.Sunday));
         });
-
-        repairShopConfiguration.HasMany(repairShop => repairShop.Workers)
-            .WithOne(worker => worker.RepairShop);
-
-        repairShopConfiguration.HasMany(repairShop => repairShop.Reviews)
-            .WithOne(review => review.RepairShop);
-        
-        repairShopConfiguration.HasMany(repairShop => repairShop.Services)
-            .WithOne(service => service.RepairShop);
-        
-        repairShopConfiguration.HasMany(repairShop => repairShop.Repairs)
-            .WithOne(repair => repair.RepairShop);
         
         repairShopConfiguration.OwnsMoney(repairShop => repairShop.DiagnosisFee, "DiagnosisFee");
 

@@ -2,6 +2,7 @@
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Shared;
 
@@ -14,13 +15,13 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
         Customer? customer = null;
         if (request.CustomerId.HasValue)
         {
-            var customerResult = await unitOfWork.CustomerRepository.GetCustomer(request.CustomerId.Value);
+            var customerResult = await unitOfWork.CustomerRepository.GetCustomer(new CustomerId(request.CustomerId.Value));
             if (customerResult.IsFailure)
                 return customerResult.Error;
             customer = customerResult.Value;
         }
         
-        var repairShopResult = await unitOfWork.RepairShopRepository.Get(request.RepairShopId);
+        var repairShopResult = await unitOfWork.RepairShopRepository.Get(new RepairShopId(request.RepairShopId));
         if(repairShopResult.IsFailure)
             return repairShopResult.Error;
         
@@ -42,8 +43,8 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
 
         var repairResult = Repair.Create(new RepairData
         {
-            RepairShop = repairShopResult.Value,
-            Customer = customer,
+            RepairShopId = repairShopResult.Value.Id,
+            CustomerId = customer?.Id,
             ContactInfo = contactInfoResult.Value,
             DeviceInfo = deviceInfoResult.Value,
             FaultInfo = faultInfoResult.Value,

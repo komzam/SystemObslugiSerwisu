@@ -10,6 +10,11 @@ public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer
     public void Configure(EntityTypeBuilder<Customer> customerConfiguration)
     {
         customerConfiguration.HasKey(customer => customer.Id);
+        customerConfiguration.Property(customer => customer.Id)
+            .HasConversion(
+                id => id.Value,
+                value => new CustomerId(value))
+            .ValueGeneratedNever();
 
         customerConfiguration.OwnsOne(customer => customer.Email, email =>
         {
@@ -47,8 +52,5 @@ public class CustomerEntityTypeConfiguration : IEntityTypeConfiguration<Customer
             });
             address.Property(addr => addr.Country);
         });
-
-        customerConfiguration.HasMany(customer => customer.Repairs)
-            .WithOne(repair => repair.Customer);
     }
 }
