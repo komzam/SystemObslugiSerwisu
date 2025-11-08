@@ -33,6 +33,7 @@ export default async function RepairShop({params}: PageProps) {
             <div className="flex flex-col gap-10 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
                 <RepairShopProfile.Title
                     name={repairShop.name}
+                    imageUrl={repairShop.repairShopImage}
                     repairShopId={repairShop.id}
                     rating={repairShop.rating}
                     reviewCount={repairShop.reviewCount}

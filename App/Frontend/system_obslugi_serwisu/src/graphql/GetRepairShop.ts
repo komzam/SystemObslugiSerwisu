@@ -5,6 +5,7 @@ export const GET_REPAIRSHOP = gql`
         repairShop(request:{ id: $id })
         {
             id,
+            repairShopImage,
             name,
             email,
             phone,

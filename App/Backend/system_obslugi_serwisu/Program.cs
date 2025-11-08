@@ -1,10 +1,14 @@
+using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Identity;
+using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Infrastructure.Migrations;
+using system_obslugi_serwisu.Infrastructure.RepairShops;
+using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +18,24 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextPool<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseContext")));
+
+
+builder.Services.Configure<S3Buckets>(builder.Configuration.GetSection("S3Buckets"));
+builder.Services.AddSingleton<IAmazonS3>(_ =>
+{
+    var config = new AmazonS3Config
+    {
+        ServiceURL = builder.Configuration["S3Config:Url"],
+        ForcePathStyle = true,
+        UseHttp = true
+    };
+
+    return new AmazonS3Client(
+        builder.Configuration["S3Config:User"],
+        builder.Configuration["S3Config:Password"],
+        config
+    );
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, ApplicationRole>()
@@ -29,6 +51,7 @@ builder.Services.AddMediatR(cfg =>
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IRepairShopStorageService, RepairShopStorageService>();
 builder.Services.AddScoped<IIdentityController, IdentityController>();
 
 builder.Services.AddCors(options =>

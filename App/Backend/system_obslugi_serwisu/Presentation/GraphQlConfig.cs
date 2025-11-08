@@ -20,6 +20,7 @@ public class GraphQlConfig
                 .AddTypeExtension<CustomerQueries>()
                 .AddTypeExtension<CustomerExtensions>()
                 .AddTypeExtension<RepairShopQueries>()
+                .AddTypeExtension<RepairShopExtensions>()
                 .AddTypeExtension<ReviewQueries>()
                 .AddTypeExtension<ReviewExtensions>()
                 .AddTypeExtension<ServiceQueries>()

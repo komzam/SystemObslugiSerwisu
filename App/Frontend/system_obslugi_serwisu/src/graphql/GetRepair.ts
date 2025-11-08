@@ -6,7 +6,7 @@ export const GET_REPAIR = gql`
             id,
             repairShop{
                 id,
-                name
+                name,
             },
             status,
             deviceInfo {
