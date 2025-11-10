@@ -6,11 +6,9 @@ import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
 import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
 import {GetRepairShopQuery} from "@/__generated__/types";
 import {Link} from "@/i18n/navigation";
-import Image from "next/image";
 
 export type TitleProps = {
     name: GetRepairShopQuery["repairShop"]["name"];
-    imageUrl: GetRepairShopQuery["repairShop"]["repairShopImage"];
     repairShopId: GetRepairShopQuery["repairShop"]["id"];
     rating: GetRepairShopQuery["repairShop"]["rating"];
     reviewCount: GetRepairShopQuery["repairShop"]["reviewCount"];
@@ -19,15 +17,12 @@ export type TitleProps = {
     openingHours: GetRepairShopQuery["repairShop"]["openingHours"];
 }
 
-export function Title({name, imageUrl, repairShopId, rating, reviewCount, address, timeZoneId, openingHours}: TitleProps) {
+export function Title({name, repairShopId, rating, reviewCount, address, timeZoneId, openingHours}: TitleProps) {
     const t = useTranslations("RepairShop");
 
     return(
         <div className="flex flex-col w-full">
-            <div className="relative rounded-t-xl h-64">
-                <Image className="rounded-t-xl h-64" alt="image" fill src={imageUrl} />
-            </div>
-            <Card className="flex flex-col rounded-t-none md:flex-row gap-3">
+            <Card className="flex flex-col md:flex-row gap-3">
                 <div className="flex-1 flex flex-col gap-2">
                     <RepairShopElementInfo.Title>{name}</RepairShopElementInfo.Title>
                     <RepairShopElementInfo.RatingRoot>

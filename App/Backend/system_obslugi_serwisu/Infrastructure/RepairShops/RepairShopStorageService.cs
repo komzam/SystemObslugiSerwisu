@@ -30,4 +30,24 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
             return StorageErrors.UnknownError();
         }
     }
+    
+    public async Task<OperationResult<string>> AddRepairShopImage(RepairShopId id)
+    {
+        try
+        {
+            var getImageRequest = new GetPreSignedUrlRequest
+            {
+                BucketName=buckets.Value.RepairShopImages,
+                Key = $"images/{id.Value}/{id.Value}-og",
+                Verb = HttpVerb.PUT,
+                Expires = DateTime.Now.AddMinutes(10),
+                Protocol = Protocol.HTTP
+            };
+            
+            return await s3Client.GetPreSignedURLAsync(getImageRequest);
+        }catch
+        {
+            return StorageErrors.UnknownError();
+        }
+    }
 }

@@ -29,6 +29,7 @@ public class GraphQlConfig
             .AddMutationType<Mutation>()
                 .AddTypeExtension<CustomerMutations>()
                 .AddTypeExtension<ReviewMutations>()
-                .AddTypeExtension<RepairMutations>();
+                .AddTypeExtension<RepairMutations>()
+                .AddTypeExtension<RepairShopMutations>();
     }
 }

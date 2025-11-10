@@ -1,12 +1,16 @@
 using Amazon.S3;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using RabbitMQ.Client;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Identity;
+using system_obslugi_serwisu.Application.ImageQueue;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Infrastructure.Database;
+using system_obslugi_serwisu.Infrastructure.ImageProcessing;
 using system_obslugi_serwisu.Infrastructure.Migrations;
+using system_obslugi_serwisu.Infrastructure.Queue;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Presentation;
@@ -37,6 +41,16 @@ builder.Services.AddSingleton<IAmazonS3>(_ =>
     );
 });
 
+builder.Services.AddSingleton<IConnectionFactory>(sp =>
+{
+    return new ConnectionFactory
+    {
+        HostName = builder.Configuration["RabbitMq:Host"] ?? string.Empty,
+        UserName = builder.Configuration["RabbitMq:User"] ?? string.Empty,
+        Password = builder.Configuration["RabbitMq:Password"] ?? string.Empty,
+    };
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, ApplicationRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
@@ -52,7 +66,10 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IRepairShopStorageService, RepairShopStorageService>();
+builder.Services.AddSingleton<QueueConnectionProvider>();
+builder.Services.AddSingleton<IImageQueue, ImageQueue>();
 builder.Services.AddScoped<IIdentityController, IdentityController>();
+builder.Services.AddHostedService<ImageProcessingWorker>();
 
 builder.Services.AddCors(options =>
 {

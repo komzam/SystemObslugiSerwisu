@@ -1,0 +1,90 @@
+﻿services:
+  system_obslugi_serwisu:
+    image: system_obslugi_serwisu
+    build:
+      context: .
+      dockerfile: system_obslugi_serwisu/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "5167:5167"
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - aspnet_keys:/root/.aspnet/DataProtection-Keys
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=123
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
+      - MINIO_NOTIFY_AMQP_ENABLE_RabbitMq=on
+      - MINIO_NOTIFY_AMQP_URL_RabbitMq=amqp://guest:guest@rabbitmq:5672
+      - MINIO_NOTIFY_AMQP_EXCHANGE_RabbitMq=amq.direct
+      - MINIO_NOTIFY_AMQP_EXCHANGE_TYPE_RabbitMq=direct
+      - MINIO_NOTIFY_AMQP_ROUTING_KEY_RabbitMq=image-processing
+      - MINIO_NOTIFY_AMQP_DURABLE_RabbitMq=on
+      - MINIO_NOTIFY_AMQP_AUTO_DELETED_RabbitMq=off
+      - MINIO_NOTIFY_AMQP_DELIVERY_MODE_RabbitMq=2
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    depends_on:
+      - rabbitmq
+  
+  minio-init:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5 &&
+        mc alias set myminio http://minio:9000 admin admin123 &&
+        mc mb myminio/repair-shop-images || true &&
+        mc event add myminio/repair-shop-images arn:minio:sqs::RabbitMq:amqp --event put || true
+      "
+
+  rabbitmq:
+      image: rabbitmq:3-management
+      container_name: rabbitmq
+      environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      healthcheck:
+        test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+      volumes:
+        - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  aspnet_keys:
+  postgres_data:
+  minio_data:
+  rabbitmq_data:
