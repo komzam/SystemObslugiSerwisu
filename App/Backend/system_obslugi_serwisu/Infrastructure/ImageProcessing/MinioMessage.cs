@@ -32,4 +32,7 @@ public class ObjectInfo
 {
     [JsonPropertyName("key")]
     public string Key { get; set; } = String.Empty;
+    
+    [JsonPropertyName("userMetadata")]
+    public Dictionary<string, string> Metadata { get; set; } = new();
 }

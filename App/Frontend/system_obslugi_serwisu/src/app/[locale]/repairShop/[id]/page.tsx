@@ -34,7 +34,7 @@ export default async function RepairShop({params}: PageProps) {
             <div className="-mt-[var(--page-margin)] absolute w-full h-150 overflow-hidden z-0">
                 <div className="h-full bg-accent4"></div>
                 <Image
-                    src={repairShop.repairShopImage}
+                    src={repairShop.repairShopImage.large}
                     alt="Repair shop image"
                     fill
                     className="object-cover object-center"

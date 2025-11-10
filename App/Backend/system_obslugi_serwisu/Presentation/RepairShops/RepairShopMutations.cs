@@ -1,8 +1,7 @@
-﻿using HotChocolate.Authorization;
+﻿using System.Security.Claims;
+using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.RepairShops.AddImage;
-using system_obslugi_serwisu.Application.RepairShops.Get;
-using system_obslugi_serwisu.Presentation.RepairShops.Get;
 
 namespace system_obslugi_serwisu.Presentation.RepairShops;
 
@@ -10,18 +9,26 @@ namespace system_obslugi_serwisu.Presentation.RepairShops;
 public class RepairShopMutations
 {
     [Authorize]
-    public async Task<bool> AddRepairShopImage([Service] IMediator mediatr, Guid repairShopId)
+    public async Task<string> AddRepairShopImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairShopId)
     {
-        var repairShopResult = await mediatr.Send(new AddRepairShopImageCommand{
-            RepairShopId= repairShopId
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var addImageUrlResult = await mediatr.Send(new AddRepairShopImageCommand{
+            RepairShopId= repairShopId,
+            WorkerId= workerId
         });
 
-        if(repairShopResult.IsFailure)
+        if(addImageUrlResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(repairShopResult.Error.GetUserMessage())
-                .SetCode(repairShopResult.Error.GetUserCode())
+                .SetMessage(addImageUrlResult.Error.GetUserMessage())
+                .SetCode(addImageUrlResult.Error.GetUserCode())
                 .Build());
 
-        return true;
+        return addImageUrlResult.Value;
     }
 }

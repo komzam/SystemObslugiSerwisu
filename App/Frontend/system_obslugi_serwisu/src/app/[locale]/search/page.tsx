@@ -15,7 +15,6 @@ type SearchParams = {
     };
 }
 
-
 export default function Search() {
     const searchParams = useSearchParams();
     const { loading, error, data } = useQuery<SearchQuery, SearchQueryVariables>(SEARCH, {variables:{name:searchParams.get("name")??"", pageNumber:Number(searchParams.get("page"))??1, pageSize: 5}});
@@ -24,7 +23,7 @@ export default function Search() {
 
     return(
         <div className="bg-inherit">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center gap-5">
                 {data?.searchShopsByName.items.map((repairShop, repairShopIndex) => (
                     <RepairShopCard repairShop={repairShop} key={repairShopIndex}/>
                 ))}

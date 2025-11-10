@@ -10,7 +10,9 @@ export const SEARCH = gql`
         {
             items{
                 id,
-                repairShopImage,
+                repairShopImage{
+                    small
+                },
                 name,
                 timeZoneId,
                 rating,

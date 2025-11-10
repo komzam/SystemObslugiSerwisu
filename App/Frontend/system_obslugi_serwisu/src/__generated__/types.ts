@@ -231,6 +231,14 @@ export type GetServicesRequestInput = {
   repairShopId: Scalars['String']['input'];
 };
 
+export type ImageDto = {
+  __typename?: 'ImageDto';
+  extraLarge: Scalars['String']['output'];
+  large: Scalars['String']['output'];
+  medium: Scalars['String']['output'];
+  small: Scalars['String']['output'];
+};
+
 export type LoginRequestInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -239,6 +247,7 @@ export type LoginRequestInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
   deleteReview: Scalars['Boolean']['output'];
@@ -246,6 +255,11 @@ export type Mutation = {
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
   repairActions: RepairActions;
+};
+
+
+export type MutationAddRepairShopImageArgs = {
+  repairShopId: Scalars['UUID']['input'];
 };
 
 
@@ -536,7 +550,7 @@ export type RepairShopDto = {
   openingHours: OpeningHoursDto;
   phone: Scalars['String']['output'];
   rating: Scalars['Float']['output'];
-  repairShopImage: Scalars['String']['output'];
+  repairShopImage: ImageDto;
   reviewCount: Scalars['Int']['output'];
   timeZoneId: Scalars['String']['output'];
 };
@@ -671,7 +685,7 @@ export type GetRepairShopQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, repairShopImage: string, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
+export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, repairShopImage: { __typename?: 'ImageDto', large: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
 
 export type ReviewsQueryVariables = Exact<{
   repairShopId: Scalars['String']['input'];
@@ -740,4 +754,4 @@ export type SearchQueryVariables = Exact<{
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, repairShopImage: string, name: string, timeZoneId: string, rating: number, reviewCount: number, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };
+export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, name: string, timeZoneId: string, rating: number, reviewCount: number, repairShopImage: { __typename?: 'ImageDto', small: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };

@@ -8,6 +8,9 @@ public static class RepairShopErrors
 
     public static OperationError RepairShopNotFound(string message = "Repair shop not found") =>
         new ($"{Prefix}.RepairShopNotFound", message);
+
+    public static OperationError AccessDenied(string message = "Access to repair shop is denied") =>
+        new ($"{Prefix}.AccessDenied", message);
     
     public static OperationError InvalidName(string message = "Invalid name") =>
         new ($"{Prefix}.InvalidName", message);

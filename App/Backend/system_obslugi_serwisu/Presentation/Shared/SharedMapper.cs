@@ -21,7 +21,18 @@ public static class SharedMapper
         };
         return addressDto;
     }
-    
+
+    public static ImageDto ToDto(Image image)
+    {
+        return new ImageDto
+        {
+            Small = image.Small,
+            Medium = image.Medium,
+            Large = image.Large,
+            ExtraLarge = image.ExtraLarge,
+        };
+    }
+
     public static OperationResult<Address> FromDto(AddressDto addressDto)
     {
         var address = Address.Create(new()
