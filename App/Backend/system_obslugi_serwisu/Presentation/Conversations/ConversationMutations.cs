@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
+using HotChocolate.Subscriptions;
 using MediatR;
 using system_obslugi_serwisu.Application.Conversations.Create;
 using system_obslugi_serwisu.Application.Conversations.SendMessage;
@@ -39,7 +40,11 @@ public class ConversationMutations
     }
     
     [Authorize]
-    public async Task<bool> SendMessage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, SendMessageRequest request)
+    public async Task<bool> SendMessage([Service] IMediator mediatr,
+        [Service] ITopicEventSender eventSender,
+        ClaimsPrincipal claimsPrincipal,
+        SendMessageRequest request,
+        CancellationToken cancellationToken)
     {
         var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
@@ -48,18 +53,22 @@ public class ConversationMutations
                 .SetCode("BadGuid")
                 .Build());
         
-        var conversationResult = await mediatr.Send(new SendMessageCommand
+        var sendMessageResult = await mediatr.Send(new SendMessageCommand
         {
             ConversationId = request.ConversationId,
             SenderId = userId,
             Message = request.Message,
             ActingRole = request.ActingRole
         });
-        if(conversationResult.IsFailure)
+        if(sendMessageResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(conversationResult.Error.GetUserMessage())
-                .SetCode(conversationResult.Error.GetUserCode())
+                .SetMessage(sendMessageResult.Error.GetUserMessage())
+                .SetCode(sendMessageResult.Error.GetUserCode())
                 .Build());
+
+        await eventSender.SendAsync(sendMessageResult.Value.ConversationId.Value.ToString(),
+                                    ConversationMapper.ToDto(sendMessageResult.Value),
+                                    cancellationToken);
         
         return true;
     }

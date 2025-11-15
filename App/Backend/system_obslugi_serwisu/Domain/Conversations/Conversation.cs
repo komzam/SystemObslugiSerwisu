@@ -34,7 +34,7 @@ public class Conversation
         return new Conversation(repairShopId, customerId);
     }
 
-    public OperationResult AddMessage(User user, string message)
+    public OperationResult<Message> AddMessage(User user, string message)
     {
         SenderRole role;
         UserId senderId;
@@ -62,6 +62,6 @@ public class Conversation
         
         _messages.Add(messageResult.Value);
         
-        return OperationResult.Success();
+        return messageResult.Value;
     }
 }

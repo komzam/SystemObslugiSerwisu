@@ -98,6 +98,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseWebSockets();
 app.MapGraphQL();
 app.UseCors("AllowFrontend");
 

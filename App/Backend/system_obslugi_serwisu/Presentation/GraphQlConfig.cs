@@ -14,6 +14,7 @@ public class GraphQlConfig
     {
         builder.Services.AddGraphQLServer()
             .AddAuthorization()
+            .AddInMemorySubscriptions()
             .AddType<NormalRepairStepDto>()
             .AddType<PaymentRepairStepDto>()
             .AddType<QuoteRepairStepDto>()
@@ -34,6 +35,8 @@ public class GraphQlConfig
                 .AddTypeExtension<ReviewMutations>()
                 .AddTypeExtension<RepairMutations>()
                 .AddTypeExtension<RepairShopMutations>()
-                .AddTypeExtension<ConversationMutations>();
+                .AddTypeExtension<ConversationMutations>()
+            .AddSubscriptionType<Subscription>()
+                .AddTypeExtension<ConversationSubscriptions>();
     }
 }

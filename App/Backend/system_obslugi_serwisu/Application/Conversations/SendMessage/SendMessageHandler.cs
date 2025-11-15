@@ -10,9 +10,9 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Conversations.SendMessage;
 
-public class SendMessageHandler(IUnitOfWork unitOfWork) : IRequestHandler<SendMessageCommand, OperationResult>
+public class SendMessageHandler(IUnitOfWork unitOfWork) : IRequestHandler<SendMessageCommand, OperationResult<Message>>
 {
-    public async Task<OperationResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<Message>> Handle(SendMessageCommand request, CancellationToken cancellationToken)
     {
         var conversationResult =
             await unitOfWork.ConversationRepository.GetConversation(new ConversationId(request.ConversationId));
@@ -52,6 +52,6 @@ public class SendMessageHandler(IUnitOfWork unitOfWork) : IRequestHandler<SendMe
         if(saveResult.IsFailure)
             return saveResult.Error;
         
-        return OperationResult.Success();
+        return addMessageResult.Value;
     }
 }

@@ -8,10 +8,10 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Customers;
 
-[ExtendObjectType(typeof(CustomerDto))]
+[ExtendObjectType(typeof(FullCustomerDto))]
 public class CustomerExtensions
 {
-    public async Task<PaginatedList<RepairDto>> GetRepairs([Service] IMediator mediatr, [Parent] CustomerDto customer, GetRepairListRequest request)
+    public async Task<PaginatedList<RepairDto>> GetRepairs([Service] IMediator mediatr, [Parent] FullCustomerDto customer, GetRepairListRequest request)
     {
         var repairListResult = await mediatr.Send(new GetCustomersRepairsCommand{CustomerId = customer.Id, PageNumber = request.PageNumber, PageSize = request.PageSize});
         if(repairListResult.IsFailure)
