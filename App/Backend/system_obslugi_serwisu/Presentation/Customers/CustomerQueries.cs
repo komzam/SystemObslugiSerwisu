@@ -10,7 +10,7 @@ namespace system_obslugi_serwisu.Presentation.Customers;
 public class CustomerQueries
 {
     [Authorize]
-    public async Task<CustomerDto> Me([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal)
+    public async Task<FullCustomerDto> Me([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal)
     {
         var customerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(customerIdString, out var customerId))
@@ -26,6 +26,6 @@ public class CustomerQueries
                 .SetCode(customerResult.Error.GetUserCode())
                 .Build());
         
-        return CustomerMapper.ToDto(customerResult.Value);
+        return CustomerMapper.ToFullDto(customerResult.Value);
     }
 }

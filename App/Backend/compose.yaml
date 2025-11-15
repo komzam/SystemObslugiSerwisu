@@ -15,7 +15,7 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:
-      - aspnet_keys:/root/.aspnet/DataProtection-Keys
+      - aspnet_keys:/home/app/.aspnet/DataProtection-Keys
   
   postgres:
     image: postgres:latest
@@ -45,26 +45,16 @@
       - MINIO_NOTIFY_AMQP_DURABLE_RabbitMq=on
       - MINIO_NOTIFY_AMQP_AUTO_DELETED_RabbitMq=off
       - MINIO_NOTIFY_AMQP_DELIVERY_MODE_RabbitMq=2
-    command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
       - "9001:9001"
     volumes:
       - minio_data:/data
+      - ./minioRun.sh:/usr/local/bin/minioRun.sh
+      - ./minioConfig.sh:/usr/local/bin/minioConfig.sh
+    entrypoint: [ "/bin/sh", "-c", "/usr/local/bin/minioRun.sh & /usr/local/bin/minioConfig.sh; wait" ]
     depends_on:
       - rabbitmq
-  
-  minio-init:
-    image: minio/mc
-    depends_on:
-      - minio
-    entrypoint: >
-      /bin/sh -c "
-        sleep 5 &&
-        mc alias set myminio http://minio:9000 admin admin123 &&
-        mc mb myminio/repair-shop-images || true &&
-        mc event add myminio/repair-shop-images arn:minio:sqs::RabbitMq:amqp --event put || true
-      "
 
   rabbitmq:
       image: rabbitmq:3-management
@@ -72,6 +62,7 @@
       environment:
         - RABBITMQ_DEFAULT_USER=guest
         - RABBITMQ_DEFAULT_PASS=guest
+        - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/etc/rabbitmq/definitions.json"
       ports:
         - "5672:5672"
         - "15672:15672"
@@ -81,6 +72,7 @@
         timeout: 5s
         retries: 5
       volumes:
+        - ./RabbitMqConfig.json:/etc/rabbitmq/definitions.json
         - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:

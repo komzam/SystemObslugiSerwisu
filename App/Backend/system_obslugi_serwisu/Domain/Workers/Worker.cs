@@ -55,5 +55,6 @@ public class Worker : User
         return new Worker(firstName, lastName);
     }
 
+    public bool IsEmployed() => RepairShopId is not null;
     public bool IsWorkingAt(RepairShopId repairShopId) => RepairShopId is not null && RepairShopId == repairShopId;
 }

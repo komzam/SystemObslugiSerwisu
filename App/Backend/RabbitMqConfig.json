@@ -1,0 +1,38 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "9/1i+jKFRpbTRV1PtRnzFFYibT3cEpP92JeZ8YKGtflf4e/u",
+      "tags": ["administrator"]
+    }
+  ],
+  "permissions":[
+    {
+      "user":"guest",
+      "vhost":"/",
+      "configure":".*",
+      "read":".*",
+      "write":".*"}
+  ],
+  "queues": [
+    {
+      "name": "image-processing",
+      "vhost": "/",
+      "durable": true,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "amq.direct",
+      "vhost": "/",
+      "destination": "image-processing",
+      "destination_type": "queue",
+      "routing_key": "image-processing",
+      "arguments": {}
+    }
+  ]
+}

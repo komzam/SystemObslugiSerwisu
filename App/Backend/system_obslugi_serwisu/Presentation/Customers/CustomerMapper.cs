@@ -6,9 +6,9 @@ namespace system_obslugi_serwisu.Presentation.Customers;
 
 public static class CustomerMapper
 {
-    public static CustomerDto ToDto(Customer customer)
+    public static FullCustomerDto ToFullDto(Customer customer)
     {
-        var customerDto = new CustomerDto
+        var customerDto = new FullCustomerDto
         {
             Id = customer.Id.Value,
             Email = customer.Email.Value,
@@ -19,6 +19,17 @@ public static class CustomerMapper
             PreferredContactMethod = customer.PreferredContactMethod,
             PreferredReturnMethod = customer.PreferredReturnMethod,
             Address = customer.Address==null ? null : SharedMapper.ToDto(customer.Address)
+        };
+        return customerDto;
+    }
+    
+    public static CustomerDto ToDto(Customer customer)
+    {
+        var customerDto = new CustomerDto
+        {
+            Id = customer.Id.Value,
+            Name = customer.Name.DisplayName,
+            IsBusiness = customer.IsBusiness
         };
         return customerDto;
     }

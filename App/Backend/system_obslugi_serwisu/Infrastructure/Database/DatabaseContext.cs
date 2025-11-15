@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using system_obslugi_serwisu.Domain.Conversations;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
@@ -9,6 +10,7 @@ using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Domain.Services;
 using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Domain.Workers;
+using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.Repairs.RepairSteps;
@@ -25,6 +27,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : Identi
     public DbSet<Customer> Customers {get; set;}
     public DbSet<Worker> Workers {get; set;}
     public DbSet<Repair> Repairs {get; set;}
+    public DbSet<Conversation> Conversations {get; set;}
+    public DbSet<Message> Messages {get; set;}
     public DbSet<RepairShop> RepairShops {get; set;}
     public DbSet<Service> Services {get; set;}
     public DbSet<Review> Reviews {get; set;}
@@ -44,5 +48,7 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : Identi
         new RepairStepTypeConfiguration().Configure(builder.Entity<RepairStep>());
         new PaymentRepairStepTypeConfiguration().Configure(builder.Entity<PaymentRepairStep>());
         new QuoteRepairStepTypeConfiguration().Configure(builder.Entity<QuoteRepairStep>());
+        new ConversationEntityTypeConfiguration().Configure(builder.Entity<Conversation>());
+        new MessageEntityTypeConfiguration().Configure(builder.Entity<Message>());
     }
 }

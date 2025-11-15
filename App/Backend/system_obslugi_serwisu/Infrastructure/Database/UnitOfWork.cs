@@ -1,4 +1,5 @@
-﻿using system_obslugi_serwisu.Application.Customers;
+﻿using system_obslugi_serwisu.Application.Conversations;
+using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
@@ -7,6 +8,7 @@ using system_obslugi_serwisu.Application.Services;
 using system_obslugi_serwisu.Application.Workers;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Reviews;
+using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
@@ -25,6 +27,7 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
     private RepairRepository? _repairRepository;
     private ReviewRepository? _reviewRepository;
     private ServiceRepository? _serviceRepository;
+    private ConversationRepository? _conversationRepository;
     
     public ICustomerRepository CustomerRepository {
         get
@@ -90,6 +93,17 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
             }
             return _serviceRepository;
         }
+    }
+
+    public IConversationRepository ConversationRepository { 
+        get
+        {
+            if (_conversationRepository == null)
+            {
+                _conversationRepository = new ConversationRepository(databaseContext);
+            }
+            return _conversationRepository;
+        } 
     }
 
     public async Task<OperationResult> SaveChanges()

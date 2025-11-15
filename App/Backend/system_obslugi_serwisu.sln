@@ -5,6 +5,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F351B5E0-C035-4242-9B63-7312F0A45876}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
+		RabbitMqConfig.json = RabbitMqConfig.json
+		minioConfig.sh = minioConfig.sh
+		minioRun.sh = minioRun.sh
 	EndProjectSection
 EndProject
 Global

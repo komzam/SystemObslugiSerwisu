@@ -1,4 +1,5 @@
-﻿using system_obslugi_serwisu.Application.Customers;
+﻿using system_obslugi_serwisu.Application.Conversations;
+using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
@@ -16,5 +17,6 @@ public interface IUnitOfWork
     public IRepairRepository RepairRepository { get; }
     public IReviewRepository ReviewRepository { get; }
     public IServiceRepository ServiceRepository { get; }
+    public IConversationRepository ConversationRepository { get; }
     public Task<OperationResult> SaveChanges();
 }
