@@ -5,23 +5,38 @@ import {ConversationCard} from "@/app/Organisms/ConversationCard";
 import {ConversationButtonProps} from "@/app/Molecules/ConversationButton";
 import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
 import {ConversationListCard} from "@/app/Organisms/ConversationListCard";
-import {RepairStatus} from "@/__generated__/types";
+import {
+    GetCustomerConversationsQuery,
+    GetCustomerConversationsQueryVariables,
+    RepairStatus
+} from "@/__generated__/types";
+import {useQuery} from "@apollo/client/react";
+import {GET_CUSTOMER_CONVERSATIONS} from "@/graphql/GetCustomerConversations";
 
 export default function Messages() {
     const [showConversation, setShowConversation] = React.useState(true);
+    const conversationListRequest = useQuery<GetCustomerConversationsQuery, GetCustomerConversationsQueryVariables>(GET_CUSTOMER_CONVERSATIONS,
+        {variables:{
+            numberOfConversations: 10
+        }})
 
-    const conversations: ConversationButtonProps[] = [
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"},
-        {date:new Date(Date.parse("2025-09-25T11:00:00.000Z")), title:"Playstation 5", lastMessage:"Ok"}
-    ]
+
+    const conversations: ConversationButtonProps[] = []
+
+    var conversationList = conversationListRequest?.data?.me.conversations.items;
+
+    if(conversationList) {
+        for (let conversation of conversationList) {
+            console.log(conversation);
+            conversations.push({
+                date: new Date(Date.parse(conversation.modifiedAt)),
+                title: conversation.repairShop.name,
+                lastMessage: conversation.messages.items[0].content
+            });
+        }
+    }
+
+
 
     const messages: ConversationMessageProps[] = [
         {message:"How much will it cost?", time: "10:35", type:"sent"},

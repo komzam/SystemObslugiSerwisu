@@ -14,6 +14,7 @@ public class Conversation
     public ConversationId Id { get; private set; }
     public RepairShopId RepairShopId { get; private set; }
     public CustomerId CustomerId { get; private set; }
+    public DateTimeOffset LastModifiedAt { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public IReadOnlyList<Message> Messages => _messages.AsReadOnly();
 
@@ -26,6 +27,7 @@ public class Conversation
         Id = new ConversationId(Guid.NewGuid());
         RepairShopId = repairShopId;
         CustomerId = customerId;
+        LastModifiedAt = DateTimeOffset.UtcNow;
         CreatedAt = DateTimeOffset.UtcNow;
     }
 
@@ -61,6 +63,7 @@ public class Conversation
             return messageResult.Error;
         
         _messages.Add(messageResult.Value);
+        LastModifiedAt = DateTimeOffset.UtcNow;
         
         return messageResult.Value;
     }

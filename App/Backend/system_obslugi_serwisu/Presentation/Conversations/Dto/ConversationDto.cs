@@ -9,4 +9,5 @@ public class ConversationDto
     [GraphQLIgnore]
     public required Guid CustomerId { get; set; }
     public required DateTimeOffset CreatedAt { get; set; }
+    public required DateTimeOffset ModifiedAt { get; set; }
 }

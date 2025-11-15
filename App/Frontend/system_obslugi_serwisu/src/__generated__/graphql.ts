@@ -116,32 +116,53 @@ export enum ContactMethod {
   Sms = 'SMS'
 }
 
+export type ConversationDto = {
+  __typename?: 'ConversationDto';
+  createdAt: Scalars['DateTime']['output'];
+  customer: CustomerDto;
+  id: Scalars['UUID']['output'];
+  messages: CursorPaginatedListOfMessageDtoAndNullableOfGuid;
+  modifiedAt: Scalars['DateTime']['output'];
+  repairShop: RepairShopDto;
+};
+
+
+export type ConversationDtoMessagesArgs = {
+  request: GetMessagesRequestInput;
+};
+
 export enum Country {
   Poland = 'POLAND'
 }
+
+export type CreateConversationRequestInput = {
+  actingRole: ActingRole;
+  firstMessage: Scalars['String']['input'];
+  receiverId: Scalars['UUID']['input'];
+};
 
 export enum CurrencyCode {
   Pln = 'PLN',
   Usd = 'USD'
 }
 
+export type CursorPaginatedListOfConversationDtoAndNullableOfGuid = {
+  __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid';
+  items: Array<ConversationDto>;
+  lastItemId?: Maybe<Scalars['UUID']['output']>;
+};
+
+export type CursorPaginatedListOfMessageDtoAndNullableOfGuid = {
+  __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid';
+  items: Array<MessageDto>;
+  lastItemId?: Maybe<Scalars['UUID']['output']>;
+};
+
 export type CustomerDto = {
   __typename?: 'CustomerDto';
-  address?: Maybe<AddressDto>;
-  email: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   isBusiness: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  phone?: Maybe<Scalars['String']['output']>;
-  phoneRegionCode?: Maybe<Scalars['String']['output']>;
-  preferredContactMethod?: Maybe<ContactMethod>;
-  preferredReturnMethod?: Maybe<ReturnMethod>;
-  repairs: PaginatedListOfRepairDto;
-};
-
-
-export type CustomerDtoRepairsArgs = {
-  request: GetRepairListRequestInput;
 };
 
 export type DeclareUnfixableRequestInput = {
@@ -210,6 +231,46 @@ export type FinalizeDeliveryRequestInput = {
   repairId: Scalars['UUID']['input'];
 };
 
+export type FullCustomerDto = {
+  __typename?: 'FullCustomerDto';
+  address?: Maybe<AddressDto>;
+  conversations: CursorPaginatedListOfConversationDtoAndNullableOfGuid;
+  email: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
+  isBusiness: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
+  phoneRegionCode?: Maybe<Scalars['String']['output']>;
+  preferredContactMethod?: Maybe<ContactMethod>;
+  preferredReturnMethod?: Maybe<ReturnMethod>;
+  repairs: PaginatedListOfRepairDto;
+};
+
+
+export type FullCustomerDtoConversationsArgs = {
+  request: GetConversationListRequestInput;
+};
+
+
+export type FullCustomerDtoRepairsArgs = {
+  request: GetRepairListRequestInput;
+};
+
+export type GetConversationListRequestInput = {
+  lastConversationId?: InputMaybe<Scalars['UUID']['input']>;
+  numberOfConversations: Scalars['Int']['input'];
+};
+
+export type GetConversationRequestInput = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
+};
+
+export type GetMessagesRequestInput = {
+  lastMessageId?: InputMaybe<Scalars['UUID']['input']>;
+  numberOfMessages: Scalars['Int']['input'];
+};
+
 export type GetRepairListRequestInput = {
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
@@ -249,16 +310,26 @@ export type LoginRequestInput = {
   rememberMe: Scalars['Boolean']['input'];
 };
 
+export type MessageDto = {
+  __typename?: 'MessageDto';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  senderRole: SenderRole;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
+  createConversation: ConversationDto;
   deleteReview: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
   repairActions: RepairActions;
+  sendMessage: Scalars['Boolean']['output'];
 };
 
 
@@ -277,6 +348,11 @@ export type MutationBookRepairArgs = {
 };
 
 
+export type MutationCreateConversationArgs = {
+  request: CreateConversationRequestInput;
+};
+
+
 export type MutationDeleteReviewArgs = {
   request: DeleteReviewRequestInput;
 };
@@ -289,6 +365,11 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   request: RegisterRequestInput;
+};
+
+
+export type MutationSendMessageArgs = {
+  request: SendMessageRequestInput;
 };
 
 export type NormalRepairStepDto = RepairStepDto & {
@@ -358,12 +439,18 @@ export type PaymentRepairStepDto = RepairStepDto & {
 
 export type Query = {
   __typename?: 'Query';
-  me: CustomerDto;
+  conversation: ConversationDto;
+  me: FullCustomerDto;
   repair: RepairDto;
   repairShop: RepairShopDto;
   reviews: PaginatedListOfReviewDto;
   searchShopsByName: PaginatedListOfRepairShopDto;
   services: PaginatedListOfServiceDto;
+};
+
+
+export type QueryConversationArgs = {
+  request: GetConversationRequestInput;
 };
 
 
@@ -623,6 +710,17 @@ export type SearchByNameRequestInput = {
   pageSize: Scalars['Int']['input'];
 };
 
+export type SendMessageRequestInput = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
+  message: Scalars['String']['input'];
+};
+
+export enum SenderRole {
+  Customer = 'CUSTOMER',
+  RepairShop = 'REPAIR_SHOP'
+}
+
 export type ServiceDto = {
   __typename?: 'ServiceDto';
   id: Scalars['String']['output'];
@@ -636,6 +734,17 @@ export type SubmitQuoteRequestInput = {
   laborCost: Scalars['Decimal']['input'];
   partsCost: Scalars['Decimal']['input'];
   repairId: Scalars['UUID']['input'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  onMessageSent: MessageDto;
+};
+
+
+export type SubscriptionOnMessageSentArgs = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
 };
 
 export type TimeIntervalDto = {
@@ -656,7 +765,7 @@ export type AddReviewMutation = { __typename?: 'Mutation', addReview: boolean };
 export type AuthContextQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', email: string, name: string, phone?: string | null, phoneRegionCode?: string | null, preferredContactMethod?: ContactMethod | null, preferredReturnMethod?: ReturnMethod | null, isBusiness: boolean, address?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } | null } };
+export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', email: string, name: string, phone?: string | null, phoneRegionCode?: string | null, preferredContactMethod?: ContactMethod | null, preferredReturnMethod?: ReturnMethod | null, isBusiness: boolean, address?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } | null } };
 
 export type BookRepairMutationVariables = Exact<{
   request: BookRepairRequestInput;
@@ -665,13 +774,21 @@ export type BookRepairMutationVariables = Exact<{
 
 export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
 
+export type GetCustomerConversationsQueryVariables = Exact<{
+  numberOfConversations: Scalars['Int']['input'];
+  lastConversationId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, createdAt: any, modifiedAt: any, repairShop: { __typename?: 'RepairShopDto', name: string }, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
+
 export type GetCustomerRepairsQueryVariables = Exact<{
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
 }>;
 
 
-export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
+export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['String']['input'];
@@ -764,6 +881,7 @@ export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typenam
 export const AddReviewDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddReview"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairShopId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"rating"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"comment"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addReview"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairShopId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairShopId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"rating"},"value":{"kind":"Variable","name":{"kind":"Name","value":"rating"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"comment"},"value":{"kind":"Variable","name":{"kind":"Name","value":"comment"}}}]}}]}]}}]} as unknown as DocumentNode<AddReviewMutation, AddReviewMutationVariables>;
 export const AuthContextDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"AuthContext"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"phoneRegionCode"}},{"kind":"Field","name":{"kind":"Name","value":"preferredContactMethod"}},{"kind":"Field","name":{"kind":"Name","value":"preferredReturnMethod"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipientName"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"buildingNumber"}},{"kind":"Field","name":{"kind":"Name","value":"apartmentNumber"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isBusiness"}}]}}]}}]} as unknown as DocumentNode<AuthContextQuery, AuthContextQueryVariables>;
 export const BookRepairDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BookRepair"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookRepairRequestInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookRepair"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"repairShop"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"recipientName"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"buildingNumber"}},{"kind":"Field","name":{"kind":"Name","value":"apartmentNumber"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"country"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<BookRepairMutation, BookRepairMutationVariables>;
+export const GetCustomerConversationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerConversations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"numberOfConversations"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastConversationId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"conversations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"numberOfConversations"},"value":{"kind":"Variable","name":{"kind":"Name","value":"numberOfConversations"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastConversationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastConversationId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedAt"}},{"kind":"Field","name":{"kind":"Name","value":"repairShop"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"numberOfMessages"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"senderRole"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetCustomerConversationsQuery, GetCustomerConversationsQueryVariables>;
 export const GetCustomerRepairsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerRepairs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"pageNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"deviceInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"manufacturer"}},{"kind":"Field","name":{"kind":"Name","value":"model"}}]}},{"kind":"Field","name":{"kind":"Name","value":"faultInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageNumber"}},{"kind":"Field","name":{"kind":"Name","value":"pageSize"}},{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"totalPages"}}]}}]}}]}}]} as unknown as DocumentNode<GetCustomerRepairsQuery, GetCustomerRepairsQueryVariables>;
 export const GetRepairDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRepair"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repair"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"repairShop"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"deviceInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deviceType"}},{"kind":"Field","name":{"kind":"Name","value":"manufacturer"}},{"kind":"Field","name":{"kind":"Name","value":"model"}},{"kind":"Field","name":{"kind":"Name","value":"serialNumber"}}]}},{"kind":"Field","name":{"kind":"Name","value":"faultInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"whenOccurred"}},{"kind":"Field","name":{"kind":"Name","value":"howToReproduce"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"previouslyRepaired"}}]}},{"kind":"Field","name":{"kind":"Name","value":"additionalComment"}},{"kind":"Field","name":{"kind":"Name","value":"repairHistory"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PaymentRepairStepDto"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"paid"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QuoteRepairStepDto"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"quote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"laborCost"}},{"kind":"Field","name":{"kind":"Name","value":"partsCost"}},{"kind":"Field","name":{"kind":"Name","value":"totalCost"}},{"kind":"Field","name":{"kind":"Name","value":"quoteAccepted"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetRepairQuery, GetRepairQueryVariables>;
 export const GetRepairShopDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRepairShop"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairShop"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"repairShopImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"large"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"timeZoneId"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"reviewCount"}},{"kind":"Field","name":{"kind":"Name","value":"aboutUs"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"buildingNumber"}},{"kind":"Field","name":{"kind":"Name","value":"apartmentNumber"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}},{"kind":"Field","name":{"kind":"Name","value":"openingHours"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"monday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tuesday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"wednesday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thursday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"friday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"saturday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sunday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetRepairShopQuery, GetRepairShopQueryVariables>;

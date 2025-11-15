@@ -1,5 +1,9 @@
 ﻿using MediatR;
+using system_obslugi_serwisu.Application.Conversations.GetCustomers;
 using system_obslugi_serwisu.Application.Repairs.GetCustomers;
+using system_obslugi_serwisu.Presentation.Conversations;
+using system_obslugi_serwisu.Presentation.Conversations.Dto;
+using system_obslugi_serwisu.Presentation.Conversations.GetList;
 using system_obslugi_serwisu.Presentation.Customers.Dto;
 using system_obslugi_serwisu.Presentation.Repairs;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
@@ -21,5 +25,22 @@ public class CustomerExtensions
                 .Build());
 
         return repairListResult.Value.Map<RepairDto>(r => RepairMapper.ToDto(r));
+    }
+    
+    public async Task<CursorPaginatedList<ConversationDto, Guid?>> GetConversations([Service] IMediator mediatr, [Parent] FullCustomerDto customer, GetConversationListRequest request)
+    {
+        var repairListResult = await mediatr.Send(new GetCustomersConversationsCommand
+        {
+            CustomerId = customer.Id,
+            LastConversationId = request.LastConversationId,
+            NumberOfConversations = request.NumberOfConversations
+        });
+        if(repairListResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(repairListResult.Error.GetUserMessage())
+                .SetCode(repairListResult.Error.GetUserCode())
+                .Build());
+
+        return repairListResult.Value.Map(ConversationMapper.ToDto, id=>id?.Value);
     }
 }

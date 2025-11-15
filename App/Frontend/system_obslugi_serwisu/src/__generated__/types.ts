@@ -112,32 +112,53 @@ export enum ContactMethod {
   Sms = 'SMS'
 }
 
+export type ConversationDto = {
+  __typename?: 'ConversationDto';
+  createdAt: Scalars['DateTime']['output'];
+  customer: CustomerDto;
+  id: Scalars['UUID']['output'];
+  messages: CursorPaginatedListOfMessageDtoAndNullableOfGuid;
+  modifiedAt: Scalars['DateTime']['output'];
+  repairShop: RepairShopDto;
+};
+
+
+export type ConversationDtoMessagesArgs = {
+  request: GetMessagesRequestInput;
+};
+
 export enum Country {
   Poland = 'POLAND'
 }
+
+export type CreateConversationRequestInput = {
+  actingRole: ActingRole;
+  firstMessage: Scalars['String']['input'];
+  receiverId: Scalars['UUID']['input'];
+};
 
 export enum CurrencyCode {
   Pln = 'PLN',
   Usd = 'USD'
 }
 
+export type CursorPaginatedListOfConversationDtoAndNullableOfGuid = {
+  __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid';
+  items: Array<ConversationDto>;
+  lastItemId?: Maybe<Scalars['UUID']['output']>;
+};
+
+export type CursorPaginatedListOfMessageDtoAndNullableOfGuid = {
+  __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid';
+  items: Array<MessageDto>;
+  lastItemId?: Maybe<Scalars['UUID']['output']>;
+};
+
 export type CustomerDto = {
   __typename?: 'CustomerDto';
-  address?: Maybe<AddressDto>;
-  email: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   isBusiness: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
-  phone?: Maybe<Scalars['String']['output']>;
-  phoneRegionCode?: Maybe<Scalars['String']['output']>;
-  preferredContactMethod?: Maybe<ContactMethod>;
-  preferredReturnMethod?: Maybe<ReturnMethod>;
-  repairs: PaginatedListOfRepairDto;
-};
-
-
-export type CustomerDtoRepairsArgs = {
-  request: GetRepairListRequestInput;
 };
 
 export type DeclareUnfixableRequestInput = {
@@ -206,6 +227,46 @@ export type FinalizeDeliveryRequestInput = {
   repairId: Scalars['UUID']['input'];
 };
 
+export type FullCustomerDto = {
+  __typename?: 'FullCustomerDto';
+  address?: Maybe<AddressDto>;
+  conversations: CursorPaginatedListOfConversationDtoAndNullableOfGuid;
+  email: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
+  isBusiness: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  phone?: Maybe<Scalars['String']['output']>;
+  phoneRegionCode?: Maybe<Scalars['String']['output']>;
+  preferredContactMethod?: Maybe<ContactMethod>;
+  preferredReturnMethod?: Maybe<ReturnMethod>;
+  repairs: PaginatedListOfRepairDto;
+};
+
+
+export type FullCustomerDtoConversationsArgs = {
+  request: GetConversationListRequestInput;
+};
+
+
+export type FullCustomerDtoRepairsArgs = {
+  request: GetRepairListRequestInput;
+};
+
+export type GetConversationListRequestInput = {
+  lastConversationId?: InputMaybe<Scalars['UUID']['input']>;
+  numberOfConversations: Scalars['Int']['input'];
+};
+
+export type GetConversationRequestInput = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
+};
+
+export type GetMessagesRequestInput = {
+  lastMessageId?: InputMaybe<Scalars['UUID']['input']>;
+  numberOfMessages: Scalars['Int']['input'];
+};
+
 export type GetRepairListRequestInput = {
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
@@ -245,16 +306,26 @@ export type LoginRequestInput = {
   rememberMe: Scalars['Boolean']['input'];
 };
 
+export type MessageDto = {
+  __typename?: 'MessageDto';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  senderRole: SenderRole;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
+  createConversation: ConversationDto;
   deleteReview: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
   repairActions: RepairActions;
+  sendMessage: Scalars['Boolean']['output'];
 };
 
 
@@ -273,6 +344,11 @@ export type MutationBookRepairArgs = {
 };
 
 
+export type MutationCreateConversationArgs = {
+  request: CreateConversationRequestInput;
+};
+
+
 export type MutationDeleteReviewArgs = {
   request: DeleteReviewRequestInput;
 };
@@ -285,6 +361,11 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   request: RegisterRequestInput;
+};
+
+
+export type MutationSendMessageArgs = {
+  request: SendMessageRequestInput;
 };
 
 export type NormalRepairStepDto = RepairStepDto & {
@@ -354,12 +435,18 @@ export type PaymentRepairStepDto = RepairStepDto & {
 
 export type Query = {
   __typename?: 'Query';
-  me: CustomerDto;
+  conversation: ConversationDto;
+  me: FullCustomerDto;
   repair: RepairDto;
   repairShop: RepairShopDto;
   reviews: PaginatedListOfReviewDto;
   searchShopsByName: PaginatedListOfRepairShopDto;
   services: PaginatedListOfServiceDto;
+};
+
+
+export type QueryConversationArgs = {
+  request: GetConversationRequestInput;
 };
 
 
@@ -619,6 +706,17 @@ export type SearchByNameRequestInput = {
   pageSize: Scalars['Int']['input'];
 };
 
+export type SendMessageRequestInput = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
+  message: Scalars['String']['input'];
+};
+
+export enum SenderRole {
+  Customer = 'CUSTOMER',
+  RepairShop = 'REPAIR_SHOP'
+}
+
 export type ServiceDto = {
   __typename?: 'ServiceDto';
   id: Scalars['String']['output'];
@@ -632,6 +730,17 @@ export type SubmitQuoteRequestInput = {
   laborCost: Scalars['Decimal']['input'];
   partsCost: Scalars['Decimal']['input'];
   repairId: Scalars['UUID']['input'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  onMessageSent: MessageDto;
+};
+
+
+export type SubscriptionOnMessageSentArgs = {
+  actingRole: ActingRole;
+  conversationId: Scalars['UUID']['input'];
 };
 
 export type TimeIntervalDto = {
@@ -652,7 +761,7 @@ export type AddReviewMutation = { __typename?: 'Mutation', addReview: boolean };
 export type AuthContextQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', email: string, name: string, phone?: string | null, phoneRegionCode?: string | null, preferredContactMethod?: ContactMethod | null, preferredReturnMethod?: ReturnMethod | null, isBusiness: boolean, address?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } | null } };
+export type AuthContextQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', email: string, name: string, phone?: string | null, phoneRegionCode?: string | null, preferredContactMethod?: ContactMethod | null, preferredReturnMethod?: ReturnMethod | null, isBusiness: boolean, address?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } | null } };
 
 export type BookRepairMutationVariables = Exact<{
   request: BookRepairRequestInput;
@@ -661,13 +770,21 @@ export type BookRepairMutationVariables = Exact<{
 
 export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
 
+export type GetCustomerConversationsQueryVariables = Exact<{
+  numberOfConversations: Scalars['Int']['input'];
+  lastConversationId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, createdAt: any, modifiedAt: any, repairShop: { __typename?: 'RepairShopDto', name: string }, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
+
 export type GetCustomerRepairsQueryVariables = Exact<{
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
 }>;
 
 
-export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'CustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
+export type GetCustomerRepairsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['String']['input'];

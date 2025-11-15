@@ -29,6 +29,7 @@ public class ConversationEntityTypeConfiguration : IEntityTypeConfiguration<Conv
                 value => new CustomerId(value))
             .ValueGeneratedNever();
 
+        conversationConfiguration.Property(conversation => conversation.LastModifiedAt);
         conversationConfiguration.Property(conversation => conversation.CreatedAt);
         conversationConfiguration.HasMany(conversation => conversation.Messages);
     }
