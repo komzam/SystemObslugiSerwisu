@@ -8,9 +8,11 @@ import {Button} from "@/app/Atoms/Button";
 import {LuWrench} from "react-icons/lu";
 import {Status} from "@/app/Atoms/Status";
 import {TextArea} from "@/app/Atoms/TextArea";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {RepairStatus} from "@/__generated__/types";
+import {Message} from "postcss";
+import {useDebounce} from "@/app/Hooks/useDebounce";
 
 export type ConversationCardProps = {
     title: string;
@@ -18,21 +20,40 @@ export type ConversationCardProps = {
     status: RepairStatus;
     messages: ConversationMessageProps[];
     className?: string;
+    onMessageSendAction: (message: string) => Promise<boolean>;
 }
 
-export function ConversationCard({title, repairTicketNumber, status, messages, className=""}: ConversationCardProps) {
+export function ConversationCard({title, repairTicketNumber, status, messages, className="", onMessageSendAction}: ConversationCardProps) {
     const t = useTranslations("Messages");
     const scrollRef = useRef<HTMLDivElement>(null);
+    const [message, setMessage] = useState<string>("");
 
     useEffect(()=>{
         const element = scrollRef.current;
         if(element){
             element.scrollTop = element.scrollHeight;
         }
-    }, [])
+    }, [messages])
+
+    const sendMessage = async () => {
+        if(!message)
+            return;
+
+        const sent = await onMessageSendAction(message);
+
+        if(sent)
+            setMessage("");
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    };
 
     return (
-        <CardWithHeader className={`flex flex-col h-full w-[clamp(20rem,calc(100vw-var(--page-margin)*2),75rem)] ${className}`}>
+        <CardWithHeader className={`flex flex-col w-full h-full ${className}`}>
             <CardWithHeader.Header className="flex flex-row gap-2 items-center">
                 <div className="flex flex-col gap-5 w-full">
                     <div className="flex flex-col md:flex-row gap-2 w-full items-start md:items-center">
@@ -51,8 +72,13 @@ export function ConversationCard({title, repairTicketNumber, status, messages, c
                 <ConversationMessageList messages={messages}/>
             </CardWithHeader.Card>
             <div className="bg-accent2 flex flex-row px-2 py-3 gap-5 w-full rounded-b-xl">
-                <TextArea placeholder={t("messagePlaceholder")} rows={2} className="flex-1 w-full"/>
-                <Button>{t("send")}</Button>
+                <TextArea value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          placeholder={t("messagePlaceholder")}
+                          rows={2}
+                          className="flex-1 w-full"/>
+                <Button onClick={sendMessage}>{t("send")}</Button>
             </div>
         </CardWithHeader>
     )

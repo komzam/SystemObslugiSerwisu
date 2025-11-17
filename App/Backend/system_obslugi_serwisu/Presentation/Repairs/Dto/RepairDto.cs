@@ -9,6 +9,7 @@ public class RepairDto
 {
     public required Guid Id { get; set; }
     public required Guid RepairShopId { get; set; }
+    public required Guid? ConversationId { get; set; }
     public RepairStatus Status { get; set; }
     public required ContactInfoDto ContactInfo { get; set; }
     public required DeviceInfoDto DeviceInfo { get; set; }

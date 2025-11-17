@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using system_obslugi_serwisu.Domain.Conversations;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.RepairShops;
@@ -29,6 +30,11 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
             .HasConversion(
                 id => id == null ? (Guid?)null : id.Value,
                 value => value == null ? null : new CustomerId(value.Value));
+        
+        repairConfiguration.Property(repair => repair.ConversationId)
+            .HasConversion(
+                id => id == null ? (Guid?)null : id.Value,
+                value => value == null ? null : new ConversationId(value.Value));
         
         repairConfiguration.Property(repair => repair.Status);
 

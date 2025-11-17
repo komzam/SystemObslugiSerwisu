@@ -15,6 +15,7 @@ public static class RepairMapper
         {
             Id = repair.Id.Value,
             RepairShopId = repair.RepairShopId.Value,
+            ConversationId = repair.ConversationId?.Value,
             Status = repair.Status,
             ContactInfo = ToDto(repair.ContactInfo),
             DeviceInfo = ToDto(repair.DeviceInfo),

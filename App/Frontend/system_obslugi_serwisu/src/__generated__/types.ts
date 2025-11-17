@@ -616,6 +616,7 @@ export type RepairDto = {
   __typename?: 'RepairDto';
   additionalComment?: Maybe<Scalars['String']['output']>;
   contactInfo: ContactInfoDto;
+  conversationId?: Maybe<Scalars['UUID']['output']>;
   createdAt: Scalars['DateTime']['output'];
   deviceInfo: DeviceInfoDto;
   faultInfo: FaultInfoDto;
@@ -770,6 +771,22 @@ export type BookRepairMutationVariables = Exact<{
 
 export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
 
+export type ConversationSubscriptionSubscriptionVariables = Exact<{
+  conversationId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
+}>;
+
+
+export type ConversationSubscriptionSubscription = { __typename?: 'Subscription', onMessageSent: { __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any } };
+
+export type GetConversationQueryVariables = Exact<{
+  conversationId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
+}>;
+
+
+export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> } } };
+
 export type GetCustomerConversationsQueryVariables = Exact<{
   numberOfConversations: Scalars['Int']['input'];
   lastConversationId?: InputMaybe<Scalars['UUID']['input']>;
@@ -872,3 +889,12 @@ export type SearchQueryVariables = Exact<{
 
 
 export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, name: string, timeZoneId: string, rating: number, reviewCount: number, repairShopImage: { __typename?: 'ImageDto', small: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };
+
+export type SendMessageMutationVariables = Exact<{
+  conversationId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
+  message: Scalars['String']['input'];
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: boolean };

@@ -12,7 +12,7 @@ export type ConversationListProps = {
 export function ConversationListCard({conversations, className}: ConversationListProps) {
     const t = useTranslations("Messages")
     return(
-        <Card className={`flex flex-col w-[20rem] h-full ${className}`}>
+        <Card className={`flex flex-col w-full h-full ${className}`}>
             <Card.Label>{t("conversations")}</Card.Label>
             <div className={"flex-1 overflow-y-scroll no-scrollbar"}>
                 <ConversationList className="h-full" conversations={conversations}/>

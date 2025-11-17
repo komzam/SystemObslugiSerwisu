@@ -45,7 +45,11 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
         return conversation;
     }
 
-    public async Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetCustomersConversations(CustomerId customerId, ConversationId? lastConversationId, int numberOfConversations)
+    public async Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetCustomersConversations(
+        CustomerId customerId,
+        ConversationId? lastConversationId,
+        int numberOfConversations,
+        bool skipEmpty)
     {
         List<Conversation> conversations;
         ConversationId? newLastConversationId;
@@ -60,6 +64,11 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
                 var lastConversation = await databaseContext.Conversations.FirstOrDefaultAsync(c => c.Id == lastConversationId);
                 if (lastConversation != null)
                     conversationsQuery = conversationsQuery.Where(c => c.LastModifiedAt < lastConversation.LastModifiedAt);
+            }
+
+            if (skipEmpty)
+            {
+                conversationsQuery = conversationsQuery.Where(c => c.Messages.Any());
             }
 
             conversations = await conversationsQuery

@@ -52,7 +52,7 @@ public class CreateConversationHandler(IUnitOfWork unitOfWork) : IRequestHandler
             
         }else { return ConversationErrors.AccessDenied(); }
         
-        var conversationResult = Conversation.Create(repairShopId, customerId);
+        var conversationResult = Conversation.CreateGeneral(repairShopId, customerId);
         if(conversationResult.IsFailure)
             return conversationResult.Error;
 

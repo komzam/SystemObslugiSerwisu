@@ -18,7 +18,7 @@ public class GetCustomersConversationsHandler(IUnitOfWork unitOfWork) : IRequest
         
         var conversationListResult =
             await unitOfWork.ConversationRepository.GetCustomersConversations(customerResult.Value.Id,
-                lastConversationId, request.NumberOfConversations);
+                lastConversationId, request.NumberOfConversations, true);
         if(conversationListResult.IsFailure)
             return conversationListResult.Error;
         

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Domain.Conversations;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.RepairShops;
@@ -61,6 +62,18 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
         var createResult = await unitOfWork.RepairRepository.CreateRepair(repairResult.Value);
         if(createResult.IsFailure)
             return createResult.Error;
+        
+        if(repairResult.Value.CustomerId != null){
+            var conversationResult = Conversation.CreateForRepair(repairResult.Value.RepairShopId, repairResult.Value.CustomerId, repairResult.Value.Id);
+            if(conversationResult.IsFailure)
+                return conversationResult.Error;
+            
+            var conversationAddResult = await unitOfWork.ConversationRepository.CreateConversation(conversationResult.Value);
+            if(conversationAddResult.IsFailure)
+                return conversationAddResult.Error;
+            
+            repairResult.Value.AssignConversation(conversationResult.Value.Id);
+        }
 
         var saveChangesResult = await unitOfWork.SaveChanges();
         if(saveChangesResult.IsFailure)

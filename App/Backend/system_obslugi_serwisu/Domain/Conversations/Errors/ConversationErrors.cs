@@ -11,4 +11,7 @@ public static class ConversationErrors
     
     public static OperationError AccessDenied(string message = "Access to conversation was denied") =>
         new ($"{Prefix}.AccessDenied", message);
+    
+    public static OperationError RepairClosed(string message = "Repair attached to this conversation is closed") =>
+        new ($"{Prefix}.RepairClosed", message);
 }

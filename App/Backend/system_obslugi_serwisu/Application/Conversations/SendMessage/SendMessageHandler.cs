@@ -26,9 +26,6 @@ public class SendMessageHandler(IUnitOfWork unitOfWork) : IRequestHandler<SendMe
             if (workerResult.IsFailure)
                 return workerResult.Error;
             
-            if(!workerResult.Value.IsWorkingAt(conversationResult.Value.RepairShopId))
-                return ConversationErrors.AccessDenied();
-            
             sender = workerResult.Value;
 
         }else if (request.ActingRole == ActingRole.Customer)
@@ -37,13 +34,20 @@ public class SendMessageHandler(IUnitOfWork unitOfWork) : IRequestHandler<SendMe
             if(customerResult.IsFailure)
                 return customerResult.Error;
             
-            if(customerResult.Value.Id != conversationResult.Value.CustomerId)
-                return ConversationErrors.AccessDenied();
-            
             sender = customerResult.Value;
             
         }else { return ConversationErrors.AccessDenied(); }
-        
+
+        if (conversationResult.Value.IsRepairConversation)
+        {
+            var repairResult = await unitOfWork.RepairRepository.GetRepair(conversationResult.Value.RepairId);
+            if (repairResult.IsFailure)
+                return repairResult.Error;
+            
+            if(repairResult.Value.IsClosed)
+                return ConversationErrors.RepairClosed();
+        }
+
         var addMessageResult = conversationResult.Value.AddMessage(sender, request.Message);
         if(addMessageResult.IsFailure)
             return addMessageResult.Error;

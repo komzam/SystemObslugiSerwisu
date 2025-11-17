@@ -1,4 +1,5 @@
-﻿using system_obslugi_serwisu.Shared;
+﻿using system_obslugi_serwisu.Domain.Conversations;
+using system_obslugi_serwisu.Shared;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
@@ -27,6 +28,7 @@ public partial class Repair
     public RepairId Id { get; private set; }
     public RepairShopId RepairShopId { get; private set; }
     public CustomerId? CustomerId { get; private set; }
+    public ConversationId? ConversationId { get; private set; }
     public RepairStatus Status { get; private set; }
     public ContactInfo ContactInfo { get; private set; }
     public DeviceInfo DeviceInfo { get; private set; }
@@ -40,6 +42,8 @@ public partial class Repair
     public DateTimeOffset CreatedAt { get; private set; }
     
     private List<RepairStep> _repairHistory = new();
+    
+    public bool IsClosed => Status is RepairStatus.Completed or RepairStatus.Canceled;
 
     private Repair() { }
 
@@ -79,5 +83,10 @@ public partial class Repair
     private void AddRepairStep(RepairStep repairStep)
     {
         _repairHistory.Add(repairStep);
+    }
+
+    public void AssignConversation(ConversationId conversationId)
+    {
+        ConversationId = conversationId;
     }
 }
