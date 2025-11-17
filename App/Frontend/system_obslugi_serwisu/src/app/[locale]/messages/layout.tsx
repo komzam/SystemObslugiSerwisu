@@ -3,6 +3,7 @@
 import {ReactNode} from "react";
 import {ConversationListCard} from "@/app/Organisms/ConversationListCard";
 import {
+    ConversationType,
     GetCustomerConversationsQuery,
     GetCustomerConversationsQueryVariables,
 } from "@/__generated__/types";
@@ -15,7 +16,6 @@ import {useParams} from "next/navigation";
 export default function MessagesLayout({ children, }: Readonly<{ children: ReactNode; }>) {
     const params = useParams();
     const conversationId = params.id;
-    const [showConversation, setShowConversation] = React.useState(true);
     const conversationListRequest = useQuery<GetCustomerConversationsQuery, GetCustomerConversationsQueryVariables>(GET_CUSTOMER_CONVERSATIONS,
         {variables:{
                 numberOfConversations: 10
@@ -30,8 +30,8 @@ export default function MessagesLayout({ children, }: Readonly<{ children: React
         for (const conversation of conversationList) {
             conversations.push({
                 id: conversation.id,
-                date: new Date(Date.parse(conversation.modifiedAt)),
-                title: conversation.repairShop.name,
+                date: new Date(Date.parse(conversation.messages.items[0].createdAt)),
+                title: conversation.conversationType==ConversationType.GeneralChat? conversation.repairShop.name: (conversation.repair?.deviceInfo.manufacturer ?? "") + " " + (conversation.repair?.deviceInfo.model ?? ""),
                 lastMessage: conversation.messages.items[0].content,
                 isSelected: conversationId != null && conversation.id == conversationId
             });
@@ -41,7 +41,7 @@ export default function MessagesLayout({ children, }: Readonly<{ children: React
     return (
         <div className="bg-inherit flex flex-row h-full gap-2 justify-center w-[clamp(20rem,calc(100vw-var(--page-margin)*2),95rem)]">
             <ConversationListCard
-                className={`${showConversation ? 'hidden' : 'flex'} w-full md:flex md:flex-20 md:w-auto`}
+                className={`${conversationId ? 'hidden' : 'flex'} w-full md:flex md:flex-20 md:w-auto`}
                 conversations={conversations}
             />
             {children}

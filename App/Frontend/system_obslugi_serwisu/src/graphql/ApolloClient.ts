@@ -22,9 +22,11 @@ const splitLink = ApolloLink.split(
     httpLink
 );
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
     link: splitLink,
-    cache: new InMemoryCache(),
+    cache: cache,
 });
 
 export default client;

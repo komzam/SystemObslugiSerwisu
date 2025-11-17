@@ -4,6 +4,7 @@ public class CursorPaginatedList<T, TId>
 {
     public required List<T> Items { get; set; }
     public TId? LastItemId { get; set; }
+    public required bool HasMore { get; set; }
     
     public CursorPaginatedList<TResult, TId> Map<TResult>(Func<T, TResult> mapFunc)
     {
@@ -11,6 +12,7 @@ public class CursorPaginatedList<T, TId>
         {
             Items = Items.Select(mapFunc).ToList(),
             LastItemId = LastItemId,
+            HasMore = HasMore,
         };
     }
     
@@ -20,6 +22,7 @@ public class CursorPaginatedList<T, TId>
         {
             Items = Items.Select(mapFunc).ToList(),
             LastItemId = LastItemId!=null? mapFuncId(LastItemId): default,
+            HasMore = HasMore,
         };
     }
 }

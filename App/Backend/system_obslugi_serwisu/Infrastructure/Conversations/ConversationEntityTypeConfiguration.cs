@@ -35,6 +35,7 @@ public class ConversationEntityTypeConfiguration : IEntityTypeConfiguration<Conv
                 id => id == null ? (Guid?)null : id.Value,
                 value => value == null ? null : new RepairId(value.Value));
 
+        conversationConfiguration.Property(conversation => conversation.ConversationType);
         conversationConfiguration.Property(conversation => conversation.LastModifiedAt);
         conversationConfiguration.Property(conversation => conversation.CreatedAt);
         conversationConfiguration.HasMany(conversation => conversation.Messages);

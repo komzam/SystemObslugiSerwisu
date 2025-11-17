@@ -3,14 +3,14 @@
 import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
 import {ConversationCard} from "@/app/Organisms/ConversationCard";
 import {
-    ActingRole, ConversationSubscriptionSubscription, ConversationSubscriptionSubscriptionVariables,
+    ActingRole, ConversationSubscriptionSubscription, ConversationSubscriptionSubscriptionVariables, ConversationType,
     GetConversationQuery, GetConversationQueryVariables,
     RepairStatus, SenderRole, SendMessageMutation, SendMessageMutationVariables
 } from "@/__generated__/types";
 import * as React from "react";
 import {useParams} from "next/navigation";
-import {useMutation, useQuery, useSubscription} from "@apollo/client/react";
-import {GET_CONVERSATION} from "@/graphql/GetConversation";
+import {useApolloClient, useMutation, useQuery, useSubscription} from "@apollo/client/react";
+import {GET_CONVERSATION, GET_MORE_MESSAGES} from "@/graphql/GetConversation";
 import {DateTime} from "luxon";
 import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
 import {useEffect, useState} from "react";
@@ -20,13 +20,16 @@ export default function Messages() {
     const params = useParams();
     const conversationId = params.id;
     const [messages, setMessages] = useState<ConversationMessageProps[]>([]);
+    const [noMoreMessages, setNoMoreMessages] = useState<boolean>(false);
 
-    const { data: queryData, loading: queryLoading } = useQuery<GetConversationQuery, GetConversationQueryVariables>(
+    const { data: queryData, loading: queryLoading, fetchMore } = useQuery<GetConversationQuery, GetConversationQueryVariables>(
         GET_CONVERSATION,
         {
             variables: {
                 conversationId,
-                actingRole: ActingRole.Customer
+                actingRole: ActingRole.Customer,
+                numberOfMessages: 10,
+                lastMessageId: null
             }
         }
     );
@@ -62,6 +65,8 @@ export default function Messages() {
                 type: (m.senderRole === SenderRole.Customer ? "sent" : "received") as "sent" | "received"
             }));
 
+            setNoMoreMessages(!queryData.conversation.messages.hasMore);
+
             setMessages(initial);
         }
     }, [queryLoading, queryData]);
@@ -75,14 +80,52 @@ export default function Messages() {
         return true;
     };
 
+    const onLoadMore = async () => {
+        if(noMoreMessages) return;
+        fetchMore({query: GET_MORE_MESSAGES,
+            variables: {conversationId, lastMessageId: queryData?.conversation.messages.lastItemId, actingRole: ActingRole.Customer, numberOfMessages: 10},
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev;
+
+                return {
+                    conversation: {
+                        ...prev.conversation,
+                        messages: {
+                            items: [...prev.conversation.messages.items, ...fetchMoreResult.conversation.messages.items],
+                            lastItemId: fetchMoreResult.conversation.messages.lastItemId,
+                            hasMore: fetchMoreResult.conversation.messages.hasMore
+                        }
+                    }
+                };
+            }});
+    }
+
+    if(!queryData) return null;
+    console.log(queryData);
 
     return (
-        <ConversationCard className={`${false && "hidden"} md:flex md:flex-75`}
-                          title={"Playstation 5"}
-                          repairTicketNumber={123456789}
-                          messages={messages}
-                          status={RepairStatus.AwaitingDelivery}
-                          onMessageSendAction={onMessageSend}
-        />
+        <>
+            {queryData?.conversation.conversationType === ConversationType.RepairChat ?
+                <ConversationCard className={`${false && "hidden"} md:flex md:flex-75`}
+                                  conversationType={queryData?.conversation.conversationType}
+                                  title={(queryData?.conversation?.repair?.deviceInfo.manufacturer ?? "") + " " + (queryData?.conversation?.repair?.deviceInfo.model ?? "")}
+                                  repairTicketNumber={queryData?.conversation?.repair?.id ?? ""}
+                                  messages={messages}
+                                  status={queryData?.conversation?.repair?.status ?? RepairStatus.Created}
+                                  onMessageSendAction={onMessageSend}
+                                  onLoadMoreAction={onLoadMore}
+                />
+                :
+                <ConversationCard className={`${false && "hidden"} md:flex md:flex-75`}
+                                  conversationType={queryData?.conversation.conversationType}
+                                  title={queryData?.conversation.repairShop.name ?? ""}
+                                  rating={queryData?.conversation.repairShop.rating ?? 4}
+                                  reviewCount={queryData?.conversation.repairShop.reviewCount?? 11}
+                                  messages={messages}
+                                  onMessageSendAction={onMessageSend}
+                                  onLoadMoreAction={onLoadMore}
+                />
+            }
+        </>
     );
 }

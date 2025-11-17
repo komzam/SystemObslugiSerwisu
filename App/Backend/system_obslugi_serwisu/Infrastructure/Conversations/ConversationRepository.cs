@@ -53,6 +53,7 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
     {
         List<Conversation> conversations;
         ConversationId? newLastConversationId;
+        bool hasMore;
         
         try
         {
@@ -73,8 +74,12 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
 
             conversations = await conversationsQuery
                 .OrderByDescending(conversation => conversation.LastModifiedAt)
-                .Take(numberOfConversations)
+                .Take(numberOfConversations+1)
                 .ToListAsync();
+            
+            hasMore = conversations.Count > numberOfConversations;
+            
+            conversations = conversations.Take(numberOfConversations).ToList();
 
             newLastConversationId = conversations.Count != 0 ? conversations.Last().Id : null;
         }
@@ -86,7 +91,8 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
         return new CursorPaginatedList<Conversation, ConversationId?>
         {
             Items = conversations,
-            LastItemId = newLastConversationId
+            LastItemId = newLastConversationId,
+            HasMore = hasMore
         };
     }
 
@@ -94,6 +100,7 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
     {
         List<Message> messages;
         MessageId? newLastMessageId;
+        bool hasMore;
         
         try
         {
@@ -109,8 +116,12 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
 
             messages = await messagesQuery
                 .OrderByDescending(message => message.CreatedAt)
-                .Take(numberOfMessages)
+                .Take(numberOfMessages+1)
                 .ToListAsync();
+            
+            hasMore = messages.Count > numberOfMessages;
+            
+            messages = messages.Take(numberOfMessages).ToList();
 
             newLastMessageId = messages.Count != 0 ? messages.Last().Id : null;
         }
@@ -122,7 +133,8 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
         return new CursorPaginatedList<Message, MessageId>
         {
             Items = messages,
-            LastItemId = newLastMessageId
+            LastItemId = newLastMessageId,
+            HasMore = hasMore
         };
     }
 }

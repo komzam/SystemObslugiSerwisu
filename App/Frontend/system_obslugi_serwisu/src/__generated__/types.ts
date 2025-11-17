@@ -114,11 +114,13 @@ export enum ContactMethod {
 
 export type ConversationDto = {
   __typename?: 'ConversationDto';
+  conversationType: ConversationType;
   createdAt: Scalars['DateTime']['output'];
   customer: CustomerDto;
   id: Scalars['UUID']['output'];
   messages: CursorPaginatedListOfMessageDtoAndNullableOfGuid;
   modifiedAt: Scalars['DateTime']['output'];
+  repair?: Maybe<RepairDto>;
   repairShop: RepairShopDto;
 };
 
@@ -126,6 +128,11 @@ export type ConversationDto = {
 export type ConversationDtoMessagesArgs = {
   request: GetMessagesRequestInput;
 };
+
+export enum ConversationType {
+  GeneralChat = 'GENERAL_CHAT',
+  RepairChat = 'REPAIR_CHAT'
+}
 
 export enum Country {
   Poland = 'POLAND'
@@ -144,12 +151,14 @@ export enum CurrencyCode {
 
 export type CursorPaginatedListOfConversationDtoAndNullableOfGuid = {
   __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid';
+  hasMore: Scalars['Boolean']['output'];
   items: Array<ConversationDto>;
   lastItemId?: Maybe<Scalars['UUID']['output']>;
 };
 
 export type CursorPaginatedListOfMessageDtoAndNullableOfGuid = {
   __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid';
+  hasMore: Scalars['Boolean']['output'];
   items: Array<MessageDto>;
   lastItemId?: Maybe<Scalars['UUID']['output']>;
 };
@@ -782,10 +791,22 @@ export type ConversationSubscriptionSubscription = { __typename?: 'Subscription'
 export type GetConversationQueryVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
   actingRole: ActingRole;
+  numberOfMessages: Scalars['Int']['input'];
+  lastMessageId?: InputMaybe<Scalars['UUID']['input']>;
 }>;
 
 
-export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> } } };
+export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', conversationType: ConversationType, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> }, repair?: { __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } } };
+
+export type GetMoreMessagesQueryVariables = Exact<{
+  conversationId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
+  numberOfMessages: Scalars['Int']['input'];
+  lastMessageId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type GetMoreMessagesQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> } } };
 
 export type GetCustomerConversationsQueryVariables = Exact<{
   numberOfConversations: Scalars['Int']['input'];
@@ -793,7 +814,7 @@ export type GetCustomerConversationsQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, createdAt: any, modifiedAt: any, repairShop: { __typename?: 'RepairShopDto', name: string }, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
+export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, createdAt: any, modifiedAt: any, repairShop: { __typename?: 'RepairShopDto', name: string }, repair?: { __typename?: 'RepairDto', deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
 
 export type GetCustomerRepairsQueryVariables = Exact<{
   pageNumber: Scalars['Int']['input'];
@@ -808,7 +829,7 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }

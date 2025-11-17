@@ -9,10 +9,17 @@ export const GET_CUSTOMER_CONVERSATIONS = gql`
             }){
                 items{
                     id,
+                    conversationType,
                     createdAt,
                     modifiedAt,
                     repairShop{
                         name
+                    },
+                    repair{
+                        deviceInfo {
+                            manufacturer
+                            model
+                        }
                     },
                     messages(request:  {
                         numberOfMessages: 1

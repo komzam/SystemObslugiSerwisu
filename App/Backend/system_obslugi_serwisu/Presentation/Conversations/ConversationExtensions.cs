@@ -3,11 +3,15 @@ using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.Conversations.GetMessages;
 using system_obslugi_serwisu.Application.Customers.Get;
+using system_obslugi_serwisu.Application.Repairs.Get;
 using system_obslugi_serwisu.Application.RepairShops.Get;
+using system_obslugi_serwisu.Domain.Conversations;
 using system_obslugi_serwisu.Presentation.Conversations.Dto;
 using system_obslugi_serwisu.Presentation.Conversations.GetMessages;
 using system_obslugi_serwisu.Presentation.Customers;
 using system_obslugi_serwisu.Presentation.Customers.Dto;
+using system_obslugi_serwisu.Presentation.Repairs;
+using system_obslugi_serwisu.Presentation.Repairs.Dto;
 using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 using system_obslugi_serwisu.Shared;
@@ -46,6 +50,25 @@ public class ConversationExtensions
                 .Build());
 
         return RepairShopMapper.ToDto(repairShopResult.Value);
+    }
+    
+    [Authorize]
+    public async Task<RepairDto?> GetRepair([Service] IMediator mediatr, [Parent] ConversationDto conversationDto)
+    {
+        if (conversationDto.RepairId == null || conversationDto.ConversationType != ConversationType.RepairChat)
+            return null;
+        
+        var repairResult = await mediatr.Send(new GetRepairCommand
+        {
+            RepairId = conversationDto.RepairId.Value
+        });
+        if(repairResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(repairResult.Error.GetUserMessage())
+                .SetCode(repairResult.Error.GetUserCode())
+                .Build());
+
+        return RepairMapper.ToDto(repairResult.Value);
     }
     
     [Authorize]

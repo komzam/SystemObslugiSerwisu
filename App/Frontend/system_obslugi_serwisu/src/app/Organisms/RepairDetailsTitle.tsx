@@ -4,14 +4,16 @@ import {Button} from "@/app/Atoms/Button";
 import {useTranslations} from "next-intl";
 import { LuMessageSquare } from "react-icons/lu";
 import {RepairStatus} from "@/__generated__/types";
+import {Link} from "@/i18n/navigation";
 
 export type RepairDetailsTitleProps = {
     title: string;
     repairTicketNumber: string;
-    status: RepairStatus
+    status: RepairStatus;
+    conversationId: string;
 }
 
-export function RepairDetailsTitle({ title, repairTicketNumber, status }: RepairDetailsTitleProps) {
+export function RepairDetailsTitle({ title, repairTicketNumber, status, conversationId}: RepairDetailsTitleProps) {
     const t = useTranslations("RepairDetails");
 
     return (
@@ -23,12 +25,12 @@ export function RepairDetailsTitle({ title, repairTicketNumber, status }: Repair
                         <span className="text-accent4">{repairTicketNumber}</span>
                     </div>
                     <div className="flex flex-row gap-2 sm:gap-5 items-center">
-                        <Button className="hidden md:flex" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button>
+                        <Link href={`/messages/${conversationId}`}><Button className="hidden md:flex" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button></Link>
                         <Status className="hidden sm:flex" type={status}/>
                     </div>
                 </div>
                 <Status className="sm:hidden" type={status}/>
-                <Button className="w-full md:hidden" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button>
+                <Link href={`/messages/${conversationId}`}><Button className="w-full md:hidden" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button></Link>
             </div>
         </Card>
     )

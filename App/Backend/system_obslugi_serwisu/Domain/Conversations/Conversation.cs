@@ -16,34 +16,36 @@ public class Conversation
     public RepairShopId RepairShopId { get; private set; }
     public CustomerId CustomerId { get; private set; }
     public RepairId? RepairId { get; private set; }
+    public ConversationType ConversationType { get; private set; }
     public DateTimeOffset LastModifiedAt { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public IReadOnlyList<Message> Messages => _messages.AsReadOnly();
 
     private List<Message> _messages = new();
     
-    public bool IsRepairConversation => RepairId != null;
+    public bool IsRepairConversation => ConversationType == ConversationType.RepairChat;
 
     private Conversation() { }
 
-    private Conversation(RepairShopId repairShopId, CustomerId customerId, RepairId? repairId)
+    private Conversation(RepairShopId repairShopId, CustomerId customerId, RepairId? repairId, ConversationType conversationType)
     {
         Id = new ConversationId(Guid.NewGuid());
         RepairShopId = repairShopId;
         CustomerId = customerId;
         RepairId = repairId;
+        ConversationType = conversationType;
         LastModifiedAt = DateTimeOffset.UtcNow;
         CreatedAt = DateTimeOffset.UtcNow;
     }
 
     public static OperationResult<Conversation> CreateGeneral(RepairShopId repairShopId, CustomerId customerId)
     {
-        return new Conversation(repairShopId, customerId, null);
+        return new Conversation(repairShopId, customerId, null, ConversationType.GeneralChat);
     }
     
     public static OperationResult<Conversation> CreateForRepair(RepairShopId repairShopId, CustomerId customerId, RepairId repairId)
     {
-        return new Conversation(repairShopId, customerId, repairId);
+        return new Conversation(repairShopId, customerId, repairId, ConversationType.RepairChat);
     }
 
     public OperationResult<Message> AddMessage(User user, string message)

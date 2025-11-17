@@ -36,7 +36,8 @@ export default function Repair() {
                 <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
                     <RepairDetailsTitle title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
                                         repairTicketNumber={repair.id}
-                                        status={repair.status} />
+                                        status={repair.status}
+                                        conversationId={repair.conversationId}/>
                     <RepairDetailsDevInfo deviceType={repair.deviceInfo.deviceType}
                                           manufacturer={repair.deviceInfo.manufacturer}
                                           modelName={repair.deviceInfo.model}

@@ -12,6 +12,8 @@ public static class ConversationMapper
             Id = conversation.Id.Value,
             RepairShopId = conversation.RepairShopId.Value,
             CustomerId = conversation.CustomerId.Value,
+            RepairId = conversation.RepairId?.Value,
+            ConversationType = conversation.ConversationType,
             CreatedAt = conversation.CreatedAt,
             ModifiedAt = conversation.LastModifiedAt
         };

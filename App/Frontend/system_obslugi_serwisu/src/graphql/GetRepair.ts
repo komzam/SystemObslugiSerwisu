@@ -4,6 +4,7 @@ export const GET_REPAIR = gql`
     query GetRepair($repairId: String!) {
         repair(request:{repairId: $repairId}) {
             id,
+            conversationId,
             repairShop{
                 id,
                 name,
