@@ -3,6 +3,7 @@
 export const GET_CUSTOMER_REPAIRS = gql`
     query GetCustomerRepairs($pageNumber: Int!, $pageSize: Int!) {
         me{
+            id,
             repairs(request:  {
                 pageNumber: $pageNumber,
                 pageSize: $pageSize

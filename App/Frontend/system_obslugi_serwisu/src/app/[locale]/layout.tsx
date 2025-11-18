@@ -8,8 +8,8 @@ import {AuthContextProvider} from "@/app/Utils/AuthContext";
 import {ReactNode} from "react";
 
 const roboto = Roboto({
-  variable: "--font-roboto",
-  weight: "300"
+    variable: "--font-roboto",
+    weight: ["100", "300", "400", "500", "700", "900"]
 });
 
 export const metadata: Metadata = {

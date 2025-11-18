@@ -5,15 +5,12 @@ import * as React from "react";
 import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
 import {CardWithHeader} from "@/app/Atoms/CardWithHeader";
 import {Button} from "@/app/Atoms/Button";
-import {LuWrench} from "react-icons/lu";
+import {LuChevronLeft, LuWrench} from "react-icons/lu";
 import {Status} from "@/app/Atoms/Status";
 import {TextArea} from "@/app/Atoms/TextArea";
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {useLayoutEffect, useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {ConversationType, RepairStatus} from "@/__generated__/types";
-import {Message} from "postcss";
-import {useDebounce} from "@/app/Hooks/useDebounce";
-import RepairShopInfo from "@/app/Molecules/RepairShopInfo";
 import * as RepairShopElementInfo from "@/app/Molecules/RepairShopElementInfo";
 import {Link} from "@/i18n/navigation";
 
@@ -106,17 +103,20 @@ export function ConversationCard(props: ConversationCardProps) {
             <CardWithHeader.Header className="flex flex-row gap-2 items-center">
                 <div className="flex flex-col gap-5 w-full">
                     <div className="flex flex-col md:flex-row gap-2 w-full items-start md:items-center">
-                        <div className="flex-1 flex flex-col w-full">
-                            <span className="text-larger1 font-bold text-white line-clamp-2 text-ellipsis">{props.title}</span>
-                            {props.conversationType === ConversationType.RepairChat ? (
-                                <span className="text-accent3">{props.repairTicketNumber}</span>
-                            ) : (
-                                <RepairShopElementInfo.RatingRoot>
-                                    <RepairShopElementInfo.RatingStars numberOfStars={props.rating}/>
-                                    <RepairShopElementInfo.RatingSeparator/>
-                                    <RepairShopElementInfo.RatingReviews numberOfReviews={props.reviewCount}/>
-                                </RepairShopElementInfo.RatingRoot>
-                            )}
+                        <div className="flex flex-1 flex-row items-center gap-3">
+                            <Link href="/messages"><LuChevronLeft className="md:hidden text-accent3" size="40"/></Link>
+                            <div className="flex-1 flex flex-col w-full">
+                                <span className="text-larger1 font-bold text-white line-clamp-2 text-ellipsis">{props.title}</span>
+                                {props.conversationType === ConversationType.RepairChat ? (
+                                    <span className="text-accent3">{props.repairTicketNumber}</span>
+                                ) : (
+                                    <RepairShopElementInfo.RatingRoot>
+                                        <RepairShopElementInfo.RatingStars numberOfStars={props.rating}/>
+                                        <RepairShopElementInfo.RatingSeparator/>
+                                        <RepairShopElementInfo.RatingReviews numberOfReviews={props.reviewCount}/>
+                                    </RepairShopElementInfo.RatingRoot>
+                                )}
+                            </div>
                         </div>
                         { props.conversationType === ConversationType.RepairChat &&
                             <div className="flex flex-row-reverse md:flex-row gap-2 sm:gap-5 items-center">

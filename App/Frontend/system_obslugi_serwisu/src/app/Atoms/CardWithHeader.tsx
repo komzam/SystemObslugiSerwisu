@@ -14,7 +14,7 @@ export function CardWithHeader({className="", children, ...props}: CardWithHeade
 }
 
 CardWithHeader.Header = function Header({className="", children, ...props}: CardWithHeaderProps){
-    return <div className={`bg-primary  px-4 py-3 rounded-t-xl ${className}`} {...props}>{children}</div>
+    return <div className={`bg-primary px-4 py-3 rounded-t-xl ${className}`} {...props}>{children}</div>
 }
 
 CardWithHeader.Card = function Card({className="", children, ...props}: CardWithHeaderProps){

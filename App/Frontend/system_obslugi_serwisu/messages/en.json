@@ -262,6 +262,7 @@
     "payNow": "Pay now"
   },
   "Messages": {
+    "selectConversation": "Select a conversation",
     "conversations": "Conversations",
     "viewRepairDetails": "View Repair Details",
     "details": "Details",

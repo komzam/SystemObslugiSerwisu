@@ -3,6 +3,7 @@
 export const GET_CUSTOMER_CONVERSATIONS = gql`
     query GetCustomerConversations($numberOfConversations: Int!, $lastConversationId: UUID) {
         me{
+            id,
             conversations(request:  {
                 numberOfConversations: $numberOfConversations,
                 lastConversationId: $lastConversationId
@@ -13,6 +14,7 @@ export const GET_CUSTOMER_CONVERSATIONS = gql`
                     createdAt,
                     modifiedAt,
                     repairShop{
+                        id,
                         name
                     },
                     repair{
@@ -31,7 +33,9 @@ export const GET_CUSTOMER_CONVERSATIONS = gql`
                             createdAt
                         }
                     }
-                }
+                },
+                hasMore,
+                lastItemId
             }
         }
     }

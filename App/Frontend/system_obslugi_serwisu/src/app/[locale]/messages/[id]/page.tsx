@@ -15,6 +15,7 @@ import {DateTime} from "luxon";
 import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
 import {useEffect, useState} from "react";
 import {SEND_MESSAGE} from "@/graphql/SendMessage";
+import {Card} from "@/app/Atoms/Card";
 
 export default function Messages() {
     const params = useParams();
@@ -100,13 +101,12 @@ export default function Messages() {
             }});
     }
 
-    if(!queryData) return null;
-    console.log(queryData);
+    if(!queryData) return <Card className={`bg-accent3 hidden !p-4 w-full md:flex md:basis-[79%] md:flex-col md:items-center md:justify-center`}/>;
 
     return (
         <>
             {queryData?.conversation.conversationType === ConversationType.RepairChat ?
-                <ConversationCard className={`${false && "hidden"} md:flex md:flex-75`}
+                <ConversationCard className={`md:flex md:basis-[79%]`}
                                   conversationType={queryData?.conversation.conversationType}
                                   title={(queryData?.conversation?.repair?.deviceInfo.manufacturer ?? "") + " " + (queryData?.conversation?.repair?.deviceInfo.model ?? "")}
                                   repairTicketNumber={queryData?.conversation?.repair?.id ?? ""}
@@ -116,7 +116,7 @@ export default function Messages() {
                                   onLoadMoreAction={onLoadMore}
                 />
                 :
-                <ConversationCard className={`${false && "hidden"} md:flex md:flex-75`}
+                <ConversationCard className={`md:flex md:basis-[79%]`}
                                   conversationType={queryData?.conversation.conversationType}
                                   title={queryData?.conversation.repairShop.name ?? ""}
                                   rating={queryData?.conversation.repairShop.rating ?? 4}

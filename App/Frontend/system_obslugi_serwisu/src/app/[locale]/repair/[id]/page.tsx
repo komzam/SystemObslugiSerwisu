@@ -32,7 +32,7 @@ export default function Repair() {
 
     return (
         <ProtectedRoute>
-            <div className="flex bg-inherit justify-center">
+            <div className="flex bg-inherit justify-center py-5">
                 <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
                     <RepairDetailsTitle title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
                                         repairTicketNumber={repair.id}

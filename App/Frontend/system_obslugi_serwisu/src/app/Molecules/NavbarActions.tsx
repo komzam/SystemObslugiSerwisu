@@ -18,7 +18,7 @@ export function NavbarActions() {
 
     const shrinkedMenu : Dropdown2Items = [
         { valueLabel: t("repairs"), onClick: () => router.push("/repairs")},
-        { valueLabel: t("messages"), onClick: () => router.push("/repairs")},
+        { valueLabel: t("messages"), onClick: () => router.push("/messages")},
         ...(!isLoggedIn ? [{ valueLabel: t("signIn"), onClick: () => router.push("/signIn")}] : [])
     ]
 

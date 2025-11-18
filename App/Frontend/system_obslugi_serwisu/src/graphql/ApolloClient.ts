@@ -22,7 +22,44 @@ const splitLink = ApolloLink.split(
     httpLink
 );
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+    typePolicies: {
+        DeviceInfoDto: {
+            keyFields: false,
+            merge(existing = {}, incoming) {
+                return {...existing, ...incoming};
+            },
+        },
+        FaultInfoDto: {
+            keyFields: false,
+            merge(existing = {}, incoming) {
+                return {...existing, ...incoming};
+            }
+        },
+        FullCustomerDto:{
+            keyFields: ["id"],
+            fields: {
+                me: {
+                    merge(existing = {}, incoming) {
+                        return { ...existing, ...incoming };
+                    },
+                },
+                conversations: {
+                    keyArgs: false,
+                    merge(existing = {}, incoming) {
+                        const existingItems = existing?.items || [];
+                        const incomingItems = incoming?.items || [];
+
+                        return {
+                            ...incoming,
+                            items: [...existingItems, ...incomingItems],
+                        };
+                    },
+                }
+            }
+        }
+    },
+});
 
 const client = new ApolloClient({
     link: splitLink,
