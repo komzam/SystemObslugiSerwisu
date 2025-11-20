@@ -31,7 +31,7 @@ export type ConversationCardProps = {
     messages: ConversationMessageProps[];
     className?: string;
     onMessageSendAction: (message: string) => Promise<boolean>;
-    onLoadMoreAction: () => Promise<void>;
+    onLoadMoreAction?: () => Promise<void>;
 }
 
 export function ConversationCard(props: ConversationCardProps) {
@@ -94,7 +94,7 @@ export function ConversationCard(props: ConversationCardProps) {
 
             prevScrollHeightRef.current = el.scrollHeight;
 
-            await props.onLoadMoreAction();
+            if(props.onLoadMoreAction) await props.onLoadMoreAction();
         }
     };
 

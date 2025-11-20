@@ -15,6 +15,22 @@ public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShop
         return Get(id, new RepairShopInclude());
     }
 
+    public async Task<OperationResult<List<RepairShop>>> GetRepairShops(List<RepairShopId> ids)
+    {
+        List<RepairShop> repairShops;
+        
+        try
+        {
+            repairShops = await databaseContext.RepairShops.Where(rs => ids.Contains(rs.Id)).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            return DatabaseErrors.UnknownError();
+        }
+        
+        return repairShops;
+    }
+
     public async Task<OperationResult<RepairShop>> Get(RepairShopId id, RepairShopInclude repairShopInclude)
     {
         RepairShop? repairShop;

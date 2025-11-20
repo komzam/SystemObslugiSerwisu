@@ -32,6 +32,22 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         return repair;
     }
 
+    public async Task<OperationResult<List<Repair>>> GetRepairs(List<RepairId> repairIds)
+    {
+        List<Repair> repairs;
+        
+        try
+        {
+            repairs = await databaseContext.Repairs.Where(r => repairIds.Contains(r.Id)).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            return DatabaseErrors.UnknownError();
+        }
+        
+        return repairs;
+    }
+
     public async Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(CustomerId customerId, int pageNumber, int pageSize)
     {
         List<Repair> repairs;

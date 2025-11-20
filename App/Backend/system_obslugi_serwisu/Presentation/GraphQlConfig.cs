@@ -12,6 +12,11 @@ public class GraphQlConfig
 {
     public static void Apply(WebApplicationBuilder builder)
     {
+        builder.Services.AddDataLoader<RepairShopBatchDataLoader>();
+        builder.Services.AddDataLoader<RepairBatchDataLoader>();
+        builder.Services.AddDataLoader<CustomerBatchDataLoader>();
+        builder.Services.AddDataLoader<AuthorBatchDataLoader>();
+        
         builder.Services.AddGraphQLServer()
             .AddAuthorization()
             .AddInMemorySubscriptions()

@@ -34,7 +34,9 @@ export function Title({name, repairShopId, rating, reviewCount, address, timeZon
                     <RepairShopInfo.IsOpen openingHours={openingHours} timeZoneId={timeZoneId}/>
                 </div>
                 <div className="flex flex-col md:flex-row h-fit gap-2">
-                    <Button variant="secondary" icon={<LuMessageSquare size="18px"/>}>{t("contactRepairShop")}</Button>
+                    <Link href={`/messages/new?repairShopId=${repairShopId}`} className="w-full md:w-fit">
+                        <Button variant="secondary" icon={<LuMessageSquare size="18px"/>}>{t("contactRepairShop")}</Button>
+                    </Link>
                     <Link href={`/repairShop/${repairShopId}/bookRepair`} className="w-full md:w-fit">
                         <Button className="w-full md:w-fit" icon={<LuWrench size="18px"/>}>{t("bookARepair")}</Button>
                     </Link>

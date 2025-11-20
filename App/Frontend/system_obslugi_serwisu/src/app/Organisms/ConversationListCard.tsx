@@ -5,14 +5,15 @@ import {useTranslations} from "next-intl";
 import {ConversationButtonProps} from "@/app/Molecules/ConversationButton";
 import * as React from "react";
 import {ConversationList} from "@/app/Molecules/ConversationList";
-import {useEffect, useRef, useState} from "react";
-import {useQuery} from "@apollo/client/react";
+import {useEffect, useMemo, useRef, useState} from "react";
+import {useQuery, useSubscription} from "@apollo/client/react";
 import {
-    ConversationType,
+    ConversationType, CustomerConvListSubscriptionSubscription, CustomerConvListSubscriptionSubscriptionVariables,
     GetCustomerConversationsQuery,
-    GetCustomerConversationsQueryVariables
+    GetCustomerConversationsQueryVariables, SenderRole
 } from "@/__generated__/types";
 import {GET_CUSTOMER_CONVERSATIONS} from "@/graphql/GetCustomerConversations";
+import {CUSTOMER_CONV_LIST_SUB} from "@/graphql/CustomerConvListSubscription";
 
 export type ConversationListProps = {
     conversationId: string | undefined;
@@ -34,13 +35,15 @@ export function ConversationListCard({conversationId, className}: ConversationLi
         }
     );
 
+    useSubscription<CustomerConvListSubscriptionSubscription, CustomerConvListSubscriptionSubscriptionVariables>(CUSTOMER_CONV_LIST_SUB);
+
     useEffect(() => {
         if (!queryLoading && queryData?.me.conversations.items) {
             const initial = queryData.me.conversations.items.map((c) => ({
                 id: c.id,
                 type: c.conversationType == ConversationType.RepairChat? "repair": "general" as "repair"|"general",
                 date: new Date(Date.parse(c.messages.items[0]?.createdAt)),
-                title: c.conversationType==ConversationType.GeneralChat? c.repairShop.name: (c.repair?.deviceInfo.manufacturer ?? "") + " " + (c.repair?.deviceInfo.model ?? ""),
+                title: c.conversationType==ConversationType.GeneralChat? c.repairShop?.name??"": (c.repair?.deviceInfo.manufacturer ?? "") + " " + (c.repair?.deviceInfo.model ?? ""),
                 lastMessage: c.messages.items[0]?.content,
                 isSelected: conversationId != null && c.id == conversationId
             }));
@@ -50,6 +53,18 @@ export function ConversationListCard({conversationId, className}: ConversationLi
             setConversations(initial);
         }
     }, [queryLoading, queryData, conversationId]);
+
+    const sortedConversations = useMemo(() => {
+        const copy = [...conversations];
+
+        return copy.sort((a, b) => {
+            const dateA = new Date(a.date || 0);
+            const dateB = new Date(b.date || 0);
+
+            return dateB.getTime() - dateA.getTime();
+        });
+
+    }, [conversations]);
 
     const onLoadMore = async () => {
         if(noMoreConversations) return;
@@ -71,7 +86,7 @@ export function ConversationListCard({conversationId, className}: ConversationLi
         <Card className={`flex flex-col w-full h-full px-4 ${className}`}>
             <Card.Label className="px-3">{t("conversations")}</Card.Label>
             <div ref={scrollRef} onScroll={handleScroll} className={"flex-1 overflow-y-scroll no-scrollbar px-3 py-1"}>
-                <ConversationList conversations={conversations}/>
+                <ConversationList conversations={sortedConversations}/>
             </div>
         </Card>
     )

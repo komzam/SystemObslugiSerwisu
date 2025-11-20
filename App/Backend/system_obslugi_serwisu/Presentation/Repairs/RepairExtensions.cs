@@ -13,15 +13,8 @@ namespace system_obslugi_serwisu.Presentation.Repairs;
 [ExtendObjectType(typeof(RepairDto))]
 public class RepairExtensions
 {
-    public async Task<RepairShopDto> GetRepairShop([Service] IMediator mediatr, [Parent] RepairDto repair)
+    public Task<RepairShopDto?> GetRepairShop([Service] IMediator mediatr, [Parent] RepairDto repair, RepairShopBatchDataLoader dataLoader)
     {
-        var repairShopResult = await mediatr.Send(new GetRepairShopCommand{Id = repair.RepairShopId});
-        if(repairShopResult.IsFailure)
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(repairShopResult.Error.GetUserMessage())
-                .SetCode(repairShopResult.Error.GetUserCode())
-                .Build());
-
-        return RepairShopMapper.ToDto(repairShopResult.Value);
+        return dataLoader.LoadAsync(repair.RepairShopId);
     }
 }

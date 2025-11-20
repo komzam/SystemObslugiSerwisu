@@ -14,6 +14,7 @@ using system_obslugi_serwisu.Infrastructure.Queue;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Presentation;
+using system_obslugi_serwisu.Presentation.RepairShops;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,7 @@ builder.Services.AddSingleton<QueueConnectionProvider>();
 builder.Services.AddSingleton<IImageQueue, ImageQueue>();
 builder.Services.AddScoped<IIdentityController, IdentityController>();
 builder.Services.AddHostedService<ImageProcessingWorker>();
+
 
 builder.Services.AddCors(options =>
 {

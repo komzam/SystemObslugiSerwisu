@@ -12,6 +12,7 @@ public class RepairShopInclude
 public interface IRepairShopRepository
 {
     public Task<OperationResult<RepairShop>> Get(RepairShopId id);
+    public Task<OperationResult<List<RepairShop>>> GetRepairShops(List<RepairShopId> ids);
     
     public Task<OperationResult<RepairShop>> Get(RepairShopId id, RepairShopInclude repairShopInclude);
     

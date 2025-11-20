@@ -116,12 +116,12 @@ export type ConversationDto = {
   __typename?: 'ConversationDto';
   conversationType: ConversationType;
   createdAt: Scalars['DateTime']['output'];
-  customer: CustomerDto;
+  customer?: Maybe<CustomerDto>;
   id: Scalars['UUID']['output'];
   messages: CursorPaginatedListOfMessageDtoAndNullableOfGuid;
   modifiedAt: Scalars['DateTime']['output'];
   repair?: Maybe<RepairDto>;
-  repairShop: RepairShopDto;
+  repairShop?: Maybe<RepairShopDto>;
 };
 
 
@@ -259,6 +259,12 @@ export type FullCustomerDtoConversationsArgs = {
 
 export type FullCustomerDtoRepairsArgs = {
   request: GetRepairListRequestInput;
+};
+
+export type GetConversationByParticipantsRequestInput = {
+  actingRole: ActingRole;
+  customerId: Scalars['UUID']['input'];
+  repairShopId: Scalars['UUID']['input'];
 };
 
 export type GetConversationListRequestInput = {
@@ -445,6 +451,7 @@ export type PaymentRepairStepDto = RepairStepDto & {
 export type Query = {
   __typename?: 'Query';
   conversation: ConversationDto;
+  conversationByParticipants: ConversationDto;
   me: FullCustomerDto;
   repair: RepairDto;
   repairShop: RepairShopDto;
@@ -456,6 +463,11 @@ export type Query = {
 
 export type QueryConversationArgs = {
   request: GetConversationRequestInput;
+};
+
+
+export type QueryConversationByParticipantsArgs = {
+  request: GetConversationByParticipantsRequestInput;
 };
 
 
@@ -631,7 +643,7 @@ export type RepairDto = {
   faultInfo: FaultInfoDto;
   id: Scalars['UUID']['output'];
   repairHistory: Array<RepairStepDto>;
-  repairShop: RepairShopDto;
+  repairShop?: Maybe<RepairShopDto>;
   repairShopId: Scalars['UUID']['output'];
   returnInfo: ReturnInfoDto;
   status: RepairStatus;
@@ -744,13 +756,20 @@ export type SubmitQuoteRequestInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onCustomerConversationsUpdated: ConversationDto;
   onMessageSent: MessageDto;
+  onRepairShopConversationsUpdated: ConversationDto;
 };
 
 
 export type SubscriptionOnMessageSentArgs = {
   actingRole: ActingRole;
   conversationId: Scalars['UUID']['input'];
+};
+
+
+export type SubscriptionOnRepairShopConversationsUpdatedArgs = {
+  repairShopId: Scalars['UUID']['input'];
 };
 
 export type TimeIntervalDto = {
@@ -778,7 +797,16 @@ export type BookRepairMutationVariables = Exact<{
 }>;
 
 
-export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } } };
+export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
+
+export type ConversationExistsQueryVariables = Exact<{
+  repairShopId: Scalars['UUID']['input'];
+  customerId: Scalars['UUID']['input'];
+  actingRole: ActingRole;
+}>;
+
+
+export type ConversationExistsQuery = { __typename?: 'Query', conversationByParticipants: { __typename?: 'ConversationDto', id: any } };
 
 export type ConversationSubscriptionSubscriptionVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
@@ -788,6 +816,20 @@ export type ConversationSubscriptionSubscriptionVariables = Exact<{
 
 export type ConversationSubscriptionSubscription = { __typename?: 'Subscription', onMessageSent: { __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any } };
 
+export type CreateConversationMutationVariables = Exact<{
+  receiverId: Scalars['UUID']['input'];
+  firstMessage: Scalars['String']['input'];
+  actingRole: ActingRole;
+}>;
+
+
+export type CreateConversationMutation = { __typename?: 'Mutation', createConversation: { __typename?: 'ConversationDto', id: any } };
+
+export type CustomerConvListSubscriptionSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CustomerConvListSubscriptionSubscription = { __typename?: 'Subscription', onCustomerConversationsUpdated: { __typename?: 'ConversationDto', id: any, modifiedAt: any, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any, senderRole: SenderRole }> } } };
+
 export type GetConversationQueryVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
   actingRole: ActingRole;
@@ -796,7 +838,7 @@ export type GetConversationQueryVariables = Exact<{
 }>;
 
 
-export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', conversationType: ConversationType, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> }, repair?: { __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } } };
+export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', conversationType: ConversationType, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> }, repair?: { __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } | null } };
 
 export type GetMoreMessagesQueryVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
@@ -814,7 +856,7 @@ export type GetCustomerConversationsQueryVariables = Exact<{
 }>;
 
 
-export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', id: any, conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', hasMore: boolean, lastItemId?: any | null, items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, createdAt: any, modifiedAt: any, repairShop: { __typename?: 'RepairShopDto', id: any, name: string }, repair?: { __typename?: 'RepairDto', deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
+export type GetCustomerConversationsQuery = { __typename?: 'Query', me: { __typename?: 'FullCustomerDto', id: any, conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', hasMore: boolean, lastItemId?: any | null, items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, createdAt: any, modifiedAt: any, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, repair?: { __typename?: 'RepairDto', deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, senderRole: SenderRole, content: string, createdAt: any }> } }> } } };
 
 export type GetCustomerRepairsQueryVariables = Exact<{
   pageNumber: Scalars['Int']['input'];
@@ -829,7 +871,7 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop: { __typename?: 'RepairShopDto', id: any, name: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }
@@ -841,6 +883,13 @@ export type GetRepairShopQueryVariables = Exact<{
 
 
 export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, repairShopImage: { __typename?: 'ImageDto', large: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
+
+export type GetRepairShopForNewConvQueryVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type GetRepairShopForNewConvQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } };
 
 export type ReviewsQueryVariables = Exact<{
   repairShopId: Scalars['String']['input'];

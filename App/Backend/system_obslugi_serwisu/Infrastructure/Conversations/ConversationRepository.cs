@@ -4,6 +4,7 @@ using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Conversations;
 using system_obslugi_serwisu.Domain.Conversations.Errors;
 using system_obslugi_serwisu.Domain.Customers;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Shared;
@@ -43,6 +44,26 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
             return ConversationErrors.ConversationNotFound();
         
         return conversation;
+    }
+
+    public async Task<OperationResult<List<Conversation>>> GetConversation(RepairShopId repairShopId, CustomerId customerId, ConversationType conversationType)
+    {
+        List<Conversation> conversations;
+
+        try
+        {
+            conversations = await databaseContext.Conversations
+                .Where(conversation => conversation.RepairShopId == repairShopId)
+                .Where(conversation => conversation.CustomerId == customerId)
+                .Where(conversation => conversation.ConversationType == conversationType)
+                .ToListAsync();
+        }
+        catch (Exception e)
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return conversations;
     }
 
     public async Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetCustomersConversations(

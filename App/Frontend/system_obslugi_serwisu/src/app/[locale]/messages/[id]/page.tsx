@@ -118,9 +118,9 @@ export default function Messages() {
                 :
                 <ConversationCard className={`md:flex md:basis-[79%]`}
                                   conversationType={queryData?.conversation.conversationType}
-                                  title={queryData?.conversation.repairShop.name ?? ""}
-                                  rating={queryData?.conversation.repairShop.rating ?? 4}
-                                  reviewCount={queryData?.conversation.repairShop.reviewCount?? 11}
+                                  title={queryData?.conversation.repairShop?.name ?? ""}
+                                  rating={queryData?.conversation.repairShop?.rating ?? 0}
+                                  reviewCount={queryData?.conversation.repairShop?.reviewCount?? 0}
                                   messages={messages}
                                   onMessageSendAction={onMessageSend}
                                   onLoadMoreAction={onLoadMore}

@@ -16,7 +16,7 @@ export function RepairDetailsHistory({repairId, repairHistory} : RepairDetailsHi
 
     const steps : RepairHistoryStepProps[] = []
 
-    for(let repairStep of repairHistory){
+    for(const repairStep of repairHistory){
         const name = tHistory(`${repairStep.status}.title`);
         const description = tHistory(`${repairStep.status}.description`);
         const date = DateTime.fromISO(repairStep.createdAt).toFormat("dd.MM.yyyy HH:mm");

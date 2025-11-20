@@ -1,19 +1,21 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Customers.GetList;
+using system_obslugi_serwisu.Presentation.Customers.Dto;
+using system_obslugi_serwisu.Presentation.Reviews;
 using system_obslugi_serwisu.Presentation.Reviews.Dto;
 
-namespace system_obslugi_serwisu.Presentation.Reviews;
+namespace system_obslugi_serwisu.Presentation.Customers;
 
-public class AuthorBatchDataLoader : BatchDataLoader<Guid, ReviewAuthorDto>
+public class CustomerBatchDataLoader : BatchDataLoader<Guid, CustomerDto>
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     
-    public AuthorBatchDataLoader(IServiceScopeFactory serviceScopeFactory,IBatchScheduler batchScheduler, DataLoaderOptions options) : base(batchScheduler, options)
+    public CustomerBatchDataLoader(IServiceScopeFactory serviceScopeFactory,IBatchScheduler batchScheduler, DataLoaderOptions options) : base(batchScheduler, options)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
 
-    protected override async Task<IReadOnlyDictionary<Guid, ReviewAuthorDto>> LoadBatchAsync(IReadOnlyList<Guid> keys, CancellationToken cancellationToken)
+    protected override async Task<IReadOnlyDictionary<Guid, CustomerDto>> LoadBatchAsync(IReadOnlyList<Guid> keys, CancellationToken cancellationToken)
     {
         await using var scope = _serviceScopeFactory.CreateAsyncScope();
         
@@ -22,7 +24,7 @@ public class AuthorBatchDataLoader : BatchDataLoader<Guid, ReviewAuthorDto>
         var customerListResult = await scopedMediator.Send(new GetCustomerListCommand
         {
             CustomerIds = keys.ToList()
-        });
+        }, cancellationToken);
         
         if(customerListResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
@@ -30,8 +32,8 @@ public class AuthorBatchDataLoader : BatchDataLoader<Guid, ReviewAuthorDto>
                 .SetCode(customerListResult.Error.GetUserCode())
                 .Build());
 
-        var authorList = customerListResult.Value.Select(c => ReviewMapper.ToDto(c));
+        var customerList = customerListResult.Value.Select(CustomerMapper.ToDto);
 
-        return authorList.ToDictionary(c => c.Id);
+        return customerList.ToDictionary(c => c.Id);
     }
 }

@@ -40,47 +40,23 @@ public class ConversationExtensions
     }
     
     [Authorize]
-    public async Task<RepairShopDto> GetRepairShop([Service] IMediator mediatr, [Parent] ConversationDto conversationDto)
+    public async Task<RepairShopDto?> GetRepairShop([Service] IMediator mediatr, [Parent] ConversationDto conversationDto, RepairShopBatchDataLoader dataLoader)
     {
-        var repairShopResult = await mediatr.Send(new GetRepairShopCommand{Id = conversationDto.RepairShopId});
-        if(repairShopResult.IsFailure)
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(repairShopResult.Error.GetUserMessage())
-                .SetCode(repairShopResult.Error.GetUserCode())
-                .Build());
-
-        return RepairShopMapper.ToDto(repairShopResult.Value);
+        return await dataLoader.LoadAsync(conversationDto.RepairShopId);
     }
     
     [Authorize]
-    public async Task<RepairDto?> GetRepair([Service] IMediator mediatr, [Parent] ConversationDto conversationDto)
+    public async Task<RepairDto?> GetRepair([Service] IMediator mediatr, [Parent] ConversationDto conversationDto, RepairBatchDataLoader dataLoader)
     {
         if (conversationDto.RepairId == null || conversationDto.ConversationType != ConversationType.RepairChat)
             return null;
         
-        var repairResult = await mediatr.Send(new GetRepairCommand
-        {
-            RepairId = conversationDto.RepairId.Value
-        });
-        if(repairResult.IsFailure)
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(repairResult.Error.GetUserMessage())
-                .SetCode(repairResult.Error.GetUserCode())
-                .Build());
-
-        return RepairMapper.ToDto(repairResult.Value);
+        return await dataLoader.LoadAsync(conversationDto.RepairId.Value);
     }
     
     [Authorize]
-    public async Task<CustomerDto> GetCustomer([Service] IMediator mediatr, [Parent] ConversationDto conversationDto)
+    public async Task<CustomerDto?> GetCustomer([Service] IMediator mediatr, [Parent] ConversationDto conversationDto, CustomerBatchDataLoader dataLoader)
     {
-        var customerResult = await mediatr.Send(new GetCustomerCommand{Id = conversationDto.CustomerId});
-        if(customerResult.IsFailure)
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(customerResult.Error.GetUserMessage())
-                .SetCode(customerResult.Error.GetUserCode())
-                .Build());
-
-        return CustomerMapper.ToDto(customerResult.Value);
+        return await dataLoader.LoadAsync(conversationDto.CustomerId);
     }
 }

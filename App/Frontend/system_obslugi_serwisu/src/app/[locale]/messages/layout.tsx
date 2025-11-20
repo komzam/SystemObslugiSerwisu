@@ -4,6 +4,8 @@ import {ReactNode} from "react";
 import {ConversationListCard} from "@/app/Organisms/ConversationListCard";
 import * as React from "react";
 import {useParams} from "next/navigation";
+import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
+import {usePathname} from "@/i18n/navigation";
 
 
 type MessagesLayoutParams = {
@@ -12,15 +14,19 @@ type MessagesLayoutParams = {
 
 export default function MessagesLayout({children}: MessagesLayoutParams) {
     const params = useParams<{id?: string}>();
+    const path = usePathname();
     const conversationId = params.id;
+    const showList = !conversationId && path!="/messages/new"
 
     return (
-        <div className="bg-inherit flex flex-row h-full gap-2 justify-center w-[clamp(20rem,calc(100vw-var(--page-margin)*2),95rem)]">
-            <ConversationListCard
-                className={`${conversationId ? 'hidden' : 'flex'} w-full md:flex md:basis-[21%]`}
-                conversationId = {conversationId}
-            />
-            {children}
-        </div>
+        <ProtectedRoute>
+            <div className="bg-inherit flex flex-row h-full gap-2 justify-center w-[clamp(20rem,calc(100vw-var(--page-margin)*2),95rem)]">
+                <ConversationListCard
+                    className={`${showList ? 'flex' : 'hidden'} w-full md:flex md:basis-[21%]`}
+                    conversationId = {conversationId}
+                />
+                {children}
+            </div>
+        </ProtectedRoute>
     );
 }
