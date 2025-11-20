@@ -310,6 +310,7 @@ export type GetServicesRequestInput = {
 export type ImageDto = {
   __typename?: 'ImageDto';
   extraLarge: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
   large: Scalars['String']['output'];
   medium: Scalars['String']['output'];
   small: Scalars['String']['output'];
@@ -331,6 +332,7 @@ export type MessageDto = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addRepairImage: Scalars['String']['output'];
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
@@ -344,7 +346,13 @@ export type Mutation = {
 };
 
 
+export type MutationAddRepairImageArgs = {
+  repairId: Scalars['UUID']['input'];
+};
+
+
 export type MutationAddRepairShopImageArgs = {
+  imageType: RepairShopImageType;
   repairShopId: Scalars['UUID']['input'];
 };
 
@@ -642,6 +650,7 @@ export type RepairDto = {
   deviceInfo: DeviceInfoDto;
   faultInfo: FaultInfoDto;
   id: Scalars['UUID']['output'];
+  images: Array<ImageDto>;
   repairHistory: Array<RepairStepDto>;
   repairShop?: Maybe<RepairShopDto>;
   repairShopId: Scalars['UUID']['output'];
@@ -655,14 +664,20 @@ export type RepairShopDto = {
   address: AddressDto;
   email: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
+  mainImage: ImageDto;
+  miniatureImage: ImageDto;
   name: Scalars['String']['output'];
   openingHours: OpeningHoursDto;
   phone: Scalars['String']['output'];
   rating: Scalars['Float']['output'];
-  repairShopImage: ImageDto;
   reviewCount: Scalars['Int']['output'];
   timeZoneId: Scalars['String']['output'];
 };
+
+export enum RepairShopImageType {
+  Main = 'MAIN',
+  Miniature = 'MINIATURE'
+}
 
 export enum RepairStatus {
   AwaitingApproval = 'AWAITING_APPROVAL',
@@ -882,7 +897,7 @@ export type GetRepairShopQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, repairShopImage: { __typename?: 'ImageDto', large: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
+export type GetRepairShopQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, email: string, phone: string, timeZoneId: string, rating: number, reviewCount: number, aboutUs?: string | null, mainImage: { __typename?: 'ImageDto', large: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } } };
 
 export type GetRepairShopForNewConvQueryVariables = Exact<{
   id: Scalars['String']['input'];
@@ -958,7 +973,7 @@ export type SearchQueryVariables = Exact<{
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, name: string, timeZoneId: string, rating: number, reviewCount: number, repairShopImage: { __typename?: 'ImageDto', small: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };
+export type SearchQuery = { __typename?: 'Query', searchShopsByName: { __typename?: 'PaginatedListOfRepairShopDto', pageNumber: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairShopDto', id: any, name: string, timeZoneId: string, rating: number, reviewCount: number, miniatureImage: { __typename?: 'ImageDto', small: string }, address: { __typename?: 'AddressDto', street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string }, openingHours: { __typename?: 'OpeningHoursDto', monday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, tuesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, wednesday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, thursday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, friday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, saturday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null, sunday?: { __typename?: 'TimeIntervalDto', from: string, to: string } | null } }> } };
 
 export type SendMessageMutationVariables = Exact<{
   conversationId: Scalars['UUID']['input'];

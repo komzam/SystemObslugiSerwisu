@@ -12,7 +12,13 @@ namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
 public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> buckets) : IRepairShopStorageService
 {
-    public async Task<OperationResult<Image>> GetRepairShopImage(RepairShopId id)
+    private readonly Dictionary<RepairShopImageType, string> _typeDirectoryNameMap = new()
+    {
+        [RepairShopImageType.Main] = "main",
+        [RepairShopImageType.Miniature] = "miniature"
+    };
+    
+    public async Task<OperationResult<ImageDto>> GetRepairShopImage(RepairShopImage image)
     {
         var sizes = new[] { "sm", "md", "lg", "xl" };
         var urls = new Dictionary<string, string>();
@@ -24,7 +30,7 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
                 var getImageRequest = new GetPreSignedUrlRequest
                 {
                     BucketName = buckets.Value.RepairShopImages,
-                    Key = $"images/{id.Value}/{id.Value}-{size}",
+                    Key = $"{image.RepairShopId.Value}/{_typeDirectoryNameMap[image.ImageType]}/{image.ImageId.Value}-{size}",
                     Verb = HttpVerb.GET,
                     Expires = DateTime.Now.AddMinutes(20),
                     Protocol = Protocol.HTTP
@@ -33,8 +39,9 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
                 urls[size] = await s3Client.GetPreSignedURLAsync(getImageRequest);
             }
 
-            return new Image
+            return new ImageDto
             {
+                Id = image.ImageId,
                 Small = urls["sm"],
                 Medium = urls["md"],
                 Large = urls["lg"],
@@ -46,20 +53,20 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
         }
     }
     
-    public async Task<OperationResult<string>> AddRepairShopImage(RepairShopId id)
+    public async Task<OperationResult<string>> AddRepairShopImage(RepairShopImage image)
     {
         try
         {
-            var getImageRequest = new GetPreSignedUrlRequest
+            var putImageRequest = new GetPreSignedUrlRequest
             {
                 BucketName=buckets.Value.RepairShopImages,
-                Key = $"images/{id.Value}/{id.Value}",
+                Key = $"{image.RepairShopId.Value}/{_typeDirectoryNameMap[image.ImageType]}/{image.ImageId.Value}",
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.Now.AddMinutes(10),
                 Protocol = Protocol.HTTP
             };
             
-            return await s3Client.GetPreSignedURLAsync(getImageRequest);
+            return await s3Client.GetPreSignedURLAsync(putImageRequest);
         }catch
         {
             return StorageErrors.UnknownError();

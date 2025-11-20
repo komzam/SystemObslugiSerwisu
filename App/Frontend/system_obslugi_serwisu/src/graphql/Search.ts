@@ -10,7 +10,7 @@ export const SEARCH = gql`
         {
             items{
                 id,
-                repairShopImage{
+                miniatureImage{
                     small
                 },
                 name,

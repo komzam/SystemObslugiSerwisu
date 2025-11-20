@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using HotChocolate.Authorization;
 using MediatR;
+using system_obslugi_serwisu.Application.Repairs.AddImage;
 using system_obslugi_serwisu.Application.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
@@ -55,5 +57,29 @@ public class RepairMutations
                 .Build());
 
         return RepairMapper.ToDto(repairResult.Value);
+    }
+    
+    [Authorize]
+    public async Task<string> AddRepairImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairId)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var addImageUrlResult = await mediatr.Send(new AddRepairImageCommand{
+            RepairId = repairId,
+            WorkerId= workerId
+        });
+
+        if(addImageUrlResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(addImageUrlResult.Error.GetUserMessage())
+                .SetCode(addImageUrlResult.Error.GetUserCode())
+                .Build());
+
+        return addImageUrlResult.Value;
     }
 }

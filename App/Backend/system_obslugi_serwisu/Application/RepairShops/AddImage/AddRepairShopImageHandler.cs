@@ -22,8 +22,21 @@ public class AddRepairShopImageHandler(IRepairShopStorageService repairShopStora
 
         if (!workerResult.Value.IsWorkingAt(repairShopResult.Value.Id))
             return RepairShopErrors.AccessDenied();
-        
-        var addResult = await repairShopStorage.AddRepairShopImage(repairShopResult.Value.Id);
+
+        RepairShopImage image;
+        if (request.ImageType == RepairShopImageType.Main && repairShopResult.Value.MainImage != null)
+        {
+            image = repairShopResult.Value.MainImage;
+        }else if (request.ImageType == RepairShopImageType.Main && repairShopResult.Value.MiniatureImage != null)
+        {
+            image = repairShopResult.Value.MiniatureImage;
+        }
+        else
+        {
+            image = RepairShopImage.Create(repairShopResult.Value.Id, request.ImageType);
+        }
+
+        var addResult = await repairShopStorage.AddRepairShopImage(image);
         if(addResult.IsFailure)
             return addResult.Error;
         

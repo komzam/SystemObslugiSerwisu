@@ -12,6 +12,7 @@ using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
+using system_obslugi_serwisu.Infrastructure.Images;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.Repairs.RepairSteps;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
@@ -32,6 +33,9 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : Identi
     public DbSet<RepairShop> RepairShops {get; set;}
     public DbSet<Service> Services {get; set;}
     public DbSet<Review> Reviews {get; set;}
+    public DbSet<Image> Images {get; set;}
+    public DbSet<RepairImage> RepairImages {get; set;}
+    public DbSet<RepairShopImage> RepairShopImages {get; set;}
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -50,5 +54,8 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : Identi
         new QuoteRepairStepTypeConfiguration().Configure(builder.Entity<QuoteRepairStep>());
         new ConversationEntityTypeConfiguration().Configure(builder.Entity<Conversation>());
         new MessageEntityTypeConfiguration().Configure(builder.Entity<Message>());
+        new ImageEntityTypeConfiguration().Configure(builder.Entity<Image>());
+        new RepairImageEntityTypeConfiguration().Configure(builder.Entity<RepairImage>());
+        new RepairShopImageEntityTypeConfiguration().Configure(builder.Entity<RepairShopImage>());
     }
 }

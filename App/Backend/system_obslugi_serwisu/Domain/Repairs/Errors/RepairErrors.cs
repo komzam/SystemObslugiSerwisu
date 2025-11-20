@@ -9,6 +9,9 @@ public static class RepairErrors
     public static OperationError RepairNotFound(string message = "Repair not found") => 
         new ($"{Prefix}.RepairNotFound", message);
     
+    public static OperationError RepairClosed(string message = "Repair is closed") => 
+        new ($"{Prefix}.RepairClosed", message);
+    
     public static OperationError AdditionalCommentTooLong(string message = "Additional comment is too long") =>
         new ($"{Prefix}.AdditionalCommentTooLong", message);
     

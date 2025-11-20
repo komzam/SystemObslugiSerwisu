@@ -35,12 +35,14 @@ public partial class Repair
     public FaultInfo FaultInfo { get; private set; }
     public ReturnInfo ReturnInfo { get; private set; }
     public IReadOnlyList<RepairStep> RepairHistory => _repairHistory.AsReadOnly();
+    public IReadOnlyList<RepairImage> Images => _images.AsReadOnly();
     public string? AdditionalComment { get; private set; }
     public Quote? Quote { get; private set; }
     public Money? DiagnosisFee { get; private set; }
     public Money? FinalCost { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     
+    private List<RepairImage> _images = new();
     private List<RepairStep> _repairHistory = new();
     
     public bool IsClosed => Status is RepairStatus.Completed or RepairStatus.Canceled;

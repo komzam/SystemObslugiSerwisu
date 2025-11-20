@@ -17,21 +17,48 @@
       "read":".*",
       "write":".*"}
   ],
+  "exchanges": [
+    {
+      "name": "minio-upload-events",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
   "queues": [
     {
       "name": "image-processing",
       "vhost": "/",
       "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "image-upload",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
       "arguments": {}
     }
   ],
   "bindings": [
     {
-      "source": "amq.direct",
+      "source": "minio-upload-events",
       "vhost": "/",
       "destination": "image-processing",
       "destination_type": "queue",
-      "routing_key": "image-processing",
+      "routing_key": "",
+      "arguments": {}
+    },
+    {
+      "source": "minio-upload-events",
+      "vhost": "/",
+      "destination": "image-upload",
+      "destination_type": "queue",
+      "routing_key": "",
       "arguments": {}
     }
   ]

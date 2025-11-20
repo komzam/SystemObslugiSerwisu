@@ -6,6 +6,6 @@ namespace system_obslugi_serwisu.Application.RepairShops;
 
 public interface IRepairShopStorageService
 {
-    public Task<OperationResult<Image>> GetRepairShopImage(RepairShopId id);
-    public Task<OperationResult<string>> AddRepairShopImage(RepairShopId id);
+    public Task<OperationResult<ImageDto>> GetRepairShopImage(RepairShopImage image);
+    public Task<OperationResult<string>> AddRepairShopImage(RepairShopImage image);
 }

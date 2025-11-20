@@ -22,14 +22,15 @@ public static class SharedMapper
         return addressDto;
     }
 
-    public static ImageDto ToDto(Image image)
+    public static ImageDto ToDto(Domain.Shared.ImageDto image)
     {
         return new ImageDto
         {
+            Id = image.Id.Value,
             Small = image.Small,
             Medium = image.Medium,
             Large = image.Large,
-            ExtraLarge = image.ExtraLarge,
+            ExtraLarge = image.ExtraLarge
         };
     }
 

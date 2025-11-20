@@ -1,6 +1,7 @@
 ﻿using system_obslugi_serwisu.Application.Conversations;
 using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Application.Images;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
@@ -10,6 +11,7 @@ using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
+using system_obslugi_serwisu.Infrastructure.Images;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Reviews;
@@ -28,6 +30,7 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
     private ReviewRepository? _reviewRepository;
     private ServiceRepository? _serviceRepository;
     private ConversationRepository? _conversationRepository;
+    private ImageRepository? _imageRepository;
     
     public ICustomerRepository CustomerRepository {
         get
@@ -103,6 +106,17 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
                 _conversationRepository = new ConversationRepository(databaseContext);
             }
             return _conversationRepository;
+        } 
+    }
+    
+    public IImageRepository ImageRepository { 
+        get
+        {
+            if (_imageRepository == null)
+            {
+                _imageRepository = new ImageRepository(databaseContext);
+            }
+            return _imageRepository;
         } 
     }
 

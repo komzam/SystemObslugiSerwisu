@@ -5,12 +5,15 @@ using RabbitMQ.Client;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Identity;
 using system_obslugi_serwisu.Application.ImageQueue;
+using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Identity;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Infrastructure.ImageProcessing;
+using system_obslugi_serwisu.Infrastructure.Images;
 using system_obslugi_serwisu.Infrastructure.Migrations;
 using system_obslugi_serwisu.Infrastructure.Queue;
+using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Presentation;
@@ -67,10 +70,12 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IRepairShopStorageService, RepairShopStorageService>();
+builder.Services.AddScoped<IRepairStorageService, RepairStorageService>();
 builder.Services.AddSingleton<QueueConnectionProvider>();
 builder.Services.AddSingleton<IImageQueue, ImageQueue>();
 builder.Services.AddScoped<IIdentityController, IdentityController>();
 builder.Services.AddHostedService<ImageProcessingWorker>();
+builder.Services.AddHostedService<DbImageAddingWorker>();
 
 
 builder.Services.AddCors(options =>

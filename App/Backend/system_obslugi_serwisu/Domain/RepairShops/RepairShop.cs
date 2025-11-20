@@ -42,10 +42,14 @@ public class RepairShop
     public List<Repair> Repairs { get; private set; } = new List<Repair>();
     public IReadOnlyList<Review> Reviews => _reviews.AsReadOnly();
     public IReadOnlyList<Service> Services => _services.AsReadOnly();
+    public IReadOnlyList<RepairShopImage> Images => _images.AsReadOnly();
+    public RepairShopImage? MainImage => _images.FirstOrDefault(i => i.ImageType == RepairShopImageType.Main);
+    public RepairShopImage? MiniatureImage => _images.FirstOrDefault(i => i.ImageType == RepairShopImageType.Miniature);
     public DateTimeOffset CreatedAt { get; private set; }
 
     private List<Review> _reviews = new();
     private List<Service> _services = new();
+    private List<RepairShopImage> _images = new(); 
 
     private RepairShop() { }
 

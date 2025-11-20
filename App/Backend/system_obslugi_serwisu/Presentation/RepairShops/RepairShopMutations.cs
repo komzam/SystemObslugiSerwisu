@@ -2,6 +2,7 @@
 using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.RepairShops.AddImage;
+using system_obslugi_serwisu.Domain.RepairShops;
 
 namespace system_obslugi_serwisu.Presentation.RepairShops;
 
@@ -9,7 +10,7 @@ namespace system_obslugi_serwisu.Presentation.RepairShops;
 public class RepairShopMutations
 {
     [Authorize]
-    public async Task<string> AddRepairShopImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairShopId)
+    public async Task<string> AddRepairShopImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairShopId, RepairShopImageType imageType)
     {
         var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(workerIdString, out var workerId))
@@ -20,7 +21,8 @@ public class RepairShopMutations
         
         var addImageUrlResult = await mediatr.Send(new AddRepairShopImageCommand{
             RepairShopId= repairShopId,
-            WorkerId= workerId
+            WorkerId= workerId,
+            ImageType = imageType
         });
 
         if(addImageUrlResult.IsFailure)

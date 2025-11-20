@@ -11,7 +11,7 @@ export function RepairShopCard({repairShop}: RepairShopCardProps) {
     return(
         <div className={"flex flex-col sm:flex-row shadow-md rounded-xl w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]"}>
             <div className="relative rounded-t-xl sm:rounded-r-none sm:rounded-l-xl h-48 sm:h-auto sm:w-96">
-                <Image className="rounded-t-xl sm:rounded-r-none sm:rounded-l-xl" alt="image" fill src={repairShop.repairShopImage.small} />
+                <Image className="rounded-t-xl sm:rounded-r-none sm:rounded-l-xl" alt="image" fill src={repairShop.miniatureImage.small} />
             </div>
             <Card className="shadow-none rounded-t-none sm:rounded-l-none sm:rounded-r-xl w-full">
                 <RepairShopElementInfo.Root>
