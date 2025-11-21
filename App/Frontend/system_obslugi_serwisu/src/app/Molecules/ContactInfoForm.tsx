@@ -18,6 +18,7 @@ export type ContactInfoChangeHandler = <K extends ContactInfoKey>(
 
 export function ContactInfoForm() {
     const t = useTranslations("RepairForm.additionalInfo")
+    const tMethods = useTranslations("ContactMethods");
     const authContext = useAuthContext();
     const repairFormContext = useRepairFormContext();
     const formData = repairFormContext.repairFormData.contactInfo;
@@ -34,7 +35,7 @@ export function ContactInfoForm() {
                 const enumKey = key as keyof typeof ContactMethod;
                 items[0].values.push({
                     valueName: ContactMethod[enumKey],
-                    valueLabel: t("contactMethods." + key),
+                    valueLabel: tMethods(key),
                 });
                 i++;
             }

@@ -27,7 +27,7 @@ export default function RootLayout({ children, }: Readonly<{ children: ReactNode
                         <Navbar.Root>
                             <Navbar.Navbar/>
                             <Navbar.Outlet className="pt-16 h-screen">
-                                <div className="bg-inherit h-full p-[var(--page-margin)]">
+                                <div className="bg-inherit h-max p-[var(--page-margin)]">
                                     {children}
                                 </div>
                             </Navbar.Outlet>

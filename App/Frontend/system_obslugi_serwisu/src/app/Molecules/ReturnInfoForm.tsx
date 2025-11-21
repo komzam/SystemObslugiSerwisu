@@ -29,6 +29,7 @@ const defaultAddressForm : AddressInput = {
 
 export function ReturnInfoForm() {
     const t = useTranslations("RepairForm.additionalInfo");
+    const tMethods = useTranslations("ReturnMethods");
     const authContext = useAuthContext();
     const repairFormContext = useRepairFormContext();
     const formData = repairFormContext.repairFormData.returnInfo;
@@ -60,7 +61,7 @@ export function ReturnInfoForm() {
                 const enumKey = key as keyof typeof ReturnMethod;
                 items[0].values.push({
                     valueName: ReturnMethod[enumKey],
-                    valueLabel: t("returnMethods." + key),
+                    valueLabel: tMethods(key)
                 });
             }
         }

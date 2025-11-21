@@ -14,17 +14,21 @@ export type HorizontalSelectOption = {
 
 export type HorizontalSelectProps = {
     options: HorizontalSelectOption[];
-    onChangeAction: (selected: number) => void;
+    onChangeAction: (selected: number|null) => void;
+    mustBeSelected?: boolean;
     className?: string;
 }
 
-export function HorizontalSelect({ options, onChangeAction, className="" }:HorizontalSelectProps) {
-    const [selected, setSelected] = useState<number>(0);
+export function HorizontalSelect({ options, onChangeAction, mustBeSelected=true, className="" }:HorizontalSelectProps) {
+    const [selected, setSelected] = useState<number | null>(mustBeSelected?0:null);
 
     const onButtonClick = (optionIndex : number) => {
         if(optionIndex != selected) {
             setSelected(optionIndex);
             onChangeAction(optionIndex);
+        }else if(!mustBeSelected){
+            setSelected(null);
+            onChangeAction(null);
         }
     }
 

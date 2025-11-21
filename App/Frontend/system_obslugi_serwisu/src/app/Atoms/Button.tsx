@@ -1,4 +1,3 @@
-"use client";
 import {ButtonHTMLAttributes, ReactElement} from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

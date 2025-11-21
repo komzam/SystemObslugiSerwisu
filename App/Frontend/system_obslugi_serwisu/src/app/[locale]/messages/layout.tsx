@@ -20,7 +20,7 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
 
     return (
         <ProtectedRoute>
-            <div className="bg-inherit flex flex-row h-full gap-2 justify-center w-[clamp(20rem,calc(100vw-var(--page-margin)*2),95rem)]">
+            <div className="bg-inherit flex flex-row h-[calc(100vh-4rem-2*var(--page-margin))] gap-2 justify-center w-[clamp(20rem,calc(100vw-var(--page-margin)*2),95rem)]">
                 <ConversationListCard
                     className={`${showList ? 'flex' : 'hidden'} w-full md:flex md:basis-[21%]`}
                     conversationId = {conversationId}

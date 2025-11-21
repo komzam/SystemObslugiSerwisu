@@ -10,11 +10,14 @@ import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
 import {useQuery} from "@apollo/client/react";
 import {GET_REPAIR} from "@/graphql/GetRepair";
 import {useParams} from "next/navigation";
-import {useRouter} from "@/i18n/navigation";
+import {Link, useRouter} from "@/i18n/navigation";
 import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
+import {BackButton} from "@/app/Atoms/BackButton";
+import {useTranslations} from "next-intl";
 
 export default function Repair() {
     const params = useParams();
+    const t = useTranslations("RepairDetails");
     const router = useRouter();
     const repairId = params.id;
 
@@ -34,6 +37,7 @@ export default function Repair() {
         <ProtectedRoute>
             <div className="flex bg-inherit justify-center py-5">
                 <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
+                    <Link href="/repairs"><BackButton>{t("backButton")}</BackButton></Link>
                     <RepairDetailsTitle title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
                                         repairTicketNumber={repair.id}
                                         status={repair.status}

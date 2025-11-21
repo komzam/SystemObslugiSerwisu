@@ -11,7 +11,6 @@ import {useAuthContext} from "@/app/Utils/AuthContext";
 import {useRouter} from "@/i18n/navigation";
 import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
 import {ErrorName} from "@/app/Utils/ErrorName";
-import {useSearchParams} from "next/navigation";
 
 export function SignInCard() {
     const t = useTranslations("SignIn");

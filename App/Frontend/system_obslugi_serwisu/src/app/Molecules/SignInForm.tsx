@@ -1,5 +1,6 @@
 import {LabeledTextInput} from "@/app/Molecules/LabeledTextInput";
 import {useTranslations} from "next-intl";
+import {LabeledPasswordInput} from "@/app/Molecules/LabeledPasswordInput";
 
 export type SignInFormData = {
     email: string;
@@ -18,8 +19,8 @@ export function SignInForm({formData, onFormChange}: SignUpFormProps) {
         <div className="bg-inherit flex flex-col gap-5 w-full">
             <LabeledTextInput wrapperClassName="w-full" className="w-full" id="email" type="email" value={formData.email}
                               onChange={(e) => onFormChange("email", e.target.value)} label={t("email")} />
-            <LabeledTextInput wrapperClassName="w-full" className="w-full" id="password" type="password" value={formData.password}
-                              onChange={(e) => onFormChange("password", e.target.value)} label={t("password")} />
+            <LabeledPasswordInput wrapperClassName="w-full" className="w-full" id="password" value={formData.password}
+                                  onChange={(e) => onFormChange("password", e.target.value)} label={t("password")}/>
         </div>
     );
 }

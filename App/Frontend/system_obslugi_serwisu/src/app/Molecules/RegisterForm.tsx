@@ -1,5 +1,6 @@
 import { useTranslations} from "next-intl";
 import { LabeledTextInput } from "@/app/Molecules/LabeledTextInput";
+import {LabeledPasswordInput} from "@/app/Molecules/LabeledPasswordInput";
 
 export type AccountType = "normal" | "business";
 
@@ -45,9 +46,9 @@ export function RegisterForm({accountType, onFormChange}: RegisterFormProps) {
             <LabeledTextInput wrapperClassName="w-full" className="w-full" id="email" type="email" label={t("email")}
                               onChange={(e) => onFormChange("email", e.target.value)}/>
             <div className="bg-inherit flex flex-col md:flex-row gap-5 w-full">
-                <LabeledTextInput wrapperClassName="w-full md:flex-1" className="w-full" id="password" type="password" label={t("password")}
+                <LabeledPasswordInput wrapperClassName="w-full md:flex-1" className="w-full" id="password" label={t("password")}
                                   onChange={(e) => onFormChange("password", e.target.value)}/>
-                <LabeledTextInput wrapperClassName="w-full md:flex-1" className="w-full" id="repeatPassword" type="password" label={t("repeatPassword")}
+                <LabeledPasswordInput wrapperClassName="w-full md:flex-1" className="w-full" id="repeatPassword" label={t("repeatPassword")}
                                   onChange={(e) => onFormChange("repeatPassword", e.target.value)}/>
             </div>
         </div>

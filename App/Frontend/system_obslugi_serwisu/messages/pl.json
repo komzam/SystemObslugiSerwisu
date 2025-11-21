@@ -95,17 +95,8 @@
       "email": "E-mail",
       "phoneNumber": "Numer telefonu",
       "preferredContactMethod": "Preferowana forma kontaktu",
-      "contactMethods": {
-        "App": "Ta aplikacja",
-        "PhoneCall": "Rozmowa telefoniczna",
-        "Sms": "SMS"
-      },
       "returnInformation": "Informacje dotyczące zwrotu",
       "returnMethod": "Sposób zwrotu",
-      "returnMethods": {
-        "SelfPickup": "Odbiór osobisty",
-        "CourierDelivery": "Dostawa kurierem"
-      },
       "otherInformation": "Inne informacje",
       "deviceLoginInfo": "Dane logowania do urządzenia",
       "deviceLoginInfoDesc": "Ta informacja jest poufna i jest używana tylko do testowania urządzenia",
@@ -129,6 +120,15 @@
       "next": "Dalej"
     }
   },
+  "ContactMethods": {
+    "App": "Ta aplikacja",
+    "PhoneCall": "Rozmowa telefoniczna",
+    "Sms": "SMS"
+  },
+  "ReturnMethods": {
+    "SelfPickup": "Odbiór osobisty",
+    "CourierDelivery": "Dostawa kurierem"
+  },
   "Address": {
     "recipientName": "Nazwa odbiorcy",
     "streetName": "Ulica",
@@ -136,6 +136,30 @@
     "aptNumber": "Nr. mieszkania",
     "postCode": "Kod pocztowy",
     "city": "Miasto"
+  },
+  "MyRepairs": {
+    "myRepairs": "Moje naprawy"
+  },
+  "EditAccount": {
+    "accountDetails":{
+      "title": "Szczegóły konta",
+      "changePassword": "Zmień hasło",
+      "changeEmail": "Zmień e-mail",
+      "changePhoneNumber": "Zmień numer telefonu",
+      "password": "Hasło",
+      "oldPassword": "Stare hasło",
+      "newPassword": "Nowe hasło",
+      "repeatNewPassword": "Powtórz nowe hasło",
+      "newEmail": "Nowy e-mail",
+      "newPhoneNumber": "Nowy numer telefonu"
+    },
+    "preferences":{
+      "title": "Preferencje",
+      "preferredContactMethod": "Preferowana metoda kontaktu",
+      "preferredReturnMethod": "Preferowana metoda zwrotu"
+    },
+    "shippingAddress": "Adres dostawy",
+    "change": "Zmień"
   },
   "Status": {
     "CREATED": "Utworzony",
@@ -237,6 +261,7 @@
     }
   },
   "RepairDetails": {
+    "backButton": "Powrót do moich napraw",
     "deviceInfo": "Informacje o urządzeniu",
     "faultInfo": "Informacje o usterce",
     "images": "Zdjęcia",

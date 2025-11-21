@@ -40,7 +40,9 @@ export function RegisterCard() {
         setFormData((prev) => ({ ...prev, [fieldName]: value }))
     };
 
-    const accountTypeChanged = (selected: number) => {
+    const accountTypeChanged = (selected: number|null) => {
+        if(selected == null)
+            return;
         const selectedValue : AccountType = accountTypes[selected].value as AccountType;
         SetAccountType(selectedValue);
         setFormData((formData) => ({ ...formData, isBusiness: selectedValue == "business"}));

@@ -95,17 +95,8 @@
       "email": "E-mail",
       "phoneNumber": "Phone number",
       "preferredContactMethod": "Preferred contact method",
-      "contactMethods": {
-        "App": "This app",
-        "PhoneCall": "Phone call",
-        "Sms": "SMS"
-      },
       "returnInformation": "Return information",
       "returnMethod": "Return method",
-      "returnMethods": {
-        "SelfPickup": "Self-pickup",
-        "CourierDelivery": "Courier delivery"
-      },
       "otherInformation": "Other information",
       "deviceLoginInfo": "Device login info",
       "deviceLoginInfoDesc": "This information is confidential and is used only to test the device",
@@ -129,6 +120,15 @@
       "next": "Next"
     }
   },
+  "ContactMethods": {
+    "App": "This app",
+    "PhoneCall": "Phone call",
+    "Sms": "SMS"
+  },
+  "ReturnMethods": {
+    "SelfPickup": "Self-pickup",
+    "CourierDelivery": "Courier delivery"
+  },
   "Address": {
     "recipientName": "Recipient name",
     "streetName": "Street name",
@@ -136,6 +136,30 @@
     "aptNumber": "Apt. number",
     "postCode": "Post code",
     "city": "City"
+  },
+  "MyRepairs": {
+    "myRepairs": "My repairs"
+  },
+  "EditAccount": {
+    "accountDetails":{
+      "title": "Account details",
+      "changePassword": "Change password",
+      "changeEmail": "Change e-mail",
+      "changePhoneNumber": "Change phone no.",
+      "password": "Password",
+      "oldPassword": "Old password",
+      "newPassword": "New password",
+      "repeatNewPassword": "Repeat new password",
+      "newEmail": "New e-mail",
+      "newPhoneNumber": "New phone number"
+    },
+    "preferences":{
+      "title": "Preferences",
+      "preferredContactMethod": "Preferred contact method",
+      "preferredReturnMethod": "Preferred return method"
+    },
+    "shippingAddress": "Shipping address",
+    "change": "Change"
   },
   "Status": {
     "CREATED": "Created",
@@ -237,6 +261,7 @@
     }
   },
   "RepairDetails": {
+    "backButton": "Back to my repairs",
     "deviceInfo": "Device information",
     "faultInfo": "Fault information",
     "images": "Images",
