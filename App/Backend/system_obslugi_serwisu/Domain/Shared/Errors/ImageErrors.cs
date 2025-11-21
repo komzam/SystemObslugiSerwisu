@@ -2,7 +2,7 @@
 
 namespace system_obslugi_serwisu.Domain.Shared.Errors;
 
-public class ImageErrors
+public static class ImageErrors
 {
     private static readonly string Prefix = "Images";
     

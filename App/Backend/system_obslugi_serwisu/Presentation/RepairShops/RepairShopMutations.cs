@@ -10,7 +10,7 @@ namespace system_obslugi_serwisu.Presentation.RepairShops;
 public class RepairShopMutations
 {
     [Authorize]
-    public async Task<string> AddRepairShopImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairShopId, RepairShopImageType imageType)
+    public async Task<string> AddRepairShopImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairShopId, RepairShopImageType imageType, string contentType)
     {
         var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(workerIdString, out var workerId))
@@ -22,7 +22,8 @@ public class RepairShopMutations
         var addImageUrlResult = await mediatr.Send(new AddRepairShopImageCommand{
             RepairShopId= repairShopId,
             WorkerId= workerId,
-            ImageType = imageType
+            ImageType = imageType,
+            ContentType = contentType
         });
 
         if(addImageUrlResult.IsFailure)

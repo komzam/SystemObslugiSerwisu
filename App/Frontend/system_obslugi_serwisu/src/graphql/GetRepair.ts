@@ -23,6 +23,13 @@ export const GET_REPAIR = gql`
                 previouslyRepaired
             },
             additionalComment,
+            images{
+              id,
+                small,
+                medium,
+                large,
+                extraLarge
+            },
             repairHistory{
                 id,
                 status,

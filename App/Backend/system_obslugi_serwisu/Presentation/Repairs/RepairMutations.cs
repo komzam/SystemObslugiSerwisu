@@ -60,7 +60,7 @@ public class RepairMutations
     }
     
     [Authorize]
-    public async Task<string> AddRepairImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairId)
+    public async Task<string> AddRepairImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairId, string contentType)
     {
         var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(workerIdString, out var workerId))
@@ -71,7 +71,8 @@ public class RepairMutations
         
         var addImageUrlResult = await mediatr.Send(new AddRepairImageCommand{
             RepairId = repairId,
-            WorkerId= workerId
+            WorkerId= workerId,
+            ContentType = contentType
         });
 
         if(addImageUrlResult.IsFailure)

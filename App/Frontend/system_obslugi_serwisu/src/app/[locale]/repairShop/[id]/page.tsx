@@ -32,15 +32,20 @@ export default async function RepairShop({params}: PageProps) {
     return (
         <div className="bg-inherit flex flex-col items-center">
             <div className="-mt-[var(--page-margin)] absolute w-full h-150 overflow-hidden z-0">
-                <div className="h-full bg-accent4"></div>
-                <Image
-                    src={repairShop.mainImage.large}
-                    alt="Repair shop image"
-                    fill
-                    className="object-cover object-center"
-                    priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-70% to-background"></div>
+                {repairShop.mainImage?
+                    <Image
+                        src={repairShop.mainImage.extraLarge}
+                        alt="Repair shop image"
+                        fill
+                        className="object-cover object-center"
+                        priority
+                    />
+                    :
+                    <div className="flex h-full bg-accent3 items-center justify-center">
+                        <p className="text-larger1 font-extrabold text-accent4">?</p>
+                    </div>
+                }
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent via-70% to-background"/>
             </div>
             <div className="mt-100 flex flex-col gap-10 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)] z-1">
                 <RepairShopProfile.Title

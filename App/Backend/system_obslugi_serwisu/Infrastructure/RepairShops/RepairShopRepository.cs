@@ -45,7 +45,9 @@ public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShop
 
         try
         {
-            repairShop = await query.FirstOrDefaultAsync(repairshop => repairshop.Id == id);
+            repairShop = await query
+                .Include(rs => rs.Images)
+                .FirstOrDefaultAsync(repairshop => repairshop.Id == id);
         }
         catch
         {
@@ -68,6 +70,7 @@ public class RepairShopRepository(DatabaseContext databaseContext) : IRepairShop
         {
             repairShops = await databaseContext.RepairShops
                 .Where(rs => rs.Name.ToLower().Contains(nameLower))
+                .Include(rs => rs.Images)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

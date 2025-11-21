@@ -54,7 +54,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
         }
     }
 
-    public async Task<OperationResult<string>> AddRepairImage(RepairImage image)
+    public async Task<OperationResult<string>> AddRepairImage(RepairImage image, string contentType)
     {
         try
         {
@@ -64,6 +64,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
                 Key = $"{image.RepairId.Value}/{image.ImageId.Value}/{image.ImageId.Value}",
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.Now.AddMinutes(10),
+                ContentType = contentType,
                 Protocol = Protocol.HTTP
             };
             

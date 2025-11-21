@@ -19,6 +19,7 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         {
             repair = await databaseContext.Repairs
                 .Include(r => r.RepairHistory.OrderBy(rs => rs.StepNumber))
+                .Include(r => r.Images)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
         catch (Exception e)
@@ -38,7 +39,9 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         
         try
         {
-            repairs = await databaseContext.Repairs.Where(r => repairIds.Contains(r.Id)).ToListAsync();
+            repairs = await databaseContext.Repairs.Where(r => repairIds.Contains(r.Id))
+                .Include(r => r.Images)
+                .ToListAsync();
         }
         catch (Exception e)
         {
@@ -57,6 +60,7 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         {
             repairs = await databaseContext.Repairs
                 .Include(r => r.RepairHistory)
+                .Include(r => r.Images)
                 .OrderByDescending(r => r.CreatedAt)
                 .Where(r => r.CustomerId != null && r.CustomerId == customerId)
                 .Skip((pageNumber - 1) * pageSize)

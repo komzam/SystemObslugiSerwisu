@@ -100,5 +100,7 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
 
         repairConfiguration.HasMany(repair => repair.RepairHistory)
             .WithOne(repair => repair.Repair);
+
+        repairConfiguration.HasMany(repair => repair.Images);
     }
 }

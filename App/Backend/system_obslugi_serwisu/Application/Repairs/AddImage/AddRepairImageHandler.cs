@@ -4,6 +4,8 @@ using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.RepairShops.Errors;
+using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.Shared.Errors;
 using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Shared;
 
@@ -13,6 +15,11 @@ public class AddRepairImageHandler(IRepairStorageService repairStorage, IUnitOfW
 {
     public async Task<OperationResult<string>> Handle(AddRepairImageCommand request, CancellationToken cancellationToken)
     {
+        if (!ContentTypes.Images.Contains(request.ContentType))
+        {
+            return ContentTypeErrors.TypeNotPermitted();
+        }
+        
         var repairResult = await unitOfWork.RepairRepository.GetRepair(new RepairId(request.RepairId));
         if(repairResult.IsFailure)
             return repairResult.Error;
@@ -29,7 +36,7 @@ public class AddRepairImageHandler(IRepairStorageService repairStorage, IUnitOfW
         
         RepairImage image = RepairImage.Create(repairResult.Value.Id);
 
-        var addResult = await repairStorage.AddRepairImage(image);
+        var addResult = await repairStorage.AddRepairImage(image, request.ContentType);
         if(addResult.IsFailure)
             return addResult.Error;
         

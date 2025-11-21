@@ -9,4 +9,5 @@ public class AddRepairShopImageCommand : IRequest<OperationResult<string>>
     public required Guid RepairShopId { get; set; }
     public required Guid WorkerId { get; set; }
     public required RepairShopImageType ImageType { get; set; }
+    public required string ContentType { get; set; }
 }

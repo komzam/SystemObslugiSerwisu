@@ -71,6 +71,8 @@ public class RepairShopEntityTypeConfiguration : IEntityTypeConfiguration<Repair
         
         repairShopConfiguration.OwnsMoney(repairShop => repairShop.DiagnosisFee, "DiagnosisFee");
 
+        repairShopConfiguration.HasMany(repairShop => repairShop.Images);
+        
         repairShopConfiguration.Property(repairShop => repairShop.CreatedAt);
     }
 }

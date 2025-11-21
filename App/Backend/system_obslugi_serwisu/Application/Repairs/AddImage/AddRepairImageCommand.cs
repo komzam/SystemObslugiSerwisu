@@ -8,4 +8,5 @@ public class AddRepairImageCommand : IRequest<OperationResult<string>>
 {
     public required Guid RepairId { get; set; }
     public required Guid WorkerId { get; set; }
+    public required string ContentType { get; set; }
 }

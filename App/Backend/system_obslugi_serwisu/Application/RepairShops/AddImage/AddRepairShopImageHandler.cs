@@ -3,6 +3,8 @@ using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.ImageQueue;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.RepairShops.Errors;
+using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.Shared.Errors;
 using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Shared;
 
@@ -12,6 +14,11 @@ public class AddRepairShopImageHandler(IRepairShopStorageService repairShopStora
 {
     public async Task<OperationResult<string>> Handle(AddRepairShopImageCommand request, CancellationToken cancellationToken)
     {
+        if (!ContentTypes.Images.Contains(request.ContentType))
+        {
+            return ContentTypeErrors.TypeNotPermitted();
+        }
+        
         var repairShopResult = await unitOfWork.RepairShopRepository.Get(new RepairShopId(request.RepairShopId));
         if(repairShopResult.IsFailure)
             return repairShopResult.Error;
@@ -27,7 +34,7 @@ public class AddRepairShopImageHandler(IRepairShopStorageService repairShopStora
         if (request.ImageType == RepairShopImageType.Main && repairShopResult.Value.MainImage != null)
         {
             image = repairShopResult.Value.MainImage;
-        }else if (request.ImageType == RepairShopImageType.Main && repairShopResult.Value.MiniatureImage != null)
+        }else if (request.ImageType == RepairShopImageType.Miniature && repairShopResult.Value.MiniatureImage != null)
         {
             image = repairShopResult.Value.MiniatureImage;
         }
@@ -36,7 +43,7 @@ public class AddRepairShopImageHandler(IRepairShopStorageService repairShopStora
             image = RepairShopImage.Create(repairShopResult.Value.Id, request.ImageType);
         }
 
-        var addResult = await repairShopStorage.AddRepairShopImage(image);
+        var addResult = await repairShopStorage.AddRepairShopImage(image, request.ContentType);
         if(addResult.IsFailure)
             return addResult.Error;
         

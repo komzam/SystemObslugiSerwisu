@@ -53,7 +53,7 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
         }
     }
     
-    public async Task<OperationResult<string>> AddRepairShopImage(RepairShopImage image)
+    public async Task<OperationResult<string>> AddRepairShopImage(RepairShopImage image, string contentType)
     {
         try
         {
@@ -63,6 +63,7 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
                 Key = $"{image.RepairShopId.Value}/{_typeDirectoryNameMap[image.ImageType]}/{image.ImageId.Value}",
                 Verb = HttpVerb.PUT,
                 Expires = DateTime.Now.AddMinutes(10),
+                ContentType = contentType,
                 Protocol = Protocol.HTTP
             };
             

@@ -6,7 +6,7 @@ export const GET_REPAIRSHOP = gql`
         {
             id,
             mainImage{
-                large
+                extraLarge
             },
             name,
             email,

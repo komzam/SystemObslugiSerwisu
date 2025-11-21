@@ -46,7 +46,7 @@ export default function Repair() {
                         whenFaultOccurred={repair.faultInfo.whenOccurred}
                         howToReplicateFault={repair.faultInfo.howToReproduce}
                         faultDescription={repair.faultInfo.description}/>
-                    <RepairDetailsImages/>
+                    {repair.images.length >0 && <RepairDetailsImages images={repair.images}/>}
                     <RepairDetailsHistory repairId={repair.id} repairHistory={repair.repairHistory}/>
                 </div>
             </div>

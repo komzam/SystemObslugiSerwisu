@@ -105,6 +105,10 @@ public class DbImageAddingWorker(
             await using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {
+                var image = await dbContext.Images.FindAsync(new ImageId(imageId));
+                if(image != null)
+                    return OperationResult.Success();
+                
                 dbContext.Images.Add(new Image
                 {
                     Id=new ImageId(imageId)
@@ -171,7 +175,7 @@ public class DbImageAddingWorker(
             await using var transaction = await dbContext.Database.BeginTransactionAsync();
             try
             {
-                var image = await dbContext.Images.FindAsync(imageId);
+                var image = await dbContext.Images.FindAsync(new ImageId(imageId));
                 if(image != null)
                     return OperationResult.Success();
                 
