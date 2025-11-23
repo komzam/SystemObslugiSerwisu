@@ -71,23 +71,29 @@ export function RepairFormProvider({children} : RepairFormProviderProps) {
 
     useEffect(() => {
         if (authContext.isLoggedIn && repairForm.contactInfo == defaultContactInfo) {
-            setRepairForm((prev) => ({
-                ...prev, contactInfo: {
-                    fullName: authContext.authInfo?.name,
-                    email: authContext.authInfo?.email,
-                    phoneNumber: authContext.authInfo?.phone ?? "",
-                    phoneRegionCode: authContext.authInfo?.phoneRegionCode ?? "PL",
-                    preferredContactMethod: authContext.authInfo?.preferredContactMethod ?? ContactMethod.Sms
-                }
-            }));
+            setRepairForm((prev) => {
+                if(authContext.authInfo?.__typename != "FullCustomerDto") return prev;
+                return {
+                    ...prev, contactInfo: {
+                        fullName: authContext.authInfo?.name,
+                        email: authContext.authInfo?.email,
+                        phoneNumber: authContext.authInfo?.phone ?? "",
+                        phoneRegionCode: authContext.authInfo?.phoneRegionCode ?? "PL",
+                        preferredContactMethod: authContext.authInfo?.preferredContactMethod ?? ContactMethod.Sms
+                    }
+                };
+            });
         }
         if (authContext.isLoggedIn && repairForm.returnInfo == defaultReturnInfo) {
-            setRepairForm((prev) => ({
-                ...prev, returnInfo: {
-                    returnMethod: authContext.authInfo?.preferredReturnMethod ?? ReturnMethod.SelfPickup,
-                    address: authContext.authInfo?.address
-                }
-            }));
+            setRepairForm((prev) => {
+                if(authContext.authInfo?.__typename != "FullCustomerDto") return prev;
+                return {
+                    ...prev, returnInfo: {
+                        returnMethod: authContext.authInfo?.preferredReturnMethod ?? ReturnMethod.SelfPickup,
+                        address: authContext.authInfo?.address
+                    }
+                };
+            });
         }
     }, [authContext.authInfo]);
 

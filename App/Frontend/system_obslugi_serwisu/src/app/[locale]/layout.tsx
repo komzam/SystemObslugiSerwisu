@@ -21,7 +21,7 @@ export default function RootLayout({ children, }: Readonly<{ children: ReactNode
   return (
     <html lang="en">
       <body className={`${roboto.variable}`}>
-          <ApolloClientProvider>
+          <ApolloClientProvider actingRole={"customer"}>
               <AuthContextProvider>
                 <NextIntlClientProvider>
                         <Navbar.Root>

@@ -3,26 +3,29 @@
 export const GET_CUSTOMER_REPAIRS = gql`
     query GetCustomerRepairs($pageNumber: Int!, $pageSize: Int!) {
         me{
-            id,
-            repairs(request:  {
-                pageNumber: $pageNumber,
-                pageSize: $pageSize
-            }){
-                items{
-                    id
-                    deviceInfo {
-                        manufacturer,
-                        model
-                    },
-                    faultInfo{
-                        description
+            __typename,
+            ... on FullCustomerDto{
+                id,
+                repairs(request:  {
+                    pageNumber: $pageNumber,
+                    pageSize: $pageSize
+                }){
+                    items{
+                        id
+                        deviceInfo {
+                            manufacturer,
+                            model
+                        },
+                        faultInfo{
+                            description
+                        }
+                        status
                     }
-                    status
+                    pageNumber,
+                    pageSize,
+                    totalCount,
+                    totalPages
                 }
-                pageNumber,
-                pageSize,
-                totalCount,
-                totalPages
             }
         }
     }

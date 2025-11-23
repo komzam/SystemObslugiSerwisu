@@ -42,4 +42,39 @@ public class IdentityController(UserManager<User> userManager, SignInManager<Use
         await signInManager.SignOutAsync();
         return OperationResult.Success();
     }
+
+    public async Task<OperationResult> ChangePassword(Guid id, string currentPassword, string newPassword)
+    {
+        var user = await userManager.FindByIdAsync(id.ToString());
+        if(user == null)
+            return IdentityErrors.UserNotFound();
+
+        var changePasswordResult = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        if(!changePasswordResult.Succeeded)
+            return IdentityErrorMapper.Map(changePasswordResult.Errors.First());
+        
+        return OperationResult.Success();
+    }
+
+    public async Task<OperationResult> ChangeEmail(Guid id, string password, string newEmail)
+    {
+        var user = await userManager.FindByIdAsync(id.ToString());
+        if(user == null)
+            return IdentityErrors.UserNotFound();
+        
+        if(!await userManager.CheckPasswordAsync(user, password))
+            return IdentityErrors.InvalidCredentials();
+        
+        var emailChangeToken = await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+
+        var changeEmailResult = await userManager.ChangeEmailAsync(user, newEmail, emailChangeToken);
+        if(!changeEmailResult.Succeeded)
+            return IdentityErrorMapper.Map(changeEmailResult.Errors.First());
+        
+        var changeUsernameResult = await userManager.SetUserNameAsync(user, newEmail);
+        if(!changeUsernameResult.Succeeded)
+            return IdentityErrorMapper.Map(changeEmailResult.Errors.First());
+        
+        return OperationResult.Success();
+    }
 }

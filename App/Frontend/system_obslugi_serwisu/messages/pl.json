@@ -47,9 +47,10 @@
     "sunday": "Niedziela"
   },
   "SignIn": {
+    "signInTitle": "Zaloguj się do swojego konta",
     "email": "E-mail",
     "password": "Hasło",
-    "signInTitle": "Zaloguj się do swojego konta",
+    "rememberMe": "Zapamiętaj mnie",
     "signInButton": "Zaloguj się",
     "registerButton1": "Nie masz jeszcze konta?",
     "registerButton2": "Zarejestruj się teraz"
@@ -143,11 +144,13 @@
   "EditAccount": {
     "accountDetails":{
       "title": "Szczegóły konta",
+      "email": "E-mail",
+      "phoneNumber": "Numer telefonu",
       "changePassword": "Zmień hasło",
       "changeEmail": "Zmień e-mail",
       "changePhoneNumber": "Zmień numer telefonu",
       "password": "Hasło",
-      "oldPassword": "Stare hasło",
+      "currentPassword": "Obecne hasło",
       "newPassword": "Nowe hasło",
       "repeatNewPassword": "Powtórz nowe hasło",
       "newEmail": "Nowy e-mail",

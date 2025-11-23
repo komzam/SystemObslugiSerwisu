@@ -102,4 +102,26 @@ public class Customer : User
             TaxIdNumber = data.TaxIdNumber?.Trim()
         };
     }
+
+    public OperationResult ChangeEmail(string newEmail)
+    {
+        var emailResult = Email.Create(newEmail);
+        if (emailResult.IsFailure)
+            return emailResult.Error;
+        
+        Email = emailResult.Value;
+        
+        return OperationResult.Success();
+    }
+
+    public OperationResult ChangePhoneNumber(string newPhoneNumber, string regionCode)
+    {
+        var phoneNumberResult = PhoneNumber.Create(newPhoneNumber, regionCode);
+        if(phoneNumberResult.IsFailure)
+            return phoneNumberResult.Error;
+        
+        Phone = phoneNumberResult.Value;
+        
+        return OperationResult.Success();
+    }
 }

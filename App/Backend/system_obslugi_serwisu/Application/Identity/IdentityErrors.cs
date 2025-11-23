@@ -9,6 +9,9 @@ public static class IdentityErrors
     public static OperationError UnknownError(string message = "Unknown Error") =>
         new ($"{Prefix}.UnknownError", message, false);
     
+    public static OperationError UserNotFound(string message = "User not found") =>
+        new ($"{Prefix}.UserNotFound", message);
+    
     public static OperationError EmailExists(string message = "This email already exists") =>
         new ($"{Prefix}.EmailExists", message);
     

@@ -1,28 +1,29 @@
 "use client"
 
 import {Card} from "@/app/Atoms/Card";
-import {SignInForm, SignInFormData} from "@/app/Molecules/SignInForm";
+import {SignInChangeHandler, SignInForm} from "@/app/Molecules/SignInForm";
 import {SignInButton} from "@/app/Molecules/SignInButton";
 import {useTranslations} from "next-intl";
 import { useState, FormEvent} from "react";
 import {useMutation} from "@apollo/client/react";
 import {LOGIN} from "@/graphql/Login";
 import {useAuthContext} from "@/app/Utils/AuthContext";
-import {useRouter} from "@/i18n/navigation";
 import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
 import {ErrorName} from "@/app/Utils/ErrorName";
+import {LoginMutationVariables} from "@/__generated__/types";
+
 
 export function SignInCard() {
     const t = useTranslations("SignIn");
     const tErr = useTranslations("Errors");
-    const [formData, setFormData] = useState<SignInFormData>({
+    const [formData, setFormData] = useState<LoginMutationVariables>({
         email: "",
         password: "",
+        rememberMe: true
     });
     const [error, setError] = useState<string | null>(null);
     const [login] = useMutation(LOGIN);
     const authContext = useAuthContext();
-    const router = useRouter();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,7 +39,7 @@ export function SignInCard() {
         }
     }
 
-    const onFormChange = (fieldName: string, value: string) =>
+    const onFormChange:SignInChangeHandler = (fieldName, value) =>
     {
         setFormData((prev) => ({ ...prev, [fieldName]: value }))
     };

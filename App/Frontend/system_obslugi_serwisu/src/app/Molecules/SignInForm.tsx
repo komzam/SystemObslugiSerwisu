@@ -1,15 +1,19 @@
 import {LabeledTextInput} from "@/app/Molecules/LabeledTextInput";
 import {useTranslations} from "next-intl";
 import {LabeledPasswordInput} from "@/app/Molecules/LabeledPasswordInput";
+import {LabeledSwitch} from "@/app/Molecules/LabeledSwitch";
+import {LoginMutationVariables} from "@/__generated__/types";
 
-export type SignInFormData = {
-    email: string;
-    password: string;
-}
+type SignInKey = keyof LoginMutationVariables;
+
+export type SignInChangeHandler = <K extends SignInKey>(
+    fieldName: K,
+    value: LoginMutationVariables[K]
+) => void;
 
 export type SignUpFormProps = {
-    formData: SignInFormData;
-    onFormChange: (fieldName: string, value: string) => void;
+    formData: LoginMutationVariables;
+    onFormChange: SignInChangeHandler;
 }
 
 export function SignInForm({formData, onFormChange}: SignUpFormProps) {
@@ -21,6 +25,8 @@ export function SignInForm({formData, onFormChange}: SignUpFormProps) {
                               onChange={(e) => onFormChange("email", e.target.value)} label={t("email")} />
             <LabeledPasswordInput wrapperClassName="w-full" className="w-full" id="password" value={formData.password}
                                   onChange={(e) => onFormChange("password", e.target.value)} label={t("password")}/>
+            <LabeledSwitch id="rememberMe" label={t("rememberMe")} labelPos="right" checked={formData.rememberMe}
+                           onChange={(checked) => onFormChange("rememberMe", checked)}/>
         </div>
     );
 }

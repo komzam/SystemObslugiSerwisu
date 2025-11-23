@@ -1,8 +1,8 @@
 ﻿import {gql} from '@apollo/client';
 
 export const GET_REPAIRSHOP = gql`
-    query GetRepairShop($id: String!) {
-        repairShop(request:{ id: $id })
+    query GetRepairShop($repairShopId: UUID!) {
+        repairShop(request:{ repairShopId: $repairShopId })
         {
             id,
             mainImage{

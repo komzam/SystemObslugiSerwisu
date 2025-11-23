@@ -9,7 +9,7 @@ import {
 } from "@/__generated__/types";
 import * as React from "react";
 import {useParams} from "next/navigation";
-import {useApolloClient, useMutation, useQuery, useSubscription} from "@apollo/client/react";
+import {useMutation, useQuery, useSubscription} from "@apollo/client/react";
 import {GET_CONVERSATION, GET_MORE_MESSAGES} from "@/graphql/GetConversation";
 import {DateTime} from "luxon";
 import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
@@ -28,7 +28,6 @@ export default function Messages() {
         {
             variables: {
                 conversationId,
-                actingRole: ActingRole.Customer,
                 numberOfMessages: 10,
                 lastMessageId: null
             }
@@ -74,7 +73,7 @@ export default function Messages() {
 
     const onMessageSend = async (message: string): Promise<boolean> =>{
         try{
-            await sendMessage({variables:{conversationId, actingRole: ActingRole.Customer, message}})
+            await sendMessage({variables:{conversationId, message}})
         }catch{
             return false;
         }
@@ -84,7 +83,7 @@ export default function Messages() {
     const onLoadMore = async () => {
         if(noMoreMessages) return;
         fetchMore({query: GET_MORE_MESSAGES,
-            variables: {conversationId, lastMessageId: queryData?.conversation.messages.lastItemId, actingRole: ActingRole.Customer, numberOfMessages: 10},
+            variables: {conversationId, lastMessageId: queryData?.conversation.messages.lastItemId, numberOfMessages: 10},
             updateQuery: (prev, { fetchMoreResult }) => {
                 if (!fetchMoreResult) return prev;
 

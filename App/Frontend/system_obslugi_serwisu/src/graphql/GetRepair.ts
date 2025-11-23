@@ -1,7 +1,7 @@
 ﻿import {gql} from "@apollo/client";
 
 export const GET_REPAIR = gql`
-    query GetRepair($repairId: String!) {
+    query GetRepair($repairId: UUID!) {
         repair(request:{repairId: $repairId}) {
             id,
             conversationId,

@@ -42,6 +42,7 @@ public class GraphQlConfig
                 .AddTypeExtension<ConversationQueries>()
                 .AddTypeExtension<ConversationExtensions>()
             .AddMutationType<Mutation>()
+                .AddTypeExtension<AuthMutations>()
                 .AddTypeExtension<CustomerMutations>()
                 .AddTypeExtension<ReviewMutations>()
                 .AddTypeExtension<RepairMutations>()

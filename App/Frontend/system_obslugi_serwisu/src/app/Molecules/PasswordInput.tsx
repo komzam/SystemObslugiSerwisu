@@ -25,7 +25,7 @@ export function PasswordInput({placeholder, className="", wrapperClassName="", .
                                            placeholder= {placeholder != undefined ? placeholder : "Text"}
                                            {...props}
                 />
-                <PasswordToggleField.Toggle className="Toggle">
+                <PasswordToggleField.Toggle id={`${props.id}-toggle`}>
                     <PasswordToggleField.Icon
                         visible={<LuEye />}
                         hidden={<LuEyeClosed />}

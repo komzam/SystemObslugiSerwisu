@@ -4,7 +4,8 @@ import {Status} from "@/app/Atoms/Status";
 import * as React from "react";
 import {GetCustomerRepairsQuery} from "@/__generated__/types";
 
-type Repair = GetCustomerRepairsQuery["me"]["repairs"]["items"][number];
+type Customer = Extract<GetCustomerRepairsQuery["me"], { __typename: "FullCustomerDto" }>;
+type Repair = Customer["repairs"]["items"][number];
 
 export type RepairItemProps = {
     repair: Repair;

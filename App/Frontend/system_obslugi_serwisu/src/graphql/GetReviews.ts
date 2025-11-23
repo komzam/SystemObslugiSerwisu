@@ -1,7 +1,7 @@
 ﻿import {gql} from "@apollo/client";
 
 export const GET_REVIEWS = gql`
-    query Reviews($repairShopId: String!, $pageNumber: Int!, $pageSize: Int!) {
+    query Reviews($repairShopId: UUID!, $pageNumber: Int!, $pageSize: Int!) {
     reviews(request:  {
        repairShopId: $repairShopId,
        pageNumber: $pageNumber,

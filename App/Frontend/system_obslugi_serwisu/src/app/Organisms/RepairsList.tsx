@@ -8,7 +8,8 @@ import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
 import {PageSelector} from "@/app/Molecules/PageSelector";
 import {useState} from "react";
 
-type Repair = GetCustomerRepairsQuery["me"]["repairs"]["items"][number];
+type Customer = Extract<GetCustomerRepairsQuery["me"], { __typename: "FullCustomerDto" }>;
+type Repair = Customer["repairs"]["items"][number];
 
 export function RepairsList(){
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -21,6 +22,7 @@ export function RepairsList(){
     if(loading) return <LoadingIcon/>
     if(error) return <p>ERROR</p>
     if(!data) return <p>ERROR</p>
+    if(data.me.__typename != "FullCustomerDto") return null; // Temp fix
 
     const repairs = data.me.repairs.items;
 

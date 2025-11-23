@@ -1,5 +1,5 @@
 ﻿import RepairShopProfile from "@/app/Organisms/RepairShopProfile";
-import client from "@/graphql/ApolloClient";
+import {customerClient} from "@/graphql/ApolloClient";
 import {GET_REPAIRSHOP} from "@/graphql/GetRepairShop";
 import {GetRepairShopQuery, GetRepairShopQueryVariables} from "@/__generated__/types";
 import Image from "next/image";
@@ -13,9 +13,9 @@ export default async function RepairShop({params}: PageProps) {
 
     let data;
     try {
-        const result = await client.query<GetRepairShopQuery,GetRepairShopQueryVariables>({
+        const result = await customerClient.query<GetRepairShopQuery,GetRepairShopQueryVariables>({
             query: GET_REPAIRSHOP,
-            variables: {id: id},
+            variables: {repairShopId: id},
             fetchPolicy: "network-only"
         });
 

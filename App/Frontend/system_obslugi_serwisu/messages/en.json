@@ -50,6 +50,7 @@
     "signInTitle": "Sign in to your account",
     "email": "E-mail",
     "password": "Password",
+    "rememberMe": "Remember me",
     "signInButton": "Sign in",
     "registerButton1": "Don't have an account yet?",
     "registerButton2": "Register now"
@@ -143,11 +144,13 @@
   "EditAccount": {
     "accountDetails":{
       "title": "Account details",
+      "email": "E-mail",
+      "phoneNumber": "Phone number",
       "changePassword": "Change password",
       "changeEmail": "Change e-mail",
       "changePhoneNumber": "Change phone no.",
       "password": "Password",
-      "oldPassword": "Old password",
+      "currentPassword": "Current password",
       "newPassword": "New password",
       "repeatNewPassword": "Repeat new password",
       "newEmail": "New e-mail",

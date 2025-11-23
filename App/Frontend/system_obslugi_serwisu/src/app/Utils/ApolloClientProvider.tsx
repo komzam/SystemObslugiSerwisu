@@ -2,8 +2,12 @@
 
 import {ReactNode} from "react";
 import { ApolloProvider } from "@apollo/client/react";
-import client from "@/graphql/ApolloClient";
+import {customerClient, workerClient} from "@/graphql/ApolloClient";
 
-export function ApolloClientProvider({ children }: { children: ReactNode }) {
-    return <ApolloProvider client={client}>{children}</ApolloProvider>
+export function ApolloClientProvider({ children, actingRole }: { children: ReactNode, actingRole: 'customer'| 'worker'}) {
+    if(actingRole === 'customer') {
+        return <ApolloProvider client={customerClient}>{children}</ApolloProvider>
+    }else {
+        return <ApolloProvider client={workerClient}>{children}</ApolloProvider>
+    }
 }

@@ -38,6 +38,7 @@ export function ConversationListCard({conversationId, className}: ConversationLi
     useSubscription<CustomerConvListSubscriptionSubscription, CustomerConvListSubscriptionSubscriptionVariables>(CUSTOMER_CONV_LIST_SUB);
 
     useEffect(() => {
+        if(queryData?.me.__typename == "FullCustomerDto") // Temp fix
         if (!queryLoading && queryData?.me.conversations.items) {
             const initial = queryData.me.conversations.items.map((c) => ({
                 id: c.id,
@@ -68,7 +69,8 @@ export function ConversationListCard({conversationId, className}: ConversationLi
 
     const onLoadMore = async () => {
         if(noMoreConversations) return;
-        fetchMore({variables: {lastConversationId: queryData?.me.conversations.lastItemId}});
+        if(queryData?.me.__typename == "FullCustomerDto") // Temp fix
+            fetchMore({variables: {lastConversationId: queryData?.me.conversations.lastItemId}});
     }
 
     const handleScroll = async () => {

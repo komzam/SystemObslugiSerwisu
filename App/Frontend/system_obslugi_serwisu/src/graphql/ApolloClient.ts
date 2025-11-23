@@ -3,9 +3,12 @@ import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
 import {createClient} from "graphql-ws";
 import {OperationTypeNode} from "graphql/language";
 
-const httpLink = new HttpLink({
+const httpLink = (actingRole: 'customer' | 'worker') => new HttpLink({
     uri: "http://localhost:8080/graphql",
-    credentials: "include"
+    credentials: "include",
+    headers: {
+        "X-ActingRole": actingRole
+    }
 });
 
 const wsLink = new GraphQLWsLink(
@@ -14,12 +17,12 @@ const wsLink = new GraphQLWsLink(
     })
 );
 
-const splitLink = ApolloLink.split(
+const splitLink = (actingRole: 'customer' | 'worker') => ApolloLink.split(
     ({ operationType }) => {
         return operationType === OperationTypeNode.SUBSCRIPTION;
     },
     wsLink,
-    httpLink
+    httpLink(actingRole)
 );
 
 const cache = new InMemoryCache({
@@ -61,9 +64,14 @@ const cache = new InMemoryCache({
     },
 });
 
-const client = new ApolloClient({
-    link: splitLink,
+const customerClient = new ApolloClient({
+    link: splitLink('customer'),
     cache: cache,
 });
 
-export default client;
+const workerClient = new ApolloClient({
+    link: splitLink('worker'),
+    cache: cache,
+});
+
+export {customerClient, workerClient}

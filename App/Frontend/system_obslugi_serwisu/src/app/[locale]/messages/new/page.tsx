@@ -37,15 +37,14 @@ export default function Messages() {
     }, [repairShopId, router]);
 
     const {data: repairShopQuery, loading: repairShopLoading} = useQuery<GetRepairShopForNewConvQuery, GetRepairShopForNewConvQueryVariables>
-                (GET_REPAIRSHOP_FOR_NEW_CONV, {variables:{id:repairShopId as string}, skip: !repairShopId});
+                (GET_REPAIRSHOP_FOR_NEW_CONV, {variables:{repairShopId:repairShopId as string}, skip: !repairShopId});
 
     const {data: conversationExistsQuery, loading: conversationExistsLoading} =
         useQuery<ConversationExistsQuery, ConversationExistsQueryVariables>
                 (CONVERSATION_EXISTS, {
                     variables: {
                         customerId: authContext.authInfo?.id,
-                        repairShopId: repairShopId,
-                        actingRole:ActingRole.Customer
+                        repairShopId: repairShopId
                     },
                     skip: !repairShopId
                 }
@@ -62,7 +61,7 @@ export default function Messages() {
 
     const onCreateConversation = async (message: string): Promise<boolean> =>{
         try{
-            const conversation = await createConversation({variables:{receiverId: repairShopId, firstMessage:message, actingRole:ActingRole.Customer}});
+            const conversation = await createConversation({variables:{receiverId: repairShopId, firstMessage:message}});
             router.push(`/messages/${conversation?.data?.createConversation.id}`);
             return true;
         }catch{
