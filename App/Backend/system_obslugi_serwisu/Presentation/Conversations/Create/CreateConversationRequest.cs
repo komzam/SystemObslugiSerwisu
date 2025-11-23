@@ -6,5 +6,4 @@ public class CreateConversationRequest
 {
     public required Guid ReceiverId { get; set; }
     public required String FirstMessage { get; set; }
-    public required ActingRole ActingRole { get; set; }
 }

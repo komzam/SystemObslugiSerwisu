@@ -12,17 +12,12 @@ namespace system_obslugi_serwisu.Presentation.RepairShops;
 [ExtendObjectType(typeof(Query))]
 public class RepairShopQueries
 {
-    public async Task<RepairShopDto> RepairShop([Service] IMediator mediatr,
+    public async Task<RepairShopDto> RepairShop(
+        [Service] IMediator mediatr,
         GetRepairShopRequest request)
     {
-        if (!Guid.TryParse(request.Id, out var repairShopId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid repair shop id")
-                .SetCode("BadGuid")
-                .Build());
-        
         var repairShopResult = await mediatr.Send(new GetRepairShopCommand{
-            Id=repairShopId
+            Id=request.RepairShopId
         });
 
         if(repairShopResult.IsFailure)
@@ -36,7 +31,8 @@ public class RepairShopQueries
 
     public async Task<PaginatedList<RepairShopDto>> SearchShopsByName([Service] IMediator mediatr, SearchByNameRequest request)
     {
-        var shopsListResult = await mediatr.Send(new SearchShopsByNameCommand { Name = request.Name ,
+        var shopsListResult = await mediatr.Send(new SearchShopsByNameCommand { 
+            Name = request.Name ,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize});
         

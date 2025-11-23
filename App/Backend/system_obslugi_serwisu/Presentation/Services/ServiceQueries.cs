@@ -12,14 +12,8 @@ public class ServiceQueries
 {
     public async Task<PaginatedList<ServiceDto>> Services([Service] IMediator mediatr, GetServicesRequest request)
     {
-        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid repair shop id")
-                .SetCode("BadGuid")
-                .Build());
-        
         var serviceListResult = await mediatr.Send(new GetServicesCommand() {
-            RepairShopId = repairShopId,
+            RepairShopId = request.RepairShopId,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize 
         });

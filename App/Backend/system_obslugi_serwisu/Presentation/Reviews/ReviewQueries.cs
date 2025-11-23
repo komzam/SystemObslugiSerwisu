@@ -12,15 +12,11 @@ public class ReviewQueries
 {
     public async Task<PaginatedList<ReviewDto>> Reviews([Service] IMediator mediatr, GetReviewsRequest request)
     {
-        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid repair shop id")
-                .SetCode("BadGuid")
-                .Build());
-        
-        var reviewListResult = await mediatr.Send(new GetReviewsCommand { RepairShopId = repairShopId,
+        var reviewListResult = await mediatr.Send(new GetReviewsCommand { 
+            RepairShopId = request.RepairShopId,
             PageNumber = request.PageNumber,
-            PageSize = request.PageSize });
+            PageSize = request.PageSize 
+        });
         
         if(reviewListResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()

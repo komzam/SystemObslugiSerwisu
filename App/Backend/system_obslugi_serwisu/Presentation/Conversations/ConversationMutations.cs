@@ -1,13 +1,16 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
+using HotChocolate.Resolvers;
 using HotChocolate.Subscriptions;
 using MediatR;
 using system_obslugi_serwisu.Application.Conversations.Create;
 using system_obslugi_serwisu.Application.Conversations.Get;
 using system_obslugi_serwisu.Application.Conversations.SendMessage;
+using system_obslugi_serwisu.Application.Shared;
 using system_obslugi_serwisu.Presentation.Conversations.Create;
 using system_obslugi_serwisu.Presentation.Conversations.Dto;
 using system_obslugi_serwisu.Presentation.Conversations.SendMessage;
+using system_obslugi_serwisu.Presentation.Middleware;
 
 namespace system_obslugi_serwisu.Presentation.Conversations;
 
@@ -15,10 +18,12 @@ namespace system_obslugi_serwisu.Presentation.Conversations;
 public class ConversationMutations
 {
     [Authorize]
+    [ActingRoleMiddleware]
     public async Task<ConversationDto> CreateConversation(
         [Service] IMediator mediatr,
         [Service] ITopicEventSender eventSender,
         ClaimsPrincipal claimsPrincipal,
+        IResolverContext resolverContext,
         CreateConversationRequest request,
         CancellationToken cancellationToken)
     {
@@ -29,12 +34,14 @@ public class ConversationMutations
                 .SetCode("BadGuid")
                 .Build());
         
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
+        
         var conversationResult = await mediatr.Send(new CreateConversationCommand
         {
             CreatorId = userId,
             ReceiverId = request.ReceiverId,
             FirstMessage = request.FirstMessage,
-            ActingRole = request.ActingRole
+            ActingRole = role
         }, cancellationToken);
         if(conversationResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
@@ -58,9 +65,11 @@ public class ConversationMutations
     }
 
     [Authorize]
+    [ActingRoleMiddleware]
     public async Task<bool> SendMessage([Service] IMediator mediatr,
         [Service] ITopicEventSender eventSender,
         ClaimsPrincipal claimsPrincipal,
+        IResolverContext resolverContext,
         SendMessageRequest request,
         CancellationToken cancellationToken)
     {
@@ -70,14 +79,15 @@ public class ConversationMutations
                 .SetMessage("Invalid user id")
                 .SetCode("BadGuid")
                 .Build());
-
+        
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
         var sendMessageResult = await mediatr.Send(new SendMessageCommand
         {
             ConversationId = request.ConversationId,
             SenderId = userId,
             Message = request.Message,
-            ActingRole = request.ActingRole
-        });
+            ActingRole = role
+        }, cancellationToken);
         if (sendMessageResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
                 .SetMessage(sendMessageResult.Error.GetUserMessage())
@@ -91,8 +101,8 @@ public class ConversationMutations
         var conversationResult = await mediatr.Send(new GetConversationCommand
         {
             ConversationId = request.ConversationId,
-            ActingRole = request.ActingRole,
-            RequesterId = userId
+            RequesterId = userId,
+            ActingRole = role
         });
         if (conversationResult.IsSuccess){
             var conversation = ConversationMapper.ToDto(conversationResult.Value);

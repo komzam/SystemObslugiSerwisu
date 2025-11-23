@@ -1,26 +1,30 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
 using HotChocolate.Execution;
+using HotChocolate.Resolvers;
 using HotChocolate.Subscriptions;
 using MediatR;
 using system_obslugi_serwisu.Application.Conversations.Get;
 using system_obslugi_serwisu.Application.Shared;
 using system_obslugi_serwisu.Application.Workers.WorksAt;
 using system_obslugi_serwisu.Presentation.Conversations.Dto;
+using system_obslugi_serwisu.Presentation.Middleware;
 
 namespace system_obslugi_serwisu.Presentation.Conversations;
 
 [ExtendObjectType(typeof(Subscription))]
 public class ConversationSubscriptions
 {
+    
     public async ValueTask<ISourceStream<MessageDto>> SubscribeToMessages(
         [Service] IMediator mediatr,
         [Service] ITopicEventReceiver receiver,
         ClaimsPrincipal claimsPrincipal,
+        IResolverContext resolverContext,
         Guid conversationId,
         ActingRole actingRole,
         CancellationToken cancellationToken)
-    { 
+    {
         var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
             throw new GraphQLException(ErrorBuilder.New()
@@ -42,7 +46,7 @@ public class ConversationSubscriptions
         
         return await receiver.SubscribeAsync<MessageDto>(conversationId.ToString(), cancellationToken);
     }
-
+    
     [Authorize]
     [Subscribe(With = nameof(SubscribeToMessages))]
     public MessageDto OnMessageSent([EventMessage] MessageDto message)

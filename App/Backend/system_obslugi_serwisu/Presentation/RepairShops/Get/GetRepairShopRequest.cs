@@ -2,5 +2,5 @@
 
 public class GetRepairShopRequest
 {
-    public required string Id { get; set; }
+    public required Guid RepairShopId { get; set; }
 }

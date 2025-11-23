@@ -6,5 +6,4 @@ public class GetConversationByParticipantsRequest
 {
     public required Guid RepairShopId { get; set; }
     public required Guid CustomerId { get; set; }
-    public required ActingRole ActingRole { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public class GetReviewsRequest
 {
-    public required string RepairShopId { get; init; }
+    public required Guid RepairShopId { get; init; }
     public required int PageSize { get; set; }
     public required int PageNumber { get; set; }
 }

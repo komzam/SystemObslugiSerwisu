@@ -1,10 +1,11 @@
 ﻿using HotChocolate.Authorization;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Presentation.Auth.Dto;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Customers.Dto;
 
-public class FullCustomerDto
+public class FullCustomerDto : IMeResult
 {
     public required Guid Id { get; set; }
     public required string Email { get; set; }

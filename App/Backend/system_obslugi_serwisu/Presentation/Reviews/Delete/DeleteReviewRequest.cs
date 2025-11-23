@@ -2,6 +2,6 @@
 
 public class DeleteReviewRequest
 {
-    public required string RepairShopId { get; set; }
-    public required string ReviewId { get; init; }
+    public required Guid RepairShopId { get; set; }
+    public required Guid ReviewId { get; init; }
 }

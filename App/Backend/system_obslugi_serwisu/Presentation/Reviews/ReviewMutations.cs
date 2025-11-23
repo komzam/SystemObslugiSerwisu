@@ -22,15 +22,9 @@ public class ReviewMutations
                 .SetCode("BadGuid")
                 .Build());
         
-        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid repair shop id")
-                .SetCode("BadGuid")
-                .Build());
-        
         var addReviewResult = await mediatr.Send(new AddReviewCommand
         {
-            RepairShopId = repairShopId,
+            RepairShopId = request.RepairShopId,
             CustomerId = customerId,
             Rating = request.Rating,
             Comment = request.Comment,
@@ -55,22 +49,10 @@ public class ReviewMutations
                 .SetCode("BadGuid")
                 .Build());
         
-        if (!Guid.TryParse(request.RepairShopId, out var repairShopId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid repair shop id")
-                .SetCode("BadGuid")
-                .Build());
-        
-        if (!Guid.TryParse(request.ReviewId, out var reviewId))
-            throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage("Invalid review id")
-                .SetCode("BadGuid")
-                .Build());
-        
         var deleteReviewResult = await mediatr.Send(new DeleteReviewCommand()
         {
-            RepairShopId = repairShopId,
-            ReviewId = reviewId,
+            RepairShopId = request.RepairShopId,
+            ReviewId = request.ReviewId,
             CustomerId = customerId
         });
         

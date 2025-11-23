@@ -15,7 +15,6 @@ public class GetConversationHandler(IUnitOfWork unitOfWork) : IRequestHandler<Ge
     {
         var conversationResult = await unitOfWork.ConversationRepository
             .GetConversation(new ConversationId(request.ConversationId));
-        
         if(conversationResult.IsFailure)
             return conversationResult.Error;
         
