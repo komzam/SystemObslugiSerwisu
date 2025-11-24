@@ -21,6 +21,11 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
             )
             .ValueGeneratedNever();
 
+        repairConfiguration.OwnsOne(repair => repair.TicketNumber, ticketNumber =>
+        {
+            ticketNumber.Property(tn => tn.Value).HasMaxLength(TicketNumber.TicketNumberMaxLength);
+        });
+        
         repairConfiguration.Property(repair => repair.RepairShopId)
             .HasConversion(
                 id => id.Value,
@@ -37,6 +42,7 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
                 value => value == null ? null : new ConversationId(value.Value));
         
         repairConfiguration.Property(repair => repair.Status);
+        
 
         repairConfiguration.OwnsOne(repair => repair.ContactInfo,
             contactInfo =>

@@ -39,7 +39,7 @@ export default function Repair() {
                 <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
                     <Link href="/repairs"><BackButton>{t("backButton")}</BackButton></Link>
                     <RepairDetailsTitle title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
-                                        repairTicketNumber={repair.id}
+                                        repairTicketNumber={repair.ticketNumber}
                                         status={repair.status}
                                         conversationId={repair.conversationId}/>
                     <RepairDetailsDevInfo deviceType={repair.deviceInfo.deviceType}

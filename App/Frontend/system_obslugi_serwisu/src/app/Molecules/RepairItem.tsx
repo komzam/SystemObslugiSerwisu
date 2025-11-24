@@ -19,7 +19,7 @@ export function RepairItem({repair}: RepairItemProps) {
                     <div className="flex-1 flex flex-col gap-2 w-full">
                         <div className="w-full">
                             <p className="text-larger2 font-bold">{repair.deviceInfo.manufacturer} {repair.deviceInfo.model}</p>
-                            <p className="text-smaller1 text-accent3">{repair.id}</p>
+                            <p className="text-smaller1 text-accent3">{repair.ticketNumber}</p>
                         </div>
                         <p className="text-accent4 line-clamp-1">{repair.faultInfo.description}</p>
                     </div>

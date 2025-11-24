@@ -10,6 +10,7 @@ namespace system_obslugi_serwisu.Domain.Repairs;
 
 public record RepairData
 {
+    public required TicketNumber TicketNumber { get; init; }
     public required RepairShopId RepairShopId { get; init; }
     public CustomerId? CustomerId { get; init; }
     public required ContactInfo ContactInfo { get; init; }
@@ -26,6 +27,7 @@ public partial class Repair
     public const int AdditionalCommentMaxLength = 500;
     
     public RepairId Id { get; private set; }
+    public TicketNumber TicketNumber { get; private set; }
     public RepairShopId RepairShopId { get; private set; }
     public CustomerId? CustomerId { get; private set; }
     public ConversationId? ConversationId { get; private set; }
@@ -49,10 +51,11 @@ public partial class Repair
 
     private Repair() { }
 
-    private Repair(RepairShopId repairShopId, CustomerId? customerId, RepairStatus status, ContactInfo contactInfo,
+    private Repair(TicketNumber ticketNumber, RepairShopId repairShopId, CustomerId? customerId, RepairStatus status, ContactInfo contactInfo,
         DeviceInfo deviceInfo, FaultInfo faultInfo, ReturnInfo returnInfo, string? additionalComment)
     {
         Id = new RepairId(Guid.NewGuid());
+        TicketNumber = ticketNumber;
         RepairShopId = repairShopId;
         CustomerId = customerId;
         Status = status;
@@ -78,7 +81,7 @@ public partial class Repair
         if (validationResult.IsFailure)
             return validationResult.Error;
         
-        return new Repair(data.RepairShopId, data.CustomerId, RepairStatus.Created, data.ContactInfo,
+        return new Repair(data.TicketNumber, data.RepairShopId, data.CustomerId, RepairStatus.Created, data.ContactInfo,
             data.DeviceInfo, data.FaultInfo, data.ReturnInfo, data.AdditionalComment);
     }
 

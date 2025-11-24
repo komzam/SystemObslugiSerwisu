@@ -42,8 +42,20 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
         if(returnInfoResult.IsFailure)
             return returnInfoResult.Error;
 
+        var ticketNumber = TicketNumber.Create();
+        var ticketExistsResult = await unitOfWork.RepairRepository.RepairTicketNumberExists(ticketNumber);
+        while (ticketExistsResult.IsSuccess && ticketExistsResult.Value)
+        {
+            ticketNumber = TicketNumber.Create();
+            ticketExistsResult = await unitOfWork.RepairRepository.RepairTicketNumberExists(ticketNumber);
+        }
+        
+        if(ticketExistsResult.IsFailure)
+            return ticketExistsResult.Error;
+
         var repairResult = Repair.Create(new RepairData
         {
+            TicketNumber = ticketNumber,
             RepairShopId = repairShopResult.Value.Id,
             CustomerId = customer?.Id,
             ContactInfo = contactInfoResult.Value,

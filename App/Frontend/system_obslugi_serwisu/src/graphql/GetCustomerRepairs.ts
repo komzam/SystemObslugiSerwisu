@@ -12,6 +12,7 @@ export const GET_CUSTOMER_REPAIRS = gql`
                 }){
                     items{
                         id
+                        ticketNumber,
                         deviceInfo {
                             manufacturer,
                             model

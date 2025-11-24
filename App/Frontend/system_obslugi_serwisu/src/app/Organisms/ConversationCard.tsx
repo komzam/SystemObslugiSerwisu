@@ -17,6 +17,7 @@ import {Link} from "@/i18n/navigation";
 export type ConversationCardProps = {
     conversationType: ConversationType.RepairChat
     title: string;
+    repairId: string;
     repairTicketNumber: string;
     status: RepairStatus;
     messages: ConversationMessageProps[];
@@ -73,10 +74,10 @@ export function ConversationCard(props: ConversationCardProps) {
         }
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-            sendMessage();
+            await sendMessage();
         }
     };
 
@@ -120,7 +121,7 @@ export function ConversationCard(props: ConversationCardProps) {
                         </div>
                         { props.conversationType === ConversationType.RepairChat &&
                             <div className="flex flex-row-reverse md:flex-row gap-2 sm:gap-5 items-center">
-                                <Link href={`/repair/${props.repairTicketNumber}`}><Button inverse={true} variant="secondary" icon={<LuWrench size="1.5rem"/>}>{t("details")}</Button></Link>
+                                <Link href={`/repair/${props.repairId}`}><Button inverse={true} variant="secondary" icon={<LuWrench size="1.5rem"/>}>{t("details")}</Button></Link>
                                 <Status type={props.status}/>
                             </div>
                         }

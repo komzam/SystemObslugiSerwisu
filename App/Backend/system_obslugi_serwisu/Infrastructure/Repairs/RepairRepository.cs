@@ -97,4 +97,16 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         
         return OperationResult.Success();
     }
+
+    public async Task<OperationResult<bool>> RepairTicketNumberExists(TicketNumber ticketNumber)
+    {
+        try
+        {
+            var count = await databaseContext.Repairs.Where(repair => repair.TicketNumber.Value == ticketNumber.Value).CountAsync();
+            return count != 0;
+        }
+        catch(Exception e){
+            return DatabaseErrors.UnknownError();
+        }
+    }
 }

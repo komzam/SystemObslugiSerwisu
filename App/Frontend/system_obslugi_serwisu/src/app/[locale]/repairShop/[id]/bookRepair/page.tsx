@@ -115,7 +115,7 @@ function RepairForm({repairShopId}: RepairFormProps) {
             {page==1 && <RepairFormFaultInfo leftBtnOnClick={prevPage} rightBtnOnClick={nextPage}/>}
             {page==2 && <RepairFormAdditionalInfo leftBtnOnClick={prevPage} rightBtnOnClick={submitButton}/>}
             {page==3 && <RepairFormConfirmation leftBtnVisible={false} rightBtnOnClick={finish}
-                                                repairTickerNumber={data?.bookRepair.id??""}
+                                                repairTickerNumber={data?.bookRepair.ticketNumber??""}
                                                 createdAt={data?.bookRepair.createdAt??""}
                                                 repairShopAddress={data?.bookRepair.repairShop?.address as AddressDto}
             />}

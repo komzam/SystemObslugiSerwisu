@@ -8,6 +8,7 @@ namespace system_obslugi_serwisu.Presentation.Repairs.Dto;
 public class RepairDto
 {
     public required Guid Id { get; set; }
+    public required String TicketNumber { get; set; }
     public required Guid RepairShopId { get; set; }
     public required Guid? ConversationId { get; set; }
     public RepairStatus Status { get; set; }

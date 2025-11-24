@@ -10,4 +10,5 @@ public interface IRepairRepository
     public Task<OperationResult<List<Repair>>> GetRepairs(List<RepairId> repairIds);
     public Task<OperationResult<PaginatedList<Repair>>> GetCustomersRepairs(CustomerId customerId, int pageNumber, int pageSize);
     public Task<OperationResult> CreateRepair(Repair repair);
+    public Task<OperationResult<bool>> RepairTicketNumberExists(TicketNumber ticketNumber);
 }

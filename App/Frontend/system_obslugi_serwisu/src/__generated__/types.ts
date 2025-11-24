@@ -727,6 +727,7 @@ export type RepairDto = {
   repairShopId: Scalars['UUID']['output'];
   returnInfo: ReturnInfoDto;
   status: RepairStatus;
+  ticketNumber: Scalars['String']['output'];
 };
 
 export type RepairShopDto = {
@@ -885,7 +886,7 @@ export type BookRepairMutationVariables = Exact<{
 }>;
 
 
-export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
+export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, ticketNumber: string, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
 
 export type ChangeAddressMutationVariables = Exact<{
   request: ChangeAddressRequestInput;
@@ -968,7 +969,7 @@ export type GetConversationQueryVariables = Exact<{
 }>;
 
 
-export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', conversationType: ConversationType, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> }, repair?: { __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } | null } };
+export type GetConversationQuery = { __typename?: 'Query', conversation: { __typename?: 'ConversationDto', conversationType: ConversationType, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', lastItemId?: any | null, hasMore: boolean, items: Array<{ __typename?: 'MessageDto', senderRole: SenderRole, content: string, createdAt: any }> }, repair?: { __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } | null } };
 
 export type GetMoreMessagesQueryVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
@@ -997,7 +998,7 @@ export type GetCustomerRepairsQueryVariables = Exact<{
 
 
 export type GetCustomerRepairsQuery = { __typename?: 'Query', me:
-    | { __typename: 'FullCustomerDto', id: any, repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } }
+    | { __typename: 'FullCustomerDto', id: any, repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } }
     | { __typename: 'FullWorkerDto' }
    };
 
@@ -1006,7 +1007,7 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, images: Array<{ __typename?: 'ImageDto', id: any, small: string, medium: string, large: string, extraLarge: string }>, repairHistory: Array<
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, ticketNumber: string, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, images: Array<{ __typename?: 'ImageDto', id: any, small: string, medium: string, large: string, extraLarge: string }>, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }

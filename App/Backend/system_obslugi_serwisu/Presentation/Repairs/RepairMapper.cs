@@ -14,6 +14,7 @@ public static class RepairMapper
         return new RepairDto
         {
             Id = repair.Id.Value,
+            TicketNumber = repair.TicketNumber.Value,
             RepairShopId = repair.RepairShopId.Value,
             ConversationId = repair.ConversationId?.Value,
             Status = repair.Status,

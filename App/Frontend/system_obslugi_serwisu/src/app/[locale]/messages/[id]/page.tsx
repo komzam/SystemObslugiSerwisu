@@ -108,7 +108,8 @@ export default function Messages() {
                 <ConversationCard className={`md:flex md:basis-[79%]`}
                                   conversationType={queryData?.conversation.conversationType}
                                   title={(queryData?.conversation?.repair?.deviceInfo.manufacturer ?? "") + " " + (queryData?.conversation?.repair?.deviceInfo.model ?? "")}
-                                  repairTicketNumber={queryData?.conversation?.repair?.id ?? ""}
+                                  repairId={queryData?.conversation?.repair?.id?? ""}
+                                  repairTicketNumber={queryData?.conversation?.repair?.ticketNumber ?? ""}
                                   messages={messages}
                                   status={queryData?.conversation?.repair?.status ?? RepairStatus.Created}
                                   onMessageSendAction={onMessageSend}

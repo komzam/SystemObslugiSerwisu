@@ -17,6 +17,7 @@ export const GET_CONVERSATION = gql`
             conversationType,
             repair {
                 id,
+                ticketNumber,
                 status,
                 deviceInfo {
                     manufacturer,
