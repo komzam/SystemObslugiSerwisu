@@ -6,7 +6,6 @@ export type DropdownWithLabelProps = DropdownProps & {
 };
 
 export function LabeledDropdown({placeholder, items, label, classNameTrigger="", classNamePortal="", ...props} : DropdownWithLabelProps ) : React.ReactNode {
-    //console.log(items[0].values[0].valueLabel)
     return (
         <div className="bg-inherit rounded-md w-fit">
             <label className="relative block bg-inherit ml-2 mr-6 -mb-2 px-0.5 text-smaller2 select-none z-2 w-fit">{label}</label>

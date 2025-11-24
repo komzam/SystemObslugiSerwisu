@@ -20,6 +20,7 @@
     "@radix-ui/themes": "^3.2.1",
     "@reduxjs/toolkit": "^2.9.0",
     "@tanstack/react-virtual": "^3.13.12",
+    "class-variance-authority": "^0.7.1",
     "graphql": "^16.11.0",
     "graphql-ws": "^6.0.6",
     "libphonenumber-js": "^1.12.24",

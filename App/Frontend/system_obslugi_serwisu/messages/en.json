@@ -122,11 +122,15 @@
     }
   },
   "ContactMethods": {
+    "select": "Select",
+    "none": "None",
     "App": "This app",
     "PhoneCall": "Phone call",
     "Sms": "SMS"
   },
   "ReturnMethods": {
+    "select": "Select",
+    "none": "None",
     "SelfPickup": "Self-pickup",
     "CourierDelivery": "Courier delivery"
   },
@@ -162,7 +166,10 @@
       "preferredReturnMethod": "Preferred return method"
     },
     "shippingAddress": "Shipping address",
-    "change": "Change"
+    "noAddress": "No shipping address",
+    "change": "Change",
+    "add": "Add",
+    "remove": "Remove"
   },
   "Status": {
     "CREATED": "Created",

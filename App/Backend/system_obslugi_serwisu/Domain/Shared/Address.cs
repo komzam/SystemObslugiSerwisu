@@ -13,7 +13,7 @@ public record AddressData
     public required string PostalCode { get; init; }
     public required string City { get; init; }
     public required Country Country { get; init; }
-        
+    
 };
 
 public class Address : ValueObject

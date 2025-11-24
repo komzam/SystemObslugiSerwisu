@@ -73,6 +73,16 @@ export type BookRepairRequestInput = {
   returnInfo: ReturnInfoInput;
 };
 
+export type ChangeAddressRequestInput = {
+  apartmentNumber?: InputMaybe<Scalars['String']['input']>;
+  buildingNumber: Scalars['String']['input'];
+  city: Scalars['String']['input'];
+  country: Country;
+  postalCode: Scalars['String']['input'];
+  recipientName: Scalars['String']['input'];
+  street: Scalars['String']['input'];
+};
+
 export type ChangeEmailRequestInput = {
   newEmail: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -357,14 +367,19 @@ export type Mutation = {
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
+  changeAddress: Scalars['Boolean']['output'];
   changeEmail: Scalars['Boolean']['output'];
   changePassword: Scalars['Boolean']['output'];
   changePhoneNumber: Scalars['Boolean']['output'];
+  changePreferredContact: Scalars['Boolean']['output'];
+  changePreferredReturn: Scalars['Boolean']['output'];
   createConversation: ConversationDto;
   deleteReview: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
+  removeAddress: Scalars['Boolean']['output'];
+  removePhoneNumber: Scalars['Boolean']['output'];
   repairActions: RepairActions;
   sendMessage: Scalars['Boolean']['output'];
 };
@@ -393,6 +408,11 @@ export type MutationBookRepairArgs = {
 };
 
 
+export type MutationChangeAddressArgs = {
+  request: ChangeAddressRequestInput;
+};
+
+
 export type MutationChangeEmailArgs = {
   request: ChangeEmailRequestInput;
 };
@@ -405,6 +425,16 @@ export type MutationChangePasswordArgs = {
 
 export type MutationChangePhoneNumberArgs = {
   request: ChangePhoneNumberRequestInput;
+};
+
+
+export type MutationChangePreferredContactArgs = {
+  contactMethod?: InputMaybe<ContactMethod>;
+};
+
+
+export type MutationChangePreferredReturnArgs = {
+  returnMethod?: InputMaybe<ReturnMethod>;
 };
 
 
@@ -857,6 +887,13 @@ export type BookRepairMutationVariables = Exact<{
 
 export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
 
+export type ChangeAddressMutationVariables = Exact<{
+  request: ChangeAddressRequestInput;
+}>;
+
+
+export type ChangeAddressMutation = { __typename?: 'Mutation', changeAddress: boolean };
+
 export type ChangeEmailMutationVariables = Exact<{
   password: Scalars['String']['input'];
   newEmail: Scalars['String']['input'];
@@ -880,6 +917,20 @@ export type ChangePhoneNumberMutationVariables = Exact<{
 
 
 export type ChangePhoneNumberMutation = { __typename?: 'Mutation', changePhoneNumber: boolean };
+
+export type ChangePreferredContactMutationVariables = Exact<{
+  contactMethod?: InputMaybe<ContactMethod>;
+}>;
+
+
+export type ChangePreferredContactMutation = { __typename?: 'Mutation', changePreferredContact: boolean };
+
+export type ChangePreferredReturnMutationVariables = Exact<{
+  returnMethod?: InputMaybe<ReturnMethod>;
+}>;
+
+
+export type ChangePreferredReturnMutation = { __typename?: 'Mutation', changePreferredReturn: boolean };
 
 export type ConversationExistsQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
@@ -1019,6 +1070,16 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: boolean };
+
+export type RemoveAddressMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RemoveAddressMutation = { __typename?: 'Mutation', removeAddress: boolean };
+
+export type RemovePhoneNumberMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type RemovePhoneNumberMutation = { __typename?: 'Mutation', removePhoneNumber: boolean };
 
 export type ApproveQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];

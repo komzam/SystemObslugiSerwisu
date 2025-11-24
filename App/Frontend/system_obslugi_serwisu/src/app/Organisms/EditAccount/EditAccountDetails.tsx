@@ -35,7 +35,7 @@ export function EditAccountDetails(){
                     <div className="flex flex-row gap-1 items-center">
                         <LuPhone size="1.25rem"/><p>{t("phoneNumber")}</p>
                     </div>
-                    <p className="font-black">{authContext.authInfo?.__typename === "FullCustomerDto" && authContext.authInfo.phone}</p>
+                    <p className="font-black">{authContext.authInfo?.__typename === "FullCustomerDto" && (authContext.authInfo.phone??"-")}</p>
                 </div>
                 <HorizontalSelect options={options} mustBeSelected={false} onChangeAction={(selected) => setSelected(selected)} />
                 {selected!=null && options[selected].value == "password" && <ChangePassword/>}

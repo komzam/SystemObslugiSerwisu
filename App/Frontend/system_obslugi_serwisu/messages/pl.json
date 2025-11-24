@@ -122,11 +122,15 @@
     }
   },
   "ContactMethods": {
+    "select": "Wybierz",
+    "none": "Żadna",
     "App": "Ta aplikacja",
     "PhoneCall": "Rozmowa telefoniczna",
     "Sms": "SMS"
   },
   "ReturnMethods": {
+    "select": "Wybierz",
+    "none": "Żadna",
     "SelfPickup": "Odbiór osobisty",
     "CourierDelivery": "Dostawa kurierem"
   },
@@ -162,7 +166,10 @@
       "preferredReturnMethod": "Preferowana metoda zwrotu"
     },
     "shippingAddress": "Adres dostawy",
-    "change": "Zmień"
+    "noAddress": "Brak adresu dostawy",
+    "change": "Zmień",
+    "add": "Dodaj",
+    "remove": "Usuń"
   },
   "Status": {
     "CREATED": "Utworzony",

@@ -3,7 +3,7 @@ import {useState} from "react";
 import {useMutation} from "@apollo/client/react";
 import {
     ChangePhoneNumberMutation,
-    ChangePhoneNumberMutationVariables
+    ChangePhoneNumberMutationVariables, RemovePhoneNumberMutation, RemovePhoneNumberMutationVariables
 } from "@/__generated__/types";
 import {ErrorName} from "@/app/Utils/ErrorName";
 import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
@@ -11,6 +11,7 @@ import {Button} from "@/app/Atoms/Button";
 import {CHANGE_PHONE_NUMBER} from "@/graphql/ChangePhoneNumber";
 import {ChangePhoneNumberChangeHandler, ChangePhoneNumberForm} from "@/app/Molecules/EditAccount/ChangePhoneNumberForm";
 import {useAuthContext} from "@/app/Utils/AuthContext";
+import {REMOVE_PHONE_NUMBER} from "@/graphql/RemovePhoneNumber";
 
 const defaultForm : ChangePhoneNumberMutationVariables = {
     newPhoneNumber: "",
@@ -24,6 +25,7 @@ export function ChangePhoneNumber(){
     const [error, setError] = useState<string|null>(null);
     const [form, setForm] = useState<ChangePhoneNumberMutationVariables>(defaultForm);
     const [changePhoneNumber] = useMutation<ChangePhoneNumberMutation, ChangePhoneNumberMutationVariables>(CHANGE_PHONE_NUMBER);
+    const [removePhoneNumber] = useMutation<RemovePhoneNumberMutation, RemovePhoneNumberMutationVariables>(REMOVE_PHONE_NUMBER);
 
     const onFormChange:ChangePhoneNumberChangeHandler = (fieldName, value) => {
         setForm(prev => ({...prev, [fieldName]: value}));
@@ -32,10 +34,19 @@ export function ChangePhoneNumber(){
     const onSubmit = async () =>{
         try{
             setError(null);
-            console.log(form);
             await changePhoneNumber({variables:{...form}});
             authContext.update();
             setForm(defaultForm);
+        }catch(err){
+            setError(ErrorName(err, tErr));
+        }
+    }
+
+    const onRemove = async () => {
+        try{
+            setError(null);
+            await removePhoneNumber();
+            authContext.update();
         }catch(err){
             setError(ErrorName(err, tErr));
         }
@@ -45,7 +56,12 @@ export function ChangePhoneNumber(){
         <>
             {error != null && <HighlightedText color={HighlightColors.Red}>{error}</HighlightedText>}
             <ChangePhoneNumberForm formData={form} onFormChange={onFormChange}/>
-            <Button onClick={onSubmit}>{t("change")}</Button>
+            <div className="flex flex-col gap-2">
+                <Button onClick={onSubmit}>{t("change")}</Button>
+                {authContext.authInfo?.__typename === "FullCustomerDto"
+                    && authContext.authInfo?.phone != null
+                    && <Button color="danger" variant="secondary" onClick={onRemove}>{t("remove")}</Button>}
+            </div>
         </>
     )
 }

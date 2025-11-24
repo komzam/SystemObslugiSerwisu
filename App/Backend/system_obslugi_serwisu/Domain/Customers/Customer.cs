@@ -124,4 +124,39 @@ public class Customer : User
         
         return OperationResult.Success();
     }
+
+    public OperationResult RemovePhoneNumber()
+    {
+        Phone = null;
+        return OperationResult.Success();
+    }
+
+    public OperationResult ChangeAddress(AddressData addressData)
+    {
+        var addressResult = Address.Create(addressData);
+        if(addressResult.IsFailure)
+            return addressResult.Error;
+        
+        Address = addressResult.Value;
+        
+        return OperationResult.Success();
+    }
+
+    public OperationResult RemoveAddress()
+    {
+        Address = null;
+        return OperationResult.Success();
+    }
+
+    public OperationResult ChangePreferredReturnMethod(ReturnMethod? returnMethod)
+    {
+        PreferredReturnMethod = returnMethod;
+        return OperationResult.Success();
+    }
+    
+    public OperationResult ChangePreferredContactMethod(ContactMethod? contactMethod)
+    {
+        PreferredContactMethod = contactMethod;
+        return OperationResult.Success();
+    }
 }
