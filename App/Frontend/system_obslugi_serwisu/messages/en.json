@@ -12,7 +12,10 @@
     "signIn": "Sign In",
     "myAccount": "My account",
     "editAccount": "Edit account",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "dashboard": "Dashboard",
+    "inventory": "Inventory",
+    "workSchedule": "Work Schedule"
   },
   "RepairShop": {
     "reviews": "{count, plural, one {# review} other {# reviews}}",

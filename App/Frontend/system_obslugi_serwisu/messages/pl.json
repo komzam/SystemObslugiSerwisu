@@ -12,7 +12,10 @@
     "signIn": "Zaloguj się",
     "myAccount": "Moje konto",
     "editAccount": "Edytuj konto",
-    "logOut": "Wyloguj się"
+    "logOut": "Wyloguj się",
+    "dashboard": "Pulpit",
+    "inventory": "Magazyn",
+    "workSchedule": "Grafik"
   },
   "RepairShop": {
     "reviews": "{count, plural, one {# opinia} few {# opinie} many {# opinii} other {# opinii}}",

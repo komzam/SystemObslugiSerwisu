@@ -9,7 +9,7 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Repairs.Book;
 
-public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRepairCommand, OperationResult<Repair>>
+public class BookRepairHandler(IUnitOfWork unitOfWork, IRepairStorageService repairStorageService) : IRequestHandler<BookRepairCommand, OperationResult<Repair>>
 {
     public async Task<OperationResult<Repair>> Handle(BookRepairCommand request, CancellationToken cancellationToken)
     {
@@ -86,6 +86,11 @@ public class BookRepairHandler(IUnitOfWork unitOfWork) : IRequestHandler<BookRep
             
             repairResult.Value.AssignConversation(conversationResult.Value.Id);
         }
+
+        var createDocumentResult =
+            await repairStorageService.CreateRepairDocument(repairResult.Value.Id, repairResult.Value.TicketNumber);
+        if (createDocumentResult.IsFailure)
+            return createDocumentResult.Error;
 
         var saveChangesResult = await unitOfWork.SaveChanges();
         if(saveChangesResult.IsFailure)

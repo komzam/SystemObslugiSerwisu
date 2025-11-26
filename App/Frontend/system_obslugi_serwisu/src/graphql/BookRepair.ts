@@ -5,6 +5,7 @@ export const BOOK_REPAIR_QUERY = gql`
         bookRepair(request: $request){
             id,
             ticketNumber,
+            repairDocument,
             repairShop{
                 address{
                     recipientName,

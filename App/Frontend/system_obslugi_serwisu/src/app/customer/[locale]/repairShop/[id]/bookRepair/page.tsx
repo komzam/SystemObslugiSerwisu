@@ -117,6 +117,7 @@ function RepairForm({repairShopId}: RepairFormProps) {
             {page==3 && <RepairFormConfirmation leftBtnVisible={false} rightBtnOnClick={finish}
                                                 repairTickerNumber={data?.bookRepair.ticketNumber??""}
                                                 createdAt={data?.bookRepair.createdAt??""}
+                                                repairDocumentUrl={data?.bookRepair.repairDocument??""}
                                                 repairShopAddress={data?.bookRepair.repairShop?.address as AddressDto}
             />}
             </form>

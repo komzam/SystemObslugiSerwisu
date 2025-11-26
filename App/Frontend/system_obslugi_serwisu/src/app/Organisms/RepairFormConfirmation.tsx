@@ -8,14 +8,16 @@ import {KeyValueList} from "@/app/Molecules/KeyValueList";
 import {KeyValueLineProps} from "@/app/Molecules/KeyValueLine";
 import {DateTime} from "luxon";
 import {AddressDto} from "@/__generated__/types";
+import Link from "next/link";
 
 type FormProps = Omit<RepairFormCardProps, 'title'> & {
     repairTickerNumber: string;
     createdAt: string;
+    repairDocumentUrl: string;
     repairShopAddress: AddressDto;
 };
 
-export function RepairFormConfirmation({repairTickerNumber, createdAt, repairShopAddress, ...props} : FormProps) {
+export function RepairFormConfirmation({repairTickerNumber, createdAt, repairDocumentUrl, repairShopAddress,...props} : FormProps) {
     const t = useTranslations("RepairForm.confirmation");
 
     const steps : StepInfo[] = [
@@ -52,7 +54,9 @@ export function RepairFormConfirmation({repairTickerNumber, createdAt, repairSho
                 </CardWithHeader>
             </div>
             <StepList steps={steps}/>
-            <Button className="w-full" variant="secondary">{t("printRepairTicket")}</Button>
+            <Link href={repairDocumentUrl} target="_blank" className="w-full">
+                <Button type="button" className="w-full" variant="secondary">{t("printRepairTicket")}</Button>
+            </Link>
         </RepairFormCard>
     )
 }

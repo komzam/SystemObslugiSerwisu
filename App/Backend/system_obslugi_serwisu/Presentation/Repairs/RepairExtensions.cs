@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Repairs.GetCustomers;
+using system_obslugi_serwisu.Application.Repairs.GetDocument;
 using system_obslugi_serwisu.Application.Repairs.GetImages;
 using system_obslugi_serwisu.Application.RepairShops.Get;
 using system_obslugi_serwisu.Application.RepairShops.GetImage;
@@ -36,5 +37,20 @@ public class RepairExtensions
                 .Build());
 
         return imagesResult.Value.Select(SharedMapper.ToDto).ToList();
+    }
+    
+    public async Task<string> GetRepairDocument([Service] IMediator mediatr, [Parent] RepairDto repair)
+    {
+        var documentResult = await mediatr.Send(new GetRepairDocumentCommand()
+        {
+            RepairId = repair.Id
+        });
+        if(documentResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(documentResult.Error.GetUserMessage())
+                .SetCode(documentResult.Error.GetUserCode())
+                .Build());
+
+        return documentResult.Value;
     }
 }

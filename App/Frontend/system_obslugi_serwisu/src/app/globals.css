@@ -15,7 +15,8 @@
     --color-secondary: var(--color-blue-200);
     --color-background: var(--color-zinc-100);
     --color-accent: var(--color-white);
-    --color-accent2: var(--color-zinc-50);
+    --color-accent1: var(--color-zinc-50);
+    --color-accent2: var(--color-zinc-100);
     --color-accent3: var(--color-zinc-300);
     --color-accent4: var(--color-zinc-400);
 

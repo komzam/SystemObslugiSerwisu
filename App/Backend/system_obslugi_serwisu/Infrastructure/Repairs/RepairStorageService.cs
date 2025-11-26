@@ -1,11 +1,15 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Options;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.Storage;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Shared;
 using system_obslugi_serwisu.Infrastructure.S3;
+using system_obslugi_serwisu.Infrastructure.Shared;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Repairs;
@@ -70,6 +74,51 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
             
             return await s3Client.GetPreSignedURLAsync(putImageRequest);
         }catch
+        {
+            return StorageErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult> CreateRepairDocument(RepairId repairId, TicketNumber ticketNumber)
+    {
+        try
+        {
+            var repairDocument = DocumentGenerator.GenerateRepairDocument(ticketNumber);
+
+            var createDocumentRequest = new PutObjectRequest
+            {
+                BucketName = buckets.Value.RepairDocs,
+                Key = $"{repairId.Value}/RepairTicket",
+                InputStream = repairDocument,
+                ContentType = "application/pdf"
+            };
+
+            await s3Client.PutObjectAsync(createDocumentRequest);
+            return OperationResult.Success();
+        }
+        catch
+        {
+            return StorageErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult<string>> GetRepairDocument(RepairId repairId)
+    {
+        try
+        {
+            var getDocumentRequest = new GetPreSignedUrlRequest
+            {
+                BucketName = buckets.Value.RepairDocs,
+                Key =
+                    $"{repairId.Value}/RepairTicket",
+                Verb = HttpVerb.GET,
+                Expires = DateTime.Now.AddMinutes(20),
+                Protocol = Protocol.HTTP
+            };
+
+            return await s3Client.GetPreSignedURLAsync(getDocumentRequest);
+        }
+        catch
         {
             return StorageErrors.UnknownError();
         }

@@ -25,7 +25,7 @@ const splitLink = (actingRole: 'customer' | 'worker') => ApolloLink.split(
     httpLink(actingRole)
 );
 
-const cache = new InMemoryCache({
+const cache = () => new InMemoryCache({
     typePolicies: {
         DeviceInfoDto: {
             keyFields: false,
@@ -66,12 +66,12 @@ const cache = new InMemoryCache({
 
 const customerClient = new ApolloClient({
     link: splitLink('customer'),
-    cache: cache,
+    cache: cache(),
 });
 
 const workerClient = new ApolloClient({
     link: splitLink('worker'),
-    cache: cache,
+    cache: cache(),
 });
 
 export {customerClient, workerClient}

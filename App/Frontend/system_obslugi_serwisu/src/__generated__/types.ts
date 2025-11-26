@@ -722,6 +722,7 @@ export type RepairDto = {
   faultInfo: FaultInfoDto;
   id: Scalars['UUID']['output'];
   images: Array<ImageDto>;
+  repairDocument: Scalars['String']['output'];
   repairHistory: Array<RepairStepDto>;
   repairShop?: Maybe<RepairShopDto>;
   repairShopId: Scalars['UUID']['output'];
@@ -886,7 +887,7 @@ export type BookRepairMutationVariables = Exact<{
 }>;
 
 
-export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, ticketNumber: string, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
+export type BookRepairMutation = { __typename?: 'Mutation', bookRepair: { __typename?: 'RepairDto', id: any, ticketNumber: string, repairDocument: string, createdAt: any, repairShop?: { __typename?: 'RepairShopDto', address: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, postalCode: string, city: string, country: Country } } | null } };
 
 export type ChangeAddressMutationVariables = Exact<{
   request: ChangeAddressRequestInput;
