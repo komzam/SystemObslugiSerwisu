@@ -9,19 +9,18 @@ import {
     GetRepairShopForNewConvQuery,
     GetRepairShopForNewConvQueryVariables
 } from "@/__generated__/types";
-import {ConversationCard} from "@/app/Organisms/ConversationCard";
+import {ConversationCard} from "@/components/Organisms/ConversationCard";
 import * as React from "react";
 import {useMutation, useQuery} from "@apollo/client/react";
 import {GET_REPAIRSHOP_FOR_NEW_CONV} from "@/graphql/GetRepairShopForNewConv";
 import {useSearchParams} from "next/navigation";
 import {useRouter} from "@/i18n/navigation";
-import {Card} from "@/app/Atoms/Card";
-import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
+import {Card} from "@/components/Atoms/Card";
+import {LoadingIcon} from "@/components/Molecules/LoadingIcon";
 import {useEffect} from "react";
-import {useAuthContext} from "@/app/Utils/AuthContext";
+import {useAuthContext} from "@/components/Utils/AuthContext";
 import {CONVERSATION_EXISTS} from "@/graphql/ConversationExists";
 import {CREATE_CONVERSATION} from "@/graphql/CreateConversation";
-import {GET_CUSTOMER_CONVERSATIONS} from "@/graphql/GetCustomerConversations";
 
 export default function Messages() {
     const t = useTranslations("Messages");

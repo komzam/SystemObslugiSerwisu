@@ -1,4 +1,4 @@
-import {Card} from "@/app/Atoms/Card";
+import {Card} from "@/components/Atoms/Card";
 import {useTranslations} from "next-intl";
 
 export default function Messages() {

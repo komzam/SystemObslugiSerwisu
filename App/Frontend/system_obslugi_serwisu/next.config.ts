@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: "http",
-                hostname: "host.docker.internal",
-                port: "9000",
+                hostname: "storage.localhost",
+                port: "",
                 pathname: "**"
             }
         ]

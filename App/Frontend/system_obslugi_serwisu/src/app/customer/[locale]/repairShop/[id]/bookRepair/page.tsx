@@ -1,20 +1,20 @@
 "use client"
 
 import {useEffect, useRef, useState} from "react";
-import {RepairFormDevInfo} from "@/app/Organisms/RepairFormDevInfo";
-import {RepairFormFaultInfo} from "@/app/Organisms/RepairFormFaultInfo";
-import {RepairFormAdditionalInfo} from "@/app/Organisms/RepairFormAdditionalInfo";
-import {RepairFormConfirmation} from "@/app/Organisms/RepairFormConfirmation";
+import {RepairFormDevInfo} from "@/components/Organisms/RepairFormDevInfo";
+import {RepairFormFaultInfo} from "@/components/Organisms/RepairFormFaultInfo";
+import {RepairFormAdditionalInfo} from "@/components/Organisms/RepairFormAdditionalInfo";
+import {RepairFormConfirmation} from "@/components/Organisms/RepairFormConfirmation";
 import {useRouter} from "@/i18n/navigation";
-import {RepairFormProgressBar} from "@/app/Organisms/RepairFormProgressBar";
-import {RepairFormProvider, useRepairFormContext} from "@/app/Utils/RepairFormProvider";
+import {RepairFormProgressBar} from "@/components/Organisms/RepairFormProgressBar";
+import {RepairFormProvider, useRepairFormContext} from "@/components/Utils/RepairFormProvider";
 import {BOOK_REPAIR_QUERY} from "@/graphql/BookRepair";
 import {useMutation} from "@apollo/client/react";
 import {AddressDto, BookRepairMutation, BookRepairMutationVariables, ReturnMethod} from "@/__generated__/types";
 import {useParams} from "next/navigation";
 import {useTranslations} from "next-intl";
-import {HighlightColors, HighlightedText} from "@/app/Atoms/HighlightedText";
-import {ErrorName} from "@/app/Utils/ErrorName";
+import {HighlightColors, HighlightedText} from "@/components/Atoms/HighlightedText";
+import {ErrorName} from "@/components/Utils/ErrorName";
 
 
 export default function BookRepair()

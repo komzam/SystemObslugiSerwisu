@@ -1,4 +1,4 @@
-﻿import RepairShopProfile from "@/app/Organisms/RepairShopProfile";
+﻿import RepairShopProfile from "@/components/Organisms/RepairShopProfile";
 import {customerClient} from "@/graphql/ApolloClient";
 import {GET_REPAIRSHOP} from "@/graphql/GetRepairShop";
 import {GetRepairShopQuery, GetRepairShopQueryVariables} from "@/__generated__/types";

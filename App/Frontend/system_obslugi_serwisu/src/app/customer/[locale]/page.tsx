@@ -1,5 +1,5 @@
 import * as React from "react";
-import {MainPageSearchBar} from "@/app/Organisms/MainPageSearchBar";
+import {MainPageSearchBar} from "@/components/Organisms/MainPageSearchBar";
 import {useTranslations} from "next-intl";
 
 export default function Home() {

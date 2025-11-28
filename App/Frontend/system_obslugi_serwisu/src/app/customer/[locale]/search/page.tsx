@@ -1,10 +1,10 @@
 ﻿"use client"
 
-import {RepairShopCard} from "@/app/Organisms/RepairShopCard";
+import {RepairShopCard} from "@/components/Organisms/RepairShopCard";
 import {SEARCH} from "@/graphql/Search";
 import {useQuery} from "@apollo/client/react";
 import {useSearchParams} from "next/navigation";
-import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
+import {LoadingIcon} from "@/components/Molecules/LoadingIcon";
 import {SearchQuery, SearchQueryVariables} from "@/__generated__/types";
 
 type SearchParams = {

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import "../../globals.css";
-import * as Navbar from "@/app/Organisms/Navbar";
-import {ApolloClientProvider} from "@/app/Utils/ApolloClientProvider";
-import {AuthContextProvider} from "@/app/Utils/AuthContext";
+import * as Navbar from "@/components/Organisms/Navbar";
+import {ApolloClientProvider} from "@/components/Utils/ApolloClientProvider";
+import {AuthContextProvider} from "@/components/Utils/AuthContext";
 import {ReactNode} from "react";
 
 const roboto = Roboto({

@@ -1,5 +1,5 @@
-﻿import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
-import EditAccount from "@/app/Organisms/EditAccount"
+﻿import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
+import EditAccount from "@/components/Organisms/EditAccount"
 import * as React from "react";
 
 export default function EditAccountPage(){

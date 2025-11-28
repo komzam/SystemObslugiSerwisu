@@ -4,16 +4,13 @@ import {createClient} from "graphql-ws";
 import {OperationTypeNode} from "graphql/language";
 
 const httpLink = (actingRole: 'customer' | 'worker') => new HttpLink({
-    uri: "http://localhost:8080/graphql",
+    uri: actingRole=="customer"? "http://localhost:80/graphql": "http://repairshop.localhost:80/graphql",
     credentials: "include",
-    headers: {
-        "X-ActingRole": actingRole
-    }
 });
 
-const wsLink = new GraphQLWsLink(
+const wsLink = (actingRole : 'customer' | 'worker') => new GraphQLWsLink(
     createClient({
-        url: "ws://localhost:8080/graphql",
+        url: actingRole=="customer"? "ws://localhost:80/graphql" : "ws://repairshop.localhost:80/graphql",
     })
 );
 
@@ -21,7 +18,7 @@ const splitLink = (actingRole: 'customer' | 'worker') => ApolloLink.split(
     ({ operationType }) => {
         return operationType === OperationTypeNode.SUBSCRIPTION;
     },
-    wsLink,
+    wsLink(actingRole),
     httpLink(actingRole)
 );
 

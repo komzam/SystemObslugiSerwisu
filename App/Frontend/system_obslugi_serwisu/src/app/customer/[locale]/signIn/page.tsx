@@ -1,6 +1,6 @@
 import * as React from "react";
-import {SignInCard} from "@/app/Organisms/SignInCard";
-import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
+import {SignInCard} from "@/components/Organisms/SignInCard";
+import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
 
 type SignInProps ={
     searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;

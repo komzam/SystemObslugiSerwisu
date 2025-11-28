@@ -1,7 +1,7 @@
 "use client"
 
-import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
-import {ConversationCard} from "@/app/Organisms/ConversationCard";
+import {ConversationMessageProps} from "@/components/Molecules/ConversationMessage";
+import {ConversationCard} from "@/components/Organisms/ConversationCard";
 import {
     ActingRole, ConversationSubscriptionSubscription, ConversationSubscriptionSubscriptionVariables, ConversationType,
     GetConversationQuery, GetConversationQueryVariables,
@@ -15,7 +15,7 @@ import {DateTime} from "luxon";
 import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
 import {useEffect, useState} from "react";
 import {SEND_MESSAGE} from "@/graphql/SendMessage";
-import {Card} from "@/app/Atoms/Card";
+import {Card} from "@/components/Atoms/Card";
 
 export default function Messages() {
     const params = useParams();

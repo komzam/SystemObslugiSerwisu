@@ -26,7 +26,10 @@ export const AUTH_CONTEXT_QUERY = gql`
             ... on FullWorkerDto {
                 id,
                 firstName,
-                lastName
+                lastName,
+                repairShop{
+                    id
+                }
             }
         }
     }

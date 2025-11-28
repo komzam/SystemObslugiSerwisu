@@ -1,18 +1,18 @@
 "use client"
 
-import {RepairDetailsTitle} from "@/app/Organisms/RepairDetailsTitle";
-import {RepairDetailsDevInfo} from "@/app/Organisms/RepairDetailsDevInfo";
-import {RepairDetailsFaultInfo} from "@/app/Organisms/RepairDetailsFaultInfo";
-import {RepairDetailsImages} from "@/app/Organisms/RepairDetailsImages";
-import {RepairDetailsHistory} from "@/app/Organisms/RepairDetailsHistory";
+import {RepairDetailsTitle} from "@/components/Organisms/RepairDetailsTitle";
+import {RepairDetailsDevInfo} from "@/components/Organisms/RepairDetailsDevInfo";
+import {RepairDetailsFaultInfo} from "@/components/Organisms/RepairDetailsFaultInfo";
+import {RepairDetailsImages} from "@/components/Organisms/RepairDetailsImages";
+import {RepairDetailsHistory} from "@/components/Organisms/RepairDetailsHistory";
 import {GetRepairQuery, GetRepairQueryVariables} from "@/__generated__/types";
-import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
+import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
 import {useQuery} from "@apollo/client/react";
 import {GET_REPAIR} from "@/graphql/GetRepair";
 import {useParams} from "next/navigation";
 import {Link, useRouter} from "@/i18n/navigation";
-import {LoadingIcon} from "@/app/Molecules/LoadingIcon";
-import {BackButton} from "@/app/Atoms/BackButton";
+import {LoadingIcon} from "@/components/Molecules/LoadingIcon";
+import {BackButton} from "@/components/Atoms/BackButton";
 import {useTranslations} from "next-intl";
 
 export default function Repair() {

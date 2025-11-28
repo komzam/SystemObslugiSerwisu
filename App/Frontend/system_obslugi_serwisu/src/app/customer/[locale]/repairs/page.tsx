@@ -1,6 +1,6 @@
 import * as React from "react";
-import {RepairsList} from "@/app/Organisms/RepairsList";
-import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
+import {RepairsList} from "@/components/Organisms/RepairsList";
+import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
 import {useTranslations} from "next-intl";
 
 export default function Repairs() {

@@ -117,6 +117,54 @@ public class ConversationRepository(DatabaseContext databaseContext) : IConversa
         };
     }
 
+    public async Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetRepairShopsConversations(RepairShopId repairShopId, ConversationId? lastConversationId,
+        int numberOfConversations, bool skipEmpty)
+    {
+        List<Conversation> conversations;
+        ConversationId? newLastConversationId;
+        bool hasMore;
+        
+        try
+        {
+            var conversationsQuery = databaseContext.Conversations
+                .Where(conversation => conversation.RepairShopId == repairShopId);
+
+            if (lastConversationId != null)
+            {
+                var lastConversation = await databaseContext.Conversations.FirstOrDefaultAsync(c => c.Id == lastConversationId);
+                if (lastConversation != null)
+                    conversationsQuery = conversationsQuery.Where(c => c.LastModifiedAt < lastConversation.LastModifiedAt);
+            }
+
+            if (skipEmpty)
+            {
+                conversationsQuery = conversationsQuery.Where(c => c.Messages.Any());
+            }
+
+            conversations = await conversationsQuery
+                .OrderByDescending(conversation => conversation.LastModifiedAt)
+                .Take(numberOfConversations+1)
+                .ToListAsync();
+            
+            hasMore = conversations.Count > numberOfConversations;
+            
+            conversations = conversations.Take(numberOfConversations).ToList();
+
+            newLastConversationId = conversations.Count != 0 ? conversations.Last().Id : null;
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new CursorPaginatedList<Conversation, ConversationId?>
+        {
+            Items = conversations,
+            LastItemId = newLastConversationId,
+            HasMore = hasMore
+        };
+    }
+
     public async Task<OperationResult<CursorPaginatedList<Message, MessageId>>> GetMessages(ConversationId conversationId, MessageId? lastMessageId, int numberOfMessages)
     {
         List<Message> messages;

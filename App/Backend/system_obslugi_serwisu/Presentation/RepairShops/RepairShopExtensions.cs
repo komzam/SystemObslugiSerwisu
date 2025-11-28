@@ -1,8 +1,17 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using HotChocolate.Authorization;
+using MediatR;
+using system_obslugi_serwisu.Application.Conversations.GetCustomers;
+using system_obslugi_serwisu.Application.Conversations.GetRepairShops;
 using system_obslugi_serwisu.Application.RepairShops.GetImage;
 using system_obslugi_serwisu.Domain.RepairShops;
+using system_obslugi_serwisu.Presentation.Conversations;
+using system_obslugi_serwisu.Presentation.Conversations.Dto;
+using system_obslugi_serwisu.Presentation.Conversations.GetList;
+using system_obslugi_serwisu.Presentation.Customers.Dto;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 using system_obslugi_serwisu.Presentation.Shared;
+using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Presentation.RepairShops;
 
@@ -27,5 +36,35 @@ public class RepairShopExtensions
             ImageType = RepairShopImageType.Main
         });
         return imageResult.IsFailure ? null : SharedMapper.ToDto(imageResult.Value);
+    }
+    
+    [Authorize]
+    public async Task<CursorPaginatedList<ConversationDto, Guid?>> GetConversations(
+        [Service] IMediator mediatr,
+        [Parent] RepairShopDto repairShop,
+        ClaimsPrincipal claimsPrincipal,
+        GetConversationListRequest request)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var conversationsListResult = await mediatr.Send(new GetRepairShopsConversationsCommand
+        {
+            RepairShopId = repairShop.Id,
+            WorkerId = workerId,
+            LastConversationId = request.LastConversationId,
+            NumberOfConversations = request.NumberOfConversations
+        });
+        if(conversationsListResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(conversationsListResult.Error.GetUserMessage())
+                .SetCode(conversationsListResult.Error.GetUserCode())
+                .Build());
+
+        return conversationsListResult.Value.Map(ConversationMapper.ToDto, id=>id?.Value);
     }
 }

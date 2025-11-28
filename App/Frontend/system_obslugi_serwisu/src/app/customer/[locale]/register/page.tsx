@@ -1,6 +1,6 @@
 import * as React from "react";
-import {RegisterCard} from "@/app/Organisms/RegisterCard";
-import {ProtectedRoute} from "@/app/Utils/ProtectedRoute";
+import {RegisterCard} from "@/components/Organisms/RegisterCard";
+import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
 
 export default function SignIn() {
     return (

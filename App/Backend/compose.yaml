@@ -73,6 +73,14 @@
       volumes:
         - ./RabbitMqConfig.json:/etc/rabbitmq/definitions.json
         - rabbitmq_data:/var/lib/rabbitmq
+  
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   aspnet_keys:

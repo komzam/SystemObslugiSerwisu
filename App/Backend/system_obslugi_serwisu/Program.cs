@@ -1,4 +1,5 @@
 using Amazon.S3;
+using HotChocolate.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using RabbitMQ.Client;
@@ -106,9 +107,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseWebSockets();
-app.MapGraphQL();
+app.MapGraphQL()
+    .WithOptions(
+        new GraphQLServerOptions
+        {
+            Tool =
+            {
+                Enable = false
+            }
+        });;
+app.MapNitroApp("/nitroApp", "/graphql");
 app.UseCors("AllowFrontend");
-
-app.MapIdentityApi<User>();
 
 app.Run();

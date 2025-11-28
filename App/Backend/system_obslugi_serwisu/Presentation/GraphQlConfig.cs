@@ -7,6 +7,7 @@ using system_obslugi_serwisu.Presentation.Repairs.Dto.RepairSteps;
 using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.Reviews;
 using system_obslugi_serwisu.Presentation.Services;
+using system_obslugi_serwisu.Presentation.Workers;
 using system_obslugi_serwisu.Presentation.Workers.Dto;
 
 namespace system_obslugi_serwisu.Presentation;
@@ -41,6 +42,7 @@ public class GraphQlConfig
                 .AddTypeExtension<RepairExtensions>()
                 .AddTypeExtension<ConversationQueries>()
                 .AddTypeExtension<ConversationExtensions>()
+                .AddTypeExtension<WorkerExtensions>()
             .AddMutationType<Mutation>()
                 .AddTypeExtension<AuthMutations>()
                 .AddTypeExtension<CustomerMutations>()

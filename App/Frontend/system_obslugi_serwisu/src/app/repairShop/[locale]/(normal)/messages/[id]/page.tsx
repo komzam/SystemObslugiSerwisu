@@ -1,7 +1,7 @@
 "use client"
 
-import {ConversationMessageProps} from "@/app/Molecules/ConversationMessage";
-import {ConversationCard} from "@/app/Organisms/ConversationCard";
+import {ConversationMessageProps} from "@/components/Molecules/ConversationMessage";
+import {ConversationCard} from "@/components/Organisms/ConversationCard";
 import {
     ActingRole, ConversationSubscriptionSubscription, ConversationSubscriptionSubscriptionVariables, ConversationType,
     GetConversationQuery, GetConversationQueryVariables,
@@ -15,7 +15,7 @@ import {DateTime} from "luxon";
 import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
 import {useEffect, useState} from "react";
 import {SEND_MESSAGE} from "@/graphql/SendMessage";
-import {Card} from "@/app/Atoms/Card";
+import {Card} from "@/components/Atoms/Card";
 
 export default function Messages() {
     const params = useParams();
@@ -37,7 +37,7 @@ export default function Messages() {
     const [sendMessage] = useMutation<SendMessageMutation, SendMessageMutationVariables>(SEND_MESSAGE);
 
     useSubscription<ConversationSubscriptionSubscription, ConversationSubscriptionSubscriptionVariables>(CONVERSATION_SUBSCRIPTION, {
-        variables: { conversationId, actingRole: ActingRole.Customer },
+        variables: { conversationId, actingRole: ActingRole.Worker },
 
         onData: ({ data }) => {
             const incoming = data?.data?.onMessageSent;
@@ -48,7 +48,7 @@ export default function Messages() {
                 time: DateTime.fromISO(incoming.createdAt)
                     .toLocal()
                     .toFormat("HH:mm"),
-                type: (incoming.senderRole === SenderRole.Customer ? "sent" : "received") as "sent" | "received"
+                type: (incoming.senderRole === SenderRole.RepairShop ? "sent" : "received") as "sent" | "received"
             };
 
             setMessages((prev) => [newMessage, ...prev]);
@@ -62,7 +62,7 @@ export default function Messages() {
                 time: DateTime.fromISO(m.createdAt)
                     .toLocal()
                     .toFormat("HH:mm"),
-                type: (m.senderRole === SenderRole.Customer ? "sent" : "received") as "sent" | "received"
+                type: (m.senderRole === SenderRole.RepairShop ? "sent" : "received") as "sent" | "received"
             }));
 
             setNoMoreMessages(!queryData.conversation.messages.hasMore);

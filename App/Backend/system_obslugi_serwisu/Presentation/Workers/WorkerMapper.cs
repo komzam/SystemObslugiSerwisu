@@ -10,7 +10,8 @@ public static class WorkerMapper
         return new FullWorkerDto{
             Id = worker.Id.Value,
             FirstName = worker.FirstName,
-            LastName = worker.LastName
+            LastName = worker.LastName,
+            RepairShopId = worker.RepairShopId?.Value
         };
     }
 }

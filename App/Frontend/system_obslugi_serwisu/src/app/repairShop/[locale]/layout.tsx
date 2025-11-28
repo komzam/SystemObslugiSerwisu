@@ -2,8 +2,8 @@
 import type {Metadata} from "next";
 import "../../globals.css";
 import {ReactNode} from "react";
-import {ApolloClientProvider} from "@/app/Utils/ApolloClientProvider";
-import {AuthContextProvider} from "@/app/Utils/AuthContext";
+import {ApolloClientProvider} from "@/components/Utils/ApolloClientProvider";
+import {AuthContextProvider} from "@/components/Utils/AuthContext";
 import {NextIntlClientProvider} from "next-intl";
 
 const roboto = Roboto({

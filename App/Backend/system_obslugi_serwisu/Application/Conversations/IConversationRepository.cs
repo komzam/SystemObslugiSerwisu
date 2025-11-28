@@ -12,5 +12,6 @@ public interface IConversationRepository
     public Task<OperationResult<Conversation>> GetConversation(ConversationId id);
     public Task<OperationResult<List<Conversation>>> GetConversation(RepairShopId repairShopId, CustomerId customerId, ConversationType conversationType);
     public Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetCustomersConversations(CustomerId customerId, ConversationId? lastConversationId, int numberOfConversations, bool skipEmpty);
+    public Task<OperationResult<CursorPaginatedList<Conversation, ConversationId?>>> GetRepairShopsConversations(RepairShopId repairShopId, ConversationId? lastConversationId, int numberOfConversations, bool skipEmpty);
     public Task<OperationResult<CursorPaginatedList<Message, MessageId>>> GetMessages(ConversationId conversationId, MessageId? lastMessageId, int numberOfMessages);
 }
