@@ -17,6 +17,9 @@ import {
 import {GET_CONVERSATIONS} from "@/graphql/GetConversations";
 import {REPAIRSHOP_CONV_LIST_SUB} from "@/graphql/RepairShopConvListSubscription";
 import {useAuthContext} from "@/components/Utils/AuthContext";
+import {ErrorName} from "@/components/Utils/ErrorName";
+import {useTranslations} from "next-intl";
+import {useToast} from "@/components/Utils/ToastNotifications";
 
 
 type MessagesLayoutParams = {
@@ -27,7 +30,9 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
     const params = useParams<{id?: string}>();
     const path = usePathname();
     const conversationId = params.id;
-    const showList = !conversationId && path!="/messages/new"
+    const showList = !conversationId && path!="/messages/new";
+    const tErr = useTranslations("Errors");
+    const toasts = useToast();
     const [conversations, setConversations] = useState<ConversationButtonProps[]>([]);
     const [noMoreConversations, setNoMoreConversations] = useState<boolean>(false);
     const authContext = useAuthContext();
@@ -53,7 +58,7 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
                     id: c.id,
                     type: c.conversationType == ConversationType.RepairChat? "repair": "general" as "repair"|"general",
                     date: new Date(Date.parse(c.messages.items[0]?.createdAt)),
-                    title: c.conversationType==ConversationType.GeneralChat? c.repairShop?.name??"": (c.repair?.deviceInfo.manufacturer ?? "") + " " + (c.repair?.deviceInfo.model ?? ""),
+                    title: c.conversationType==ConversationType.GeneralChat? c.customer?.name??"": (c.repair?.deviceInfo.manufacturer ?? "") + " " + (c.repair?.deviceInfo.model ?? ""),
                     lastMessage: c.messages.items[0]?.content,
                     isSelected: conversationId != null && c.id == conversationId
                 }));
@@ -79,8 +84,13 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
     const onLoadMore = async () => {
         if(queryLoading) return;
         if(noMoreConversations) return;
-        if(queryData?.me.__typename == "FullWorkerDto") // Temp fix
-            fetchMore({variables: {lastConversationId: queryData?.me.repairShop?.conversations.lastItemId}});
+        if(queryData?.me.__typename == "FullWorkerDto") {
+            try {
+                fetchMore({variables: {lastConversationId: queryData?.me.repairShop?.conversations.lastItemId}});
+            }catch(err) {
+                toasts.toast({title:tErr("error"), type:"error", description:ErrorName(err, tErr)});
+            }
+        }
     }
 
 

@@ -333,7 +333,23 @@
 
     "Other": "Inne"
   },
+  "NoRepairShop": {
+    "title": "Nie jesteś przypisany do żadnego serwisu.",
+    "logOut": "Wyloguj się"
+  },
+  "Dashboard": {
+    "ActiveRepair": {
+      "title": "Twoja Aktywna Naprawa",
+      "assignedOn": "Przypisana",
+      "viewDetails": "Wyświetl szczegóły",
+      "noActiveRepair": "Nie posiadasz aktywnej naprawy"
+    },
+    "LatestMessages": {
+      "title": "Najnowsze Wiadomości"
+    }
+  },
   "Errors": {
+    "error": "Błąd",
     "generalError": "Wystąpił błąd",
     "Identity": {
       "UnknownError": "Nieznany błąd tożsamości",
@@ -355,7 +371,10 @@
       "EmailTooLong": "Email jest za długi"
     },
     "Repairs": {
-      "RepairNotFound": "Nie znaleziono naprawy"
+      "RepairNotFound": "Nie znaleziono naprawy",
+      "RepairClosed": "Naprawa jest zamknięta",
+      "AdditionalCommentTooLong": "Dodatkowy komentarz do naprawy jest za długi",
+      "AccessDenied": "Odmowa dostępu do naprawy"
     },
     "ContactInfo": {
       "FullNameTooLong": "Imię i nazwisko jest za długie",
@@ -367,7 +386,7 @@
       "ModelTooLong": "Nazwa modelu jest za długa",
       "InvalidModel": "Nazwa modelu jest niepoprawna",
       "SerialNumberTooLong": "Numer seryjny jest za długi",
-      "SerialNumberInvalid": "Numer seryjny jest niepoprawny"
+      "InvalidSerialNumber": "Numer seryjny jest niepoprawny"
     },
     "FaultInfo": {
       "WhenOccurredTooLong": "Pole kiedy wystąpiła usterka jest za długie",
@@ -383,7 +402,8 @@
     "RepairShops": {
       "RepairShopNotFound": "Nie znaleziono serwisu",
       "InvalidName": "Nazwa serwisu jest niepoprawna",
-      "NameTooLong": "Nazwa serwisu jest za długa"
+      "NameTooLong": "Nazwa serwisu jest za długa",
+      "AccessDenied": "Odmowa dostępu do serwisu"
     },
     "TimeInterval": {
       "InvalidFromTime": "Pole od w przedziale jest niepoprawne",
@@ -423,6 +443,35 @@
     "PhoneNumber":{
       "PhoneNumberTooLong": "Numer telefonu jest za długi",
       "InvalidPhoneNumber": "Numer telefonu jest niepoprawny"
+    },
+    "Messages": {
+      "MessageNotFound": "Nie znaleziono wiadomości",
+      "InvalidContent": "Treść wiadomości jest niepoprawna",
+      "ContentTooLong": "Treść wiadomości jest za długa"
+    },
+    "Conversations": {
+      "ConversationNotFound": "Nie znaleziono konwersacji",
+      "AccessDenied": "Odmowa dostępu do konwersacji",
+      "RepairClosed": "Naprawa jest zamknięta"
+    },
+    "Quotes": {
+      "CurrencyMismatch": "Niezgodność walut w wycenie"
+    },
+    "RepairSteps": {
+      "DescriptionTooLong": "Opis kroku naprawy za długi"
+    },
+    "ContentTypes": {
+      "TypeNotPermitted": "Ten typ pliku jest niedozwolony"
+    },
+    "Images": {
+      "ImageNotFound": "Nie znaleziono zdjęcia"
+    },
+    "Workers": {
+      "WorkerNotFound": "Nie znaleziono pracownika",
+      "FirstNameTooLong": "Imię jest za długie",
+      "InvalidFirstName": "Imię jest niepoprawne",
+      "LastNameTooLong": "Nazwisko jest za długie",
+      "InvalidLastName": "Nazwisko jest niepoprawne"
     }
   },
   "Common": {

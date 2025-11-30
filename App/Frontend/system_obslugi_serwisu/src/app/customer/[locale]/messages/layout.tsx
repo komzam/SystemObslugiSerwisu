@@ -16,6 +16,9 @@ import {
 import {GET_CONVERSATIONS} from "@/graphql/GetConversations";
 import {CUSTOMER_CONV_LIST_SUB} from "@/graphql/CustomerConvListSubscription";
 import {ConversationButtonProps} from "@/components/Molecules/ConversationButton";
+import {useTranslations} from "next-intl";
+import {useToast} from "@/components/Utils/ToastNotifications";
+import {ErrorName} from "@/components/Utils/ErrorName";
 
 
 type MessagesLayoutParams = {
@@ -26,7 +29,9 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
     const params = useParams<{id?: string}>();
     const path = usePathname();
     const conversationId = params.id;
-    const showList = !conversationId && path!="/messages/new"
+    const showList = !conversationId && path!="/messages/new";
+    const tErr = useTranslations("Errors");
+    const toasts = useToast();
     const [conversations, setConversations] = useState<ConversationButtonProps[]>([]);
     const [noMoreConversations, setNoMoreConversations] = useState<boolean>(false);
 
@@ -75,8 +80,13 @@ export default function MessagesLayout({children}: MessagesLayoutParams) {
     const onLoadMore = async () => {
         if(queryLoading) return;
         if(noMoreConversations) return;
-        if(queryData?.me.__typename == "FullCustomerDto") // Temp fix
-            fetchMore({variables: {lastConversationId: queryData?.me.conversations.lastItemId}});
+        if(queryData?.me.__typename == "FullCustomerDto") {
+            try {
+                fetchMore({variables: {lastConversationId: queryData?.me.conversations.lastItemId}});
+            } catch (err) {
+                toasts.toast({title: tErr("error"), type: "error", description: ErrorName(err, tErr)});
+            }
+        }
     }
 
     return (

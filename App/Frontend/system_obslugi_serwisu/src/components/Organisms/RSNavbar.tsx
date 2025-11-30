@@ -5,6 +5,10 @@ import * as React from "react";
 import {RSNavbarActions} from "@/components/Molecules/RSNavbarActions";
 import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
 import { createContext, useContext, useState} from "react";
+import {Button} from "@/components/Atoms/Button";
+import {useAuthContext} from "@/components/Utils/AuthContext";
+import {useRouter} from "@/i18n/navigation";
+import {useTranslations} from "next-intl";
 
 const SidebarContext = createContext({
     isOpen: true,
@@ -60,15 +64,24 @@ export const Navbar = function Navbar({ className = "" }: NavbarProps) {
 
 export const Outlet = function NavbarOutlet({ className = "", children }: NavbarProps) {
     const { isOpen, toggleSidebar } = useContext(SidebarContext);
+    const t = useTranslations("Navbar");
+    const authContext = useAuthContext();
+    const router = useRouter();
+
+    const onLogout = async () => {
+        authContext.logout();
+        router.replace("/signIn");
+    }
 
     return (
         <div className={`flex flex-col w-full min-h-screen transition-all duration-300 ease-in-out ${isOpen ? "pl-64" : "pl-0"}`}>
-            <div className="fixed top-0 z-50 bg-primary w-full flex h-12 items-center px-4 shadow-md">
+            <div className={`fixed ${isOpen ? "left-64" : "left-0"} right-0 top-0 z-50 bg-primary flex h-12 items-center px-4 shadow-md transition-all duration-300 ease-in-out`}>
                 {!isOpen && (
                     <LuPanelLeftOpen className="text-white hover:opacity-80 transition-opacity mr-4 cursor-pointer"
                                      onClick={toggleSidebar}
                                      size="1.25rem" />
                 )}
+                <Button className="ml-auto !py-1" variant={"secondary"} onClick={onLogout}>{t("logOut")}</Button>
             </div>
 
             <main className={`flex-1 ${className}`}>

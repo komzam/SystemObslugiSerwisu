@@ -10,7 +10,7 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.RepairShops;
 
-public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> buckets) : IRepairShopStorageService
+public class RepairShopStorageService(S3Clients s3Clients, IOptions<S3Buckets> buckets) : IRepairShopStorageService
 {
     private readonly Dictionary<RepairShopImageType, string> _typeDirectoryNameMap = new()
     {
@@ -36,7 +36,7 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
                     Protocol = Protocol.HTTP
                 };
 
-                urls[size] = await s3Client.GetPreSignedURLAsync(getImageRequest);
+                urls[size] = await s3Clients.PublicClient.GetPreSignedURLAsync(getImageRequest);
             }
 
             return new ImageDto
@@ -67,7 +67,7 @@ public class RepairShopStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bu
                 Protocol = Protocol.HTTP
             };
             
-            return await s3Client.GetPreSignedURLAsync(putImageRequest);
+            return await s3Clients.PublicClient.GetPreSignedURLAsync(putImageRequest);
         }catch
         {
             return StorageErrors.UnknownError();

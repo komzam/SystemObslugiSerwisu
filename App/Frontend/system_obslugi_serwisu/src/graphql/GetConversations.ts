@@ -53,7 +53,7 @@ export const GET_CONVERSATIONS = gql`
                             conversationType,
                             createdAt,
                             modifiedAt,
-                            repairShop{
+                            customer{
                                 id,
                                 name
                             },

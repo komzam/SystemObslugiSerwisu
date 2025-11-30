@@ -19,7 +19,6 @@ namespace system_obslugi_serwisu.Infrastructure.Images;
 
 public class DbImageAddingWorker(
     QueueConnectionProvider connectionProvider,
-    IAmazonS3 s3Client,
     IServiceScopeFactory scopeFactory,
     IOptions<S3Buckets> buckets) : BackgroundService
 {

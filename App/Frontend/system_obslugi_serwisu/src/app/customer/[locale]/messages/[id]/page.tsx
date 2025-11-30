@@ -16,10 +16,15 @@ import {CONVERSATION_SUBSCRIPTION} from "@/graphql/ConversationSubscription";
 import {useEffect, useState} from "react";
 import {SEND_MESSAGE} from "@/graphql/SendMessage";
 import {Card} from "@/components/Atoms/Card";
+import {useTranslations} from "next-intl";
+import {useToast} from "@/components/Utils/ToastNotifications";
+import {ErrorName} from "@/components/Utils/ErrorName";
 
 export default function Messages() {
     const params = useParams();
     const conversationId = params.id;
+    const tErr = useTranslations("Errors");
+    const toasts = useToast();
     const [messages, setMessages] = useState<ConversationMessageProps[]>([]);
     const [noMoreMessages, setNoMoreMessages] = useState<boolean>(false);
 
@@ -74,7 +79,8 @@ export default function Messages() {
     const onMessageSend = async (message: string): Promise<boolean> =>{
         try{
             await sendMessage({variables:{conversationId, message}})
-        }catch{
+        }catch(err){
+            toasts.toast({title:tErr("error"), type:"error", description:ErrorName(err, tErr)});
             return false;
         }
         return true;
@@ -82,22 +88,26 @@ export default function Messages() {
 
     const onLoadMore = async () => {
         if(noMoreMessages) return;
-        fetchMore({query: GET_MORE_MESSAGES,
-            variables: {conversationId, lastMessageId: queryData?.conversation.messages.lastItemId, numberOfMessages: 10},
-            updateQuery: (prev, { fetchMoreResult }) => {
-                if (!fetchMoreResult) return prev;
+        try {
+            fetchMore({query: GET_MORE_MESSAGES,
+                variables: {conversationId, lastMessageId: queryData?.conversation.messages.lastItemId, numberOfMessages: 10},
+                updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev;
 
-                return {
-                    conversation: {
-                        ...prev.conversation,
-                        messages: {
-                            items: [...prev.conversation.messages.items, ...fetchMoreResult.conversation.messages.items],
-                            lastItemId: fetchMoreResult.conversation.messages.lastItemId,
-                            hasMore: fetchMoreResult.conversation.messages.hasMore
+                    return {
+                        conversation: {
+                            ...prev.conversation,
+                            messages: {
+                                items: [...prev.conversation.messages.items, ...fetchMoreResult.conversation.messages.items],
+                                lastItemId: fetchMoreResult.conversation.messages.lastItemId,
+                                hasMore: fetchMoreResult.conversation.messages.hasMore
+                            }
                         }
-                    }
-                };
+                    };
             }});
+        }catch(err){
+            toasts.toast({title:tErr("error"), type:"error", description:ErrorName(err, tErr)});
+        }
     }
 
     if(!queryData) return <Card className={`bg-accent3 hidden !p-4 w-full md:flex md:basis-[79%] md:flex-col md:items-center md:justify-center`}/>;

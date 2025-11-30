@@ -27,8 +27,8 @@ export type ConversationCardProps = {
 }|{
     conversationType: ConversationType.GeneralChat
     title: string;
-    rating: number;
-    reviewCount: number;
+    rating?: number;
+    reviewCount?: number;
     messages: ConversationMessageProps[];
     className?: string;
     onMessageSendAction: (message: string) => Promise<boolean>;
@@ -110,7 +110,8 @@ export function ConversationCard(props: ConversationCardProps) {
                                 <span className="text-larger1 font-bold text-white line-clamp-2 text-ellipsis">{props.title}</span>
                                 {props.conversationType === ConversationType.RepairChat ? (
                                     <span className="text-accent3">{props.repairTicketNumber}</span>
-                                ) : (
+                                ) :
+                                    props.rating != undefined && props.reviewCount != undefined && (
                                     <RepairShopElementInfo.RatingRoot>
                                         <RepairShopElementInfo.RatingStars numberOfStars={props.rating}/>
                                         <RepairShopElementInfo.RatingSeparator/>

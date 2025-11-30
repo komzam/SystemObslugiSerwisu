@@ -1,5 +1,5 @@
 import * as React from "react";
-import {RegisterCard} from "@/components/Organisms/RegisterCard";
+import {RSRegisterCard} from "@/components/Organisms/RSRegisterCard";
 import {ProtectedRoute} from "@/components/Utils/ProtectedRoute";
 
 export default function SignIn() {
@@ -7,7 +7,7 @@ export default function SignIn() {
         <ProtectedRoute mustBe={"loggedOut"} redirectTo={"/"}>
             <div className="h-screen flex items-center justify-center w-full">
                 <div className="flex h-fit justify-center">
-                    <RegisterCard/>
+                    <RSRegisterCard/>
                 </div>
             </div>
         </ProtectedRoute>

@@ -30,20 +30,34 @@ builder.Services.AddDbContextPool<DatabaseContext>(options =>
 
 
 builder.Services.Configure<S3Buckets>(builder.Configuration.GetSection("S3Buckets"));
-builder.Services.AddSingleton<IAmazonS3>(_ =>
+builder.Services.AddSingleton<S3Clients>(_ =>
 {
-    var config = new AmazonS3Config
+    var publicConfig = new AmazonS3Config
     {
-        ServiceURL = builder.Configuration["S3Config:Url"],
+        ServiceURL = builder.Configuration["S3Config:PublicUrl"],
+        ForcePathStyle = true,
+        UseHttp = true
+    };
+    
+    var internalConfig = new AmazonS3Config
+    {
+        ServiceURL = builder.Configuration["S3Config:InternalUrl"],
         ForcePathStyle = true,
         UseHttp = true
     };
 
-    return new AmazonS3Client(
-        builder.Configuration["S3Config:User"],
-        builder.Configuration["S3Config:Password"],
-        config
-    );
+    return new S3Clients
+    {
+        PublicClient = new AmazonS3Client(
+            builder.Configuration["S3Config:User"],
+            builder.Configuration["S3Config:Password"],
+            publicConfig
+        ),
+        InternalClient = new AmazonS3Client(
+            builder.Configuration["S3Config:User"],
+            builder.Configuration["S3Config:Password"],
+            internalConfig)
+    };
 });
 
 builder.Services.AddSingleton<IConnectionFactory>(sp =>

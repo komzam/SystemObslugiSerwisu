@@ -6,6 +6,7 @@ import * as Navbar from "@/components/Organisms/Navbar";
 import {ApolloClientProvider} from "@/components/Utils/ApolloClientProvider";
 import {AuthContextProvider} from "@/components/Utils/AuthContext";
 import {ReactNode} from "react";
+import {ToastProvider} from "@/components/Utils/ToastNotifications";
 
 const roboto = Roboto({
     variable: "--font-roboto",
@@ -24,6 +25,7 @@ export default function RootLayout({ children, }: Readonly<{ children: ReactNode
           <ApolloClientProvider actingRole={"customer"}>
               <AuthContextProvider>
                 <NextIntlClientProvider>
+                    <ToastProvider>
                         <Navbar.Root>
                             <Navbar.Navbar/>
                             <Navbar.Outlet className="pt-16 h-screen">
@@ -32,6 +34,7 @@ export default function RootLayout({ children, }: Readonly<{ children: ReactNode
                                 </div>
                             </Navbar.Outlet>
                         </Navbar.Root>
+                    </ToastProvider>
                 </NextIntlClientProvider>
               </AuthContextProvider>
           </ApolloClientProvider>

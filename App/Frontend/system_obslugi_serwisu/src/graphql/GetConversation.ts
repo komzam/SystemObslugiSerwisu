@@ -29,6 +29,10 @@ export const GET_CONVERSATION = gql`
                 name,
                 rating,
                 reviewCount
+            },
+            customer{
+                id,
+                name
             }
         }
     }

@@ -333,7 +333,23 @@
 
     "Other": "Other"
   },
+  "NoRepairShop": {
+    "title": "You are not assigned to any repair shop.",
+    "logOut": "Log out"
+  },
+  "Dashboard": {
+    "ActiveRepair": {
+      "title": "Your Active Repair",
+      "assignedOn": "Assigned on",
+      "viewDetails": "View details",
+      "noActiveRepair": "You don't have an active repair"
+    },
+    "LatestMessages": {
+      "title": "Latest Messages"
+    }
+  },
   "Errors": {
+    "error": "Error",
     "generalError": "There was an error",
     "Identity": {
       "UnknownError": "Unknown identity error",
@@ -355,7 +371,10 @@
       "EmailTooLong": "Email is too long"
     },
     "Repairs": {
-      "RepairNotFound": "Repair was not found"
+      "RepairNotFound": "Repair was not found",
+      "RepairClosed": "Repair is closed",
+      "AdditionalCommentTooLong": "Repair additional comment is too long",
+      "AccessDenied": "Repair access denied"
     },
     "ContactInfo": {
       "FullNameTooLong": "Full name is too long",
@@ -367,7 +386,7 @@
       "ModelTooLong": "Model name is too long",
       "InvalidModel": "Model name is invalid",
       "SerialNumberTooLong": "Serial number is too long",
-      "SerialNumberInvalid": "Serial number is invalid"
+      "InvalidSerialNumber": "Serial number is invalid"
     },
     "FaultInfo": {
       "WhenOccurredTooLong": "When occurred text is too long",
@@ -383,7 +402,8 @@
     "RepairShops": {
       "RepairShopNotFound": "Repair shop was not found",
       "InvalidName": "Repair shop name is invalid",
-      "NameTooLong": "Repair shop name is too long"
+      "NameTooLong": "Repair shop name is too long",
+      "AccessDenied": "Repair shop access denied"
     },
     "TimeInterval": {
       "InvalidFromTime": "Interval from time is invalid",
@@ -423,6 +443,35 @@
     "PhoneNumber":{
       "PhoneNumberTooLong": "Phone number is too long",
       "InvalidPhoneNumber": "Phone number is invalid"
+    },
+    "Messages": {
+      "MessageNotFound": "Message not found",
+      "InvalidContent": "Message content is invalid",
+      "ContentTooLong": "Message content is too long"
+    },
+    "Conversations": {
+      "ConversationNotFound": "Conversation not found",
+      "AccessDenied": "Conversation access denied",
+      "RepairClosed": "Repair is closed"
+    },
+    "Quotes": {
+      "CurrencyMismatch": "Currency mismatch in quote"
+    },
+    "RepairSteps": {
+      "DescriptionTooLong": "Repair step description is too long"
+    },
+    "ContentTypes": {
+      "TypeNotPermitted": "This file type is not permitted"
+    },
+    "Images": {
+      "ImageNotFound": "Image not found"
+    },
+    "Workers": {
+      "WorkerNotFound": "Worker not found",
+      "FirstNameTooLong": "First name is too long",
+      "InvalidFirstName": "First name is invalid",
+      "LastNameTooLong": "Last name is too long",
+      "InvalidLastName": "Last name is invalid"
     }
   },
   "Common": {

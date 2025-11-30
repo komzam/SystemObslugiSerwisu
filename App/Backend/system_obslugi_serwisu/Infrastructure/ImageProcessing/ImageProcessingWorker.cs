@@ -10,11 +10,12 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using system_obslugi_serwisu.Application.Storage;
 using system_obslugi_serwisu.Infrastructure.Queue;
+using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.ImageProcessing;
 
-public class ImageProcessingWorker(QueueConnectionProvider connectionProvider, IAmazonS3 s3Client) : BackgroundService
+public class ImageProcessingWorker(QueueConnectionProvider connectionProvider, S3Clients s3Clients) : BackgroundService
 {
     private readonly Dictionary<string, int> _sizeMap = new()
     {
@@ -70,7 +71,7 @@ public class ImageProcessingWorker(QueueConnectionProvider connectionProvider, I
                 Key = objectKey
             };
             
-            using var response = await s3Client.GetObjectAsync(getImageRequest,  cancellationToken);
+            using var response = await s3Clients.InternalClient.GetObjectAsync(getImageRequest,  cancellationToken);
             using var imageStream = new MemoryStream();
             await response.ResponseStream.CopyToAsync(imageStream, cancellationToken);
             
@@ -88,7 +89,7 @@ public class ImageProcessingWorker(QueueConnectionProvider connectionProvider, I
 
                 createImageRequest.Metadata.Add("resized", "true");
                 
-                await s3Client.PutObjectAsync(createImageRequest, cancellationToken);
+                await s3Clients.InternalClient.PutObjectAsync(createImageRequest, cancellationToken);
             }
 
             return OperationResult.Success();

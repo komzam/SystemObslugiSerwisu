@@ -2,12 +2,14 @@
 using HotChocolate.Authorization;
 using HotChocolate.Resolvers;
 using MediatR;
-using system_obslugi_serwisu.Application.Customers.Login;
-using system_obslugi_serwisu.Application.Customers.Logout;
+using system_obslugi_serwisu.Application.Identity.Login;
+using system_obslugi_serwisu.Application.Identity.Logout;
 using system_obslugi_serwisu.Application.Identity.ChangeEmail;
 using system_obslugi_serwisu.Application.Identity.ChangePassword;
+using system_obslugi_serwisu.Application.Shared;
 using system_obslugi_serwisu.Presentation.Auth.ChangeEmail;
 using system_obslugi_serwisu.Presentation.Auth.ChangePassword;
+using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Shared;
 
 namespace system_obslugi_serwisu.Presentation.Auth;
@@ -71,14 +73,24 @@ public class AuthMutations
         return true;
     }
     
-    public async Task<bool> Login([Service] IMediator mediatr, LoginRequest request)
+    [ActingRoleMiddleware]
+    public async Task<bool> Login(
+        [Service] IMediator mediatr,
+        IResolverContext resolverContext,
+        LoginRequest request)
     {
-        var customerResult = await mediatr.Send(new LoginCustomerCommand
-            { Email = request.Email, Password = request.Password, RememberMe = request.RememberMe });
-        if (customerResult.IsFailure)
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
+        var loginResult = await mediatr.Send(new LoginCommand
+        {
+            Email = request.Email,
+            Password = request.Password,
+            RememberMe = request.RememberMe,
+            ActingRole = role
+        });
+        if (loginResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(customerResult.Error.GetUserMessage())
-                .SetCode(customerResult.Error.GetUserCode())
+                .SetMessage(loginResult.Error.GetUserMessage())
+                .SetCode(loginResult.Error.GetUserCode())
                 .Build());
 
         return true;
@@ -86,11 +98,11 @@ public class AuthMutations
 
     public async Task<bool> Logout([Service] IMediator mediatr)
     {
-        var customerResult = await mediatr.Send(new LogoutCustomerCommand());
-        if (customerResult.IsFailure)
+        var logoutResult = await mediatr.Send(new LogoutCommand());
+        if (logoutResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
-                .SetMessage(customerResult.Error.GetUserMessage())
-                .SetCode(customerResult.Error.GetUserCode())
+                .SetMessage(logoutResult.Error.GetUserMessage())
+                .SetCode(logoutResult.Error.GetUserCode())
                 .Build());
 
         return true;

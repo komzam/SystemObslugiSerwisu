@@ -14,7 +14,7 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Repairs;
 
-public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> buckets) : IRepairStorageService
+public class RepairStorageService(S3Clients s3Clients, IOptions<S3Buckets> buckets) : IRepairStorageService
 {
     public async Task<OperationResult<List<ImageDto>>> GetRepairImages(List<RepairImage> repairImages)
     {
@@ -38,7 +38,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
                         Protocol = Protocol.HTTP
                     };
 
-                    urls[size] = await s3Client.GetPreSignedURLAsync(getImageRequest);
+                    urls[size] = await s3Clients.PublicClient.GetPreSignedURLAsync(getImageRequest);
                 }
 
                 images.Add(new ImageDto
@@ -72,7 +72,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
                 Protocol = Protocol.HTTP
             };
             
-            return await s3Client.GetPreSignedURLAsync(putImageRequest);
+            return await s3Clients.PublicClient.GetPreSignedURLAsync(putImageRequest);
         }catch
         {
             return StorageErrors.UnknownError();
@@ -93,7 +93,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
                 ContentType = "application/pdf"
             };
 
-            await s3Client.PutObjectAsync(createDocumentRequest);
+            await s3Clients.InternalClient.PutObjectAsync(createDocumentRequest);
             return OperationResult.Success();
         }
         catch
@@ -116,7 +116,7 @@ public class RepairStorageService(IAmazonS3 s3Client, IOptions<S3Buckets> bucket
                 Protocol = Protocol.HTTP
             };
 
-            return await s3Client.GetPreSignedURLAsync(getDocumentRequest);
+            return await s3Clients.PublicClient.GetPreSignedURLAsync(getDocumentRequest);
         }
         catch
         {

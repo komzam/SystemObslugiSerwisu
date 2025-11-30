@@ -21,7 +21,7 @@ public class IdentityController(UserManager<User> userManager, SignInManager<Use
         return OperationResult.Success();
     }
 
-    public async Task<OperationResult> Login(string email, string password, bool rememberMe)
+    public async Task<OperationResult<Guid>> Login(string email, string password, bool rememberMe)
     {
         var result = await signInManager.PasswordSignInAsync(email, password, rememberMe, true);
         
@@ -34,7 +34,11 @@ public class IdentityController(UserManager<User> userManager, SignInManager<Use
         if (!result.Succeeded)
             return IdentityErrors.InvalidCredentials();
         
-        return OperationResult.Success();
+        var user = await signInManager.UserManager.FindByNameAsync(email);
+        if (!Guid.TryParse(user?.Id, out var userId))
+            return IdentityErrors.UnknownError();
+        
+        return userId;
     }
     
     public async Task<OperationResult> Logout()
