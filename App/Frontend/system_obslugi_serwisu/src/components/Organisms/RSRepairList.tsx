@@ -44,7 +44,7 @@ export function RSRepairList({repairs, currentPage, totalPages, onPageChange}: R
     return(
         <div className="flex flex-col w-full">
             <Card className="w-full flex flex-col gap-5">
-                <RSList columns={[{width:"1fr"},{width:"2fr"},{width:"2fr"},{width:"1fr"},{width:"1fr"},{width:"1fr"},{width:"auto"}]}>
+                <RSList columns={[{width:"1fr"},{width:"1.5fr"},{width:"1.5fr"},{width:"1fr"},{width:"1fr"},{width:"1fr"},{width:"auto"}]}>
                     <RSListHeader cells={headerCells}/>
                     {repairs.map((repair, repairIndex) => {
                         const cells: RsListCell[] = [

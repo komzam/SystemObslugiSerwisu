@@ -51,15 +51,15 @@ export default function DashboardPage(){
                 readyForPickup={queryData.readyForPickup}
                 complaint={queryData.complaint}
             />
-            <div className="flex flex-row gap-7">
+            <div className="flex flex-row gap-7 min-h-72">
                 <RSDashboard.ActiveRepair className="flex-3" activeRepair={
+                    queryData.activeRepair.__typename != "FullWorkerDto" || queryData.activeRepair.activeRepair == null? undefined:
                     {
-                        id:"23f8237c-2d12-4fac-8fb7-eac6c1b2e02c",
-                        title:"Playstation 5",
-                        description:"Konsola ma problem z włączeniem się",
-                        status: RepairStatus.Created,
-                        assignedOn:new Date(),
-                        ticketNumber:"REP-BVGD-77LK"
+                        id:queryData.activeRepair.activeRepair.id,
+                        ticketNumber:queryData.activeRepair.activeRepair.ticketNumber,
+                        title:queryData.activeRepair.activeRepair.deviceInfo.manufacturer +" "+ queryData.activeRepair.activeRepair.deviceInfo.model,
+                        description:queryData.activeRepair.activeRepair.faultInfo.description,
+                        status: queryData.activeRepair.activeRepair.status
                     }
                 }/>
                 <RSDashboard.Overview className="flex-1"

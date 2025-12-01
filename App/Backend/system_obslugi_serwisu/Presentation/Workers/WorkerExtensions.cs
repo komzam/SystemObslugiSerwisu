@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using HotChocolate.Authorization;
+using MediatR;
+using system_obslugi_serwisu.Application.Repairs.Get;
 using system_obslugi_serwisu.Application.RepairShops.Get;
-using system_obslugi_serwisu.Presentation.Conversations.Dto;
-using system_obslugi_serwisu.Presentation.Conversations.GetMessages;
+using system_obslugi_serwisu.Application.Shared;
+using system_obslugi_serwisu.Presentation.Repairs;
+using system_obslugi_serwisu.Presentation.Repairs.Dto;
 using system_obslugi_serwisu.Presentation.RepairShops;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 using system_obslugi_serwisu.Presentation.Workers.Dto;
@@ -11,6 +14,7 @@ namespace system_obslugi_serwisu.Presentation.Workers;
 [ExtendObjectType(typeof(FullWorkerDto))]
 public class WorkerExtensions
 {
+    [Authorize]
     public async Task<RepairShopDto?> GetRepairShop([Service] IMediator mediatr, [Parent] FullWorkerDto workerDto)
     {
         if(workerDto.RepairShopId == null) return null;
@@ -26,5 +30,25 @@ public class WorkerExtensions
                 .Build());
         
         return RepairShopMapper.ToDto(repairShopResult.Value);
+    }
+    
+    [Authorize]
+    public async Task<RepairDto?> GetActiveRepair([Service] IMediator mediatr, [Parent] FullWorkerDto workerDto)
+    {
+        if(workerDto.AssignedRepairId == null) return null;
+        
+        var repairResult = await mediatr.Send(new GetRepairCommand
+        {
+            RepairId = workerDto.AssignedRepairId.Value,
+            RequesterId = workerDto.Id,
+            ActingRole = ActingRole.Worker
+        });
+        if(repairResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(repairResult.Error.GetUserMessage())
+                .SetCode(repairResult.Error.GetUserCode())
+                .Build());
+        
+        return RepairMapper.ToDto(repairResult.Value);
     }
 }

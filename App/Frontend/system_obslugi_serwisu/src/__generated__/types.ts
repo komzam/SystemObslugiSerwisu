@@ -287,6 +287,7 @@ export type FullCustomerDtoRepairsArgs = {
 
 export type FullWorkerDto = {
   __typename?: 'FullWorkerDto';
+  activeRepair?: Maybe<RepairDto>;
   firstName: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   lastName: Scalars['String']['output'];
@@ -1048,7 +1049,10 @@ export type GetDashboardQueryVariables = Exact<{
 }>;
 
 
-export type GetDashboardQuery = { __typename?: 'Query', awaitingDiagnosis: number, awaitingRepair: number, awaitingShipping: number, readyForPickup: number, complaint: number, conversations: { __typename?: 'RepairShopDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, repair?: { __typename?: 'RepairDto', id: any, deviceInfo: { __typename?: 'DeviceInfoDto', model: string, manufacturer: string } } | null, customer?: { __typename?: 'CustomerDto', id: any, name: string } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any }> } }> } } };
+export type GetDashboardQuery = { __typename?: 'Query', awaitingDiagnosis: number, awaitingRepair: number, awaitingShipping: number, readyForPickup: number, complaint: number, activeRepair:
+    | { __typename?: 'FullCustomerDto' }
+    | { __typename?: 'FullWorkerDto', id: any, activeRepair?: { __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } } | null }
+  , conversations: { __typename?: 'RepairShopDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, repair?: { __typename?: 'RepairDto', id: any, deviceInfo: { __typename?: 'DeviceInfoDto', model: string, manufacturer: string } } | null, customer?: { __typename?: 'CustomerDto', id: any, name: string } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any }> } }> } } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];

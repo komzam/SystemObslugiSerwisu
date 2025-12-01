@@ -11,7 +11,7 @@ export type ActiveRepairDto = {
     ticketNumber: string;
     description: string;
     status: RepairStatus;
-    assignedOn: Date;
+    assignedOn?: Date;
 }
 
 export type ActiveRepairProps = {
@@ -37,13 +37,17 @@ export default function ActiveRepair({ className="", activeRepair}: ActiveRepair
                     <RepairStatusC type={activeRepair.status}/>
                 </div>
                 :
-                <p className="text-center text-larger2 text-accent4 font-bold">{t("noActiveRepair")}</p>
+                <div className="h-full w-full flex justify-center items-center"><p className="text-center text-larger2 text-accent4 font-bold">{t("noActiveRepair")}</p></div>
             }
             {activeRepair &&
                 <div className="flex flex-row">
                     <div className="flex-1 flex flex-col">
-                        <p>{t("assignedOn")}:</p>
-                        <p>{activeRepair.assignedOn.toLocaleString()}</p>
+                        {activeRepair.assignedOn != null &&
+                            <>
+                                <p>{t("assignedOn")}:</p>
+                                <p>{activeRepair.assignedOn.toLocaleString()}</p>
+                            </>
+                        }
                     </div>
                     <Link href={`/repair/${activeRepair.id}`}>
                         <Button>{t("viewDetails")}</Button>

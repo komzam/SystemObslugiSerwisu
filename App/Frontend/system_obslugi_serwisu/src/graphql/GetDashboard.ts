@@ -8,6 +8,24 @@ export const GET_DASHBOARD = gql`
         readyForPickup: repairCount(repairShopId: $repairShopId, repairStatus: READY_FOR_PICKUP)
         complaint: repairCount(repairShopId: $repairShopId, repairStatus: COMPLAINT)
         
+        activeRepair: me{
+            ... on FullWorkerDto{
+                id,
+                activeRepair {
+                    id,
+                    ticketNumber,
+                    deviceInfo {
+                        manufacturer,
+                        model
+                    },
+                    faultInfo {
+                        description
+                    },
+                    status
+                }
+            }
+        }
+        
         conversations: repairShop(request: {repairShopId: $repairShopId}){
             conversations(request: {numberOfConversations: 3}){
                 items {
