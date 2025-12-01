@@ -1,13 +1,12 @@
-import {useTranslations} from "next-intl";
-import {RepairStatus} from "@/__generated__/types";
+export type StatusVariant = "yellow" | "blue" | "red" | "green" | "gray" | "orange";
 
-type StatusVariant = {
+type Variant = {
     dot: string;
     background: string;
     text: string;
 }
 
-const variants: Record<string, StatusVariant> = {
+const variants: Record<StatusVariant, Variant> = {
     yellow: {
         dot: "bg-yellow-300",
         background: "bg-yellow-100",
@@ -40,42 +39,20 @@ const variants: Record<string, StatusVariant> = {
     },
 }
 
-const StatusToVisual: Record<RepairStatus, keyof typeof variants> = {
-    [RepairStatus.Created]: "gray",
-    [RepairStatus.AwaitingDelivery]: "gray",
-    [RepairStatus.Received]: "blue",
-    [RepairStatus.AwaitingDiagnosis]: "blue",
-    [RepairStatus.Diagnosing]: "yellow",
-    [RepairStatus.Unfixable]: "red",
-    [RepairStatus.AwaitingApproval]: "orange",
-    [RepairStatus.DiagnosisFeeRequired]: "orange",
-    [RepairStatus.FinalPaymentRequired]: "orange",
-    [RepairStatus.AwaitingRepair]: "blue",
-    [RepairStatus.InRepair]: "yellow",
-    [RepairStatus.AwaitingParts]: "blue",
-    [RepairStatus.RepairFailed]: "red",
-    [RepairStatus.ReadyForPickup]: "green",
-    [RepairStatus.AwaitingShipping]: "blue",
-    [RepairStatus.Shipped]: "green",
-    [RepairStatus.Completed]: "gray",
-    [RepairStatus.Canceled]: "red",
-    [RepairStatus.Complaint]: "red"
-}
-
-
-type StatusProps = {
-    type: RepairStatus;
+export type StatusProps = {
+    type: StatusVariant;
+    text: string;
+    size?: "normal" | "small";
     className?: string;
 }
 
-export function Status({type, className=""}: StatusProps) {
-    const t = useTranslations("Status");
-    const selectedVariant: StatusVariant = variants[StatusToVisual[type]];
+export function Status({type, text, size="normal", className=""}: StatusProps) {
+    const selectedVariant: Variant = variants[type];
 
     return(
-        <div className={`flex flex-row gap-2 h-10 w-fit items-center px-2.5 rounded-full ${selectedVariant.background} ${className}`}>
-            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${selectedVariant.dot}`}/>
-            <span className={`font-bold ${selectedVariant.text}`}>{t(type)}</span>
+        <div className={`flex flex-row gap-2 ${size=="normal" ? "h-10" : "h-7.5"} w-fit items-center px-2.5 rounded-full ${selectedVariant.background} ${className}`}>
+            {size=="normal" && <div className={`w-2 h-2 rounded-full flex-shrink-0 ${selectedVariant.dot}`}/>}
+            <span className={`font-bold ${selectedVariant.text} ${size=="small" && "text-smaller1"}`}>{text}</span>
         </div>
     )
 }

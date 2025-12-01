@@ -1,9 +1,9 @@
 import {Card} from "@/components/Atoms/Card";
 import {RepairStatus} from "@/__generated__/types";
-import {Status} from "@/components/Atoms/Status";
 import {Link} from "@/i18n/navigation";
 import {Button} from "@/components/Atoms/Button";
 import {useTranslations} from "next-intl";
+import {RepairStatusC} from "@/components/Molecules/RepairStatus";
 
 export type ActiveRepairDto = {
     id: string;
@@ -23,7 +23,7 @@ export default function ActiveRepair({ className="", activeRepair}: ActiveRepair
     const t = useTranslations("Dashboard.ActiveRepair");
 
     return (
-        <Card className={`${className} flex flex-col gap-7`}>
+        <Card className={`${className} flex flex-col justify-between gap-7`}>
             <p className="text-larger1 font-bold">{t("title")}</p>
             {activeRepair != null?
                 <div className="flex flex-row">
@@ -34,7 +34,7 @@ export default function ActiveRepair({ className="", activeRepair}: ActiveRepair
                         </div>
                         <p className="text-accent4 line-clamp-2">{activeRepair.description}</p>
                     </div>
-                    <Status type={activeRepair.status}/>
+                    <RepairStatusC type={activeRepair.status}/>
                 </div>
                 :
                 <p className="text-center text-larger2 text-accent4 font-bold">{t("noActiveRepair")}</p>

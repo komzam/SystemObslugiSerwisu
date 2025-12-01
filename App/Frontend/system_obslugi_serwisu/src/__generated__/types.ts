@@ -534,6 +534,7 @@ export type Query = {
   conversationByParticipants: ConversationDto;
   me: MeResult;
   repair: RepairDto;
+  repairCount: Scalars['Int']['output'];
   repairShop: RepairShopDto;
   reviews: PaginatedListOfReviewDto;
   searchShopsByName: PaginatedListOfRepairShopDto;
@@ -553,6 +554,12 @@ export type QueryConversationByParticipantsArgs = {
 
 export type QueryRepairArgs = {
   request: GetRepairRequestInput;
+};
+
+
+export type QueryRepairCountArgs = {
+  repairShopId: Scalars['UUID']['input'];
+  repairStatus?: InputMaybe<RepairStatus>;
 };
 
 
@@ -1009,6 +1016,13 @@ export type GetCustomerRepairsQuery = { __typename?: 'Query', me:
     | { __typename: 'FullCustomerDto', id: any, repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } }> } }
     | { __typename: 'FullWorkerDto' }
    };
+
+export type GetDashboardQueryVariables = Exact<{
+  repairShopId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetDashboardQuery = { __typename?: 'Query', awaitingDiagnosis: number, awaitingRepair: number, awaitingShipping: number, readyForPickup: number, complaint: number, conversations: { __typename?: 'RepairShopDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, repair?: { __typename?: 'RepairDto', id: any, deviceInfo: { __typename?: 'DeviceInfoDto', model: string, manufacturer: string } } | null, customer?: { __typename?: 'CustomerDto', id: any, name: string } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any }> } }> } } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];

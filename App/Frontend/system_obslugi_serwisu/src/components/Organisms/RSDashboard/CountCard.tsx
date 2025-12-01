@@ -1,6 +1,6 @@
 import {Card} from "@/components/Atoms/Card";
 
-type CountColor = "black" | "blue" | "yellow" | "green" | "red";
+type CountColor = "black" | "blue" | "yellow" | "lime" | "green" | "red";
 
 export type CountCardProps = {
     title: string,
@@ -13,6 +13,7 @@ const colors: Record<CountColor, string> = {
     black: "text-black",
     blue: "text-blue-400",
     yellow: "text-yellow-400",
+    lime: "text-lime-400",
     green: "text-green-400",
     red: "text-red-400"
 }

@@ -4,6 +4,7 @@ using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Database;
 using system_obslugi_serwisu.Shared;
 
@@ -104,6 +105,21 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
         {
             var count = await databaseContext.Repairs.Where(repair => repair.TicketNumber.Value == ticketNumber.Value).CountAsync();
             return count != 0;
+        }
+        catch(Exception e){
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult<int>> GetRepairShopsRepairCount(RepairShopId repairShopId, RepairStatus? status)
+    {
+        try
+        {
+            var countQuery = databaseContext.Repairs.Where(repair => repair.RepairShopId == repairShopId);
+            if(status.HasValue)
+                countQuery=countQuery.Where(repair => repair.Status == status);
+            
+            return await countQuery.CountAsync();
         }
         catch(Exception e){
             return DatabaseErrors.UnknownError();

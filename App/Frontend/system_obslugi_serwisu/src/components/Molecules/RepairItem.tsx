@@ -1,8 +1,8 @@
 import {Card} from "@/components/Atoms/Card";
 import {Link} from "@/i18n/navigation";
-import {Status} from "@/components/Atoms/Status";
 import * as React from "react";
 import {GetCustomerRepairsQuery} from "@/__generated__/types";
+import {RepairStatusC} from "@/components/Molecules/RepairStatus";
 
 type Customer = Extract<GetCustomerRepairsQuery["me"], { __typename: "FullCustomerDto" }>;
 type Repair = Customer["repairs"]["items"][number];
@@ -24,7 +24,7 @@ export function RepairItem({repair}: RepairItemProps) {
                         <p className="text-accent4 line-clamp-1">{repair.faultInfo.description}</p>
                     </div>
                     <div className="flex flex-row justify-end">
-                        <Status type={repair.status} />
+                        <RepairStatusC type={repair.status} />
                     </div>
                 </div>
             </Card>

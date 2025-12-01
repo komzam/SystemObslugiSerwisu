@@ -1,10 +1,10 @@
-import {Status} from "@/components/Atoms/Status";
 import {Card} from "@/components/Atoms/Card";
 import {Button} from "@/components/Atoms/Button";
 import {useTranslations} from "next-intl";
 import { LuMessageSquare } from "react-icons/lu";
 import {RepairStatus} from "@/__generated__/types";
 import {Link} from "@/i18n/navigation";
+import {RepairStatusC} from "@/components/Molecules/RepairStatus";
 
 export type RepairDetailsTitleProps = {
     title: string;
@@ -26,10 +26,10 @@ export function RepairDetailsTitle({ title, repairTicketNumber, status, conversa
                     </div>
                     <div className="flex flex-row gap-2 sm:gap-5 items-center">
                         <Link href={`/messages/${conversationId}`}><Button className="hidden md:flex" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button></Link>
-                        <Status className="hidden sm:flex" type={status}/>
+                        <RepairStatusC className="hidden sm:flex" type={status}/>
                     </div>
                 </div>
-                <Status className="sm:hidden" type={status}/>
+                <RepairStatusC className="sm:hidden" type={status}/>
                 <Link href={`/messages/${conversationId}`}><Button className="w-full md:hidden" variant="secondary" icon={<LuMessageSquare size="1.5rem"/>}>{t("messageUs")}</Button></Link>
             </div>
         </Card>

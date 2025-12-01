@@ -6,13 +6,13 @@ import {ConversationMessageProps} from "@/components/Molecules/ConversationMessa
 import {CardWithHeader} from "@/components/Atoms/CardWithHeader";
 import {Button} from "@/components/Atoms/Button";
 import {LuChevronLeft, LuWrench} from "react-icons/lu";
-import {Status} from "@/components/Atoms/Status";
 import {TextArea} from "@/components/Atoms/TextArea";
 import {useLayoutEffect, useRef, useState} from "react";
 import {useTranslations} from "next-intl";
 import {ConversationType, RepairStatus} from "@/__generated__/types";
 import * as RepairShopElementInfo from "@/components/Molecules/RepairShopElementInfo";
 import {Link} from "@/i18n/navigation";
+import {RepairStatusC} from "@/components/Molecules/RepairStatus";
 
 export type ConversationCardProps = {
     conversationType: ConversationType.RepairChat
@@ -123,7 +123,7 @@ export function ConversationCard(props: ConversationCardProps) {
                         { props.conversationType === ConversationType.RepairChat &&
                             <div className="flex flex-row-reverse md:flex-row gap-2 sm:gap-5 items-center">
                                 <Link href={`/repair/${props.repairId}`}><Button inverse={true} variant="secondary" icon={<LuWrench size="1.5rem"/>}>{t("details")}</Button></Link>
-                                <Status type={props.status}/>
+                                <RepairStatusC type={props.status}/>
                             </div>
                         }
                     </div>
