@@ -11,7 +11,7 @@ export type RsListProps = {
 };
 
 export function RSList({ columns, children }: RsListProps) {
-    const gridTemplate = columns.map(c => c.width === 'auto' ? 'auto' : c.width).join(' ');
+    const gridTemplate = columns.map(c => c.width === 'auto' ? 'auto' : `minmax(0,${c.width})`).join(' ');
 
     return (
         <div

@@ -17,6 +17,8 @@ public class RepairDto
     public required FaultInfoDto FaultInfo { get; set; }
     public required ReturnInfoDto ReturnInfo { get; set; }
     public string? AdditionalComment { get; set; }
+    [GraphQLIgnore]
+    public required Guid? AssignedWorkerId { get; set; }
     public required List<RepairStepDto> RepairHistory { get; set; }
     public required DateTimeOffset CreatedAt { get; set; }
 }

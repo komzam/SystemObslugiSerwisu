@@ -5,6 +5,7 @@ using system_obslugi_serwisu.Domain.Customers;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.Workers;
 using system_obslugi_serwisu.Infrastructure.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Repairs;
@@ -40,6 +41,11 @@ public class RepairEntityTypeConfiguration : IEntityTypeConfiguration<Repair>
             .HasConversion(
                 id => id == null ? (Guid?)null : id.Value,
                 value => value == null ? null : new ConversationId(value.Value));
+        
+        repairConfiguration.Property(repair => repair.AssignedWorkerId)
+            .HasConversion(
+                id => id == null ? (Guid?)null : id.Value,
+                value => value == null ? null : new WorkerId(value.Value));
         
         repairConfiguration.Property(repair => repair.Status);
         

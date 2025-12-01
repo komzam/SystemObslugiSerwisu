@@ -20,7 +20,7 @@ export function RSListRow({ cells, separator = true }: RsListRowProps) {
             `}
         >
             {cells.map((cell, cellIndex) => (
-                <div key={cellIndex} className={`line-clamp-1 ${getAlignClass(cell.align)}`}>
+                <div key={cellIndex} className={`line-clamp-1 min-w-0 ${getAlignClass(cell.align)}`}>
                     {renderCell(cell)}
                 </div>
             ))}

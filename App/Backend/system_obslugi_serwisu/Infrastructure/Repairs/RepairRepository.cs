@@ -125,4 +125,37 @@ public class RepairRepository(DatabaseContext databaseContext) : IRepairReposito
             return DatabaseErrors.UnknownError();
         }
     }
+
+    public async Task<OperationResult<PaginatedList<Repair>>> GetRepairShopsRepairs(RepairShopId repairShopId, int pageNumber, int pageSize)
+    {
+        List<Repair> repairs;
+        int totalCount;
+        
+        try
+        {
+            repairs = await databaseContext.Repairs
+                .Include(r => r.RepairHistory)
+                .Include(r => r.Images)
+                .OrderByDescending(r => r.CreatedAt)
+                .Where(r => r.RepairShopId == repairShopId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            totalCount = await databaseContext.Repairs
+                .Where(r => r.RepairShopId == repairShopId).CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new PaginatedList<Repair>
+        {
+            Items = repairs,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
 }

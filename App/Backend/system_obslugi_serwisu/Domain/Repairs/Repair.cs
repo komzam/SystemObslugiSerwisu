@@ -5,6 +5,7 @@ using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.Repairs.RepairSteps;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Shared;
+using system_obslugi_serwisu.Domain.Workers;
 
 namespace system_obslugi_serwisu.Domain.Repairs;
 
@@ -42,6 +43,7 @@ public partial class Repair
     public Quote? Quote { get; private set; }
     public Money? DiagnosisFee { get; private set; }
     public Money? FinalCost { get; private set; }
+    public WorkerId? AssignedWorkerId { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     
     private List<RepairImage> _images = new();
@@ -93,5 +95,26 @@ public partial class Repair
     public void AssignConversation(ConversationId conversationId)
     {
         ConversationId = conversationId;
+    }
+    
+    public OperationResult AssignWorker(Worker worker)
+    {
+        if (!worker.IsWorkingAt(RepairShopId))
+            return RepairErrors.AccessDenied();
+
+        if (AssignedWorkerId is not null && AssignedWorkerId != worker.Id)
+            return RepairErrors.WorkerAlreadyAssigned();
+        
+        AssignedWorkerId = worker.Id;
+        return OperationResult.Success();
+    }
+
+    public OperationResult UnAssignWorker(Worker worker)
+    {
+        if (AssignedWorkerId is not null && AssignedWorkerId != worker.Id)
+            return RepairErrors.AccessDenied();
+        
+        AssignedWorkerId = null;
+        return OperationResult.Success();
     }
 }

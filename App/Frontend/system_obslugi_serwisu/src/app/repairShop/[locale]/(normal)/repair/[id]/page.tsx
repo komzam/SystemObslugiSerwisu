@@ -37,7 +37,7 @@ export default function Repair() {
         <ProtectedRoute>
             <div className="flex bg-inherit justify-center py-5">
                 <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
-                    <Link href="/repairs"><BackButton>{t("backButton")}</BackButton></Link>
+                    <Link href="/repairs"><BackButton>{t("rsBackButton")}</BackButton></Link>
                     <RepairDetailsTitle title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
                                         repairTicketNumber={repair.ticketNumber}
                                         status={repair.status}

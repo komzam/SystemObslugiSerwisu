@@ -20,4 +20,7 @@ public static class WorkerErrors
     
     public static OperationError InvalidLastName(string message = "Invalid last name") => 
         new ($"{Prefix}.InvalidLastName", message);
+    
+    public static OperationError RepairAlreadyAssigned(string message = "Worker already has assigned repair") =>
+        new ($"{Prefix}.RepairAlreadyAssigned", message);
 }

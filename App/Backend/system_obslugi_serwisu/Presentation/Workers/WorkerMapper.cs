@@ -11,7 +11,18 @@ public static class WorkerMapper
             Id = worker.Id.Value,
             FirstName = worker.FirstName,
             LastName = worker.LastName,
-            RepairShopId = worker.RepairShopId?.Value
+            RepairShopId = worker.RepairShopId?.Value,
+            AssignedRepairId = worker.AssignedRepairId?.Value,
+        };
+    }
+    
+    public static WorkerDto ToDto(Worker worker)
+    {
+        return new WorkerDto{
+            Id = worker.Id.Value,
+            FirstName = worker.FirstName,
+            LastName = worker.LastName,
+            AssignedRepairId = worker.AssignedRepairId?.Value
         };
     }
 }

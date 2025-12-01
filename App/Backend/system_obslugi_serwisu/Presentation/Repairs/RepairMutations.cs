@@ -2,7 +2,9 @@
 using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.Repairs.AddImage;
+using system_obslugi_serwisu.Application.Repairs.AssignWorker;
 using system_obslugi_serwisu.Application.Repairs.Book;
+using system_obslugi_serwisu.Application.Repairs.UnassignWorker;
 using system_obslugi_serwisu.Presentation.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
 using system_obslugi_serwisu.Presentation.Repairs.RepairState;
@@ -82,5 +84,53 @@ public class RepairMutations
                 .Build());
 
         return addImageUrlResult.Value;
+    }
+    
+    [Authorize]
+    public async Task<bool> AssignWorker([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairId)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var assignWorkerResult = await mediatr.Send(new AssignRepairWorkerCommand{
+            RepairId = repairId,
+            WorkerId= workerId
+        });
+
+        if(assignWorkerResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(assignWorkerResult.Error.GetUserMessage())
+                .SetCode(assignWorkerResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+    
+    [Authorize]
+    public async Task<bool> UnassignWorker([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid repairId)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var unassignWorkerResult = await mediatr.Send(new UnassignRepairWorkerCommand{
+            RepairId = repairId,
+            RequesterId = workerId
+        });
+
+        if(unassignWorkerResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(unassignWorkerResult.Error.GetUserMessage())
+                .SetCode(unassignWorkerResult.Error.GetUserCode())
+                .Build());
+
+        return true;
     }
 }

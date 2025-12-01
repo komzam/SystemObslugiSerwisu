@@ -20,4 +20,7 @@ public static class RepairErrors
     
     public static OperationError InvalidTrigger(string message = "Invalid trigger") =>
         new ($"{Prefix}.InvalidTrigger", message);
+    
+    public static OperationError WorkerAlreadyAssigned(string message = "Repair already has assigned worker") =>
+        new ($"{Prefix}.WorkerAlreadyAssigned", message);
 }

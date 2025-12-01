@@ -174,9 +174,20 @@
     "add": "Dodaj",
     "remove": "Usuń"
   },
+  "RepairList": {
+    "ticketNumber": "Numer Zlecenia",
+    "customer": "Klient",
+    "device": "Urządzenie",
+    "status": "Status",
+    "technician": "Serwisant",
+    "createdAt": "Utworzone",
+    "actions": "Akcje",
+    "unassigned": "Nieprzypisany",
+    "viewDetails": "Wyświetl Szczegóły"
+  },
   "Status": {
     "CREATED": "Utworzony",
-    "AWAITING_DELIVERY": "Oczekuje na dostawę",
+    "AWAITING_DELIVERY": "Oczekuje na Dostawę",
     "RECEIVED": "Przyjęte do Serwisu",
     "AWAITING_DIAGNOSIS": "Oczekuje na Diagnozę",
     "DIAGNOSING": "Diagnozowanie w Trakcie",
@@ -275,6 +286,7 @@
   },
   "RepairDetails": {
     "backButton": "Powrót do moich napraw",
+    "rsBackButton": "Powrót do napraw",
     "deviceInfo": "Informacje o urządzeniu",
     "faultInfo": "Informacje o usterce",
     "images": "Zdjęcia",
@@ -374,7 +386,8 @@
       "RepairNotFound": "Nie znaleziono naprawy",
       "RepairClosed": "Naprawa jest zamknięta",
       "AdditionalCommentTooLong": "Dodatkowy komentarz do naprawy jest za długi",
-      "AccessDenied": "Odmowa dostępu do naprawy"
+      "AccessDenied": "Odmowa dostępu do naprawy",
+      "WorkerAlreadyAssigned": "Pracownik jest już przypisany do tej naprawy"
     },
     "ContactInfo": {
       "FullNameTooLong": "Imię i nazwisko jest za długie",
@@ -471,7 +484,8 @@
       "FirstNameTooLong": "Imię jest za długie",
       "InvalidFirstName": "Imię jest niepoprawne",
       "LastNameTooLong": "Nazwisko jest za długie",
-      "InvalidLastName": "Nazwisko jest niepoprawne"
+      "InvalidLastName": "Nazwisko jest niepoprawne",
+      "RepairAlreadyAssigned": "Pracownik posiada już przypisaną naprawę"
     }
   },
   "Common": {

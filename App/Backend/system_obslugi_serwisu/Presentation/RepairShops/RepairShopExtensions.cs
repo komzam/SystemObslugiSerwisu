@@ -3,12 +3,16 @@ using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.Conversations.GetCustomers;
 using system_obslugi_serwisu.Application.Conversations.GetRepairShops;
+using system_obslugi_serwisu.Application.Repairs.GetRepairShops;
 using system_obslugi_serwisu.Application.RepairShops.GetImage;
 using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Presentation.Conversations;
 using system_obslugi_serwisu.Presentation.Conversations.Dto;
 using system_obslugi_serwisu.Presentation.Conversations.GetList;
 using system_obslugi_serwisu.Presentation.Customers.Dto;
+using system_obslugi_serwisu.Presentation.Repairs;
+using system_obslugi_serwisu.Presentation.Repairs.Dto;
+using system_obslugi_serwisu.Presentation.Repairs.GetList;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
 using system_obslugi_serwisu.Presentation.Shared;
 using system_obslugi_serwisu.Shared;
@@ -66,5 +70,35 @@ public class RepairShopExtensions
                 .Build());
 
         return conversationsListResult.Value.Map(ConversationMapper.ToDto, id=>id?.Value);
+    }
+    
+    [Authorize]
+    public async Task<PaginatedList<RepairDto>> GetRepairs(
+        [Service] IMediator mediatr,
+        [Parent] RepairShopDto repairShop,
+        ClaimsPrincipal claimsPrincipal,
+        GetRepairListRequest request)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var repairListResult = await mediatr.Send(new GetRepairShopsRepairsCommand
+        {
+            RepairShopId = repairShop.Id,
+            WorkerId = workerId,
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize
+        });
+        if(repairListResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(repairListResult.Error.GetUserMessage())
+                .SetCode(repairListResult.Error.GetUserCode())
+                .Build());
+
+        return repairListResult.Value.Map(RepairMapper.ToDto);
     }
 }

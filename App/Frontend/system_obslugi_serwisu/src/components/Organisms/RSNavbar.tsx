@@ -27,7 +27,7 @@ export const Root = function NavbarRoot({ className = "", children }: NavbarProp
 
     return (
         <SidebarContext.Provider value={{ isOpen, toggleSidebar }}>
-            <div className={`flex flex-row min-h-screen overflow-x-hidden ${className}`}>
+            <div className={`flex flex-row min-h-screen overflow-x-auto ${className}`}>
                 {children}
             </div>
         </SidebarContext.Provider>

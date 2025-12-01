@@ -1,4 +1,6 @@
-﻿using system_obslugi_serwisu.Domain.RepairShops;
+﻿using system_obslugi_serwisu.Domain.Repairs;
+using system_obslugi_serwisu.Domain.Repairs.Errors;
+using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Domain.Users;
 using system_obslugi_serwisu.Domain.Workers.Errors;
 using system_obslugi_serwisu.Shared;
@@ -15,6 +17,7 @@ public class Worker : User
     public WorkerId Id { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+    public RepairId? AssignedRepairId { get; private set; }
     public RepairShopId? RepairShopId { get; private set; }
 
     private Worker(){}
@@ -47,14 +50,32 @@ public class Worker : User
     {
         firstName = firstName.Trim();
         lastName = lastName.Trim();
-        
+
         var validationResult = ValidateInput(firstName, lastName);
         if (validationResult.IsFailure)
             return validationResult.Error;
-        
+
         return new Worker(firstName, lastName);
     }
 
     public bool IsEmployed() => RepairShopId is not null;
     public bool IsWorkingAt(RepairShopId repairShopId) => RepairShopId is not null && RepairShopId == repairShopId;
+
+    public OperationResult AssignRepair(Repair repair)
+    {
+        if (repair.RepairShopId != RepairShopId)
+            return RepairErrors.AccessDenied();
+
+        if (AssignedRepairId is not null && repair.Id != AssignedRepairId)
+            return WorkerErrors.RepairAlreadyAssigned();
+        
+        AssignedRepairId = repair.Id;
+        return OperationResult.Success();
+    }
+
+    public OperationResult UnAssignRepair()
+    {
+        AssignedRepairId = null;
+        return OperationResult.Success();
+    }
 }

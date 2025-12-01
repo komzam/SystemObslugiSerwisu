@@ -30,6 +30,22 @@ public class WorkerRepository(DatabaseContext databaseContext) : IWorkerReposito
         return worker;
     }
 
+    public async Task<OperationResult<List<Worker>>> GetWorkers(List<WorkerId> workerIds)
+    {
+        List<Worker> workers;
+        
+        try
+        {
+            workers = await databaseContext.Workers.Where(w => workerIds.Contains(w.Id)).ToListAsync();
+        }
+        catch (Exception e)
+        {
+            return DatabaseErrors.UnknownError();
+        }
+        
+        return workers;
+    }
+
     public async Task<OperationResult> CreateWorker(Worker worker)
     {
         try

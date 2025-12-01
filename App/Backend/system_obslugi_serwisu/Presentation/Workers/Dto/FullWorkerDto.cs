@@ -9,4 +9,6 @@ public class FullWorkerDto : IMeResult
     public required string LastName { get; set; } 
     [GraphQLIgnore]
     public required Guid? RepairShopId { get; set; }
+    [GraphQLIgnore]
+    public required Guid? AssignedRepairId { get; set; }
 }

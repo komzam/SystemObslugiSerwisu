@@ -23,6 +23,7 @@ public static class RepairMapper
             FaultInfo = ToDto(repair.FaultInfo),
             ReturnInfo = ToDto(repair.ReturnInfo),
             AdditionalComment = repair.AdditionalComment,
+            AssignedWorkerId = repair.AssignedWorkerId?.Value,
             RepairHistory = repair.RepairHistory.Select(ToDto).ToList(),
             CreatedAt = repair.CreatedAt,
         };

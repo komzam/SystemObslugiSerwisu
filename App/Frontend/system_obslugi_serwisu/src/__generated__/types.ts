@@ -367,6 +367,7 @@ export type Mutation = {
   addRepairImage: Scalars['String']['output'];
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
+  assignWorker: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
   changeAddress: Scalars['Boolean']['output'];
   changeEmail: Scalars['Boolean']['output'];
@@ -383,6 +384,7 @@ export type Mutation = {
   removePhoneNumber: Scalars['Boolean']['output'];
   repairActions: RepairActions;
   sendMessage: Scalars['Boolean']['output'];
+  unassignWorker: Scalars['Boolean']['output'];
 };
 
 
@@ -401,6 +403,11 @@ export type MutationAddRepairShopImageArgs = {
 
 export type MutationAddReviewArgs = {
   request: AddReviewRequestInput;
+};
+
+
+export type MutationAssignWorkerArgs = {
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -461,6 +468,11 @@ export type MutationRegisterArgs = {
 
 export type MutationSendMessageArgs = {
   request: SendMessageRequestInput;
+};
+
+
+export type MutationUnassignWorkerArgs = {
+  repairId: Scalars['UUID']['input'];
 };
 
 export type NormalRepairStepDto = RepairStepDto & {
@@ -723,6 +735,7 @@ export type RepairActionsSubmitQuoteArgs = {
 export type RepairDto = {
   __typename?: 'RepairDto';
   additionalComment?: Maybe<Scalars['String']['output']>;
+  assignedWorker?: Maybe<WorkerDto>;
   contactInfo: ContactInfoDto;
   conversationId?: Maybe<Scalars['UUID']['output']>;
   createdAt: Scalars['DateTime']['output'];
@@ -752,6 +765,7 @@ export type RepairShopDto = {
   openingHours: OpeningHoursDto;
   phone: Scalars['String']['output'];
   rating: Scalars['Float']['output'];
+  repairs: PaginatedListOfRepairDto;
   reviewCount: Scalars['Int']['output'];
   timeZoneId: Scalars['String']['output'];
 };
@@ -759,6 +773,11 @@ export type RepairShopDto = {
 
 export type RepairShopDtoConversationsArgs = {
   request: GetConversationListRequestInput;
+};
+
+
+export type RepairShopDtoRepairsArgs = {
+  request: GetRepairListRequestInput;
 };
 
 export enum RepairShopImageType {
@@ -877,6 +896,13 @@ export type TimeIntervalDto = {
   __typename?: 'TimeIntervalDto';
   from: Scalars['String']['output'];
   to: Scalars['String']['output'];
+};
+
+export type WorkerDto = {
+  __typename?: 'WorkerDto';
+  firstName: Scalars['String']['output'];
+  id: Scalars['UUID']['output'];
+  lastName: Scalars['String']['output'];
 };
 
 export type AddReviewMutationVariables = Exact<{
@@ -1048,6 +1074,15 @@ export type GetRepairShopForNewConvQueryVariables = Exact<{
 
 
 export type GetRepairShopForNewConvQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, name: string, rating: number, reviewCount: number } };
+
+export type GetRepairShopRepairsQueryVariables = Exact<{
+  repairShopId: Scalars['UUID']['input'];
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+}>;
+
+
+export type GetRepairShopRepairsQuery = { __typename?: 'Query', repairShop: { __typename?: 'RepairShopDto', id: any, repairs: { __typename?: 'PaginatedListOfRepairDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, createdAt: any, contactInfo: { __typename?: 'ContactInfoDto', fullName: string }, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string }, assignedWorker?: { __typename?: 'WorkerDto', firstName: string, lastName: string } | null }> } } };
 
 export type ReviewsQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
