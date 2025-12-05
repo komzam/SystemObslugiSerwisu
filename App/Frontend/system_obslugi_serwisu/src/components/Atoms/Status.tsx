@@ -52,7 +52,7 @@ export function Status({type, text, size="normal", className=""}: StatusProps) {
     return(
         <div className={`flex flex-row gap-2 ${size=="normal" ? "h-10" : "h-7.5"} w-fit items-center px-2.5 rounded-full ${selectedVariant.background} ${className}`}>
             {size=="normal" && <div className={`w-2 h-2 rounded-full flex-shrink-0 ${selectedVariant.dot}`}/>}
-            <span className={`font-bold ${selectedVariant.text} ${size=="small" && "text-smaller1"}`}>{text}</span>
+            <span className={`font-bold ${selectedVariant.text} ${size=="small" && "text-smaller2"}`}>{text}</span>
         </div>
     )
 }

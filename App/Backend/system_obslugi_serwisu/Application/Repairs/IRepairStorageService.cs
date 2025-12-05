@@ -8,6 +8,7 @@ public interface IRepairStorageService
 {
     public Task<OperationResult<List<ImageDto>>> GetRepairImages(List<RepairImage> repairImages);
     public Task<OperationResult<string>> AddRepairImage(RepairImage image, string contentType);
+    public Task<OperationResult> DeleteRepairImage(RepairImage image);
     public Task<OperationResult> CreateRepairDocument(RepairId repairId, TicketNumber ticketNumber);
     public Task<OperationResult<string>> GetRepairDocument(RepairId repairId);
 }

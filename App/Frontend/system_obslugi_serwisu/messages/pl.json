@@ -291,9 +291,16 @@
     "rsBackButton": "Powrót do napraw",
     "deviceInfo": "Informacje o urządzeniu",
     "faultInfo": "Informacje o usterce",
+    "assignedTechnician": "Przypisany serwisant",
+    "unassigned": "Nieprzypisany",
+    "assignYourself": "Przypisz do siebie",
+    "unassign": "Cofnij przypisanie",
     "images": "Zdjęcia",
+    "addImage": "Dodaj zdjęcie",
+    "noImages": "Brak zdjęć",
     "repairHistory": "Historia naprawy",
     "messageUs": "Napisz Do Nas",
+    "messageCustomer": "Napisz do klienta",
     "deviceType": "Rodzaj urządzenia",
     "manufacturer": "Producent",
     "modelName": "Nazwa modelu",
@@ -492,6 +499,9 @@
   },
   "Common": {
     "loading": "Ładowanie",
+    "uploading": "Wysyłanie",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
     "noData": "Brak danych"
   }
 }

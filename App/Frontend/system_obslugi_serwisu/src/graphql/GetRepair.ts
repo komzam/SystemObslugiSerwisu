@@ -11,6 +11,9 @@ export const GET_REPAIR = gql`
                 name,
             },
             status,
+            contactInfo{
+              fullName  
+            },
             deviceInfo {
                 deviceType,
                 manufacturer,
@@ -23,32 +26,7 @@ export const GET_REPAIR = gql`
                 description,
                 previouslyRepaired
             },
-            additionalComment,
-            images{
-              id,
-                small,
-                medium,
-                large,
-                extraLarge
-            },
-            repairHistory{
-                id,
-                status,
-                createdAt,
-                description,
-                ... on PaymentRepairStepDto{
-                    amount,
-                    paid
-                },
-                ... on QuoteRepairStepDto{
-                    quote {
-                        laborCost,
-                        partsCost,
-                        totalCost,
-                        quoteAccepted   
-                    }
-                }
-            }
+            additionalComment
         }
     }
 `

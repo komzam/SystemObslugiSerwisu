@@ -1,13 +1,13 @@
 import {RepairHistory} from "@/components/Molecules/RepairHistory";
 import {RepairHistoryStepProps} from "@/components/Molecules/RepairHistoryStep";
 import {useTranslations} from "next-intl";
-import {GetRepairQuery} from "@/__generated__/types";
+import {GetRepairHistoryQuery, GetRepairQuery} from "@/__generated__/types";
 import {DateTime} from "luxon";
 
 
 export type RepairDetailsHistoryProps = {
     repairId: string;
-    repairHistory: GetRepairQuery["repair"]["repairHistory"];
+    repairHistory: GetRepairHistoryQuery["repair"]["repairHistory"];
 }
 
 export function RepairDetailsHistory({repairId, repairHistory} : RepairDetailsHistoryProps){

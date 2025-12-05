@@ -67,7 +67,7 @@ export default function RepairsPage(){
     }, [selectedPage, filter]);
 
     return (
-        <div className="min-w-[85rem] max-w-[150rem]">
+        <div className="min-w-[60rem] max-w-[150rem]">
             <RSRepairList
                 repairs={repairs}
                 currentPage={selectedPage}

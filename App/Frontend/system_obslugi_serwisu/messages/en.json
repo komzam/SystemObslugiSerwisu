@@ -291,9 +291,16 @@
     "rsBackButton": "Back to repairs",
     "deviceInfo": "Device information",
     "faultInfo": "Fault information",
+    "assignedTechnician": "Assigned technician",
+    "unassigned": "Unassigned",
+    "assignYourself": "Assign yourself",
+    "unassign": "Unassign",
     "images": "Images",
+    "addImage": "Add image",
+    "noImages": "No images",
     "repairHistory": "Repair history",
     "messageUs": "Message Us",
+    "messageCustomer": "Message Customer",
     "deviceType": "Device type",
     "manufacturer": "Manufacturer",
     "modelName": "Model name",
@@ -492,6 +499,9 @@
   },
   "Common": {
     "loading": "Loading",
+    "uploading": "Uploading",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
     "noData": "No data"
   }
 }

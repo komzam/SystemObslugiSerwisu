@@ -385,6 +385,7 @@ export type Mutation = {
   changePreferredContact: Scalars['Boolean']['output'];
   changePreferredReturn: Scalars['Boolean']['output'];
   createConversation: ConversationDto;
+  deleteRepairImage: Scalars['Boolean']['output'];
   deleteReview: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
@@ -457,6 +458,11 @@ export type MutationChangePreferredReturnArgs = {
 
 export type MutationCreateConversationArgs = {
   request: CreateConversationRequestInput;
+};
+
+
+export type MutationDeleteRepairImageArgs = {
+  imageId: Scalars['UUID']['input'];
 };
 
 
@@ -941,6 +947,13 @@ export type AddReviewMutationVariables = Exact<{
 
 export type AddReviewMutation = { __typename?: 'Mutation', addReview: boolean };
 
+export type AssignYourselfMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type AssignYourselfMutation = { __typename?: 'Mutation', assignWorker: boolean };
+
 export type AuthContextQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1030,6 +1043,20 @@ export type CustomerConvListSubscriptionSubscriptionVariables = Exact<{ [key: st
 
 export type CustomerConvListSubscriptionSubscription = { __typename?: 'Subscription', onCustomerConversationsUpdated: { __typename?: 'ConversationDto', id: any, modifiedAt: any, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any, senderRole: SenderRole }> } } };
 
+export type DeleteRepairImageMutationVariables = Exact<{
+  imageId: Scalars['UUID']['input'];
+}>;
+
+
+export type DeleteRepairImageMutation = { __typename?: 'Mutation', deleteRepairImage: boolean };
+
+export type GetAssignedTechnicianQueryVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetAssignedTechnicianQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, assignedWorker?: { __typename?: 'WorkerDto', id: any, firstName: string, lastName: string } | null } };
+
 export type GetConversationQueryVariables = Exact<{
   conversationId: Scalars['UUID']['input'];
   numberOfMessages: Scalars['Int']['input'];
@@ -1085,11 +1112,25 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, ticketNumber: string, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, images: Array<{ __typename?: 'ImageDto', id: any, small: string, medium: string, large: string, extraLarge: string }>, repairHistory: Array<
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, ticketNumber: string, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, contactInfo: { __typename?: 'ContactInfoDto', fullName: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean } } };
+
+export type GetRepairHistoryQueryVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetRepairHistoryQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, repairHistory: Array<
       | { __typename?: 'NormalRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'PaymentRepairStepDto', amount: string, paid: boolean, id: any, status: RepairStatus, createdAt: any, description?: string | null }
       | { __typename?: 'QuoteRepairStepDto', id: any, status: RepairStatus, createdAt: any, description?: string | null, quote: { __typename?: 'QuoteDto', laborCost: string, partsCost: string, totalCost: string, quoteAccepted?: boolean | null } }
     > } };
+
+export type GetRepairImagesQueryVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetRepairImagesQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, images: Array<{ __typename?: 'ImageDto', id: any, small: string, medium: string, large: string, extraLarge: string }> } };
 
 export type GetRepairShopQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
@@ -1211,3 +1252,18 @@ export type SendMessageMutationVariables = Exact<{
 
 
 export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: boolean };
+
+export type UnassignMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type UnassignMutation = { __typename?: 'Mutation', unassignWorker: boolean };
+
+export type UploadRepairImageMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  contentType: Scalars['String']['input'];
+}>;
+
+
+export type UploadRepairImageMutation = { __typename?: 'Mutation', uploadRepairImage: string };

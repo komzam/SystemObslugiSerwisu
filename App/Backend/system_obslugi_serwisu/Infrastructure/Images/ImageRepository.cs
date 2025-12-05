@@ -66,4 +66,38 @@ public class ImageRepository(DatabaseContext databaseContext) : IImageRepository
 
         return images;
     }
+
+    public async Task<OperationResult<RepairImage>> GetRepairImage(ImageId imageId)
+    {
+        RepairImage? image;
+        try
+        {
+            image = await databaseContext.RepairImages
+                .Where(ri => ri.ImageId == imageId)
+                .FirstOrDefaultAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        if (image == null)
+            return ImageErrors.ImageNotFound();
+
+        return image;
+    }
+
+    public async Task<OperationResult> DeleteImage(ImageId imageId)
+    {
+        try
+        {
+            await databaseContext.Images.Where(image => image.Id == imageId)
+                .ExecuteDeleteAsync();
+            
+            return OperationResult.Success();
+        }catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
 }

@@ -10,4 +10,6 @@ public interface IImageRepository
     public Task<OperationResult<Image>> GetImage(ImageId imageId);
     public Task<OperationResult<RepairShopImage>> GetRepairShopImage(RepairShopId repairShopId, RepairShopImageType imageType);
     public Task<OperationResult<List<RepairImage>>> GetRepairImages(RepairId repairId);
+    public Task<OperationResult<RepairImage>> GetRepairImage(ImageId imageId);
+    public Task<OperationResult> DeleteImage(ImageId imageId);
 }

@@ -4,6 +4,7 @@ using MediatR;
 using system_obslugi_serwisu.Application.Repairs.AddImage;
 using system_obslugi_serwisu.Application.Repairs.AssignWorker;
 using system_obslugi_serwisu.Application.Repairs.Book;
+using system_obslugi_serwisu.Application.Repairs.DeleteImage;
 using system_obslugi_serwisu.Application.Repairs.UnassignWorker;
 using system_obslugi_serwisu.Presentation.Repairs.Book;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
@@ -84,6 +85,30 @@ public class RepairMutations
                 .Build());
 
         return addImageUrlResult.Value;
+    }
+    
+    [Authorize]
+    public async Task<bool> DeleteRepairImage([Service] IMediator mediatr, ClaimsPrincipal claimsPrincipal, Guid imageId)
+    {
+        var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(workerIdString, out var workerId))
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage("Invalid worker id")
+                .SetCode("BadGuid")
+                .Build());
+        
+        var deleteImageResult = await mediatr.Send(new DeleteRepairImageCommand{
+            WorkerId= workerId,
+            ImageId= imageId
+        });
+
+        if(deleteImageResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(deleteImageResult.Error.GetUserMessage())
+                .SetCode(deleteImageResult.Error.GetUserCode())
+                .Build());
+
+        return true;
     }
     
     [Authorize]

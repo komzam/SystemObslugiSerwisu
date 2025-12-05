@@ -1,9 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.Extensions.Options;
-using QuestPDF.Fluent;
-using QuestPDF.Helpers;
-using QuestPDF.Infrastructure;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.Storage;
 using system_obslugi_serwisu.Domain.Repairs;
@@ -73,6 +70,35 @@ public class RepairStorageService(S3Clients s3Clients, IOptions<S3Buckets> bucke
             };
             
             return await s3Clients.PublicClient.GetPreSignedURLAsync(putImageRequest);
+        }catch
+        {
+            return StorageErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult> DeleteRepairImage(RepairImage image)
+    {
+        try
+        {
+            var listObjects = new ListObjectsV2Request
+            {
+                BucketName=buckets.Value.RepairImages,
+                Prefix = $"{image.RepairId.Value}/{image.ImageId.Value}/"
+            };
+            
+            var objectList = await s3Clients.InternalClient.ListObjectsV2Async(listObjects);
+            
+            if(objectList.S3Objects.Count == 0) return OperationResult.Success();
+            
+            var deleteImagesRequest = new DeleteObjectsRequest
+            {
+                BucketName=buckets.Value.RepairImages,
+                Objects = objectList.S3Objects.Select(obj => new KeyVersion{ Key = obj.Key}).ToList()
+            }; 
+            
+            await s3Clients.InternalClient.DeleteObjectsAsync(deleteImagesRequest);   
+            
+            return OperationResult.Success();
         }catch
         {
             return StorageErrors.UnknownError();
