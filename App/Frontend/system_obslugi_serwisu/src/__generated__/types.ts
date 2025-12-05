@@ -326,6 +326,14 @@ export type GetRepairShopRequestInput = {
   repairShopId: Scalars['UUID']['input'];
 };
 
+export type GetRepairShopsRepairListRequestInput = {
+  filter: RepairFilterInput;
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  sortBy?: InputMaybe<RepairSortField>;
+  sortDirection?: InputMaybe<SortDirection>;
+};
+
 export type GetReviewsRequestInput = {
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
@@ -753,6 +761,12 @@ export type RepairDto = {
   ticketNumber: Scalars['String']['output'];
 };
 
+export type RepairFilterInput = {
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+  statuses?: InputMaybe<Array<RepairStatus>>;
+  workerIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+};
+
 export type RepairShopDto = {
   __typename?: 'RepairShopDto';
   aboutUs?: Maybe<Scalars['String']['output']>;
@@ -778,12 +792,19 @@ export type RepairShopDtoConversationsArgs = {
 
 
 export type RepairShopDtoRepairsArgs = {
-  request: GetRepairListRequestInput;
+  request: GetRepairShopsRepairListRequestInput;
 };
 
 export enum RepairShopImageType {
   Main = 'MAIN',
   Miniature = 'MINIATURE'
+}
+
+export enum RepairSortField {
+  CreatedAt = 'CREATED_AT',
+  CustomerName = 'CUSTOMER_NAME',
+  DeviceName = 'DEVICE_NAME',
+  Status = 'STATUS'
 }
 
 export enum RepairStatus {
@@ -866,6 +887,11 @@ export type ServiceDto = {
   name: Scalars['String']['output'];
   price: Scalars['String']['output'];
 };
+
+export enum SortDirection {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type SubmitQuoteRequestInput = {
   currency: CurrencyCode;
@@ -1083,6 +1109,9 @@ export type GetRepairShopRepairsQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
+  filter: RepairFilterInput;
+  sortBy?: InputMaybe<RepairSortField>;
+  sortDirection?: InputMaybe<SortDirection>;
 }>;
 
 

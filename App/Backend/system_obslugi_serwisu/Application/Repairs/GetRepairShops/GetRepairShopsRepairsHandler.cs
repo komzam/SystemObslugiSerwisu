@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using system_obslugi_serwisu.Application.Database;
+using system_obslugi_serwisu.Application.Shared;
 using system_obslugi_serwisu.Domain.Repairs;
 using system_obslugi_serwisu.Domain.Repairs.Errors;
 using system_obslugi_serwisu.Domain.RepairShops;
@@ -20,8 +21,13 @@ public class GetRepairShopsRepairsHandler(IUnitOfWork unitOfWork) : IRequestHand
             return RepairErrors.AccessDenied();
 
         var repairListResult =
-            await unitOfWork.RepairRepository.GetRepairShopsRepairs(new RepairShopId(request.RepairShopId),
-                request.PageNumber, request.PageSize);
+            await unitOfWork.RepairRepository.GetRepairShopsRepairs(
+                repairShopId: new RepairShopId(request.RepairShopId),
+                filter: request.Filter,
+                sortBy: request.SortBy??RepairSortField.CreatedAt,
+                sortDirection: request.SortDirection??SortDirection.Desc,
+                pageNumber: request.PageNumber,
+                pageSize: request.PageSize);
         if (repairListResult.IsFailure)
             return repairListResult.Error;
         

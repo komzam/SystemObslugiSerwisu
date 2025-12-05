@@ -175,6 +175,7 @@
     "remove": "Usuń"
   },
   "RepairList": {
+    "search": "Szukaj",
     "ticketNumber": "Numer Zlecenia",
     "customer": "Klient",
     "device": "Urządzenie",
@@ -186,6 +187,7 @@
     "viewDetails": "Wyświetl Szczegóły"
   },
   "Status": {
+    "all": "Wszystkie",
     "CREATED": "Utworzony",
     "AWAITING_DELIVERY": "Oczekuje na Dostawę",
     "RECEIVED": "Przyjęte do Serwisu",

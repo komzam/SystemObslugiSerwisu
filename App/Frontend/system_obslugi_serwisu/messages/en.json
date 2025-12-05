@@ -175,6 +175,7 @@
     "remove": "Remove"
   },
   "RepairList": {
+    "search": "Search",
     "ticketNumber": "Ticket Number",
     "customer": "Customer",
     "device": "Device",
@@ -186,6 +187,7 @@
     "viewDetails": "View Details"
   },
   "Status": {
+    "all": "All",
     "CREATED": "Created",
     "AWAITING_DELIVERY": "Awaiting Delivery",
     "RECEIVED": "Received",

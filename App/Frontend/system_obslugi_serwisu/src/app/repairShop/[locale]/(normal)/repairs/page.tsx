@@ -1,22 +1,35 @@
 ﻿"use client"
 
 import {RepairListRepair, RSRepairList} from "@/components/Organisms/RSRepairList";
-import {GetRepairShopRepairsQuery, GetRepairShopRepairsQueryVariables, RepairStatus} from "@/__generated__/types";
+import {
+    GetRepairShopRepairsQuery,
+    GetRepairShopRepairsQueryVariables,
+    RepairFilterInput, RepairStatus
+} from "@/__generated__/types";
 import {useQuery} from "@apollo/client/react";
 import {useAuthContext} from "@/components/Utils/AuthContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {GET_REPAIRSHOP_REPAIRS} from "@/graphql/GetRepairShopRepairs";
+import {useRouter, usePathname} from "@/i18n/navigation";
+import {ReadonlyURLSearchParams, useSearchParams} from "next/navigation";
 
 export default function RepairsPage(){
     const authContext = useAuthContext();
-    const [selectedPage, setSelectedPage] = useState<number>(1);
+    const router = useRouter();
+    const queryParams = useSearchParams();
+    const pathname = usePathname();
+    const {page:queryPage, filter:queryFilter} = loadQueryParams(queryParams);
+    const [selectedPage, setSelectedPage] = useState<number>(queryPage??1);
+    const [filter, setFilter] = useState<RepairFilterInput>(queryFilter ?? {});
+
     const { data: queryData, loading: queryLoading } = useQuery<GetRepairShopRepairsQuery, GetRepairShopRepairsQueryVariables>(GET_REPAIRSHOP_REPAIRS,
         {
             variables:
                 {
                     repairShopId: authContext.authInfo?.__typename == "FullWorkerDto"? authContext.authInfo.repairShop?.id : null,
                     pageNumber: selectedPage,
-                    pageSize: 10
+                    pageSize: 10,
+                    filter: filter,
                 }
         }
     );
@@ -39,6 +52,20 @@ export default function RepairsPage(){
         });
     }
 
+    const onFilterChange = (value: RepairFilterInput) => {
+        setFilter(value);
+        setSelectedPage(1);
+    }
+
+    useEffect(()=>{
+        router.push(
+            {
+                pathname: pathname,
+                query: createQueryParams(selectedPage, filter)
+            }
+        );
+    }, [selectedPage, filter]);
+
     return (
         <div className="min-w-[85rem] max-w-[150rem]">
             <RSRepairList
@@ -46,7 +73,30 @@ export default function RepairsPage(){
                 currentPage={selectedPage}
                 totalPages={queryData?.repairShop.repairs.totalPages??1}
                 onPageChange={(pageNumber) => setSelectedPage(pageNumber)}
+                filter={filter}
+                onFilterChange={onFilterChange}
+                isLoading={queryLoading}
             />
         </div>
     );
 }
+
+const createQueryParams = (pageNumber: number, filter: RepairFilterInput) => {
+    return {
+        page: pageNumber,
+        ...(filter.searchTerm && { search: filter.searchTerm}),
+        ...(filter.statuses && { status: filter.statuses.join(",") })
+    };
+};
+
+const loadQueryParams = (params:ReadonlyURLSearchParams) => {
+    const queryParams = Object.fromEntries(params.entries());
+    const page = Number(queryParams.page) || 1;
+    const statuses = queryParams.status? queryParams.status.split(",") : null;
+    const searchTerm = queryParams?.search;
+    const filter: RepairFilterInput = {
+        statuses: statuses as RepairStatus[],
+        searchTerm: searchTerm,
+    }
+    return {page: page, filter: filter};
+};

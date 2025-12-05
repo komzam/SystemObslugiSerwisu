@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
 using MediatR;
-using system_obslugi_serwisu.Application.Conversations.GetCustomers;
 using system_obslugi_serwisu.Application.Conversations.GetRepairShops;
 using system_obslugi_serwisu.Application.Repairs.GetRepairShops;
 using system_obslugi_serwisu.Application.RepairShops.GetImage;
@@ -9,11 +8,10 @@ using system_obslugi_serwisu.Domain.RepairShops;
 using system_obslugi_serwisu.Presentation.Conversations;
 using system_obslugi_serwisu.Presentation.Conversations.Dto;
 using system_obslugi_serwisu.Presentation.Conversations.GetList;
-using system_obslugi_serwisu.Presentation.Customers.Dto;
 using system_obslugi_serwisu.Presentation.Repairs;
 using system_obslugi_serwisu.Presentation.Repairs.Dto;
-using system_obslugi_serwisu.Presentation.Repairs.GetList;
 using system_obslugi_serwisu.Presentation.RepairShops.Dto;
+using system_obslugi_serwisu.Presentation.RepairShops.GetRepairList;
 using system_obslugi_serwisu.Presentation.Shared;
 using system_obslugi_serwisu.Shared;
 
@@ -77,7 +75,7 @@ public class RepairShopExtensions
         [Service] IMediator mediatr,
         [Parent] RepairShopDto repairShop,
         ClaimsPrincipal claimsPrincipal,
-        GetRepairListRequest request)
+        GetRepairShopsRepairListRequest request)
     {
         var workerIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(workerIdString, out var workerId))
@@ -90,6 +88,9 @@ public class RepairShopExtensions
         {
             RepairShopId = repairShop.Id,
             WorkerId = workerId,
+            Filter = request.Filter,
+            SortBy = request.SortBy,
+            SortDirection = request.SortDirection,
             PageNumber = request.PageNumber,
             PageSize = request.PageSize
         });

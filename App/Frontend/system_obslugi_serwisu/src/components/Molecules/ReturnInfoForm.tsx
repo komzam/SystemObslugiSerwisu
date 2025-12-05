@@ -30,7 +30,6 @@ const defaultAddressForm : AddressInput = {
 export function ReturnInfoForm() {
     const t = useTranslations("RepairForm.additionalInfo");
     const tMethods = useTranslations("ReturnMethods");
-    const authContext = useAuthContext();
     const repairFormContext = useRepairFormContext();
     const formData = repairFormContext.repairFormData.returnInfo;
 
