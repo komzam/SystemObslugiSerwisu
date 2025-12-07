@@ -24,8 +24,12 @@ export function RepairDetailsTitle({ title, repairTicketNumber, status, conversa
         </RepairDetailsTitle.Root>
     )
 }
+RepairDetailsTitle.Root = Root;
+RepairDetailsTitle.Title = Title;
+RepairDetailsTitle.Conversation = Conversation;
+RepairDetailsTitle.Status = Status;
 
-RepairDetailsTitle.Root = ({children}: {children:ReactNode}) => {
+    function Root({children}: {children:ReactNode}) {
     return (
         <Card>
             <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-5 w-full items-center">
@@ -41,7 +45,7 @@ type TitleProps = {
     repairTicketNumber: string;
 }
 
-RepairDetailsTitle.Title = ({title, subtitle, repairTicketNumber}: TitleProps) => {
+function Title({title, subtitle, repairTicketNumber}: TitleProps){
     return (
         <div className="flex flex-col w-full">
             <span className="text-larger1 font-bold line-clamp-2 text-ellipsis">{title}</span>
@@ -52,18 +56,20 @@ RepairDetailsTitle.Title = ({title, subtitle, repairTicketNumber}: TitleProps) =
 }
 
 type ConversationProps = {
-    conversationId: string;
+    conversationId?: string;
     repairShopSide?: boolean;
 }
-RepairDetailsTitle.Conversation = ({conversationId, repairShopSide=false} : ConversationProps) => {
+function Conversation({conversationId, repairShopSide=false} : ConversationProps) {
     const t = useTranslations("RepairDetails");
     return (
         <div className="order-3 sm:order-2 w-full sm:w-auto">
-            <Link href={`/messages/${conversationId}`} className="w-full flex">
-                <Button className="w-full" variant="secondary" icon={<LuMessageSquare size="1.5rem" />}>
-                    {repairShopSide? t("messageCustomer") : t("messageUs")}
-                </Button>
-            </Link>
+            {conversationId != null &&
+                <Link href={`/messages/${conversationId}`} className="w-full flex">
+                    <Button className="w-full" variant="secondary" icon={<LuMessageSquare size="1.5rem" />}>
+                        {repairShopSide? t("messageCustomer") : t("messageUs")}
+                    </Button>
+                </Link>
+            }
         </div>
     );
 }
@@ -71,7 +77,7 @@ RepairDetailsTitle.Conversation = ({conversationId, repairShopSide=false} : Conv
 type StatusProps = {
     status: RepairStatus;
 }
-RepairDetailsTitle.Status = ({status}:StatusProps) =>{
+function Status({status}:StatusProps) {
     return (
         <div className="order-2 sm:order-3 flex justify-start sm:justify-end">
             <RepairStatusC type={status} />

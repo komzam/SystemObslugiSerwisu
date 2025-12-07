@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using HotChocolate.Authorization;
+using HotChocolate.Resolvers;
 using MediatR;
 using system_obslugi_serwisu.Application.Repairs.RepairState.ApproveQuote;
 using system_obslugi_serwisu.Application.Repairs.RepairState.Cancel;
@@ -19,6 +20,8 @@ using system_obslugi_serwisu.Application.Repairs.RepairState.Ship;
 using system_obslugi_serwisu.Application.Repairs.RepairState.StartDiagnosis;
 using system_obslugi_serwisu.Application.Repairs.RepairState.StartRepair;
 using system_obslugi_serwisu.Application.Repairs.RepairState.SubmitQuote;
+using system_obslugi_serwisu.Application.Shared;
+using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Repairs.RepairState.Requests;
 
 namespace system_obslugi_serwisu.Presentation.Repairs.RepairState;
@@ -136,7 +139,8 @@ public class RepairActions
     }
     
     [Authorize]
-    public async Task<bool> ApproveQuote(ClaimsPrincipal claimsPrincipal, ApproveQuoteRequest request)
+    [ActingRoleMiddleware]
+    public async Task<bool> ApproveQuote(ClaimsPrincipal claimsPrincipal, IResolverContext resolverContext, Guid repairId)
     {
         var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
@@ -145,11 +149,12 @@ public class RepairActions
                 .SetCode("BadGuid")
                 .Build());
         
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
         var approveQuoteResult = await _mediator.Send(new ApproveQuoteCommand
         {
-            RepairId = request.RepairId,
+            RepairId = repairId,
             UserId = userId,
-            ActingRole = request.ActingRole
+            ActingRole = role
         });
         if(approveQuoteResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
@@ -161,7 +166,8 @@ public class RepairActions
     }
     
     [Authorize]
-    public async Task<bool> RejectQuote(ClaimsPrincipal claimsPrincipal, RejectQuoteRequest request)
+    [ActingRoleMiddleware]
+    public async Task<bool> RejectQuote(ClaimsPrincipal claimsPrincipal, IResolverContext resolverContext, Guid repairId)
     {
         var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
@@ -170,11 +176,12 @@ public class RepairActions
                 .SetCode("BadGuid")
                 .Build());
         
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
         var rejectQuoteResult = await _mediator.Send(new RejectQuoteCommand
         {
-            RepairId = request.RepairId,
+            RepairId = repairId,
             UserId = userId,
-            ActingRole = request.ActingRole
+            ActingRole = role
         });
         if(rejectQuoteResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()
@@ -382,7 +389,8 @@ public class RepairActions
     }
     
     [Authorize]
-    public async Task<bool> FinalizeDelivery(ClaimsPrincipal claimsPrincipal, FinalizeDeliveryRequest request)
+    [ActingRoleMiddleware]
+    public async Task<bool> FinalizeDelivery(ClaimsPrincipal claimsPrincipal, IResolverContext resolverContext, Guid repairId)
     {
         var userIdString = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(userIdString, out var userId))
@@ -391,11 +399,12 @@ public class RepairActions
                 .SetCode("BadGuid")
                 .Build());
         
+        var role = resolverContext.GetLocalState<ActingRole>("actingRole");
         var finalizeDeliveryResult = await _mediator.Send(new FinalizeDeliveryCommand
         {
-            RepairId = request.RepairId,
+            RepairId = repairId,
             UserId = userId,
-            ActingRole = request.ActingRole
+            ActingRole = role
         });
         if(finalizeDeliveryResult.IsFailure)
             throw new GraphQLException(ErrorBuilder.New()

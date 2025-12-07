@@ -112,7 +112,9 @@ public static class RepairStateMachineFactory
 
         var completeRepairFailureTrigger = machine.SetTriggerParameters<string?>(RepairTrigger.CompleteRepairFailure);
         machine.Configure(RepairStatus.RepairFailed)
-            .Permit(RepairTrigger.FinalizeFailedRepair, RepairStatus.DiagnosisFeeRequired)
+            .PermitIf(RepairTrigger.FinalizeFailedRepair, RepairStatus.DiagnosisFeeRequired, () => repairInstance.DiagnosisFee != null && repairInstance.DiagnosisFee.Value != 0)
+            .PermitIf(RepairTrigger.FinalizeFailedRepair, RepairStatus.AwaitingShipping, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.CourierDelivery)
+            .PermitIf(RepairTrigger.FinalizeFailedRepair, RepairStatus.ReadyForPickup, () => (repairInstance.DiagnosisFee == null || repairInstance.DiagnosisFee.Value == 0) && repairInstance.ReturnInfo.ReturnMethod == ReturnMethod.SelfPickup)
             .OnEntryFrom(completeRepairFailureTrigger, NormalStep);
         
         machine.Configure(RepairStatus.AwaitingParts)
@@ -122,13 +124,15 @@ public static class RepairStateMachineFactory
             .Permit(RepairTrigger.Pickup, RepairStatus.Completed)
             .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null))
             .OnEntryFrom(RepairTrigger.RejectQuote, () => NormalStep(null))
-            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null));
+            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.FinalizeFailedRepair, () => NormalStep(null));
         
         machine.Configure(RepairStatus.AwaitingShipping)
             .Permit(RepairTrigger.Ship, RepairStatus.Shipped)
             .OnEntryFrom(RepairTrigger.PaymentCompleted, () => NormalStep(null))
             .OnEntryFrom(RepairTrigger.RejectQuote, () => NormalStep(null))
-            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null));
+            .OnEntryFrom(RepairTrigger.FinalizeUnfixable, () => NormalStep(null))
+            .OnEntryFrom(RepairTrigger.FinalizeFailedRepair, () => NormalStep(null));
         
         machine.Configure(RepairStatus.Shipped)
             .Permit(RepairTrigger.FinalizeDelivery, RepairStatus.Completed)

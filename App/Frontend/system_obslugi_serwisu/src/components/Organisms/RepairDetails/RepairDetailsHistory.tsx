@@ -1,16 +1,17 @@
 import {RepairHistory} from "@/components/Molecules/RepairHistory";
 import {RepairHistoryStepProps} from "@/components/Molecules/RepairHistoryStep";
 import {useTranslations} from "next-intl";
-import {GetRepairHistoryQuery, GetRepairQuery} from "@/__generated__/types";
+import {GetRepairHistoryQuery} from "@/__generated__/types";
 import {DateTime} from "luxon";
 
 
 export type RepairDetailsHistoryProps = {
     repairId: string;
     repairHistory: GetRepairHistoryQuery["repair"]["repairHistory"];
+    onActionSuccess?: () => void;
 }
 
-export function RepairDetailsHistory({repairId, repairHistory} : RepairDetailsHistoryProps){
+export function RepairDetailsHistory({repairId, repairHistory, onActionSuccess} : RepairDetailsHistoryProps){
     const t = useTranslations("RepairDetails");
     const tHistory = useTranslations("RepairHistory");
 
@@ -33,7 +34,8 @@ export function RepairDetailsHistory({repairId, repairHistory} : RepairDetailsHi
                     partsCost:repairStep.quote.partsCost,
                     laborCost:repairStep.quote.laborCost,
                     totalCost:repairStep.quote.totalCost,
-                    state: repairStep.quote.quoteAccepted == null ? "pending" : repairStep.quote.quoteAccepted ? "approved" : "cancelled"
+                    state: repairStep.quote.quoteAccepted == null ? "pending" : repairStep.quote.quoteAccepted ? "approved" : "cancelled",
+                    onActionSuccessAction: onActionSuccess
                     }
                 });
                 break;

@@ -63,11 +63,6 @@ export enum ApplyPolicy {
   Validation = 'VALIDATION'
 }
 
-export type ApproveQuoteRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
-};
-
 export type BookRepairRequestInput = {
   additionalComment?: InputMaybe<Scalars['String']['input']>;
   contactInfo: ContactInfoInput;
@@ -257,11 +252,6 @@ export type FaultInfoInput = {
   howToReproduce: Scalars['String']['input'];
   previouslyRepaired: Scalars['Boolean']['input'];
   whenOccurred: Scalars['String']['input'];
-};
-
-export type FinalizeDeliveryRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
 };
 
 export type FullCustomerDto = {
@@ -640,11 +630,6 @@ export type RegisterRequestInput = {
   taxIdNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type RejectQuoteRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
-};
-
 export type RepairActions = {
   __typename?: 'RepairActions';
   approveQuote: Scalars['Boolean']['output'];
@@ -668,7 +653,7 @@ export type RepairActions = {
 
 
 export type RepairActionsApproveQuoteArgs = {
-  request: ApproveQuoteRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -693,7 +678,7 @@ export type RepairActionsDeclareUnfixableArgs = {
 
 
 export type RepairActionsFinalizeDeliveryArgs = {
-  request: FinalizeDeliveryRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -718,7 +703,7 @@ export type RepairActionsPickupArgs = {
 
 
 export type RepairActionsRejectQuoteArgs = {
-  request: RejectQuoteRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -1219,19 +1204,132 @@ export type RemovePhoneNumberMutation = { __typename?: 'Mutation', removePhoneNu
 
 export type ApproveQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
-  actingRole: ActingRole;
 }>;
 
 
 export type ApproveQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', approveQuote: boolean } };
 
+export type CheckInAndQueueMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CheckInAndQueueMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', checkInAndQueue: boolean } };
+
+export type CompleteRepairFailureMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CompleteRepairFailureMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', completeRepairFailure: boolean } };
+
+export type CompleteRepairSuccessMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  finalCostCurrency?: InputMaybe<CurrencyCode>;
+  finalCost?: InputMaybe<Scalars['Decimal']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CompleteRepairSuccessMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', completeRepairSuccess: boolean } };
+
+export type DeclareUnfixableMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type DeclareUnfixableMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', declareUnfixable: boolean } };
+
+export type FinalizeDeliveryMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type FinalizeDeliveryMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', finalizeDelivery: boolean } };
+
+export type PartsArrivedMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PartsArrivedMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', partsArrived: boolean } };
+
+export type PartsNeededMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PartsNeededMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', partsNeeded: boolean } };
+
+export type PaymentCompletedMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PaymentCompletedMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', paymentCompleted: boolean } };
+
+export type PickupMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PickupMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', pickup: boolean } };
+
 export type RejectQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
-  actingRole: ActingRole;
 }>;
 
 
 export type RejectQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', rejectQuote: boolean } };
+
+export type ReportComplaintMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ReportComplaintMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', reportComplaint: boolean } };
+
+export type ResolveComplaintMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ResolveComplaintMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', resolveComplaint: boolean } };
+
+export type ShipMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ShipMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', ship: boolean } };
+
+export type StartDiagnosisMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type StartDiagnosisMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', startDiagnosis: boolean } };
+
+export type StartRepairMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type StartRepairMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', startRepair: boolean } };
+
+export type SubmitQuoteMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  currency: CurrencyCode;
+  laborCost: Scalars['Decimal']['input'];
+  partsCost: Scalars['Decimal']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type SubmitQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', submitQuote: boolean } };
 
 export type RepairShopConvListSubscriptionSubscriptionVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
@@ -1307,8 +1405,23 @@ export const LogoutDocument = {"kind":"Document","definitions":[{"kind":"Operati
 export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Register"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isBusiness"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"companyName"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"taxIdNumber"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"register"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isBusiness"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isBusiness"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"firstName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"firstName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"lastName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"lastName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"companyName"},"value":{"kind":"Variable","name":{"kind":"Name","value":"companyName"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"taxIdNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"taxIdNumber"}}}]}}]}]}}]} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>;
 export const RemoveAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeAddress"}}]}}]} as unknown as DocumentNode<RemoveAddressMutation, RemoveAddressMutationVariables>;
 export const RemovePhoneNumberDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemovePhoneNumber"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removePhoneNumber"}}]}}]} as unknown as DocumentNode<RemovePhoneNumberMutation, RemovePhoneNumberMutationVariables>;
-export const ApproveQuoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ApproveQuote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"actingRole"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ActingRole"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approveQuote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"actingRole"},"value":{"kind":"Variable","name":{"kind":"Name","value":"actingRole"}}}]}}]}]}}]}}]} as unknown as DocumentNode<ApproveQuoteMutation, ApproveQuoteMutationVariables>;
-export const RejectQuoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RejectQuote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"actingRole"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ActingRole"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rejectQuote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"actingRole"},"value":{"kind":"Variable","name":{"kind":"Name","value":"actingRole"}}}]}}]}]}}]}}]} as unknown as DocumentNode<RejectQuoteMutation, RejectQuoteMutationVariables>;
+export const ApproveQuoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ApproveQuote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approveQuote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<ApproveQuoteMutation, ApproveQuoteMutationVariables>;
+export const CheckInAndQueueDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CheckInAndQueue"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"checkInAndQueue"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}]}]}}]}}]} as unknown as DocumentNode<CheckInAndQueueMutation, CheckInAndQueueMutationVariables>;
+export const CompleteRepairFailureDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CompleteRepairFailure"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"completeRepairFailure"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}]}]}}]}}]} as unknown as DocumentNode<CompleteRepairFailureMutation, CompleteRepairFailureMutationVariables>;
+export const CompleteRepairSuccessDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CompleteRepairSuccess"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"finalCostCurrency"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"CurrencyCode"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"finalCost"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Decimal"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"completeRepairSuccess"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"finalCostCurrency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"finalCostCurrency"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"finalCost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"finalCost"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}]}]}}]}}]} as unknown as DocumentNode<CompleteRepairSuccessMutation, CompleteRepairSuccessMutationVariables>;
+export const DeclareUnfixableDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeclareUnfixable"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"declareUnfixable"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}]}]}}]}}]} as unknown as DocumentNode<DeclareUnfixableMutation, DeclareUnfixableMutationVariables>;
+export const FinalizeDeliveryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"FinalizeDelivery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"finalizeDelivery"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<FinalizeDeliveryMutation, FinalizeDeliveryMutationVariables>;
+export const PartsArrivedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PartsArrived"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"partsArrived"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<PartsArrivedMutation, PartsArrivedMutationVariables>;
+export const PartsNeededDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PartsNeeded"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"partsNeeded"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<PartsNeededMutation, PartsNeededMutationVariables>;
+export const PaymentCompletedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PaymentCompleted"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"paymentCompleted"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<PaymentCompletedMutation, PaymentCompletedMutationVariables>;
+export const PickupDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Pickup"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pickup"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<PickupMutation, PickupMutationVariables>;
+export const RejectQuoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RejectQuote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"rejectQuote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<RejectQuoteMutation, RejectQuoteMutationVariables>;
+export const ReportComplaintDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ReportComplaint"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reportComplaint"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<ReportComplaintMutation, ReportComplaintMutationVariables>;
+export const ResolveComplaintDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ResolveComplaint"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"resolveComplaint"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<ResolveComplaintMutation, ResolveComplaintMutationVariables>;
+export const ShipDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Ship"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ship"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<ShipMutation, ShipMutationVariables>;
+export const StartDiagnosisDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"StartDiagnosis"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"startDiagnosis"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<StartDiagnosisMutation, StartDiagnosisMutationVariables>;
+export const StartRepairDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"StartRepair"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"startRepair"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}}]}]}}]}}]} as unknown as DocumentNode<StartRepairMutation, StartRepairMutationVariables>;
+export const SubmitQuoteDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SubmitQuote"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"currency"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CurrencyCode"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"laborCost"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Decimal"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"partsCost"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Decimal"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"repairActions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"submitQuote"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"repairId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"currency"},"value":{"kind":"Variable","name":{"kind":"Name","value":"currency"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"laborCost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"laborCost"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"partsCost"},"value":{"kind":"Variable","name":{"kind":"Name","value":"partsCost"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}}]}}]}]}}]}}]} as unknown as DocumentNode<SubmitQuoteMutation, SubmitQuoteMutationVariables>;
 export const RepairShopConvListSubscriptionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"RepairShopConvListSubscription"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"repairShopId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"onRepairShopConversationsUpdated"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"repairShopId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"repairShopId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"modifiedAt"}},{"kind":"Field","name":{"kind":"Name","value":"messages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"numberOfMessages"},"value":{"kind":"IntValue","value":"1"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"senderRole"}}]}}]}}]}}]}}]} as unknown as DocumentNode<RepairShopConvListSubscriptionSubscription, RepairShopConvListSubscriptionSubscriptionVariables>;
 export const SearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Search"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchShopsByName"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"pageNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageNumber"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pageSize"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"miniatureImage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"small"}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"timeZoneId"}},{"kind":"Field","name":{"kind":"Name","value":"rating"}},{"kind":"Field","name":{"kind":"Name","value":"reviewCount"}},{"kind":"Field","name":{"kind":"Name","value":"address"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"buildingNumber"}},{"kind":"Field","name":{"kind":"Name","value":"apartmentNumber"}},{"kind":"Field","name":{"kind":"Name","value":"postalCode"}},{"kind":"Field","name":{"kind":"Name","value":"city"}}]}},{"kind":"Field","name":{"kind":"Name","value":"openingHours"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"monday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"tuesday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"wednesday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"thursday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"friday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"saturday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sunday"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"to"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageNumber"}},{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"totalPages"}}]}}]}}]} as unknown as DocumentNode<SearchQuery, SearchQueryVariables>;
 export const SendMessageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendMessage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"conversationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"message"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendMessage"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"conversationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"conversationId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"message"},"value":{"kind":"Variable","name":{"kind":"Name","value":"message"}}}]}}]}]}}]} as unknown as DocumentNode<SendMessageMutation, SendMessageMutationVariables>;

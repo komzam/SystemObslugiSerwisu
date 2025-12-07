@@ -22,16 +22,20 @@ import {BackButton} from "@/components/Atoms/BackButton";
 import {useTranslations} from "next-intl";
 import {GET_REPAIR_IMAGES} from "@/graphql/GetRepairImages";
 import {GET_REPAIR_HISTORY} from "@/graphql/GetRepairHistory";
+import {ErrorName} from "@/components/Utils/ErrorName";
+import {useToast} from "@/components/Utils/ToastNotifications";
 
 export default function Repair() {
     const params = useParams();
     const t = useTranslations("RepairDetails");
+    const tErr = useTranslations("Errors");
+    const toasts = useToast();
     const router = useRouter();
     const repairId = params.id;
 
     if(!repairId) router.back();
 
-    const {data, error, loading} = useQuery<GetRepairQuery, GetRepairQueryVariables>(GET_REPAIR, {
+    const {data, error, loading, refetch} = useQuery<GetRepairQuery, GetRepairQueryVariables>(GET_REPAIR, {
         variables: {
             repairId: repairId as string
         }
@@ -53,6 +57,15 @@ export default function Repair() {
             repairId: repairId as string
         }
     });
+
+    const onActionSuccess = async () => {
+        try {
+            await refetch();
+            await historyRefetch();
+        } catch (err) {
+            toasts.toast({title: tErr("error"), type: "error", description: ErrorName(err, tErr)});
+        }
+    }
 
     if(error) return <p>ERROR</p>;
     if(loading) return <LoadingIcon/>;
@@ -83,7 +96,7 @@ export default function Repair() {
                         howToReplicateFault={repair.faultInfo.howToReproduce}
                         faultDescription={repair.faultInfo.description}/>
                     <RepairDetailsImages images={images}/>
-                    <RepairDetailsHistory repairId={repair.id} repairHistory={history}/>
+                    <RepairDetailsHistory repairId={repair.id} repairHistory={history} onActionSuccess={onActionSuccess}/>
                 </div>
             </div>
         </ProtectedRoute>

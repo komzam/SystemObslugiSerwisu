@@ -1,12 +1,9 @@
 ﻿import {gql} from "@apollo/client";
 
 export const APPROVE_QUOTE = gql`
-    mutation ApproveQuote($repairId: UUID!, $actingRole: ActingRole!) {
+    mutation ApproveQuote($repairId: UUID!) {
         repairActions{
-            approveQuote(request: {
-                repairId: $repairId,
-                actingRole: $actingRole
-            })
+            approveQuote(repairId: $repairId)
         }
     }
 `

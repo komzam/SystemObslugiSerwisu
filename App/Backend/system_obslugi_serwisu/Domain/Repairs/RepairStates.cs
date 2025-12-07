@@ -151,7 +151,7 @@ public partial class Repair
     
     public async Task<OperationResult> StartRepair(Worker worker)
     {
-        if (worker.IsWorkingAt(RepairShopId))
+        if (!worker.IsWorkingAt(RepairShopId))
             return RepairErrors.AccessDenied();
         
         return await FireTriggerAsync(RepairTrigger.StartRepair);
@@ -161,7 +161,7 @@ public partial class Repair
     {
         if (actor is Worker worker)
         {
-            if (worker.IsWorkingAt(RepairShopId))
+            if (!worker.IsWorkingAt(RepairShopId))
                 return RepairErrors.AccessDenied();
         }else if (actor is SystemActor system) { }
         else
@@ -176,7 +176,7 @@ public partial class Repair
     {
         if (actor is Worker worker)
         {
-            if (worker.IsWorkingAt(RepairShopId))
+            if (!worker.IsWorkingAt(RepairShopId))
                 return RepairErrors.AccessDenied();
         }else if (actor is SystemActor system) { }
         else
@@ -227,7 +227,7 @@ public partial class Repair
     {
         if (actor is Worker worker)
         {
-            if (worker.IsWorkingAt(RepairShopId))
+            if (!worker.IsWorkingAt(RepairShopId))
                 return RepairErrors.AccessDenied();
         }else if (actor is SystemActor system) { }
         else

@@ -10,12 +10,13 @@ import {useMutation} from "@apollo/client/react";
 import {APPROVE_QUOTE} from "@/graphql/RepairActions/ApproveQuote";
 import {REJECT_QUOTE} from "@/graphql/RepairActions/RejectQuote";
 import {
-    ActingRole,
     ApproveQuoteMutation,
     ApproveQuoteMutationVariables,
     RejectQuoteMutation,
     RejectQuoteMutationVariables
 } from "@/__generated__/types";
+import {ErrorName} from "@/components/Utils/ErrorName";
+import {useToast} from "@/components/Utils/ToastNotifications";
 
 export type CostEstimateProps = {
     repairId: string;
@@ -23,11 +24,13 @@ export type CostEstimateProps = {
     laborCost: string;
     totalCost: string;
     state?: "pending" | "approved" | "cancelled";
+    onActionSuccessAction?: () => void;
 }
 
-export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="pending"}: CostEstimateProps) {
+export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="pending", onActionSuccessAction}: CostEstimateProps) {
     const t = useTranslations("RepairDetails");
-    const [internalState, setInternalState] = useState<"pending" | "approved" | "cancelled">(state);
+    const tErr = useTranslations("Errors");
+    const toasts = useToast();
     const [approveQuote] = useMutation<ApproveQuoteMutation, ApproveQuoteMutationVariables>(APPROVE_QUOTE);
     const [rejectQuote] = useMutation<RejectQuoteMutation, RejectQuoteMutationVariables>(REJECT_QUOTE, );
 
@@ -39,16 +42,20 @@ export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="
 
     const onApprove = async () => {
         try {
-            await approveQuote({variables:{repairId: repairId, actingRole: ActingRole.Customer}});
-            setInternalState("approved");
-        }catch{}
+            await approveQuote({variables:{repairId: repairId}});
+            onActionSuccessAction?.();
+        }catch(err){
+            toasts.toast({title: tErr("error"), type: "error", description: ErrorName(err, tErr)});
+        }
     }
 
     const onReject = async () => {
         try {
-            await rejectQuote({variables:{repairId: repairId, actingRole: ActingRole.Customer}});
-            setInternalState("cancelled");
-        }catch{}
+            await rejectQuote({variables:{repairId: repairId}});
+            onActionSuccessAction?.();
+        }catch(err){
+            toasts.toast({title: tErr("error"), type: "error", description: ErrorName(err, tErr)});
+        }
     }
 
     return(
@@ -65,7 +72,7 @@ export function CostEstimate({repairId, partsCost, laborCost, totalCost, state="
                 </div>,
                 "approved": <HighlightedText color={HighlightColors.Green} className="text-center">{t("approvedMessage")}</HighlightedText>,
                 "cancelled": <HighlightedText color={HighlightColors.Red} className="text-center">{t("canceledMessage")}</HighlightedText>
-            }[internalState]}
+            }[state]}
         </div>
     )
 }

@@ -267,7 +267,7 @@
     },
     "AWAITING_SHIPPING":{
       "title": "Oczekuje na Wysyłkę",
-      "description": "Urządzenie zostało spakowane i oczekuje na przekazanie przewoźnikowi."
+      "description": "Urządzenie jest przygotowywane do wysyłki."
     },
     "SHIPPED":{
       "title": "Wysłane",
@@ -367,6 +367,78 @@
     },
     "LatestMessages": {
       "title": "Najnowsze Wiadomości"
+    }
+  },
+  "RepairActions": {
+    "AwaitingDelivery":{
+      "message": "Naprawa została zarejestrowana, ale urządzenie nie zostało jeszcze dostarczone.",
+      "descriptionPlaceholder": "Nieobowiązkowy opis o stanie paczki w momencie przyjęcia...",
+      "markAsReceived": "Oznacz jako przyjęte"
+    },
+    "AwaitingDiagnosis":{
+      "message": "Urządzenie oczekuje na diagnozę.",
+      "startDiagnosis": "Rozpocznij diagnozę"
+    },
+    "Diagnosing": {
+      "message": "Trwa diagnoza urządzenia.",
+      "descriptionPlaceholder": "Nieobowiązkowy opis zdiagnozowanej usterki...",
+      "quoteDialogTitle": "Dodaj wycenę naprawy",
+      "laborCost": "Koszt robocizny",
+      "partsCost": "Koszt części",
+      "declareUnfixable": "Oznacz jako nienaprawialne",
+      "submitQuote": "Prześlij wycenę"
+    },
+    "AwaitingApproval": {
+      "message": "Oczekiwanie na zatwierdzenie lub odrzucenie wyceny przez klienta."
+    },
+    "DiagnosisFeeRequired": {
+      "message": "Oczekiwanie na opłacenie diagnozy przez klienta.",
+      "markAsPaid": "Oznacz jako opłacone"
+    },
+    "FinalPaymentRequired": {
+      "message": "Oczekiwanie na opłacenie naprawy przez klienta.",
+      "markAsPaid": "Oznacz jako opłacone"
+    },
+    "AwaitingRepair": {
+      "message": "Urządzenie oczekuje na naprawę.",
+      "startRepair": "Rozpocznij naprawę"
+    },
+    "InRepair": {
+      "message": "Trwa naprawa urządzenia.",
+      "descriptionPlaceholderSuccess": "Nieobowiązkowy opis naprawy...",
+      "descriptionPlaceholderFailure": "Nieobowiązkowy opis dlaczego naprawa się nie udała...",
+      "differentFinalPrice": "Końcowy koszt jest inny niż wycena",
+      "finalPrice": "Koszt końcowy",
+      "completeSuccess": "Zakończ pomyślnie",
+      "completeFailure": "Zakończ niepowodzeniem"
+    },
+    "AwaitingParts": {
+      "message": "Oczekiwanie na dostawę części.",
+      "partsArrived": "Części dotarły"
+    },
+    "ReadyForPickup": {
+      "message": "Urządzenie gotowe do odbioru.",
+      "markAsPickedUp": "Oznacz jako odebrane"
+    },
+    "AwaitingShipping": {
+      "message": "Urządzenie oczekuje na wysyłkę.",
+      "markAsShipped": "Oznacz jako wysłane"
+    },
+    "Shipped": {
+      "message": "Urządzenie jest w drodze.",
+      "markAsDelivered": "Oznacz jako doręczone"
+    },
+    "Completed": {
+      "message": "Naprawa zakończona.",
+      "startComplaint": "Otwórz reklamację"
+    },
+    "Complaint": {
+      "message": "Złożono reklamację.",
+      "closeComplaint": "Zamknij reklamację"
+    },
+    "Common": {
+      "addDescriptionTitle":"Dodaj opis",
+      "description": "Opis"
     }
   },
   "Errors": {
@@ -502,6 +574,7 @@
     "uploading": "Wysyłanie",
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
-    "noData": "Brak danych"
+    "noData": "Brak danych",
+    "currency": "Waluta"
   }
 }

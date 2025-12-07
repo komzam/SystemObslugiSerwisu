@@ -267,7 +267,7 @@
     },
     "AWAITING_SHIPPING":{
       "title": "Awaiting Shipping",
-      "description": "The device is packaged and awaiting handover to the shipping carrier."
+      "description": "The device is being prepared for shipping."
     },
     "SHIPPED":{
       "title": "Shipped",
@@ -367,6 +367,78 @@
     },
     "LatestMessages": {
       "title": "Latest Messages"
+    }
+  },
+  "RepairActions": {
+    "AwaitingDelivery":{
+      "message": "Repair was booked, but device was not received yet.",
+      "descriptionPlaceholder": "Optional description about package state on arrival...",
+      "markAsReceived": "Mark as received"
+    },
+    "AwaitingDiagnosis":{
+      "message": "Device is awaiting diagnosis.",
+      "startDiagnosis": "Start diagnosis"
+    },
+    "Diagnosing": {
+      "message": "Device is being diagnosed.",
+      "descriptionPlaceholder": "Optional description about the diagnosed fault...",
+      "quoteDialogTitle": "Add repair quote",
+      "laborCost": "Labor cost",
+      "partsCost": "Parts cost",
+      "declareUnfixable": "Declare unfixable",
+      "submitQuote": "Submit quote"
+    },
+    "AwaitingApproval": {
+      "message": "Waiting for the customer to approve or decline the estimate."
+    },
+    "DiagnosisFeeRequired": {
+      "message": "Waiting for customer to pay for diagnosis fee.",
+      "markAsPaid": "Mark as paid"
+    },
+    "FinalPaymentRequired": {
+      "message": "Waiting for customer to pay for repair.",
+      "markAsPaid": "Mark as paid"
+    },
+    "AwaitingRepair": {
+      "message": "Device is awaiting repair.",
+      "startRepair": "Start repair"
+    },
+    "InRepair": {
+      "message": "Device is being repaired.",
+      "descriptionPlaceholderSuccess": "Optional description about the repair...",
+      "descriptionPlaceholderFailure": "Optional description about why the repair failed...",
+      "differentFinalPrice": "Final price is different from quote",
+      "finalPrice": "Final price",
+      "completeSuccess": "Complete as success",
+      "completeFailure": "Complete as failure"
+    },
+    "AwaitingParts": {
+      "message": "Waiting for parts to arrive.",
+      "partsArrived": "Parts arrived"
+    },
+    "ReadyForPickup": {
+      "message": "Device is awaiting customer pickup.",
+      "markAsPickedUp": "Mark as picked up"
+    },
+    "AwaitingShipping": {
+      "message": "Device is awaiting shipping.",
+      "markAsShipped": "Mark as shipped"
+    },
+    "Shipped": {
+      "message": "Device is in transit.",
+      "markAsDelivered": "Mark as delivered"
+    },
+    "Completed": {
+      "message": "Repair is completed.",
+      "startComplaint": "Start complaint"
+    },
+    "Complaint": {
+      "message": "A complaint was filed.",
+      "closeComplaint": "Close complaint"
+    },
+    "Common": {
+      "addDescriptionTitle":"Add description",
+      "description": "Description"
     }
   },
   "Errors": {
@@ -502,6 +574,7 @@
     "uploading": "Uploading",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "noData": "No data"
+    "noData": "No data",
+    "currency": "Currency"
   }
 }

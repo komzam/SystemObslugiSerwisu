@@ -59,11 +59,6 @@ export enum ApplyPolicy {
   Validation = 'VALIDATION'
 }
 
-export type ApproveQuoteRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
-};
-
 export type BookRepairRequestInput = {
   additionalComment?: InputMaybe<Scalars['String']['input']>;
   contactInfo: ContactInfoInput;
@@ -253,11 +248,6 @@ export type FaultInfoInput = {
   howToReproduce: Scalars['String']['input'];
   previouslyRepaired: Scalars['Boolean']['input'];
   whenOccurred: Scalars['String']['input'];
-};
-
-export type FinalizeDeliveryRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
 };
 
 export type FullCustomerDto = {
@@ -636,11 +626,6 @@ export type RegisterRequestInput = {
   taxIdNumber?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type RejectQuoteRequestInput = {
-  actingRole: ActingRole;
-  repairId: Scalars['UUID']['input'];
-};
-
 export type RepairActions = {
   __typename?: 'RepairActions';
   approveQuote: Scalars['Boolean']['output'];
@@ -664,7 +649,7 @@ export type RepairActions = {
 
 
 export type RepairActionsApproveQuoteArgs = {
-  request: ApproveQuoteRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -689,7 +674,7 @@ export type RepairActionsDeclareUnfixableArgs = {
 
 
 export type RepairActionsFinalizeDeliveryArgs = {
-  request: FinalizeDeliveryRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -714,7 +699,7 @@ export type RepairActionsPickupArgs = {
 
 
 export type RepairActionsRejectQuoteArgs = {
-  request: RejectQuoteRequestInput;
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -1215,19 +1200,132 @@ export type RemovePhoneNumberMutation = { __typename?: 'Mutation', removePhoneNu
 
 export type ApproveQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
-  actingRole: ActingRole;
 }>;
 
 
 export type ApproveQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', approveQuote: boolean } };
 
+export type CheckInAndQueueMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CheckInAndQueueMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', checkInAndQueue: boolean } };
+
+export type CompleteRepairFailureMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CompleteRepairFailureMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', completeRepairFailure: boolean } };
+
+export type CompleteRepairSuccessMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  finalCostCurrency?: InputMaybe<CurrencyCode>;
+  finalCost?: InputMaybe<Scalars['Decimal']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CompleteRepairSuccessMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', completeRepairSuccess: boolean } };
+
+export type DeclareUnfixableMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type DeclareUnfixableMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', declareUnfixable: boolean } };
+
+export type FinalizeDeliveryMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type FinalizeDeliveryMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', finalizeDelivery: boolean } };
+
+export type PartsArrivedMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PartsArrivedMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', partsArrived: boolean } };
+
+export type PartsNeededMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PartsNeededMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', partsNeeded: boolean } };
+
+export type PaymentCompletedMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PaymentCompletedMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', paymentCompleted: boolean } };
+
+export type PickupMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type PickupMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', pickup: boolean } };
+
 export type RejectQuoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
-  actingRole: ActingRole;
 }>;
 
 
 export type RejectQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', rejectQuote: boolean } };
+
+export type ReportComplaintMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ReportComplaintMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', reportComplaint: boolean } };
+
+export type ResolveComplaintMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ResolveComplaintMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', resolveComplaint: boolean } };
+
+export type ShipMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type ShipMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', ship: boolean } };
+
+export type StartDiagnosisMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type StartDiagnosisMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', startDiagnosis: boolean } };
+
+export type StartRepairMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type StartRepairMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', startRepair: boolean } };
+
+export type SubmitQuoteMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  currency: CurrencyCode;
+  laborCost: Scalars['Decimal']['input'];
+  partsCost: Scalars['Decimal']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type SubmitQuoteMutation = { __typename?: 'Mutation', repairActions: { __typename?: 'RepairActions', submitQuote: boolean } };
 
 export type RepairShopConvListSubscriptionSubscriptionVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];

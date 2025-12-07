@@ -29,6 +29,7 @@ import {GET_REPAIR_IMAGES} from "@/graphql/GetRepairImages";
 import {GET_REPAIR_HISTORY} from "@/graphql/GetRepairHistory";
 import {DELETE_REPAIR_IMAGE} from "@/graphql/DeleteRepairImage";
 import {RepairDetailsAssignedTechnician} from "@/components/Organisms/RepairDetails/RepairDetailsAssignedTechnician";
+import {RepairDetailsActions} from "@/components/Organisms/RepairDetails/RepairDetailsActions";
 
 export default function Repair() {
     const params = useParams();
@@ -40,7 +41,7 @@ export default function Repair() {
 
     if (!repairId) router.back();
 
-    const {data, error, loading} = useQuery<GetRepairQuery, GetRepairQueryVariables>(GET_REPAIR, {
+    const {data, error, loading, refetch} = useQuery<GetRepairQuery, GetRepairQueryVariables>(GET_REPAIR, {
         variables: {
             repairId: repairId as string
         }
@@ -96,11 +97,18 @@ export default function Repair() {
         }
     }
 
+    const onActionSuccess = async () => {
+        try {
+            await refetch();
+            await historyRefetch();
+        } catch (err) {
+            toasts.toast({title: tErr("error"), type: "error", description: ErrorName(err, tErr)});
+        }
+    }
+
     if (error) return <p>ERROR</p>;
     if (loading) return <LoadingIcon/>;
     if (!data) return <p>ERROR</p>;
-
-    console.log("RELOAD");
 
     const images = imgData?.repair.images??[];
     const history = historyData?.repair.repairHistory??[];
@@ -118,6 +126,7 @@ export default function Repair() {
                         <RepairDetailsTitle.Conversation conversationId={repair.conversationId} repairShopSide={true}/>
                         <RepairDetailsTitle.Status status={repair.status}/>
                     </RepairDetailsTitle.Root>
+                    <RepairDetailsActions status={repair.status} repairId={repair.id} onActionSuccess={onActionSuccess}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <RepairDetailsDevInfo deviceType={repair.deviceInfo.deviceType}
                                               manufacturer={repair.deviceInfo.manufacturer}
@@ -133,7 +142,7 @@ export default function Repair() {
                     <RepairDetailsImages.Root editable={true} getUploadLink={getUploadLink} onUploadSuccess={updateImages}>
                       <RepairDetailsImages.ImageCarousel images={images} onDelete={onDelete} editable={true}/>
                     </RepairDetailsImages.Root>
-                    <RepairDetailsHistory repairId={repair.id} repairHistory={history}/>
+                    <RepairDetailsHistory repairId={repair.id} repairHistory={history} onActionSuccess={onActionSuccess}/>
                 </div>
             </div>
         </ProtectedRoute>

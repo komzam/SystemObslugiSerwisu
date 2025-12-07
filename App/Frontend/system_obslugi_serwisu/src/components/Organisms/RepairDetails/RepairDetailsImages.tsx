@@ -1,8 +1,8 @@
 import {Card} from "@/components/Atoms/Card";
 import {useTranslations} from "next-intl";
 import {ImageCarousel, ImageProps} from "@/components/Molecules/ImageCarousel";
-import {GetRepairImagesQuery, GetRepairQuery} from "@/__generated__/types";
-import {ChangeEvent, FormEventHandler, ReactNode, useState} from "react";
+import {GetRepairImagesQuery} from "@/__generated__/types";
+import {ChangeEvent, ReactNode, useState} from "react";
 import {Button} from "@/components/Atoms/Button";
 import DialogWindow from "@/components/Molecules/DialogWindow";
 import {TextInput} from "@/components/Atoms/TextInput";
@@ -19,6 +19,8 @@ export function RepairDetailsImages({images}: RepairDetailsImagesProps) {
         </RepairDetailsImages.Root>
     )
 }
+RepairDetailsImages.Root = Root;
+RepairDetailsImages.ImageCarousel = ImgCarousel;
 
 type RootProps = {
     children: ReactNode;
@@ -26,7 +28,7 @@ type RootProps = {
     getUploadLink?: (contentType: string) => Promise<string|null>;
     onUploadSuccess?: () => void;
 };
-RepairDetailsImages.Root = ({children, editable, getUploadLink, onUploadSuccess} : RootProps) => {
+function Root({children, editable, getUploadLink, onUploadSuccess} : RootProps) {
     const t = useTranslations("RepairDetails");
     const tComm = useTranslations("Common");
     const tErr = useTranslations("Errors");
@@ -123,7 +125,7 @@ type ImageCarouselProps = {
     editable?: boolean;
     onDelete?: (id: string) => void;
 }
-RepairDetailsImages.ImageCarousel = ({images, editable=false, onDelete} : ImageCarouselProps) => {
+function ImgCarousel({images, editable=false, onDelete} : ImageCarouselProps) {
     const t = useTranslations("RepairDetails");
     const imageList:ImageProps[] =[];
     for(const image of images){
