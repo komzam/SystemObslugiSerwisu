@@ -1097,7 +1097,7 @@ export type GetRepairQueryVariables = Exact<{
 }>;
 
 
-export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, ticketNumber: string, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, contactInfo: { __typename?: 'ContactInfoDto', fullName: string }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean } } };
+export type GetRepairQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, ticketNumber: string, conversationId?: any | null, status: RepairStatus, additionalComment?: string | null, repairShop?: { __typename?: 'RepairShopDto', id: any, name: string } | null, contactInfo: { __typename?: 'ContactInfoDto', fullName: string, email: string, phoneNumber: string, preferredContactMethod: ContactMethod }, deviceInfo: { __typename?: 'DeviceInfoDto', deviceType: DeviceType, manufacturer: string, model: string, serialNumber: string }, faultInfo: { __typename?: 'FaultInfoDto', whenOccurred: string, howToReproduce: string, description: string, previouslyRepaired: boolean }, returnInfo: { __typename?: 'ReturnInfoDto', returnMethod: ReturnMethod, returnAddress?: { __typename?: 'AddressDto', recipientName: string, street: string, buildingNumber: string, apartmentNumber?: string | null, city: string, postalCode: string, country: Country } | null } } };
 
 export type GetRepairHistoryQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];

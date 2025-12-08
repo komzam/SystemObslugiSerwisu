@@ -30,6 +30,9 @@ import {GET_REPAIR_HISTORY} from "@/graphql/GetRepairHistory";
 import {DELETE_REPAIR_IMAGE} from "@/graphql/DeleteRepairImage";
 import {RepairDetailsAssignedTechnician} from "@/components/Organisms/RepairDetails/RepairDetailsAssignedTechnician";
 import {RepairDetailsActions} from "@/components/Organisms/RepairDetails/RepairDetailsActions";
+import {RepairDetailsContactInfo} from "@/components/Organisms/RepairDetails/RepairDetailsContactInfo";
+import {RepairDetailsReturnInfo} from "@/components/Organisms/RepairDetails/RepairDetailsReturnInfo";
+import {RepairDetailsAdditionalInfo} from "@/components/Organisms/RepairDetails/RepairDetailsAdditionalInfo";
 
 export default function Repair() {
     const params = useParams();
@@ -138,7 +141,21 @@ export default function Repair() {
                     <RepairDetailsFaultInfo
                         whenFaultOccurred={repair.faultInfo.whenOccurred}
                         howToReplicateFault={repair.faultInfo.howToReproduce}
-                        faultDescription={repair.faultInfo.description}/>
+                        faultDescription={repair.faultInfo.description}
+                        repairedBefore={repair.faultInfo.previouslyRepaired}/>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <RepairDetailsContactInfo
+                            fullName={repair.contactInfo.fullName}
+                            email={repair.contactInfo.email}
+                            phoneNumber={repair.contactInfo.phoneNumber}
+                            preferredContactMethod={repair.contactInfo.preferredContactMethod}
+                        />
+                        <RepairDetailsReturnInfo
+                            returnMethod={repair.returnInfo.returnMethod}
+                            returnAddress={repair.returnInfo.returnAddress}
+                        />
+                    </div>
+                    {repair.additionalComment && <RepairDetailsAdditionalInfo additionalComment={repair.additionalComment} />}
                     <RepairDetailsImages.Root editable={true} getUploadLink={getUploadLink} onUploadSuccess={updateImages}>
                       <RepairDetailsImages.ImageCarousel images={images} onDelete={onDelete} editable={true}/>
                     </RepairDetailsImages.Root>

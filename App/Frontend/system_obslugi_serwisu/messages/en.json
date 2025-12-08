@@ -291,7 +291,18 @@
     "rsBackButton": "Back to repairs",
     "deviceInfo": "Device information",
     "faultInfo": "Fault information",
+    "contactInfo": "Contact information",
+    "returnInfo": "Return information",
+    "additionalInfo": "Additional information",
     "assignedTechnician": "Assigned technician",
+    "additionalComment": "Additional comment",
+    "returnMethod": "Sposób zwrotu",
+    "returnAddress": "Adres zwrotny",
+    "fullName": "Full name",
+    "companyName": "Company name",
+    "email": "E-Mail",
+    "phoneNumber": "Phone number",
+    "preferredContactMethod": "Preferred contact method",
     "unassigned": "Unassigned",
     "assignYourself": "Assign yourself",
     "unassign": "Unassign",
@@ -308,6 +319,7 @@
     "whenFaultOccurred": "When the fault occurred",
     "howToReplicateFault": "How to replicate the fault",
     "faultDescription": "Fault description",
+    "repairedBefore": "Was repaired before",
     "costEstimate": "Cost estimate",
     "totalEstimate": "Total estimate",
     "parts": "Parts",
@@ -575,6 +587,8 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "noData": "No data",
-    "currency": "Currency"
+    "currency": "Currency",
+    "yes": "Yes",
+    "no": "No"
   }
 }

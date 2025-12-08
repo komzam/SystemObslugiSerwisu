@@ -12,7 +12,10 @@ export const GET_REPAIR = gql`
             },
             status,
             contactInfo{
-              fullName  
+              fullName,
+              email,
+              phoneNumber,
+              preferredContactMethod
             },
             deviceInfo {
                 deviceType,
@@ -25,6 +28,18 @@ export const GET_REPAIR = gql`
                 howToReproduce,
                 description,
                 previouslyRepaired
+            },
+            returnInfo{
+                returnMethod,
+                returnAddress {
+                    recipientName,
+                    street,
+                    buildingNumber,
+                    apartmentNumber,
+                    city,
+                    postalCode,
+                    country
+                }
             },
             additionalComment
         }

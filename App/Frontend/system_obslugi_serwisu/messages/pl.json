@@ -291,7 +291,18 @@
     "rsBackButton": "Powrót do napraw",
     "deviceInfo": "Informacje o urządzeniu",
     "faultInfo": "Informacje o usterce",
+    "contactInfo": "Informacje kontaktowe",
+    "returnInfo": "Informacje o zwrocie",
+    "additionalInfo": "Informacje dodatkowe",
     "assignedTechnician": "Przypisany serwisant",
+    "additionalComment": "Dodatkowe uwagi",
+    "returnMethod": "Sposób zwrotu",
+    "returnAddress": "Adres zwrotny",
+    "fullName": "Imię i nazwisko",
+    "companyName": "Nazwa firmy",
+    "email": "E-Mail",
+    "phoneNumber": "Numer telefonu",
+    "preferredContactMethod": "Preferowana forma kontaktu",
     "unassigned": "Nieprzypisany",
     "assignYourself": "Przypisz do siebie",
     "unassign": "Cofnij przypisanie",
@@ -308,6 +319,7 @@
     "whenFaultOccurred": "Kiedy wystąpiła usterka",
     "howToReplicateFault": "Jak odtworzyć usterkę",
     "faultDescription": "Opis usterki",
+    "repairedBefore": "Było naprawiane wcześniej",
     "costEstimate": "Kosztorys",
     "totalEstimate": "Razem",
     "parts": "Części",
@@ -466,7 +478,7 @@
     "Repairs": {
       "RepairNotFound": "Nie znaleziono naprawy",
       "RepairClosed": "Naprawa jest zamknięta",
-      "AdditionalCommentTooLong": "Dodatkowy komentarz do naprawy jest za długi",
+      "AdditionalCommentTooLong": "Dodatkowe uwagi do naprawy są za długie",
       "AccessDenied": "Odmowa dostępu do naprawy",
       "WorkerAlreadyAssigned": "Pracownik jest już przypisany do tej naprawy"
     },
@@ -575,6 +587,8 @@
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
     "noData": "Brak danych",
-    "currency": "Waluta"
+    "currency": "Waluta",
+    "yes": "Tak",
+    "no": "Nie"
   }
 }
