@@ -22,7 +22,7 @@ public class RepairShopMigrationRunner
                     repairShopContextFactory.RepairShopId=repairShopId.ToString();
                     
                     var context = repairShopContextFactory.Create();
-                    await context.Database.ExecuteSqlAsync($"CREATE SCHEMA IF NOT EXISTS \"rs_{repairShopId}\";");
+                    await context.Database.ExecuteSqlRawAsync($"CREATE SCHEMA IF NOT EXISTS \"rs_{repairShopId}\";");
                     
                     await context.Database.MigrateAsync();
                     

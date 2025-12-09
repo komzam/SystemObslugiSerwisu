@@ -294,6 +294,8 @@
     "contactInfo": "Contact information",
     "returnInfo": "Return information",
     "additionalInfo": "Additional information",
+    "internalNotes": "Internal notes",
+    "addNote": "Add note",
     "assignedTechnician": "Assigned technician",
     "additionalComment": "Additional comment",
     "returnMethod": "Sposób zwrotu",
@@ -579,6 +581,11 @@
       "LastNameTooLong": "Last name is too long",
       "InvalidLastName": "Last name is invalid",
       "RepairAlreadyAssigned": "Worker already has assigned repair"
+    },
+    "RepairNotes": {
+      "RepairNoteNotFound": "Repair note not found",
+      "InvalidContent": "Invalid repair note content",
+      "ContentTooLong": "Repair note content is too long"
     }
   },
   "Common": {

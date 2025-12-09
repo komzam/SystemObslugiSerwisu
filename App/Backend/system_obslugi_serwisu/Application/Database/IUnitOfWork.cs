@@ -2,6 +2,7 @@
 using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Images;
 using system_obslugi_serwisu.Application.Parts;
+using system_obslugi_serwisu.Application.RepairNotes;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
@@ -23,6 +24,7 @@ public interface IUnitOfWork
     public IConversationRepository ConversationRepository { get; }
     public IImageRepository ImageRepository { get; }
     public IPartRepository PartRepository { get; }
+    public INoteRepository NoteRepository { get; }
     public Task<OperationResult> SaveChanges();
     public OperationResult SetTenant(RepairShopId repairShopId);
 }

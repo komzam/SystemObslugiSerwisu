@@ -3,6 +3,7 @@ using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Images;
 using system_obslugi_serwisu.Application.Parts;
+using system_obslugi_serwisu.Application.RepairNotes;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
@@ -14,6 +15,7 @@ using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Images;
 using system_obslugi_serwisu.Infrastructure.Parts;
+using system_obslugi_serwisu.Infrastructure.RepairNotes;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Reviews;
@@ -34,6 +36,7 @@ public class UnitOfWork(DatabaseContext databaseContext, RepairShopContextFactor
     private ConversationRepository? _conversationRepository;
     private ImageRepository? _imageRepository;
     private PartRepository? _partRepository;
+    private NoteRepository? _noteRepository;
     private RepairShopContext? _repairShopContext;
     
     public ICustomerRepository CustomerRepository {
@@ -135,6 +138,20 @@ public class UnitOfWork(DatabaseContext databaseContext, RepairShopContextFactor
                 _partRepository = new PartRepository(_repairShopContext);
             }
             return _partRepository;
+        } 
+    }
+    
+    public INoteRepository NoteRepository { 
+        get
+        {
+            if (_repairShopContext == null)
+                _repairShopContext = repairShopContextFactory.Create();
+            
+            if (_noteRepository == null)
+            {
+                _noteRepository = new NoteRepository(_repairShopContext);
+            }
+            return _noteRepository;
         } 
     }
 

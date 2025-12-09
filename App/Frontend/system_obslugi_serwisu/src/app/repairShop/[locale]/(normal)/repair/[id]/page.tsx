@@ -33,6 +33,7 @@ import {RepairDetailsActions} from "@/components/Organisms/RepairDetails/RepairD
 import {RepairDetailsContactInfo} from "@/components/Organisms/RepairDetails/RepairDetailsContactInfo";
 import {RepairDetailsReturnInfo} from "@/components/Organisms/RepairDetails/RepairDetailsReturnInfo";
 import {RepairDetailsAdditionalInfo} from "@/components/Organisms/RepairDetails/RepairDetailsAdditionalInfo";
+import {RepairDetailsNotes} from "@/components/Organisms/RepairDetails/RepairDetailsNotes";
 
 export default function Repair() {
     const params = useParams();
@@ -159,6 +160,7 @@ export default function Repair() {
                     <RepairDetailsImages.Root editable={true} getUploadLink={getUploadLink} onUploadSuccess={updateImages}>
                       <RepairDetailsImages.ImageCarousel images={images} onDelete={onDelete} editable={true}/>
                     </RepairDetailsImages.Root>
+                    <RepairDetailsNotes repairId={repair.id}/>
                     <RepairDetailsHistory repairId={repair.id} repairHistory={history} onActionSuccess={onActionSuccess}/>
                 </div>
             </div>

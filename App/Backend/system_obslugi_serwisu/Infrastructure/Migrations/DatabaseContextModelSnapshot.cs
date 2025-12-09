@@ -153,7 +153,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Conversations.Message", b =>
@@ -182,7 +182,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("ConversationId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Customers.Customer", b =>
@@ -204,7 +204,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.RepairShops.RepairShop", b =>
@@ -237,7 +237,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RepairShops");
+                    b.ToTable("RepairShops", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.RepairShops.RepairShopImage", b =>
@@ -255,7 +255,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairShopId");
 
-                    b.ToTable("RepairShopImages");
+                    b.ToTable("RepairShopImages", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.Repair", b =>
@@ -291,7 +291,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairShopId");
 
-                    b.ToTable("Repairs");
+                    b.ToTable("Repairs", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.RepairImage", b =>
@@ -306,7 +306,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairId");
 
-                    b.ToTable("RepairImages");
+                    b.ToTable("RepairImages", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Repairs.RepairSteps.RepairStep", b =>
@@ -339,7 +339,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairId");
 
-                    b.ToTable("RepairStep");
+                    b.ToTable("RepairStep", (string)null);
 
                     b.HasDiscriminator<string>("StepType").HasValue("RepairStep");
 
@@ -371,7 +371,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairShopId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Services.Service", b =>
@@ -391,7 +391,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairShopId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Shared.Image", b =>
@@ -401,7 +401,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.Workers.Worker", b =>
@@ -429,7 +429,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                     b.HasIndex("RepairShopId");
 
-                    b.ToTable("Workers");
+                    b.ToTable("Workers", (string)null);
                 });
 
             modelBuilder.Entity("system_obslugi_serwisu.Infrastructure.Identity.ApplicationRole", b =>
@@ -642,7 +642,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("Customers");
+                            b1.ToTable("Customers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -659,7 +659,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("AddressCustomerId");
 
-                                    b2.ToTable("Customers");
+                                    b2.ToTable("Customers", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressCustomerId");
@@ -681,30 +681,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("Customers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.PhoneNumber", "Phone", b1 =>
-                        {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Number")
-                                .IsRequired()
-                                .HasMaxLength(20)
-                                .HasColumnType("character varying(20)");
-
-                            b1.Property<string>("RegionCode")
-                                .IsRequired()
-                                .HasMaxLength(2)
-                                .HasColumnType("character varying(2)");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers");
+                            b1.ToTable("Customers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -729,7 +706,30 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("Customers");
+                            b1.ToTable("Customers", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.PhoneNumber", "Phone", b1 =>
+                        {
+                            b1.Property<Guid>("CustomerId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Number")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
+
+                            b1.Property<string>("RegionCode")
+                                .IsRequired()
+                                .HasMaxLength(2)
+                                .HasColumnType("character varying(2)");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("Customers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -747,7 +747,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("CustomerId");
 
-                            b1.ToTable("Customers");
+                            b1.ToTable("Customers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CustomerId");
@@ -768,166 +768,6 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
             modelBuilder.Entity("system_obslugi_serwisu.Domain.RepairShops.RepairShop", b =>
                 {
-                    b.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.OpeningHours", "OpeningHours", b1 =>
-                        {
-                            b1.Property<Guid>("RepairShopId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("RepairShopId");
-
-                            b1.ToTable("RepairShops");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RepairShopId");
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Friday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Monday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Saturday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Sunday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Thursday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Tuesday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Wednesday", b2 =>
-                                {
-                                    b2.Property<Guid>("OpeningHoursRepairShopId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<TimeOnly>("From")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.Property<TimeOnly>("To")
-                                        .HasColumnType("time without time zone");
-
-                                    b2.HasKey("OpeningHoursRepairShopId");
-
-                                    b2.ToTable("RepairShops");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("OpeningHoursRepairShopId");
-                                });
-
-                            b1.Navigation("Friday");
-
-                            b1.Navigation("Monday");
-
-                            b1.Navigation("Saturday");
-
-                            b1.Navigation("Sunday");
-
-                            b1.Navigation("Thursday");
-
-                            b1.Navigation("Tuesday");
-
-                            b1.Navigation("Wednesday");
-                        });
-
                     b.OwnsOne("system_obslugi_serwisu.Domain.Shared.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("RepairShopId")
@@ -962,7 +802,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairShopId");
 
-                            b1.ToTable("RepairShops");
+                            b1.ToTable("RepairShops", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairShopId");
@@ -979,7 +819,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("AddressRepairShopId");
 
-                                    b2.ToTable("RepairShops");
+                                    b2.ToTable("RepairShops", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressRepairShopId");
@@ -1005,7 +845,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairShopId");
 
-                            b1.ToTable("RepairShops");
+                            b1.ToTable("RepairShops", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairShopId");
@@ -1023,10 +863,170 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairShopId");
 
-                            b1.ToTable("RepairShops");
+                            b1.ToTable("RepairShops", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairShopId");
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.OpeningHours", "OpeningHours", b1 =>
+                        {
+                            b1.Property<Guid>("RepairShopId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("RepairShopId");
+
+                            b1.ToTable("RepairShops", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairShopId");
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Friday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Monday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Saturday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Sunday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Thursday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Tuesday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.OwnsOne("system_obslugi_serwisu.Domain.RepairShops.TimeInterval", "Wednesday", b2 =>
+                                {
+                                    b2.Property<Guid>("OpeningHoursRepairShopId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<TimeOnly>("From")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.Property<TimeOnly>("To")
+                                        .HasColumnType("time without time zone");
+
+                                    b2.HasKey("OpeningHoursRepairShopId");
+
+                                    b2.ToTable("RepairShops", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("OpeningHoursRepairShopId");
+                                });
+
+                            b1.Navigation("Friday");
+
+                            b1.Navigation("Monday");
+
+                            b1.Navigation("Saturday");
+
+                            b1.Navigation("Sunday");
+
+                            b1.Navigation("Thursday");
+
+                            b1.Navigation("Tuesday");
+
+                            b1.Navigation("Wednesday");
                         });
 
                     b.OwnsOne("system_obslugi_serwisu.Domain.Shared.PhoneNumber", "Phone", b1 =>
@@ -1046,7 +1046,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairShopId");
 
-                            b1.ToTable("RepairShops");
+                            b1.ToTable("RepairShops", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairShopId");
@@ -1111,7 +1111,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1127,7 +1127,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("ContactInfoRepairId");
 
-                                    b2.ToTable("Repairs");
+                                    b2.ToTable("Repairs", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactInfoRepairId");
@@ -1148,7 +1148,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("ContactInfoRepairId");
 
-                                    b2.ToTable("Repairs");
+                                    b2.ToTable("Repairs", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ContactInfoRepairId");
@@ -1186,7 +1186,29 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairId");
+                        });
+
+                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.Money", "DiagnosisFee", b1 =>
+                        {
+                            b1.Property<Guid>("RepairId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Currency")
+                                .HasColumnType("integer")
+                                .HasColumnName("DiagnosisFee_Currency");
+
+                            b1.Property<decimal>("Value")
+                                .HasPrecision(18, 2)
+                                .HasColumnType("numeric(18,2)")
+                                .HasColumnName("DiagnosisFee_Value");
+
+                            b1.HasKey("RepairId");
+
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1217,29 +1239,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RepairId");
-                        });
-
-                    b.OwnsOne("system_obslugi_serwisu.Domain.Shared.Money", "DiagnosisFee", b1 =>
-                        {
-                            b1.Property<Guid>("RepairId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<int>("Currency")
-                                .HasColumnType("integer")
-                                .HasColumnName("DiagnosisFee_Currency");
-
-                            b1.Property<decimal>("Value")
-                                .HasPrecision(18, 2)
-                                .HasColumnType("numeric(18,2)")
-                                .HasColumnName("DiagnosisFee_Value");
-
-                            b1.HasKey("RepairId");
-
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1261,7 +1261,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1280,7 +1280,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1301,7 +1301,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("QuoteRepairId");
 
-                                    b2.ToTable("Repairs");
+                                    b2.ToTable("Repairs", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("QuoteRepairId");
@@ -1323,7 +1323,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("QuoteRepairId");
 
-                                    b2.ToTable("Repairs");
+                                    b2.ToTable("Repairs", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("QuoteRepairId");
@@ -1346,7 +1346,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1385,7 +1385,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("ReturnInfoRepairId");
 
-                                    b2.ToTable("Repairs");
+                                    b2.ToTable("Repairs", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("ReturnInfoRepairId");
@@ -1402,7 +1402,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                             b3.HasKey("AddressReturnInfoRepairId");
 
-                                            b3.ToTable("Repairs");
+                                            b3.ToTable("Repairs", (string)null);
 
                                             b3.WithOwner()
                                                 .HasForeignKey("AddressReturnInfoRepairId");
@@ -1427,7 +1427,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("RepairId");
 
-                            b1.ToTable("Repairs");
+                            b1.ToTable("Repairs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("RepairId");
@@ -1516,7 +1516,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("ServiceId");
 
-                            b1.ToTable("Services");
+                            b1.ToTable("Services", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ServiceId");
@@ -1551,7 +1551,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("PaymentRepairStepId");
 
-                            b1.ToTable("RepairStep");
+                            b1.ToTable("RepairStep", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PaymentRepairStepId");
@@ -1576,7 +1576,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                             b1.HasKey("QuoteRepairStepId");
 
-                            b1.ToTable("RepairStep");
+                            b1.ToTable("RepairStep", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("QuoteRepairStepId");
@@ -1597,7 +1597,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("QuoteRepairStepId");
 
-                                    b2.ToTable("RepairStep");
+                                    b2.ToTable("RepairStep", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("QuoteRepairStepId");
@@ -1619,7 +1619,7 @@ namespace system_obslugi_serwisu.Infrastructure.Migrations
 
                                     b2.HasKey("QuoteRepairStepId");
 
-                                    b2.ToTable("RepairStep");
+                                    b2.ToTable("RepairStep", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("QuoteRepairStepId");

@@ -3,6 +3,7 @@ using system_obslugi_serwisu.Presentation.Conversations;
 using system_obslugi_serwisu.Presentation.Customers;
 using system_obslugi_serwisu.Presentation.Customers.Dto;
 using system_obslugi_serwisu.Presentation.Parts;
+using system_obslugi_serwisu.Presentation.RepairNotes;
 using system_obslugi_serwisu.Presentation.Repairs;
 using system_obslugi_serwisu.Presentation.Repairs.Dto.RepairSteps;
 using system_obslugi_serwisu.Presentation.RepairShops;
@@ -45,6 +46,8 @@ public class GraphQlConfig
                 .AddTypeExtension<ConversationExtensions>()
                 .AddTypeExtension<WorkerExtensions>()
                 .AddTypeExtension<PartQueries>()
+                .AddTypeExtension<RepairNoteQueries>()
+                .AddTypeExtension<RepairNoteExtensions>()
             .AddMutationType<Mutation>()
                 .AddTypeExtension<AuthMutations>()
                 .AddTypeExtension<CustomerMutations>()
@@ -53,6 +56,7 @@ public class GraphQlConfig
                 .AddTypeExtension<RepairShopMutations>()
                 .AddTypeExtension<ConversationMutations>()
                 .AddTypeExtension<PartMutations>()
+                .AddTypeExtension<RepairNoteMutations>()
             .AddSubscriptionType<Subscription>()
                 .AddTypeExtension<ConversationSubscriptions>();
     }

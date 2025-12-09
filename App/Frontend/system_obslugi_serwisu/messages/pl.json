@@ -294,6 +294,8 @@
     "contactInfo": "Informacje kontaktowe",
     "returnInfo": "Informacje o zwrocie",
     "additionalInfo": "Informacje dodatkowe",
+    "internalNotes": "Notatki wewnętrzne",
+    "addNote": "Dodaj notatkę",
     "assignedTechnician": "Przypisany serwisant",
     "additionalComment": "Dodatkowe uwagi",
     "returnMethod": "Sposób zwrotu",
@@ -579,6 +581,11 @@
       "LastNameTooLong": "Nazwisko jest za długie",
       "InvalidLastName": "Nazwisko jest niepoprawne",
       "RepairAlreadyAssigned": "Pracownik posiada już przypisaną naprawę"
+    },
+    "RepairNotes": {
+      "RepairNoteNotFound": "Nie znaleziono notatki",
+      "InvalidContent": "Niepoprawna treść notatki",
+      "ContentTooLong": "Treść notatki jest za długa"
     }
   },
   "Common": {

@@ -22,6 +22,18 @@ export enum ActingRole {
   Worker = 'WORKER'
 }
 
+export type AddPartRequestInput = {
+  initialStock: Scalars['Int']['input'];
+  lowStockThreshold: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  partCategoryId: Scalars['UUID']['input'];
+};
+
+export type AddRepairNoteRequestInput = {
+  content: Scalars['String']['input'];
+  repairId: Scalars['UUID']['input'];
+};
+
 export type AddReviewRequestInput = {
   comment?: InputMaybe<Scalars['String']['input']>;
   rating: Scalars['Int']['input'];
@@ -363,7 +375,10 @@ export type MessageDto = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addPart: Scalars['Boolean']['output'];
+  addPartCategory: Scalars['Boolean']['output'];
   addRepairImage: Scalars['String']['output'];
+  addRepairNote: Scalars['Boolean']['output'];
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
   assignWorker: Scalars['Boolean']['output'];
@@ -376,6 +391,7 @@ export type Mutation = {
   changePreferredReturn: Scalars['Boolean']['output'];
   createConversation: ConversationDto;
   deleteRepairImage: Scalars['Boolean']['output'];
+  deleteRepairNote: Scalars['Boolean']['output'];
   deleteReview: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
@@ -388,9 +404,24 @@ export type Mutation = {
 };
 
 
+export type MutationAddPartArgs = {
+  request: AddPartRequestInput;
+};
+
+
+export type MutationAddPartCategoryArgs = {
+  name: Scalars['String']['input'];
+};
+
+
 export type MutationAddRepairImageArgs = {
   contentType: Scalars['String']['input'];
   repairId: Scalars['UUID']['input'];
+};
+
+
+export type MutationAddRepairNoteArgs = {
+  request: AddRepairNoteRequestInput;
 };
 
 
@@ -456,6 +487,11 @@ export type MutationDeleteRepairImageArgs = {
 };
 
 
+export type MutationDeleteRepairNoteArgs = {
+  repairNoteId: Scalars['UUID']['input'];
+};
+
+
 export type MutationDeleteReviewArgs = {
   request: DeleteReviewRequestInput;
 };
@@ -499,6 +535,24 @@ export type OpeningHoursDto = {
   wednesday?: Maybe<TimeIntervalDto>;
 };
 
+export type PaginatedListOfPartDto = {
+  __typename?: 'PaginatedListOfPartDto';
+  items: Array<PartDto>;
+  pageNumber: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  totalCount: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type PaginatedListOfPartNeededDto = {
+  __typename?: 'PaginatedListOfPartNeededDto';
+  items: Array<PartNeededDto>;
+  pageNumber: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  totalCount: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type PaginatedListOfRepairDto = {
   __typename?: 'PaginatedListOfRepairDto';
   items: Array<RepairDto>;
@@ -535,6 +589,32 @@ export type PaginatedListOfServiceDto = {
   totalPages: Scalars['Int']['output'];
 };
 
+export type PartCategoryDto = {
+  __typename?: 'PartCategoryDto';
+  id: Scalars['UUID']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type PartDto = {
+  __typename?: 'PartDto';
+  available: Scalars['Int']['output'];
+  categoryId: Scalars['UUID']['output'];
+  id: Scalars['UUID']['output'];
+  lowStockThreshold: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Decimal']['output'];
+  reserved: Scalars['Int']['output'];
+  stock: Scalars['Int']['output'];
+  stockLevel: StockLevel;
+};
+
+export type PartNeededDto = {
+  __typename?: 'PartNeededDto';
+  partId: Scalars['UUID']['output'];
+  quantity: Scalars['Int']['output'];
+  repairId: Scalars['UUID']['output'];
+};
+
 export type PaymentRepairStepDto = RepairStepDto & {
   __typename?: 'PaymentRepairStepDto';
   amount: Scalars['String']['output'];
@@ -550,8 +630,13 @@ export type Query = {
   conversation: ConversationDto;
   conversationByParticipants: ConversationDto;
   me: MeResult;
+  part: PartDto;
+  partCategories: Array<PartCategoryDto>;
+  parts: PaginatedListOfPartDto;
+  partsNeeded: PaginatedListOfPartNeededDto;
   repair: RepairDto;
   repairCount: Scalars['Int']['output'];
+  repairNotes: Array<RepairNoteDto>;
   repairShop: RepairShopDto;
   reviews: PaginatedListOfReviewDto;
   searchShopsByName: PaginatedListOfRepairShopDto;
@@ -569,6 +654,24 @@ export type QueryConversationByParticipantsArgs = {
 };
 
 
+export type QueryPartArgs = {
+  partId: Scalars['UUID']['input'];
+};
+
+
+export type QueryPartsArgs = {
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+};
+
+
+export type QueryPartsNeededArgs = {
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  repairId: Scalars['UUID']['input'];
+};
+
+
 export type QueryRepairArgs = {
   request: GetRepairRequestInput;
 };
@@ -577,6 +680,11 @@ export type QueryRepairArgs = {
 export type QueryRepairCountArgs = {
   repairShopId: Scalars['UUID']['input'];
   repairStatus?: InputMaybe<RepairStatus>;
+};
+
+
+export type QueryRepairNotesArgs = {
+  repairId: Scalars['UUID']['input'];
 };
 
 
@@ -758,6 +866,15 @@ export type RepairFilterInput = {
   workerIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
 };
 
+export type RepairNoteDto = {
+  __typename?: 'RepairNoteDto';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['UUID']['output'];
+  repairId: Scalars['UUID']['output'];
+  worker?: Maybe<WorkerDto>;
+};
+
 export type RepairShopDto = {
   __typename?: 'RepairShopDto';
   aboutUs?: Maybe<Scalars['String']['output']>;
@@ -884,6 +1001,12 @@ export enum SortDirection {
   Desc = 'DESC'
 }
 
+export enum StockLevel {
+  Low = 'LOW',
+  Normal = 'NORMAL',
+  OutOfStock = 'OUT_OF_STOCK'
+}
+
 export type SubmitQuoteRequestInput = {
   currency: CurrencyCode;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -922,6 +1045,14 @@ export type WorkerDto = {
   id: Scalars['UUID']['output'];
   lastName: Scalars['String']['output'];
 };
+
+export type AddRepairNoteMutationVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  content: Scalars['String']['input'];
+}>;
+
+
+export type AddRepairNoteMutation = { __typename?: 'Mutation', addRepairNote: boolean };
 
 export type AddReviewMutationVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
@@ -1035,6 +1166,13 @@ export type DeleteRepairImageMutationVariables = Exact<{
 
 export type DeleteRepairImageMutation = { __typename?: 'Mutation', deleteRepairImage: boolean };
 
+export type DeleteRepairNoteMutationVariables = Exact<{
+  repairNoteId: Scalars['UUID']['input'];
+}>;
+
+
+export type DeleteRepairNoteMutation = { __typename?: 'Mutation', deleteRepairNote: boolean };
+
 export type GetAssignedTechnicianQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];
 }>;
@@ -1116,6 +1254,13 @@ export type GetRepairImagesQueryVariables = Exact<{
 
 
 export type GetRepairImagesQuery = { __typename?: 'Query', repair: { __typename?: 'RepairDto', id: any, images: Array<{ __typename?: 'ImageDto', id: any, small: string, medium: string, large: string, extraLarge: string }> } };
+
+export type GetRepairNotesQueryVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetRepairNotesQuery = { __typename?: 'Query', repairNotes: Array<{ __typename?: 'RepairNoteDto', id: any, content: string, createdAt: any, worker?: { __typename?: 'WorkerDto', id: any, firstName: string, lastName: string } | null }> };
 
 export type GetRepairShopQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
