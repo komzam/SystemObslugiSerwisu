@@ -2,6 +2,7 @@
 using system_obslugi_serwisu.Application.Customers;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Images;
+using system_obslugi_serwisu.Application.Parts;
 using system_obslugi_serwisu.Application.Repairs;
 using system_obslugi_serwisu.Application.RepairShops;
 using system_obslugi_serwisu.Application.Reviews;
@@ -12,6 +13,7 @@ using system_obslugi_serwisu.Domain.Reviews;
 using system_obslugi_serwisu.Infrastructure.Conversations;
 using system_obslugi_serwisu.Infrastructure.Customers;
 using system_obslugi_serwisu.Infrastructure.Images;
+using system_obslugi_serwisu.Infrastructure.Parts;
 using system_obslugi_serwisu.Infrastructure.Repairs;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.Reviews;
@@ -21,7 +23,7 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Infrastructure.Database;
 
-public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
+public class UnitOfWork(DatabaseContext databaseContext, RepairShopContextFactory repairShopContextFactory) : IUnitOfWork
 {
     private CustomerRepository? _customerRepository;
     private RepairShopRepository? _repairShopRepository;
@@ -31,6 +33,8 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
     private ServiceRepository? _serviceRepository;
     private ConversationRepository? _conversationRepository;
     private ImageRepository? _imageRepository;
+    private PartRepository? _partRepository;
+    private RepairShopContext? _repairShopContext;
     
     public ICustomerRepository CustomerRepository {
         get
@@ -119,18 +123,40 @@ public class UnitOfWork(DatabaseContext databaseContext) : IUnitOfWork
             return _imageRepository;
         } 
     }
+    
+    public IPartRepository PartRepository { 
+        get
+        {
+            if (_repairShopContext == null)
+                _repairShopContext = repairShopContextFactory.Create();
+            
+            if (_partRepository == null)
+            {
+                _partRepository = new PartRepository(_repairShopContext);
+            }
+            return _partRepository;
+        } 
+    }
 
     public async Task<OperationResult> SaveChanges()
     {
         try
         {
             await databaseContext.SaveChangesAsync();
+            if(_repairShopContext != null)
+                await _repairShopContext.SaveChangesAsync();
         }
         catch (Exception e)
         {
             return DatabaseErrors.UnknownError();
         }
         
+        return OperationResult.Success();
+    }
+
+    public OperationResult SetTenant(RepairShopId repairShopId)
+    {
+        repairShopContextFactory.RepairShopId = repairShopId.Value.ToString();
         return OperationResult.Success();
     }
 }

@@ -4,8 +4,10 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Domain.Parts;
 
+public record PartNeededId(Guid Value);
 public class PartNeeded
 {
+    public PartNeededId Id { get; private set; }
     public RepairId RepairId { get; private set; }
     public PartId PartId { get; private set; }
     public int Quantity { get; private set; }
@@ -14,6 +16,7 @@ public class PartNeeded
 
     private PartNeeded(RepairId repairId, PartId partId, int quantity)
     {
+        Id = new PartNeededId(Guid.NewGuid());
         RepairId = repairId;
         PartId = partId;
         Quantity = quantity;

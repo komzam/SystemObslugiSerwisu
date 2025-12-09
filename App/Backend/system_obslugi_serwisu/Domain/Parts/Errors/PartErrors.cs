@@ -35,4 +35,13 @@ public static class PartErrors
     
     public static OperationError NameTooLong(string message = "Part name is too long") =>
         new ($"{Prefix}.NameTooLong", message);
+    
+    public static OperationError InvalidCategoryName(string message = "Invalid part category name") =>
+        new ($"{Prefix}.InvalidCategoryName", message);
+    
+    public static OperationError CategoryNameTooLong(string message = "Part category name is too long") =>
+        new ($"{Prefix}.CategoryNameTooLong", message);
+    
+    public static OperationError CategoryNotFound(string message = "Part category not found") =>
+        new ($"{Prefix}.CategoryNotFound", message);
 }

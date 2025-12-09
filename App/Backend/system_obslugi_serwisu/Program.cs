@@ -15,10 +15,10 @@ using system_obslugi_serwisu.Infrastructure.Images;
 using system_obslugi_serwisu.Infrastructure.Migrations;
 using system_obslugi_serwisu.Infrastructure.Queue;
 using system_obslugi_serwisu.Infrastructure.Repairs;
+using system_obslugi_serwisu.Infrastructure.RepairShopMigrations;
 using system_obslugi_serwisu.Infrastructure.RepairShops;
 using system_obslugi_serwisu.Infrastructure.S3;
 using system_obslugi_serwisu.Presentation;
-using system_obslugi_serwisu.Presentation.RepairShops;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContextPool<DatabaseContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DatabaseContext")));
+
+builder.Services.AddScoped<RepairShopContextFactory>(_ =>
+    new RepairShopContextFactory(builder.Configuration.GetConnectionString("DatabaseContext")));
 
 
 builder.Services.Configure<S3Buckets>(builder.Configuration.GetSection("S3Buckets"));
@@ -60,15 +63,14 @@ builder.Services.AddSingleton<S3Clients>(_ =>
     };
 });
 
-builder.Services.AddSingleton<IConnectionFactory>(sp =>
-{
-    return new ConnectionFactory
+builder.Services.AddSingleton<IConnectionFactory>(_ =>
+    new ConnectionFactory
     {
         HostName = builder.Configuration["RabbitMq:Host"] ?? string.Empty,
         UserName = builder.Configuration["RabbitMq:User"] ?? string.Empty,
         Password = builder.Configuration["RabbitMq:Password"] ?? string.Empty,
-    };
-});
+    }
+);
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentity<User, ApplicationRole>()
@@ -111,6 +113,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     MigrationRunner.ApplyMigrations(app);
+    await RepairShopMigrationRunner.ApplyMigrations(app);
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -129,7 +132,7 @@ app.MapGraphQL()
             {
                 Enable = false
             }
-        });;
+        });
 app.MapNitroApp("/nitroApp", "/graphql");
 app.UseCors("AllowFrontend");
 
