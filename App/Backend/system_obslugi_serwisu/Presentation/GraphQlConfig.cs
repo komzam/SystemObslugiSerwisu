@@ -22,6 +22,8 @@ public class GraphQlConfig
         builder.Services.AddDataLoader<RepairBatchDataLoader>();
         builder.Services.AddDataLoader<CustomerBatchDataLoader>();
         builder.Services.AddDataLoader<AuthorBatchDataLoader>();
+        builder.Services.AddDataLoader<PartCategoryBatchDataLoader>();
+        builder.Services.AddDataLoader<PartBatchDataLoader>();
         
         builder.Services.AddGraphQLServer()
             .AddAuthorization()
@@ -46,8 +48,11 @@ public class GraphQlConfig
                 .AddTypeExtension<ConversationExtensions>()
                 .AddTypeExtension<WorkerExtensions>()
                 .AddTypeExtension<PartQueries>()
+                .AddTypeExtension<PartExtensions>()
                 .AddTypeExtension<RepairNoteQueries>()
                 .AddTypeExtension<RepairNoteExtensions>()
+                .AddTypeExtension<PartNeededExtensions>()
+                .AddTypeExtension<PartReservationExtensions>()
             .AddMutationType<Mutation>()
                 .AddTypeExtension<AuthMutations>()
                 .AddTypeExtension<CustomerMutations>()

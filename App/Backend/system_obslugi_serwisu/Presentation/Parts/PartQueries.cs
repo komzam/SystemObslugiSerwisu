@@ -1,9 +1,11 @@
 ﻿using HotChocolate.Authorization;
 using MediatR;
+using system_obslugi_serwisu.Application.Parts;
 using system_obslugi_serwisu.Application.Parts.Get;
 using system_obslugi_serwisu.Application.Parts.GetCategories;
 using system_obslugi_serwisu.Application.Parts.GetList;
 using system_obslugi_serwisu.Application.Parts.GetNeeded;
+using system_obslugi_serwisu.Application.Parts.GetReservations;
 using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Parts.Dto;
 using system_obslugi_serwisu.Shared;
@@ -30,12 +32,13 @@ public class PartQueries
     
     [Authorize]
     [SetTenantMiddleware]
-    public async Task<PaginatedList<PartDto>> Parts([Service] IMediator mediatr, int pageNumber, int pageSize)
+    public async Task<PaginatedList<PartDto>> Parts([Service] IMediator mediatr, int pageNumber, int pageSize, PartFilter filter)
     {
         var partsResult = await mediatr.Send(new GetPartListCommand
         {
             PageNumber = pageNumber,
-            PageSize = pageSize
+            PageSize = pageSize,
+            PartFilter = filter
         });
 
         if(partsResult.IsFailure)
@@ -83,5 +86,25 @@ public class PartQueries
                 .Build());
 
         return partsResult.Value.Map(PartMapper.ToDto);
+    }
+    
+    [Authorize]
+    [SetTenantMiddleware]
+    public async Task<PaginatedList<PartReservationDto>> PartReservations([Service] IMediator mediatr, Guid partId, int pageNumber, int pageSize)
+    {
+        var reservationsResult = await mediatr.Send(new GetPartReservationsCommand
+        {
+            PartId = partId,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        });
+
+        if(reservationsResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(reservationsResult.Error.GetUserMessage())
+                .SetCode(reservationsResult.Error.GetUserCode())
+                .Build());
+
+        return reservationsResult.Value.Map(PartMapper.ToDto);
     }
 }

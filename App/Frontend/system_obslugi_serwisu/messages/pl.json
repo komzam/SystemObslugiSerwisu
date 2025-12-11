@@ -186,6 +186,48 @@
     "unassigned": "Nieprzypisany",
     "viewDetails": "Wyświetl Szczegóły"
   },
+  "PartList": {
+    "search": "Szukaj",
+    "allParts": "Wszystkie Części",
+    "partsToOrder": "Części do Zamówienia",
+    "purchaseOrders": "Zamówienia",
+    "partName": "Nazwa Części",
+    "manufacturerCode": "Kod producenta",
+    "initialStock": "Początkowy stan magazynowy",
+    "lowStockThreshold": "Próg niskiego stanu",
+    "category": "Kategoria",
+    "stock": "Stan",
+    "price": "Cena",
+    "actions": "Akcje",
+    "viewDetails": "Wyświetl Szczegóły",
+    "delete": "Usuń",
+    "addPart": "Dodaj część",
+    "createOrderTitle": "Utwórz zamówienie",
+    "createOrderFromSelected": "Utwórz zamówienie z zaznaczonych",
+    "supplierName": "Nazwa dostawcy",
+    "supplierOrderNumber": "Numer zamówienia dostawcy",
+    "addOrder": "Dodaj zamówienie"
+  },
+  "PartDetails": {
+    "backButton": "Powrót do Części",
+    "category": "Kategoria",
+    "partDetails": "Szczegóły części",
+    "unitPrice": "Cena jednostkowa",
+    "manufacturersCode": "Kod producenta",
+    "lowStockThreshold": "Próg niskiego stanu",
+    "managePartMessage": "Zarządzaj stanem magazynowym i szczegółami tej części",
+    "adjustStock": "Skoryguj stan",
+    "adjustStockTitle": "Skoryguj stan magazynowy części",
+    "newStock": "Nowy stan",
+    "flagForReorder": "Oznacz do zamówienia",
+    "removeReorderFlag": "Usuń oznaczenie do zamówienia",
+    "reservations": "Rezerwacje",
+    "ticketNumber": "Numer Zlecenia",
+    "device": "Urządzenie",
+    "requested": "Żądane",
+    "reserved": "Zarezerwowane",
+    "status": "Status"
+  },
   "Status": {
     "all": "Wszystkie",
     "CREATED": "Utworzony",
@@ -207,6 +249,17 @@
     "COMPLETED": "Zrealizowane",
     "CANCELED": "Anulowane",
     "COMPLAINT": "Reklamacja"
+  },
+  "StockLevel": {
+    "LOW": "Niski Stan",
+    "NORMAL": "Na Stanie",
+    "OUT_OF_STOCK": "Brak na Stanie"
+  },
+  "ReservationStatus": {
+    "RESERVED": "Zarezerwowane",
+    "AWAITING_STOCK": "Oczekuje na towar",
+    "CANCELED": "Anulowane",
+    "CONSUMED": "Wykorzystane"
   },
   "RepairHistory": {
     "CREATED":{

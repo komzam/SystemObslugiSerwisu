@@ -8,7 +8,11 @@ public class RepairBatchDataLoader: BatchDataLoader<Guid, RepairDto>
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
     
-    public RepairBatchDataLoader(IServiceScopeFactory serviceScopeFactory,IBatchScheduler batchScheduler, DataLoaderOptions options) : base(batchScheduler, options)
+    public RepairBatchDataLoader(
+        IServiceScopeFactory serviceScopeFactory,
+        IBatchScheduler batchScheduler,
+        DataLoaderOptions options
+        ) : base(batchScheduler, options)
     {
         _serviceScopeFactory = serviceScopeFactory;
     }
@@ -21,7 +25,7 @@ public class RepairBatchDataLoader: BatchDataLoader<Guid, RepairDto>
         
         var repairListResult = await scopedMediator.Send(new GetRepairListCommand
         {
-            RepairIds = keys.ToList()
+            RepairIds = keys.ToList(),
         });
         
         if(repairListResult.IsFailure)

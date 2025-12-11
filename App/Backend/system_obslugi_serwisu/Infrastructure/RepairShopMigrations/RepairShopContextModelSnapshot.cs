@@ -33,10 +33,18 @@ namespace system_obslugi_serwisu.Infrastructure.RepairShopMigrations
                     b.Property<int>("LowStockThreshold")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ManufacturerCode")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("NeedsReorder")
+                        .HasColumnType("boolean");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");

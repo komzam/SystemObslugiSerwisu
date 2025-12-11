@@ -20,6 +20,8 @@ public static class PartMapper
         {
             Id = part.Id.Value,
             Name = part.Name,
+            ManufacturerCode = part.ManufacturerCode,
+            NeedsReorder = part.NeedsReorder,
             CategoryId = part.CategoryId.Value,
             Price = part.Price,
             Stock = part.Stock,
@@ -37,6 +39,19 @@ public static class PartMapper
             RepairId = partNeeded.RepairId.Value,
             PartId = partNeeded.PartId.Value,
             Quantity = partNeeded.Quantity
+        };
+    }
+
+    public static PartReservationDto ToDto(PartReservation reservation)
+    {
+        return new PartReservationDto
+        {
+            Id = reservation.Id.Value,
+            PartId = reservation.PartId.Value,
+            RepairId = reservation.RepairId.Value,
+            QuantityRequested = reservation.QuantityRequested,
+            QuantityReserved = reservation.QuantityReserved,
+            Status = reservation.Status
         };
     }
 }

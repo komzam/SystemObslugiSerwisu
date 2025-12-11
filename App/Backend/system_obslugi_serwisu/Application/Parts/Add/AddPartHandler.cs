@@ -13,7 +13,7 @@ public class AddPartHandler(IUnitOfWork unitOfWork) : IRequestHandler<AddPartCom
         if (categoryResult.IsFailure)
             return categoryResult.Error;
         
-        var partResult = Part.Create(request.Name, categoryResult.Value.Id, request.InitialStock, request.LowStockThreshold);
+        var partResult = Part.Create(request.Name, request.ManufacturerCode, categoryResult.Value.Id, request.InitialStock, request.LowStockThreshold);
         if (partResult.IsFailure)
             return partResult.Error;
         

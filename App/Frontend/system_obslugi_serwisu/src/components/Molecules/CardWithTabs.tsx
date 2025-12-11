@@ -2,10 +2,10 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import {Card} from "@/components/Atoms/Card";
 
-type RootProps = { children?: ReactNode, defaultTabName: string}
-export function Root({children, defaultTabName}: RootProps) {
+type RootProps = { children?: ReactNode, defaultTabName: string, onValueChange?: (value: string) => void}
+export function Root({children, defaultTabName, onValueChange}: RootProps) {
     return (
-        <Tabs.Root defaultValue={defaultTabName}>
+        <Tabs.Root defaultValue={defaultTabName} onValueChange={onValueChange}>
             {children}
         </Tabs.Root>
     )
@@ -14,7 +14,7 @@ export function Root({children, defaultTabName}: RootProps) {
 type TabsListProps = { children?: ReactNode };
 export function TabsList({children}: TabsListProps): ReactNode {
     return(
-        <Card className="rounded-b-none border-b-1 border-b-accent3 pt-3 pb-3">
+        <Card className="rounded-b-none border-b border-b-accent2 pt-3 pb-0!">
             <Tabs.List className="flex flex-row gap-6">
                 {children}
             </Tabs.List>
@@ -25,8 +25,8 @@ export function TabsList({children}: TabsListProps): ReactNode {
 type TriggerProps = {buttonText: string, tabName: string};
 export function Trigger({buttonText, tabName}: TriggerProps) {
     return (
-        <Tabs.Trigger className="font-bold text-accent4 data-[state=active]:text-black
-                                hover:text-primary cursor-pointer select-none"
+        <Tabs.Trigger className="text-smaller1 text-accent3 pb-2 data-[state=active]:text-primary data-[state=active]:border-b
+                                hover:text-accent4 cursor-pointer select-none"
                       value={tabName}>
             {buttonText}
         </Tabs.Trigger>

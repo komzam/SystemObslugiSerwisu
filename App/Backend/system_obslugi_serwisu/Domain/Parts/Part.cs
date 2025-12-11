@@ -9,9 +9,12 @@ public record PartId(Guid Value);
 public class Part : AggregateRoot
 {
     public const int PartNameMaxLength = 200;
+    public const int ManufacturerCodeMaxLength = 200;
     
     public PartId Id { get; private set; }
     public string Name { get; private set; }
+    public string ManufacturerCode { get; private set; }
+    public bool NeedsReorder { get; private set; }
     public PartCategoryId CategoryId { get; private set; }
     public decimal Price { get; private set; }
     public int Stock { get; private set; }
@@ -24,21 +27,30 @@ public class Part : AggregateRoot
 
     private Part() { }
 
-    private Part(string name, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
+    private Part(string name, string manufacturerCode, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
     {
         Id = new PartId(Guid.NewGuid());
         Name = name;
+        ManufacturerCode = manufacturerCode;
+        NeedsReorder = false;
         CategoryId = categoryId;
         Stock = initialStock;
+        LowStockThreshold = lowStockThreshold;
     }
 
-    private static OperationResult ValidateInput(string name, int initialStock, int lowStockThreshold)
+    private static OperationResult ValidateInput(string name, string manufacturerCode, int initialStock, int lowStockThreshold)
     {
         if (String.IsNullOrWhiteSpace(name))
             return PartErrors.InvalidName();
 
         if (name.Length > PartNameMaxLength)
             return PartErrors.NameTooLong();
+        
+        if (String.IsNullOrWhiteSpace(manufacturerCode))
+            return PartErrors.InvalidManufacturerCode();
+
+        if (name.Length > ManufacturerCodeMaxLength)
+            return PartErrors.ManufacturerCodeTooLong();
 
         if (initialStock < 0)
             return PartErrors.InvalidStock();
@@ -49,14 +61,14 @@ public class Part : AggregateRoot
         return OperationResult.Success();
     }
 
-    public static OperationResult<Part> Create(string name, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
+    public static OperationResult<Part> Create(string name, string manufacturerCode, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
     {
         name = name.Trim();
-        var validateResult = ValidateInput(name, initialStock, lowStockThreshold);
+        var validateResult = ValidateInput(name, manufacturerCode, initialStock, lowStockThreshold);
         if(validateResult.IsFailure)
             return validateResult.Error;
         
-        return new Part(name, categoryId, initialStock, lowStockThreshold);
+        return new Part(name, manufacturerCode, categoryId, initialStock, lowStockThreshold);
     }
 
     private StockLevel GetStockLevel()
@@ -226,7 +238,7 @@ public class Part : AggregateRoot
         var awaitingReservations = _reservations
             .Where(r => r.Status == ReservationStatus.AwaitingStock)
             .ToList();
-
+        
         foreach (var reservation in awaitingReservations)
         {
             if (Available >= reservation.QuantityRequested)
@@ -237,5 +249,15 @@ public class Part : AggregateRoot
                 RaiseEvent(new ReservationFulfilledEvent{RepairId=reservation.RepairId, PartReservationId = reservation.Id});
             }
         }
+    }
+
+    public void FlagForReorder()
+    {
+        NeedsReorder = true;
+    }
+
+    public void UnflagForReorder()
+    {
+        NeedsReorder = false;
     }
 }

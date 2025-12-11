@@ -13,7 +13,7 @@ export type CardLabel = {
 
 export function Card({ className="", children } : CardProps){
     return (
-        <div className={`bg-accent shadow-md p-[30] rounded-xl ${className}`} >{children}</div>
+        <div className={`bg-accent shadow-md p-5 rounded-xl ${className}`} >{children}</div>
     );
 }
 

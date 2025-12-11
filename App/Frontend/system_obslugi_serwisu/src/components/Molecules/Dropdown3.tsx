@@ -3,7 +3,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {LuCheck, LuChevronDown} from "react-icons/lu";
 import {memo, useCallback, useEffect} from "react";
 
-export type MultiSelectDropdownProps = DropdownMenu.DropdownMenuProps & {
+export type Dropdown3Props = DropdownMenu.DropdownMenuProps & {
     classNameTrigger?: string;
     classNamePortal?: string;
     placeholder:string;
@@ -21,7 +21,7 @@ export type Dropdown3Item = {
     isDisabled?: boolean
 }
 
-export function Dropdown3({classNameTrigger = "", classNamePortal = "", placeholder, items, initialSelected = [], onListUpdate, ...props }: MultiSelectDropdownProps): React.ReactNode {
+export function Dropdown3({classNameTrigger = "", classNamePortal = "", placeholder, items, initialSelected = [], onListUpdate, ...props }: Dropdown3Props): React.ReactNode {
     const [selectedValues, setSelectedValues] = React.useState<string[]>(initialSelected);
 
     const handleToggle = useCallback((value: string) => {

@@ -25,6 +25,7 @@ export enum ActingRole {
 export type AddPartRequestInput = {
   initialStock: Scalars['Int']['input'];
   lowStockThreshold: Scalars['Int']['input'];
+  manufacturerCode: Scalars['String']['input'];
   name: Scalars['String']['input'];
   partCategoryId: Scalars['UUID']['input'];
 };
@@ -381,6 +382,7 @@ export type Mutation = {
   addRepairNote: Scalars['Boolean']['output'];
   addRepairShopImage: Scalars['String']['output'];
   addReview: Scalars['Boolean']['output'];
+  adjustStock: Scalars['Boolean']['output'];
   assignWorker: Scalars['Boolean']['output'];
   bookRepair: RepairDto;
   changeAddress: Scalars['Boolean']['output'];
@@ -389,6 +391,7 @@ export type Mutation = {
   changePhoneNumber: Scalars['Boolean']['output'];
   changePreferredContact: Scalars['Boolean']['output'];
   changePreferredReturn: Scalars['Boolean']['output'];
+  changeReorderFlag: Scalars['Boolean']['output'];
   createConversation: ConversationDto;
   deleteRepairImage: Scalars['Boolean']['output'];
   deleteRepairNote: Scalars['Boolean']['output'];
@@ -437,6 +440,12 @@ export type MutationAddReviewArgs = {
 };
 
 
+export type MutationAdjustStockArgs = {
+  newStock: Scalars['Int']['input'];
+  partId: Scalars['UUID']['input'];
+};
+
+
 export type MutationAssignWorkerArgs = {
   repairId: Scalars['UUID']['input'];
 };
@@ -474,6 +483,11 @@ export type MutationChangePreferredContactArgs = {
 
 export type MutationChangePreferredReturnArgs = {
   returnMethod?: InputMaybe<ReturnMethod>;
+};
+
+
+export type MutationChangeReorderFlagArgs = {
+  partId: Scalars['UUID']['input'];
 };
 
 
@@ -553,6 +567,15 @@ export type PaginatedListOfPartNeededDto = {
   totalPages: Scalars['Int']['output'];
 };
 
+export type PaginatedListOfPartReservationDto = {
+  __typename?: 'PaginatedListOfPartReservationDto';
+  items: Array<PartReservationDto>;
+  pageNumber: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  totalCount: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
 export type PaginatedListOfRepairDto = {
   __typename?: 'PaginatedListOfRepairDto';
   items: Array<RepairDto>;
@@ -598,21 +621,43 @@ export type PartCategoryDto = {
 export type PartDto = {
   __typename?: 'PartDto';
   available: Scalars['Int']['output'];
-  categoryId: Scalars['UUID']['output'];
+  category?: Maybe<PartCategoryDto>;
   id: Scalars['UUID']['output'];
   lowStockThreshold: Scalars['Int']['output'];
+  manufacturerCode: Scalars['String']['output'];
   name: Scalars['String']['output'];
+  needsReorder: Scalars['Boolean']['output'];
   price: Scalars['Decimal']['output'];
   reserved: Scalars['Int']['output'];
   stock: Scalars['Int']['output'];
   stockLevel: StockLevel;
 };
 
+export type PartFilterInput = {
+  categories?: InputMaybe<Array<Scalars['UUID']['input']>>;
+  needsReorder?: InputMaybe<Scalars['Boolean']['input']>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+  stockLevels?: InputMaybe<Array<StockLevel>>;
+};
+
 export type PartNeededDto = {
   __typename?: 'PartNeededDto';
+  part?: Maybe<PartDto>;
   partId: Scalars['UUID']['output'];
   quantity: Scalars['Int']['output'];
+  repair?: Maybe<RepairDto>;
   repairId: Scalars['UUID']['output'];
+};
+
+export type PartReservationDto = {
+  __typename?: 'PartReservationDto';
+  id: Scalars['UUID']['output'];
+  partId: Scalars['UUID']['output'];
+  quantityRequested: Scalars['Int']['output'];
+  quantityReserved: Scalars['Int']['output'];
+  repair?: Maybe<RepairDto>;
+  repairId: Scalars['UUID']['output'];
+  status: ReservationStatus;
 };
 
 export type PaymentRepairStepDto = RepairStepDto & {
@@ -632,6 +677,7 @@ export type Query = {
   me: MeResult;
   part: PartDto;
   partCategories: Array<PartCategoryDto>;
+  partReservations: PaginatedListOfPartReservationDto;
   parts: PaginatedListOfPartDto;
   partsNeeded: PaginatedListOfPartNeededDto;
   repair: RepairDto;
@@ -659,7 +705,15 @@ export type QueryPartArgs = {
 };
 
 
+export type QueryPartReservationsArgs = {
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  partId: Scalars['UUID']['input'];
+};
+
+
 export type QueryPartsArgs = {
+  filter: PartFilterInput;
   pageNumber: Scalars['Int']['input'];
   pageSize: Scalars['Int']['input'];
 };
@@ -944,6 +998,13 @@ export type RepairStepDto = {
   status: RepairStatus;
 };
 
+export enum ReservationStatus {
+  AwaitingStock = 'AWAITING_STOCK',
+  Canceled = 'CANCELED',
+  Consumed = 'CONSUMED',
+  Reserved = 'RESERVED'
+}
+
 export type ReturnInfoDto = {
   __typename?: 'ReturnInfoDto';
   returnAddress?: Maybe<AddressDto>;
@@ -1063,6 +1124,14 @@ export type AddReviewMutationVariables = Exact<{
 
 export type AddReviewMutation = { __typename?: 'Mutation', addReview: boolean };
 
+export type AdjustStockMutationVariables = Exact<{
+  partId: Scalars['UUID']['input'];
+  newStock: Scalars['Int']['input'];
+}>;
+
+
+export type AdjustStockMutation = { __typename?: 'Mutation', adjustStock: boolean };
+
 export type AssignYourselfMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
 }>;
@@ -1129,6 +1198,13 @@ export type ChangePreferredReturnMutationVariables = Exact<{
 
 
 export type ChangePreferredReturnMutation = { __typename?: 'Mutation', changePreferredReturn: boolean };
+
+export type ChangeReorderFlagMutationVariables = Exact<{
+  partId: Scalars['UUID']['input'];
+}>;
+
+
+export type ChangeReorderFlagMutation = { __typename?: 'Mutation', changeReorderFlag: boolean };
 
 export type ConversationExistsQueryVariables = Exact<{
   repairShopId: Scalars['UUID']['input'];
@@ -1229,6 +1305,45 @@ export type GetDashboardQuery = { __typename?: 'Query', awaitingDiagnosis: numbe
     | { __typename?: 'FullCustomerDto' }
     | { __typename?: 'FullWorkerDto', id: any, activeRepair?: { __typename?: 'RepairDto', id: any, ticketNumber: string, status: RepairStatus, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string }, faultInfo: { __typename?: 'FaultInfoDto', description: string } } | null }
   , conversations: { __typename?: 'RepairShopDto', conversations: { __typename?: 'CursorPaginatedListOfConversationDtoAndNullableOfGuid', items: Array<{ __typename?: 'ConversationDto', id: any, conversationType: ConversationType, repair?: { __typename?: 'RepairDto', id: any, deviceInfo: { __typename?: 'DeviceInfoDto', model: string, manufacturer: string } } | null, customer?: { __typename?: 'CustomerDto', id: any, name: string } | null, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any }> } }> } } };
+
+export type GetNeededPartsQueryVariables = Exact<{
+  repairId: Scalars['UUID']['input'];
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+}>;
+
+
+export type GetNeededPartsQuery = { __typename?: 'Query', partsNeeded: { __typename?: 'PaginatedListOfPartNeededDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'PartNeededDto', partId: any, part?: { __typename?: 'PartDto', name: string, stock: number, stockLevel: StockLevel, price: any } | null }> } };
+
+export type GetPartQueryVariables = Exact<{
+  partId: Scalars['UUID']['input'];
+}>;
+
+
+export type GetPartQuery = { __typename?: 'Query', part: { __typename?: 'PartDto', id: any, name: string, manufacturerCode: string, needsReorder: boolean, stock: number, stockLevel: StockLevel, lowStockThreshold: number, price: any, category?: { __typename?: 'PartCategoryDto', id: any, name: string } | null } };
+
+export type GetPartCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPartCategoriesQuery = { __typename?: 'Query', partCategories: Array<{ __typename?: 'PartCategoryDto', id: any, name: string }> };
+
+export type GetPartReservationsQueryVariables = Exact<{
+  partId: Scalars['UUID']['input'];
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+}>;
+
+
+export type GetPartReservationsQuery = { __typename?: 'Query', partReservations: { __typename?: 'PaginatedListOfPartReservationDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'PartReservationDto', id: any, partId: any, quantityRequested: number, quantityReserved: number, status: ReservationStatus, repair?: { __typename?: 'RepairDto', id: any, ticketNumber: string, deviceInfo: { __typename?: 'DeviceInfoDto', manufacturer: string, model: string } } | null }> } };
+
+export type GetPartsQueryVariables = Exact<{
+  pageNumber: Scalars['Int']['input'];
+  pageSize: Scalars['Int']['input'];
+  filter: PartFilterInput;
+}>;
+
+
+export type GetPartsQuery = { __typename?: 'Query', parts: { __typename?: 'PaginatedListOfPartDto', pageNumber: number, pageSize: number, totalCount: number, totalPages: number, items: Array<{ __typename?: 'PartDto', id: any, name: string, stock: number, stockLevel: StockLevel, price: any, category?: { __typename?: 'PartCategoryDto', id: any, name: string } | null }> } };
 
 export type GetRepairQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];

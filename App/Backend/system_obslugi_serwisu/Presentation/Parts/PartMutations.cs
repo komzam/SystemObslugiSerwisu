@@ -2,6 +2,8 @@
 using MediatR;
 using system_obslugi_serwisu.Application.Parts.Add;
 using system_obslugi_serwisu.Application.Parts.AddCategory;
+using system_obslugi_serwisu.Application.Parts.AdjustStock;
+using system_obslugi_serwisu.Application.Parts.FlagForReorder;
 using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Parts.Add;
 
@@ -33,6 +35,7 @@ public class PartMutations
     {
         var addPartResult = await mediatr.Send(new AddPartCommand{
             Name = request.Name,
+            ManufacturerCode = request.ManufacturerCode,
             PartCategoryId = request.PartCategoryId,
             InitialStock = request.InitialStock,
             LowStockThreshold = request.LowStockThreshold
@@ -45,5 +48,41 @@ public class PartMutations
                 .Build());
 
         return true;
-    }   
+    }
+    
+    [Authorize]
+    [SetTenantMiddleware]
+    public async Task<bool> ChangeReorderFlag([Service] IMediator mediatr, Guid partId)
+    {
+        var changeFlagResult = await mediatr.Send(new ChangeReorderFlagCommand{
+            PartId = partId
+        });
+
+        if(changeFlagResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(changeFlagResult.Error.GetUserMessage())
+                .SetCode(changeFlagResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+    
+    [Authorize]
+    [SetTenantMiddleware]
+    public async Task<bool> AdjustStock([Service] IMediator mediatr, Guid partId, int newStock)
+    {
+        var adjustStockResult = await mediatr.Send(new AdjustStockCommand{
+            PartId = partId,
+            NewStock = newStock
+        });
+
+        if(adjustStockResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(adjustStockResult.Error.GetUserMessage())
+                .SetCode(adjustStockResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+    
 }

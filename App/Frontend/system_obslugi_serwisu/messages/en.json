@@ -186,6 +186,48 @@
     "unassigned": "Unassigned",
     "viewDetails": "View Details"
   },
+  "PartList": {
+    "search": "Search",
+    "allParts": "All Parts",
+    "partsToOrder": "Parts To Order",
+    "purchaseOrders": "Purchase Orders",
+    "partName": "Part Name",
+    "manufacturerCode": "Manufacturer's code",
+    "initialStock": "Initial stock",
+    "lowStockThreshold": "Low stock threshold",
+    "category": "Category",
+    "stock": "Stock",
+    "price": "Price",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "delete": "Delete",
+    "addPart": "Add part",
+    "createOrderTitle": "Create order",
+    "createOrderFromSelected": "Create order from selected",
+    "supplierName": "Supplier name",
+    "supplierOrderNumber": "Supplier's order number",
+    "addOrder": "Add order"
+  },
+  "PartDetails": {
+    "backButton": "Back to Parts",
+    "category": "Category",
+    "partDetails": "Part Details",
+    "unitPrice": "Unit price",
+    "manufacturersCode": "Manufacturer's code",
+    "lowStockThreshold": "Low stock threshold",
+    "managePartMessage": "Manage this part's inventory and details",
+    "adjustStock": "Adjust stock",
+    "adjustStockTitle": "Adjust part's stock",
+    "newStock": "New stock",
+    "flagForReorder": "Flag for reorder",
+    "removeReorderFlag": "Remove reorder flag",
+    "reservations": "Reservations",
+    "ticketNumber": "Ticket Number",
+    "device": "Device",
+    "requested": "Requested",
+    "reserved": "Reserved",
+    "status": "Status"
+  },
   "Status": {
     "all": "All",
     "CREATED": "Created",
@@ -207,6 +249,17 @@
     "COMPLETED": "Completed",
     "CANCELED": "Canceled",
     "COMPLAINT": "Complaint"
+  },
+  "StockLevel": {
+    "LOW": "Low Stock",
+    "NORMAL": "In Stock",
+    "OUT_OF_STOCK": "Out of Stock"
+  },
+  "ReservationStatus": {
+    "RESERVED": "Reserved",
+    "AWAITING_STOCK": "Awaiting Stock",
+    "CANCELED": "Canceled",
+    "CONSUMED": "Consumed"
   },
   "RepairHistory": {
     "CREATED":{
@@ -298,7 +351,7 @@
     "addNote": "Add note",
     "assignedTechnician": "Assigned technician",
     "additionalComment": "Additional comment",
-    "returnMethod": "Sposób zwrotu",
+    "returnMethod": "Return method",
     "returnAddress": "Adres zwrotny",
     "fullName": "Full name",
     "companyName": "Company name",

@@ -9,7 +9,7 @@ public class GetPartListHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPar
 {
     public async Task<OperationResult<PaginatedList<Part>>> Handle(GetPartListCommand request, CancellationToken cancellationToken)
     {
-        var partsResult = await unitOfWork.PartRepository.GetParts(request.PageNumber, request.PageSize);
+        var partsResult = await unitOfWork.PartRepository.GetParts(request.PageNumber, request.PageSize, request.PartFilter);
         if (partsResult.IsFailure)
             return partsResult.Error;
         return partsResult.Value;

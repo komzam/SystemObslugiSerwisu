@@ -8,4 +8,5 @@ public class GetPartListCommand : IRequest<OperationResult<PaginatedList<Part>>>
 {
     public required int PageNumber { get; set; }
     public required int PageSize { get; set; }
+    public required PartFilter PartFilter { get; set; }
 }

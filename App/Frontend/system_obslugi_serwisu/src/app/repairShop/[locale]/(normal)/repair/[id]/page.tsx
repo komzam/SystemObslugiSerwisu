@@ -119,51 +119,49 @@ export default function Repair() {
     const repair = data.repair;
 
     return (
-        <ProtectedRoute>
-            <div className="flex bg-inherit justify-center py-5">
-                <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
-                    <Link href="/repairs"><BackButton>{t("rsBackButton")}</BackButton></Link>
-                    <RepairDetailsTitle.Root>
-                        <RepairDetailsTitle.Title title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
-                                                  subtitle={repair.contactInfo.fullName}
-                                                  repairTicketNumber={repair.ticketNumber}/>
-                        <RepairDetailsTitle.Conversation conversationId={repair.conversationId} repairShopSide={true}/>
-                        <RepairDetailsTitle.Status status={repair.status}/>
-                    </RepairDetailsTitle.Root>
-                    <RepairDetailsActions status={repair.status} repairId={repair.id} onActionSuccess={onActionSuccess}/>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <RepairDetailsDevInfo deviceType={repair.deviceInfo.deviceType}
-                                              manufacturer={repair.deviceInfo.manufacturer}
-                                              modelName={repair.deviceInfo.model}
-                                              serialNumber={repair.deviceInfo.serialNumber}
-                                              cols={1}/>
-                        <RepairDetailsAssignedTechnician repairId={repairId as string}/>
-                    </div>
-                    <RepairDetailsFaultInfo
-                        whenFaultOccurred={repair.faultInfo.whenOccurred}
-                        howToReplicateFault={repair.faultInfo.howToReproduce}
-                        faultDescription={repair.faultInfo.description}
-                        repairedBefore={repair.faultInfo.previouslyRepaired}/>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <RepairDetailsContactInfo
-                            fullName={repair.contactInfo.fullName}
-                            email={repair.contactInfo.email}
-                            phoneNumber={repair.contactInfo.phoneNumber}
-                            preferredContactMethod={repair.contactInfo.preferredContactMethod}
-                        />
-                        <RepairDetailsReturnInfo
-                            returnMethod={repair.returnInfo.returnMethod}
-                            returnAddress={repair.returnInfo.returnAddress}
-                        />
-                    </div>
-                    {repair.additionalComment && <RepairDetailsAdditionalInfo additionalComment={repair.additionalComment} />}
-                    <RepairDetailsImages.Root editable={true} getUploadLink={getUploadLink} onUploadSuccess={updateImages}>
-                      <RepairDetailsImages.ImageCarousel images={images} onDelete={onDelete} editable={true}/>
-                    </RepairDetailsImages.Root>
-                    <RepairDetailsNotes repairId={repair.id}/>
-                    <RepairDetailsHistory repairId={repair.id} repairHistory={history} onActionSuccess={onActionSuccess}/>
+        <div className="flex bg-inherit justify-center py-5">
+            <div className="flex flex-col gap-5 w-[clamp(20rem,calc(100vw-var(--page-margin)*2),80rem)]">
+                <Link href="/repairs"><BackButton>{t("rsBackButton")}</BackButton></Link>
+                <RepairDetailsTitle.Root>
+                    <RepairDetailsTitle.Title title={`${repair.deviceInfo.manufacturer} ${repair.deviceInfo.model}`}
+                                              subtitle={repair.contactInfo.fullName}
+                                              repairTicketNumber={repair.ticketNumber}/>
+                    <RepairDetailsTitle.Conversation conversationId={repair.conversationId} repairShopSide={true}/>
+                    <RepairDetailsTitle.Status status={repair.status}/>
+                </RepairDetailsTitle.Root>
+                <RepairDetailsActions status={repair.status} repairId={repair.id} onActionSuccess={onActionSuccess}/>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <RepairDetailsDevInfo deviceType={repair.deviceInfo.deviceType}
+                                          manufacturer={repair.deviceInfo.manufacturer}
+                                          modelName={repair.deviceInfo.model}
+                                          serialNumber={repair.deviceInfo.serialNumber}
+                                          cols={1}/>
+                    <RepairDetailsAssignedTechnician repairId={repairId as string}/>
                 </div>
+                <RepairDetailsFaultInfo
+                    whenFaultOccurred={repair.faultInfo.whenOccurred}
+                    howToReplicateFault={repair.faultInfo.howToReproduce}
+                    faultDescription={repair.faultInfo.description}
+                    repairedBefore={repair.faultInfo.previouslyRepaired}/>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <RepairDetailsContactInfo
+                        fullName={repair.contactInfo.fullName}
+                        email={repair.contactInfo.email}
+                        phoneNumber={repair.contactInfo.phoneNumber}
+                        preferredContactMethod={repair.contactInfo.preferredContactMethod}
+                    />
+                    <RepairDetailsReturnInfo
+                        returnMethod={repair.returnInfo.returnMethod}
+                        returnAddress={repair.returnInfo.returnAddress}
+                    />
+                </div>
+                {repair.additionalComment && <RepairDetailsAdditionalInfo additionalComment={repair.additionalComment} />}
+                <RepairDetailsImages.Root editable={true} getUploadLink={getUploadLink} onUploadSuccess={updateImages}>
+                    <RepairDetailsImages.ImageCarousel images={images} onDelete={onDelete} editable={true}/>
+                </RepairDetailsImages.Root>
+                <RepairDetailsNotes repairId={repair.id}/>
+                <RepairDetailsHistory repairId={repair.id} repairHistory={history} onActionSuccess={onActionSuccess}/>
             </div>
-        </ProtectedRoute>
+        </div>
     )
 }

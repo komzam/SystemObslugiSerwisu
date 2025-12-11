@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Parts;
 using system_obslugi_serwisu.Domain.Parts;
@@ -16,6 +17,19 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         try
         {
             return await repairShopContext.PartCategories.ToListAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult<List<PartCategory>>> GetCategories(List<PartCategoryId> categoryIds)
+    {
+        try
+        {
+            return await repairShopContext.PartCategories
+                .Where(pc => categoryIds.Contains(pc.Id)).ToListAsync();
         }
         catch
         {
@@ -52,21 +66,25 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         }
     }
 
-    public async Task<OperationResult<PaginatedList<Part>>> GetParts(int pageNumber, int pageSize)
+    public async Task<OperationResult<PaginatedList<Part>>> GetParts(int pageNumber, int pageSize, PartFilter partFilter)
     {
         List<Part> parts;
         int totalCount;
         
         try
         {
-            parts = await repairShopContext.Parts
+            var query = repairShopContext.Parts.AsQueryable();
+
+            query = ApplyFilters(query, partFilter);
+            
+            parts = await query
                 .Include(p => p.Reservations)
                 .OrderBy(p => p.Name)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            totalCount = await repairShopContext.Parts.CountAsync();
+            totalCount = await query.CountAsync();
         }
         catch
         {
@@ -80,6 +98,19 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
             PageSize = pageSize,
             TotalCount = totalCount
         };
+    }
+
+    public async Task<OperationResult<List<Part>>> GetParts(List<PartId> partIds)
+    {
+        try
+        {
+            return await repairShopContext.Parts
+                .Where(p => partIds.Contains(p.Id)).ToListAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
     }
 
     public async Task<OperationResult<Part>> GetPart(PartId partId)
@@ -117,7 +148,7 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
     {
         List<PartNeeded> neededParts;
         int totalCount;
-        
+
         try
         {
             neededParts = await repairShopContext.PartsNeeded
@@ -127,7 +158,8 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
                 .ToListAsync();
 
             totalCount = await repairShopContext.PartsNeeded
-                .Where(p => p.RepairId == repairId).CountAsync();
+                .Where(p => p.RepairId == repairId)
+                .CountAsync();
         }
         catch
         {
@@ -141,5 +173,80 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
             PageSize = pageSize,
             TotalCount = totalCount
         };
+    }
+
+    public async Task<OperationResult<PaginatedList<PartReservation>>> GetPartReservations(
+        PartId partId,
+        int pageNumber,
+        int pageSize,
+        List<ReservationStatus> statuses)
+    {
+        List<PartReservation> partReservations;
+        int totalCount;
+
+        try
+        {
+            partReservations = await repairShopContext.PartReservations
+                .Where(p => p.PartId == partId)
+                .Where(p => statuses.Contains(p.Status))
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            totalCount = await repairShopContext.PartsNeeded
+                .Where(p => p.PartId == partId)
+                .CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new PaginatedList<PartReservation>
+        {
+            Items = partReservations,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+    
+    private static IQueryable<Part> ApplyFilters(IQueryable<Part> query, PartFilter filter)
+    {
+        if (filter.Categories != null)
+        {
+            var categories = filter.Categories.Select(c => new PartCategoryId(c)).ToList();
+            query = query.Where(p => categories.Contains(p.CategoryId));
+        }
+        
+        if (filter.StockLevels != null)
+        {
+            var stockLevels = filter.StockLevels;
+
+            query = query.Where(p =>
+                (stockLevels.Contains(StockLevel.Low) && p.Stock <= p.LowStockThreshold)
+                || (stockLevels.Contains(StockLevel.Normal) && p.Stock > p.LowStockThreshold)
+                || (stockLevels.Contains(StockLevel.OutOfStock) && p.Stock == 0)
+            );
+        }
+
+        if (filter.NeedsReorder != null)
+            query = query.Where(p => p.NeedsReorder == filter.NeedsReorder);
+
+        if (filter.SearchTerm != null)
+        {
+            var terms = filter.SearchTerm.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var t in terms)
+            {
+                var pattern = $"%{t}%";
+
+                query = query.Where(p =>
+                    EF.Functions.ILike(p.Name, pattern) ||
+                    EF.Functions.ILike(p.ManufacturerCode, pattern)
+                );
+            }
+        }
+
+        return query;
     }
 }

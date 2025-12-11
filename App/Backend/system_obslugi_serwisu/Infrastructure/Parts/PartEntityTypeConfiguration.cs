@@ -19,6 +19,12 @@ public class PartEntityTypeConfiguration : IEntityTypeConfiguration<Part>
             .HasMaxLength(Part.PartNameMaxLength)
             .IsRequired();
         
+        partConfiguration.Property(p => p.ManufacturerCode)
+            .HasMaxLength(Part.ManufacturerCodeMaxLength)
+            .IsRequired();
+
+        partConfiguration.Property(p => p.NeedsReorder).IsRequired();
+        
         partConfiguration.Property(p => p.CategoryId)
             .HasConversion(
                 id => id.Value,
