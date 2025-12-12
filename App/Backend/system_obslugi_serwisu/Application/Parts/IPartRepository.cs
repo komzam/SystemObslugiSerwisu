@@ -10,10 +10,13 @@ public interface IPartRepository
     public Task<OperationResult<List<PartCategory>>> GetCategories(List<PartCategoryId> categoryIds);
     public Task<OperationResult<PartCategory>> GetCategory(PartCategoryId categoryId);
     public Task<OperationResult> AddPartCategory(PartCategory category);
+    public Task<OperationResult> RemovePartCategory(PartCategoryId partCategoryId);
     public Task<OperationResult<PaginatedList<Part>>> GetParts(int pageNumber, int pageSize, PartFilter partFilter);
     public Task<OperationResult<List<Part>>> GetParts(List<PartId> partIds);
+    public Task<OperationResult<int>> CountParts(PartFilter partFilter);
     public Task<OperationResult<Part>> GetPart(PartId partId);
     public Task<OperationResult> AddPart(Part part);
     public Task<OperationResult<PaginatedList<PartNeeded>>> GetNeededParts(RepairId repairId, int pageNumber, int pageSize);
     public Task<OperationResult<PaginatedList<PartReservation>>> GetPartReservations(PartId partId, int pageNumber, int pageSize, List<ReservationStatus> statuses);
+    public Task<OperationResult> AddPartOrder(PartOrder order);
 }

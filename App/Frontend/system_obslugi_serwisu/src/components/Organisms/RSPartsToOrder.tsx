@@ -1,6 +1,5 @@
 ﻿import {GetPartsQuery} from "@/__generated__/types";
 import {useTranslations} from "next-intl";
-import {useRouter} from "@/i18n/navigation";
 import {RSListHeader, RsListHeaderCell} from "@/components/Molecules/RSList/RSListHeader";
 import {LoadingIcon} from "@/components/Molecules/LoadingIcon";
 import {RSList} from "@/components/Molecules/RSList/RSList";

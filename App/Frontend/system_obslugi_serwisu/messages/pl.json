@@ -195,6 +195,7 @@
     "manufacturerCode": "Kod producenta",
     "initialStock": "Początkowy stan magazynowy",
     "lowStockThreshold": "Próg niskiego stanu",
+    "manageCategories": "Zarządzaj kategoriami",
     "category": "Kategoria",
     "stock": "Stan",
     "price": "Cena",
@@ -207,6 +208,17 @@
     "supplierName": "Nazwa dostawcy",
     "supplierOrderNumber": "Numer zamówienia dostawcy",
     "addOrder": "Dodaj zamówienie"
+  },
+  "CategoryList": {
+    "addCategory": "Dodaj kategorię",
+    "categoryName": "Nazwa kategorii",
+    "addCategoryTitle": "Dodaj nową kategorię",
+    "editCategoryTitle": "Edit category",
+    "confirm": "Potwierdź",
+    "actions": "Akcje",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "backButton": "Powrót do części"
   },
   "PartDetails": {
     "backButton": "Powrót do Części",
@@ -648,6 +660,7 @@
     "confirm": "Potwierdź",
     "noData": "Brak danych",
     "currency": "Waluta",
+    "category": "Kategoria",
     "yes": "Tak",
     "no": "Nie"
   }

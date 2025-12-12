@@ -28,6 +28,7 @@ export type AddPartRequestInput = {
   manufacturerCode: Scalars['String']['input'];
   name: Scalars['String']['input'];
   partCategoryId: Scalars['UUID']['input'];
+  price: Scalars['Decimal']['input'];
 };
 
 export type AddRepairNoteRequestInput = {
@@ -393,9 +394,11 @@ export type Mutation = {
   changePreferredReturn: Scalars['Boolean']['output'];
   changeReorderFlag: Scalars['Boolean']['output'];
   createConversation: ConversationDto;
+  deletePartCategory: Scalars['Boolean']['output'];
   deleteRepairImage: Scalars['Boolean']['output'];
   deleteRepairNote: Scalars['Boolean']['output'];
   deleteReview: Scalars['Boolean']['output'];
+  editPartCategory: Scalars['Boolean']['output'];
   login: Scalars['Boolean']['output'];
   logout: Scalars['Boolean']['output'];
   register: Scalars['Boolean']['output'];
@@ -496,6 +499,11 @@ export type MutationCreateConversationArgs = {
 };
 
 
+export type MutationDeletePartCategoryArgs = {
+  partCategoryId: Scalars['UUID']['input'];
+};
+
+
 export type MutationDeleteRepairImageArgs = {
   imageId: Scalars['UUID']['input'];
 };
@@ -508,6 +516,12 @@ export type MutationDeleteRepairNoteArgs = {
 
 export type MutationDeleteReviewArgs = {
   request: DeleteReviewRequestInput;
+};
+
+
+export type MutationEditPartCategoryArgs = {
+  name: Scalars['String']['input'];
+  partCategoryId: Scalars['UUID']['input'];
 };
 
 
@@ -1107,6 +1121,20 @@ export type WorkerDto = {
   lastName: Scalars['String']['output'];
 };
 
+export type AddPartMutationVariables = Exact<{
+  request: AddPartRequestInput;
+}>;
+
+
+export type AddPartMutation = { __typename?: 'Mutation', addPart: boolean };
+
+export type AddPartCategoryMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+}>;
+
+
+export type AddPartCategoryMutation = { __typename?: 'Mutation', addPartCategory: boolean };
+
 export type AddRepairNoteMutationVariables = Exact<{
   repairId: Scalars['UUID']['input'];
   content: Scalars['String']['input'];
@@ -1235,6 +1263,13 @@ export type CustomerConvListSubscriptionSubscriptionVariables = Exact<{ [key: st
 
 export type CustomerConvListSubscriptionSubscription = { __typename?: 'Subscription', onCustomerConversationsUpdated: { __typename?: 'ConversationDto', id: any, modifiedAt: any, messages: { __typename?: 'CursorPaginatedListOfMessageDtoAndNullableOfGuid', items: Array<{ __typename?: 'MessageDto', id: any, content: string, createdAt: any, senderRole: SenderRole }> } } };
 
+export type DeletePartCategoryMutationVariables = Exact<{
+  partCategoryId: Scalars['UUID']['input'];
+}>;
+
+
+export type DeletePartCategoryMutation = { __typename?: 'Mutation', deletePartCategory: boolean };
+
 export type DeleteRepairImageMutationVariables = Exact<{
   imageId: Scalars['UUID']['input'];
 }>;
@@ -1248,6 +1283,14 @@ export type DeleteRepairNoteMutationVariables = Exact<{
 
 
 export type DeleteRepairNoteMutation = { __typename?: 'Mutation', deleteRepairNote: boolean };
+
+export type EditPartCategoryMutationVariables = Exact<{
+  partCategoryId: Scalars['UUID']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+
+export type EditPartCategoryMutation = { __typename?: 'Mutation', editPartCategory: boolean };
 
 export type GetAssignedTechnicianQueryVariables = Exact<{
   repairId: Scalars['UUID']['input'];

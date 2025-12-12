@@ -22,10 +22,10 @@ public class PartCategory
     private static OperationResult ValidateInput(string name)
     {
         if(String.IsNullOrWhiteSpace(name))
-            return PartErrors.InvalidCategoryName();
+            return PartCategoryErrors.InvalidName();
         
         if(name.Length > NameMaxLength)
-            return PartErrors.CategoryNameTooLong();
+            return PartCategoryErrors.NameTooLong();
 
         return OperationResult.Success();
     }
@@ -38,5 +38,15 @@ public class PartCategory
             return validateResult.Error;
 
         return new PartCategory(name);
+    }
+
+    public OperationResult ChangeName(string name)
+    {
+        var validateResult = ValidateInput(name);
+        if(validateResult.IsFailure)
+            return validateResult.Error;
+        
+        Name = name;
+        return OperationResult.Success();
     }
 }

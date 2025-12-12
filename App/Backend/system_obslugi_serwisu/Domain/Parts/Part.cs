@@ -27,18 +27,19 @@ public class Part : AggregateRoot
 
     private Part() { }
 
-    private Part(string name, string manufacturerCode, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
+    private Part(string name, string manufacturerCode, PartCategoryId categoryId, decimal price, int initialStock, int lowStockThreshold)
     {
         Id = new PartId(Guid.NewGuid());
         Name = name;
         ManufacturerCode = manufacturerCode;
         NeedsReorder = false;
         CategoryId = categoryId;
+        Price = price;
         Stock = initialStock;
         LowStockThreshold = lowStockThreshold;
     }
 
-    private static OperationResult ValidateInput(string name, string manufacturerCode, int initialStock, int lowStockThreshold)
+    private static OperationResult ValidateInput(string name, string manufacturerCode, decimal price, int initialStock, int lowStockThreshold)
     {
         if (String.IsNullOrWhiteSpace(name))
             return PartErrors.InvalidName();
@@ -52,6 +53,9 @@ public class Part : AggregateRoot
         if (name.Length > ManufacturerCodeMaxLength)
             return PartErrors.ManufacturerCodeTooLong();
 
+        if (price < 0)
+            return PartErrors.InvalidPrice();
+        
         if (initialStock < 0)
             return PartErrors.InvalidStock();
         
@@ -61,14 +65,14 @@ public class Part : AggregateRoot
         return OperationResult.Success();
     }
 
-    public static OperationResult<Part> Create(string name, string manufacturerCode, PartCategoryId categoryId, int initialStock, int lowStockThreshold)
+    public static OperationResult<Part> Create(string name, string manufacturerCode, PartCategoryId categoryId, decimal price, int initialStock, int lowStockThreshold)
     {
         name = name.Trim();
-        var validateResult = ValidateInput(name, manufacturerCode, initialStock, lowStockThreshold);
+        var validateResult = ValidateInput(name, manufacturerCode, price, initialStock, lowStockThreshold);
         if(validateResult.IsFailure)
             return validateResult.Error;
         
-        return new Part(name, manufacturerCode, categoryId, initialStock, lowStockThreshold);
+        return new Part(name, manufacturerCode, categoryId, price, initialStock, lowStockThreshold);
     }
 
     private StockLevel GetStockLevel()
@@ -78,10 +82,21 @@ public class Part : AggregateRoot
         return StockLevel.Normal;
     }
 
+    public int DefaultOrderQuantity()
+    {
+        if (StockLevel == StockLevel.Normal)
+            return 1;
+        
+        return LowStockThreshold + 1 - Stock;
+    }
+
     public OperationResult AddStock(int quantity, decimal unitPrice)
     {
         if (quantity < 0)
             return PartErrors.InvalidQuantity();
+        
+        if (unitPrice < 0)
+            return PartErrors.InvalidPrice();
         
         decimal totalCurrentCost = Stock * Price;
         decimal totalNewCost = quantity * unitPrice;
@@ -141,7 +156,7 @@ public class Part : AggregateRoot
             .SingleOrDefault(r => r.RepairId == repairId);
 
         if (reservation == null)
-            return PartErrors.ReservationNotFound();
+            return PartReservationErrors.ReservationNotFound();
 
         if (newRequested <= 0)
             return PartErrors.InvalidQuantity();
@@ -203,7 +218,7 @@ public class Part : AggregateRoot
             .ToList();
 
         if (!reservations.Any())
-            return PartErrors.ReservationNotFound();
+            return PartReservationErrors.ReservationNotFound();
 
         foreach (var reservation in reservations)
         {
@@ -222,7 +237,7 @@ public class Part : AggregateRoot
             .ToList();
 
         if (!reservations.Any())
-            return PartErrors.ReservationNotFound();
+            return PartReservationErrors.ReservationNotFound();
 
         foreach (var reservation in reservations)
         {

@@ -34,7 +34,7 @@ public class PartReservation
         ReservationStatus status)
     {
         if (quantityRequested < 0 || quantityReserved < 0)
-            return PartErrors.InvalidPartReservationQuantity();
+            return PartReservationErrors.InvalidQuantity();
         
         return new PartReservation(partId, repairId, quantityRequested, quantityReserved, status);
     }

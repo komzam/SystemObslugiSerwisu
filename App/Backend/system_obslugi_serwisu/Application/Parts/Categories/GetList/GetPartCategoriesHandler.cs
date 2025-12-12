@@ -3,7 +3,7 @@ using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Parts;
 using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Application.Parts.GetCategories;
+namespace system_obslugi_serwisu.Application.Parts.Categories.GetList;
 
 public class GetPartCategoriesHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetPartCategoriesCommand, OperationResult<List<PartCategory>>>
 {

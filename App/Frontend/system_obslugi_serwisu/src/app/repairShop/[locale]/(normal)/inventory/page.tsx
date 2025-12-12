@@ -35,6 +35,11 @@ export default function InventoryPage(){
         setFilter({});
     };
 
+    const onFilterChange = (newFilter: PartFilterInput) =>{
+        setFilter(newFilter);
+        setSelectedPage(1);
+    }
+
     return (
         <div className="min-w-240 max-w-600">
             <CardWithTabs.Root defaultTabName={selectedTab} onValueChange={onTabChange}>
@@ -48,7 +53,7 @@ export default function InventoryPage(){
                         selectedPage={selectedPage}
                         onPageChange={setSelectedPage}
                         filter={filter}
-                        onFilterChange={(filter) => setFilter(filter)}
+                        onFilterChange={onFilterChange}
                     />
                 </CardWithTabs.Content>
                 <CardWithTabs.Content tabName="partsToOrder">

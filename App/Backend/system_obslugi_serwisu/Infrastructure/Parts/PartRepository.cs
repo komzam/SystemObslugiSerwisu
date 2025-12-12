@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Application.Parts;
 using system_obslugi_serwisu.Domain.Parts;
@@ -43,7 +42,7 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         {
             var category =  await repairShopContext.PartCategories.FirstOrDefaultAsync(pc => pc.Id == categoryId);
             if(category == null)
-                return PartErrors.CategoryNotFound();
+                return PartCategoryErrors.CategoryNotFound();
             
             return category;
         }
@@ -58,6 +57,23 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         try
         { 
             await repairShopContext.PartCategories.AddAsync(category);
+            return OperationResult.Success();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult> RemovePartCategory(PartCategoryId partCategoryId)
+    {
+        try
+        {
+            var category = await repairShopContext.PartCategories.Where(pc => pc.Id == partCategoryId).FirstOrDefaultAsync();
+            if (category == null)
+                return PartCategoryErrors.CategoryNotFound();    
+            
+            repairShopContext.PartCategories.Remove(category);
             return OperationResult.Success();
         }
         catch
@@ -111,6 +127,26 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         {
             return DatabaseErrors.UnknownError();
         }
+    }
+
+    public async Task<OperationResult<int>> CountParts(PartFilter partFilter)
+    {
+        int count;
+        
+        try
+        {
+            var query = repairShopContext.Parts.AsQueryable();
+
+            query = ApplyFilters(query, partFilter);
+            
+            count = await query.CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return count;
     }
 
     public async Task<OperationResult<Part>> GetPart(PartId partId)
@@ -210,7 +246,20 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
             TotalCount = totalCount
         };
     }
-    
+
+    public async Task<OperationResult> AddPartOrder(PartOrder order)
+    {
+        try
+        { 
+            await repairShopContext.PartOrders.AddAsync(order);
+            return OperationResult.Success();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
     private static IQueryable<Part> ApplyFilters(IQueryable<Part> query, PartFilter filter)
     {
         if (filter.Categories != null)

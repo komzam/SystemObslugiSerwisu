@@ -40,4 +40,11 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\Parts\Categories\" />
+      <Folder Include="Application\Parts\Needed\" />
+      <Folder Include="Application\Parts\Orders\" />
+      <Folder Include="Application\Parts\Reservations\" />
+    </ItemGroup>
+
 </Project>

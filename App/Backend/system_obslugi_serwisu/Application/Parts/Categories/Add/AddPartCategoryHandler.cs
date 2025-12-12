@@ -3,7 +3,7 @@ using system_obslugi_serwisu.Application.Database;
 using system_obslugi_serwisu.Domain.Parts;
 using system_obslugi_serwisu.Shared;
 
-namespace system_obslugi_serwisu.Application.Parts.AddCategory;
+namespace system_obslugi_serwisu.Application.Parts.Categories.Add;
 
 public class AddPartCategoryHandler(IUnitOfWork unitOfWork) : IRequestHandler<AddPartCategoryCommand, OperationResult>
 {

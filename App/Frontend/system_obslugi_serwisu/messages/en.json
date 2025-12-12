@@ -195,6 +195,7 @@
     "manufacturerCode": "Manufacturer's code",
     "initialStock": "Initial stock",
     "lowStockThreshold": "Low stock threshold",
+    "manageCategories": "Manage Categories",
     "category": "Category",
     "stock": "Stock",
     "price": "Price",
@@ -207,6 +208,17 @@
     "supplierName": "Supplier name",
     "supplierOrderNumber": "Supplier's order number",
     "addOrder": "Add order"
+  },
+  "CategoryList": {
+    "addCategory": "Add category",
+    "categoryName": "Category name",
+    "addCategoryTitle": "Add new category",
+    "editCategoryTitle": "Edit category",
+    "confirm": "Confirm",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "backButton": "Back to parts"
   },
   "PartDetails": {
     "backButton": "Back to Parts",
@@ -648,6 +660,7 @@
     "confirm": "Confirm",
     "noData": "No data",
     "currency": "Currency",
+    "category": "Category",
     "yes": "Yes",
     "no": "No"
   }

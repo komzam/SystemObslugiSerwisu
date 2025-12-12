@@ -2,10 +2,10 @@
 using MediatR;
 using system_obslugi_serwisu.Application.Parts;
 using system_obslugi_serwisu.Application.Parts.Get;
-using system_obslugi_serwisu.Application.Parts.GetCategories;
+using system_obslugi_serwisu.Application.Parts.Categories.GetList;
 using system_obslugi_serwisu.Application.Parts.GetList;
-using system_obslugi_serwisu.Application.Parts.GetNeeded;
-using system_obslugi_serwisu.Application.Parts.GetReservations;
+using system_obslugi_serwisu.Application.Parts.Needed.Get;
+using system_obslugi_serwisu.Application.Parts.Reservations.Get;
 using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Parts.Dto;
 using system_obslugi_serwisu.Shared;

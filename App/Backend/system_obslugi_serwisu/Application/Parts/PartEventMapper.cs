@@ -12,6 +12,8 @@ public static class PartEventMapper
         return domainEvent switch
         {
             ReservationFulfilledEvent e => new ReservationFulfilledNotification{RepairId = e.RepairId, PartReservationId = e.PartReservationId},
+            OrderOrderedEvent e => new OrderOrderedNotification{PartOrderId = e.PartOrderId},
+            OrderReceivedEvent e => new OrderReceivedNotification{PartOrderId = e.PartOrderId},
             _ => throw new InvalidOperationException("Unknown domain event type")
         };
     }

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using MediatR;
 using system_obslugi_serwisu.Application.Database.SetTenant;
-using system_obslugi_serwisu.Application.Parts.GetCategoriesById;
+using system_obslugi_serwisu.Application.Parts.Categories.GetListById;
 using system_obslugi_serwisu.Presentation.Parts.Dto;
 
 namespace system_obslugi_serwisu.Presentation.Parts;

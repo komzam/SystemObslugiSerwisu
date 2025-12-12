@@ -14,6 +14,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n    mutation AddPart($request: AddPartRequestInput!) {\n        addPart(\n            request: $request\n        )\n    }\n": typeof types.AddPartDocument,
+    "\n    mutation AddPartCategory($name: String!) {\n        addPartCategory(name: $name)\n    }\n": typeof types.AddPartCategoryDocument,
     "\n    mutation AddRepairNote($repairId: UUID!, $content: String!) {\n        addRepairNote(request:{repairId: $repairId, content: $content})\n    }\n": typeof types.AddRepairNoteDocument,
     "\n    mutation AddReview($repairShopId: UUID!, $rating: Int!, $comment: String) {\n        addReview(request:  {\n            repairShopId: $repairShopId,\n            rating: $rating,\n            comment: $comment\n        })\n    }\n": typeof types.AddReviewDocument,
     "\n    mutation AdjustStock($partId: UUID!, $newStock: Int!){\n        adjustStock(partId: $partId, newStock: $newStock)\n    }\n": typeof types.AdjustStockDocument,
@@ -31,8 +33,10 @@ type Documents = {
     "\n    subscription ConversationSubscription($conversationId: UUID!, $actingRole: ActingRole!){\n        onMessageSent(conversationId: $conversationId, actingRole: $actingRole){\n            senderRole,\n            content,\n            createdAt\n        }\n    }\n": typeof types.ConversationSubscriptionDocument,
     "\n    mutation CreateConversation($receiverId: UUID!, $firstMessage: String!){\n        createConversation(request:  {\n            receiverId: $receiverId,\n            firstMessage: $firstMessage\n        }){\n            id\n        }\n    }\n": typeof types.CreateConversationDocument,
     "\n    subscription CustomerConvListSubscription{\n        onCustomerConversationsUpdated {\n            id,\n            modifiedAt\n            messages(request: {numberOfMessages: 1}){\n                items {\n                    id,\n                    content,\n                    createdAt,\n                    senderRole\n                }\n            }\n        }\n    }\n": typeof types.CustomerConvListSubscriptionDocument,
+    "\n    mutation DeletePartCategory($partCategoryId: UUID!) {\n        deletePartCategory(partCategoryId: $partCategoryId)\n    }\n": typeof types.DeletePartCategoryDocument,
     "\n    mutation DeleteRepairImage($imageId: UUID!){\n        deleteRepairImage(imageId: $imageId)\n    }\n": typeof types.DeleteRepairImageDocument,
     "\n    mutation DeleteRepairNote($repairNoteId: UUID!) {\n        deleteRepairNote(repairNoteId: $repairNoteId)\n    }\n": typeof types.DeleteRepairNoteDocument,
+    "\n    mutation EditPartCategory($partCategoryId: UUID!, $name: String!) {\n        editPartCategory(partCategoryId: $partCategoryId, name: $name)\n    }\n": typeof types.EditPartCategoryDocument,
     "\n    query GetAssignedTechnician($repairId: UUID!){\n        repair(request: {repairId: $repairId}){\n            id,\n            assignedWorker{\n                id,\n                firstName,\n                lastName\n            }\n        }\n    }\n": typeof types.GetAssignedTechnicianDocument,
     "\n    query GetConversation($conversationId: UUID!, $numberOfMessages: Int!, $lastMessageId: UUID) {\n        conversation(request: {\n            conversationId: $conversationId\n        }){\n            messages(request: {numberOfMessages: $numberOfMessages, lastMessageId: $lastMessageId }) {\n              items{\n                  senderRole,\n                  content,\n                  createdAt\n              },\n              lastItemId,\n              hasMore\n            },\n            conversationType,\n            repair {\n                id,\n                ticketNumber,\n                status,\n                deviceInfo {\n                    manufacturer,\n                    model\n                }\n            },\n            repairShop{\n                id,\n                name,\n                rating,\n                reviewCount\n            },\n            customer{\n                id,\n                name\n            }\n        }\n    }\n": typeof types.GetConversationDocument,
     "\n    query GetMoreMessages($conversationId: UUID!, $numberOfMessages: Int!, $lastMessageId: UUID) {\n        conversation(request: {\n            conversationId: $conversationId\n        }){\n          messages(request: {numberOfMessages: $numberOfMessages, lastMessageId: $lastMessageId }) {\n              items{\n                  senderRole,\n                  content,\n                  createdAt\n              },\n              lastItemId,\n              hasMore\n          }\n        }\n    }\n": typeof types.GetMoreMessagesDocument,
@@ -82,6 +86,8 @@ type Documents = {
     "\n    mutation UploadRepairImage($repairId: UUID!, $contentType: String!) {\n        uploadRepairImage: addRepairImage(repairId: $repairId, contentType: $contentType)\n    }\n": typeof types.UploadRepairImageDocument,
 };
 const documents: Documents = {
+    "\n    mutation AddPart($request: AddPartRequestInput!) {\n        addPart(\n            request: $request\n        )\n    }\n": types.AddPartDocument,
+    "\n    mutation AddPartCategory($name: String!) {\n        addPartCategory(name: $name)\n    }\n": types.AddPartCategoryDocument,
     "\n    mutation AddRepairNote($repairId: UUID!, $content: String!) {\n        addRepairNote(request:{repairId: $repairId, content: $content})\n    }\n": types.AddRepairNoteDocument,
     "\n    mutation AddReview($repairShopId: UUID!, $rating: Int!, $comment: String) {\n        addReview(request:  {\n            repairShopId: $repairShopId,\n            rating: $rating,\n            comment: $comment\n        })\n    }\n": types.AddReviewDocument,
     "\n    mutation AdjustStock($partId: UUID!, $newStock: Int!){\n        adjustStock(partId: $partId, newStock: $newStock)\n    }\n": types.AdjustStockDocument,
@@ -99,8 +105,10 @@ const documents: Documents = {
     "\n    subscription ConversationSubscription($conversationId: UUID!, $actingRole: ActingRole!){\n        onMessageSent(conversationId: $conversationId, actingRole: $actingRole){\n            senderRole,\n            content,\n            createdAt\n        }\n    }\n": types.ConversationSubscriptionDocument,
     "\n    mutation CreateConversation($receiverId: UUID!, $firstMessage: String!){\n        createConversation(request:  {\n            receiverId: $receiverId,\n            firstMessage: $firstMessage\n        }){\n            id\n        }\n    }\n": types.CreateConversationDocument,
     "\n    subscription CustomerConvListSubscription{\n        onCustomerConversationsUpdated {\n            id,\n            modifiedAt\n            messages(request: {numberOfMessages: 1}){\n                items {\n                    id,\n                    content,\n                    createdAt,\n                    senderRole\n                }\n            }\n        }\n    }\n": types.CustomerConvListSubscriptionDocument,
+    "\n    mutation DeletePartCategory($partCategoryId: UUID!) {\n        deletePartCategory(partCategoryId: $partCategoryId)\n    }\n": types.DeletePartCategoryDocument,
     "\n    mutation DeleteRepairImage($imageId: UUID!){\n        deleteRepairImage(imageId: $imageId)\n    }\n": types.DeleteRepairImageDocument,
     "\n    mutation DeleteRepairNote($repairNoteId: UUID!) {\n        deleteRepairNote(repairNoteId: $repairNoteId)\n    }\n": types.DeleteRepairNoteDocument,
+    "\n    mutation EditPartCategory($partCategoryId: UUID!, $name: String!) {\n        editPartCategory(partCategoryId: $partCategoryId, name: $name)\n    }\n": types.EditPartCategoryDocument,
     "\n    query GetAssignedTechnician($repairId: UUID!){\n        repair(request: {repairId: $repairId}){\n            id,\n            assignedWorker{\n                id,\n                firstName,\n                lastName\n            }\n        }\n    }\n": types.GetAssignedTechnicianDocument,
     "\n    query GetConversation($conversationId: UUID!, $numberOfMessages: Int!, $lastMessageId: UUID) {\n        conversation(request: {\n            conversationId: $conversationId\n        }){\n            messages(request: {numberOfMessages: $numberOfMessages, lastMessageId: $lastMessageId }) {\n              items{\n                  senderRole,\n                  content,\n                  createdAt\n              },\n              lastItemId,\n              hasMore\n            },\n            conversationType,\n            repair {\n                id,\n                ticketNumber,\n                status,\n                deviceInfo {\n                    manufacturer,\n                    model\n                }\n            },\n            repairShop{\n                id,\n                name,\n                rating,\n                reviewCount\n            },\n            customer{\n                id,\n                name\n            }\n        }\n    }\n": types.GetConversationDocument,
     "\n    query GetMoreMessages($conversationId: UUID!, $numberOfMessages: Int!, $lastMessageId: UUID) {\n        conversation(request: {\n            conversationId: $conversationId\n        }){\n          messages(request: {numberOfMessages: $numberOfMessages, lastMessageId: $lastMessageId }) {\n              items{\n                  senderRole,\n                  content,\n                  createdAt\n              },\n              lastItemId,\n              hasMore\n          }\n        }\n    }\n": types.GetMoreMessagesDocument,
@@ -164,6 +172,14 @@ const documents: Documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation AddPart($request: AddPartRequestInput!) {\n        addPart(\n            request: $request\n        )\n    }\n"): (typeof documents)["\n    mutation AddPart($request: AddPartRequestInput!) {\n        addPart(\n            request: $request\n        )\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation AddPartCategory($name: String!) {\n        addPartCategory(name: $name)\n    }\n"): (typeof documents)["\n    mutation AddPartCategory($name: String!) {\n        addPartCategory(name: $name)\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -235,11 +251,19 @@ export function gql(source: "\n    subscription CustomerConvListSubscription{\n 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n    mutation DeletePartCategory($partCategoryId: UUID!) {\n        deletePartCategory(partCategoryId: $partCategoryId)\n    }\n"): (typeof documents)["\n    mutation DeletePartCategory($partCategoryId: UUID!) {\n        deletePartCategory(partCategoryId: $partCategoryId)\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n    mutation DeleteRepairImage($imageId: UUID!){\n        deleteRepairImage(imageId: $imageId)\n    }\n"): (typeof documents)["\n    mutation DeleteRepairImage($imageId: UUID!){\n        deleteRepairImage(imageId: $imageId)\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n    mutation DeleteRepairNote($repairNoteId: UUID!) {\n        deleteRepairNote(repairNoteId: $repairNoteId)\n    }\n"): (typeof documents)["\n    mutation DeleteRepairNote($repairNoteId: UUID!) {\n        deleteRepairNote(repairNoteId: $repairNoteId)\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation EditPartCategory($partCategoryId: UUID!, $name: String!) {\n        editPartCategory(partCategoryId: $partCategoryId, name: $name)\n    }\n"): (typeof documents)["\n    mutation EditPartCategory($partCategoryId: UUID!, $name: String!) {\n        editPartCategory(partCategoryId: $partCategoryId, name: $name)\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

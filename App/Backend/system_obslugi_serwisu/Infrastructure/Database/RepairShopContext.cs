@@ -12,6 +12,7 @@ public class RepairShopContext(DbContextOptions<RepairShopContext> options) : Db
     public DbSet<PartReservation> PartReservations { get; set; }
     public DbSet<PartCategory> PartCategories { get; set; }
     public DbSet<PartNeeded> PartsNeeded { get; set; }
+    public DbSet<PartOrder> PartOrders { get; set; }
     public DbSet<RepairNote> RepairNotes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -22,5 +23,7 @@ public class RepairShopContext(DbContextOptions<RepairShopContext> options) : Db
         new PartCategoryEntityTypeConfiguration().Configure(builder.Entity<PartCategory>());
         new NeededPartEntityTypeConfiguration().Configure(builder.Entity<PartNeeded>());
         new RepairNoteEntityTypeConfiguration().Configure(builder.Entity<RepairNote>());
+        new PartOrderEntityTypeConfiguration().Configure(builder.Entity<PartOrder>());
+        new PartOrderItemEntityTypeConfiguration().Configure(builder.Entity<PartOrderItem>());
     }
 }

@@ -1,8 +1,10 @@
 ﻿using HotChocolate.Authorization;
 using MediatR;
 using system_obslugi_serwisu.Application.Parts.Add;
-using system_obslugi_serwisu.Application.Parts.AddCategory;
+using system_obslugi_serwisu.Application.Parts.Categories.Add;
 using system_obslugi_serwisu.Application.Parts.AdjustStock;
+using system_obslugi_serwisu.Application.Parts.Categories.Delete;
+using system_obslugi_serwisu.Application.Parts.Categories.Edit;
 using system_obslugi_serwisu.Application.Parts.FlagForReorder;
 using system_obslugi_serwisu.Presentation.Middleware;
 using system_obslugi_serwisu.Presentation.Parts.Add;
@@ -31,12 +33,48 @@ public class PartMutations
     
     [Authorize]
     [SetTenantMiddleware]
+    public async Task<bool> EditPartCategory([Service] IMediator mediatr, Guid partCategoryId, string name)
+    {
+        var editPartCategoryResult = await mediatr.Send(new EditPartCategoryCommand{
+            PartCategoryId = partCategoryId,
+            Name = name
+        });
+
+        if(editPartCategoryResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(editPartCategoryResult.Error.GetUserMessage())
+                .SetCode(editPartCategoryResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+    
+    [Authorize]
+    [SetTenantMiddleware]
+    public async Task<bool> DeletePartCategory([Service] IMediator mediatr, Guid partCategoryId)
+    {
+        var deletePartCategoryResult = await mediatr.Send(new DeletePartCategoryCommand{
+            PartCategoryId = partCategoryId
+        });
+
+        if(deletePartCategoryResult.IsFailure)
+            throw new GraphQLException(ErrorBuilder.New()
+                .SetMessage(deletePartCategoryResult.Error.GetUserMessage())
+                .SetCode(deletePartCategoryResult.Error.GetUserCode())
+                .Build());
+
+        return true;
+    }
+    
+    [Authorize]
+    [SetTenantMiddleware]
     public async Task<bool> AddPart([Service] IMediator mediatr, AddPartRequest request)
     {
         var addPartResult = await mediatr.Send(new AddPartCommand{
             Name = request.Name,
             ManufacturerCode = request.ManufacturerCode,
             PartCategoryId = request.PartCategoryId,
+            Price = request.Price,
             InitialStock = request.InitialStock,
             LowStockThreshold = request.LowStockThreshold
         });

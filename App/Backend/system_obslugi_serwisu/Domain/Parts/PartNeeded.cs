@@ -25,7 +25,7 @@ public class PartNeeded
     public static OperationResult<PartNeeded> Create(RepairId repairId, PartId partId, int quantity)
     {
         if (quantity <= 0)
-            return PartErrors.InvalidPartNeededQuantity();
+            return PartNeededErrors.InvalidQuantity();
         
         return new PartNeeded(repairId, partId, quantity);
     }
