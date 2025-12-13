@@ -2,7 +2,7 @@
 using system_obslugi_serwisu.Domain.Parts;
 using system_obslugi_serwisu.Domain.Repairs;
 
-namespace system_obslugi_serwisu.Application.Parts.Notifications;
+namespace system_obslugi_serwisu.Application.Parts.Notifications.ReservationFulfilled;
 
 public class ReservationFulfilledNotification : INotification
 {

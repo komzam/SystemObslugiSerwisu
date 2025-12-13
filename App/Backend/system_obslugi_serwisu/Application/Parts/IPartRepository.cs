@@ -19,4 +19,9 @@ public interface IPartRepository
     public Task<OperationResult<PaginatedList<PartNeeded>>> GetNeededParts(RepairId repairId, int pageNumber, int pageSize);
     public Task<OperationResult<PaginatedList<PartReservation>>> GetPartReservations(PartId partId, int pageNumber, int pageSize, List<ReservationStatus> statuses);
     public Task<OperationResult> AddPartOrder(PartOrder order);
+    public Task<OperationResult> DeletePartOrder(PartOrderId partOrderId);
+    public Task<OperationResult<PaginatedList<PartOrder>>> GetPartOrders(int pageNumber, int pageSize);
+    public Task<OperationResult<PaginatedList<PartOrder>>> GetPartOrders(PartId partId, int pageNumber, int pageSize);
+    public Task<OperationResult<List<PartOrder>>> GetPartOrders(List<PartOrderId> partOrderIds);
+    public Task<OperationResult<PartOrder>> GetPartOrder(PartOrderId partOrderId);
 }

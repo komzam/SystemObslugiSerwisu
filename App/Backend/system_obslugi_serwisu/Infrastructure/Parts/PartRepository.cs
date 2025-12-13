@@ -260,6 +260,122 @@ public class PartRepository(RepairShopContext repairShopContext) : IPartReposito
         }
     }
 
+    public async Task<OperationResult> DeletePartOrder(PartOrderId partOrderId)
+    {
+        try
+        {
+            var order = await repairShopContext.PartOrders
+                .Where(po => po.Id == partOrderId)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                return PartOrderErrors.PartOrderNotFound();
+            
+            repairShopContext.PartOrders.Remove(order);
+            return OperationResult.Success();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult<PaginatedList<PartOrder>>> GetPartOrders(int pageNumber, int pageSize)
+    {
+        List<PartOrder> partOrders;
+        int totalCount;
+
+        try
+        {
+            partOrders = await repairShopContext.PartOrders
+                .Include(po => po.Items)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            totalCount = await repairShopContext.PartOrders.CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new PaginatedList<PartOrder>
+        {
+            Items = partOrders,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
+    public async Task<OperationResult<PaginatedList<PartOrder>>> GetPartOrders(PartId partId, int pageNumber, int pageSize)
+    {
+        List<PartOrder> partOrders;
+        int totalCount;
+
+        try
+        {
+            partOrders = await repairShopContext.PartOrders
+                .Include(po => po.Items.Where(i => i.PartId == partId))
+                .Where( po => po.Items.Any( i => i.PartId == partId ))
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            totalCount = await repairShopContext.PartOrders
+                .Where( po => po.Items.FirstOrDefault( i => i.PartId == partId ) != null)
+                .CountAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+
+        return new PaginatedList<PartOrder>
+        {
+            Items = partOrders,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
+    }
+
+    public async Task<OperationResult<List<PartOrder>>> GetPartOrders(List<PartOrderId> partOrderIds)
+    {
+        try
+        {
+            return await repairShopContext.PartOrders
+                .Include(po => po.Items)
+                .Where(po => partOrderIds.Contains(po.Id))
+                .ToListAsync();
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
+    public async Task<OperationResult<PartOrder>> GetPartOrder(PartOrderId partOrderId)
+    {
+        try
+        { 
+            var order = await repairShopContext.PartOrders
+                .Include(po => po.Items)
+                .Where(po =>po.Id == partOrderId)
+                .FirstOrDefaultAsync();
+            
+            if(order == null)
+                return PartOrderErrors.PartOrderNotFound();
+
+            return order;
+        }
+        catch
+        {
+            return DatabaseErrors.UnknownError();
+        }
+    }
+
     private static IQueryable<Part> ApplyFilters(IQueryable<Part> query, PartFilter filter)
     {
         if (filter.Categories != null)

@@ -1,5 +1,7 @@
 ﻿using MediatR;
-using system_obslugi_serwisu.Application.Parts.Notifications;
+using system_obslugi_serwisu.Application.Parts.Notifications.OrderOrdered;
+using system_obslugi_serwisu.Application.Parts.Notifications.OrderReceived;
+using system_obslugi_serwisu.Application.Parts.Notifications.ReservationFulfilled;
 using system_obslugi_serwisu.Domain.Parts.Events;
 using system_obslugi_serwisu.Shared;
 

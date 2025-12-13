@@ -5,7 +5,7 @@ using system_obslugi_serwisu.Shared;
 
 namespace system_obslugi_serwisu.Application.Parts.AdjustStock;
 
-public class AdjustStockHandler(IUnitOfWork unitOfWork) : IRequestHandler<AdjustStockCommand, OperationResult>
+public class AdjustStockHandler(IUnitOfWork unitOfWork, IMediator mediatr) : IRequestHandler<AdjustStockCommand, OperationResult>
 {
     public async Task<OperationResult> Handle(AdjustStockCommand request, CancellationToken cancellationToken)
     {
@@ -18,6 +18,11 @@ public class AdjustStockHandler(IUnitOfWork unitOfWork) : IRequestHandler<Adjust
         var saveResult = await unitOfWork.SaveChanges();
         if(saveResult.IsFailure)
             return saveResult.Error;
+        
+        foreach (var domainEvent in partResult.Value.DomainEvents)
+        {
+            await mediatr.Publish(PartEventMapper.ToNotification(domainEvent), cancellationToken);
+        }
 
         return OperationResult.Success();
     }
